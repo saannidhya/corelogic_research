@@ -73,10 +73,18 @@ load_corelogic_ot <- function(states = NULL, years = NULL, columns = NULL,
 #' Load CoreLogic Property Characteristics data
 #'
 #' @inheritParams load_corelogic_ot
+#' @param per_partition If TRUE, read each requested state's partition
+#'   directory directly with its own (native) schema instead of the unified
+#'   dataset schema. Use when cross-partition type drift breaks the unified
+#'   scan (e.g., a column stored as string in one state and double in
+#'   another, with values the unified type cannot parse). Column types in
+#'   the result then reflect each partition's native types; callers must
+#'   harmonize. Requires `states` to be non-NULL.
 load_corelogic_prop <- function(states = NULL, columns = NULL,
                                 sample = FALSE,
                                 source = c("parquet", "raw"),
-                                parquet_root = default_parquet_root()) {
+                                parquet_root = default_parquet_root(),
+                                per_partition = FALSE) {
   source <- match.arg(source)
 
   if (sample) {
@@ -86,6 +94,19 @@ load_corelogic_prop <- function(states = NULL, columns = NULL,
   prop_path <- path(parquet_root, "by_state", "prop")
 
   if (source == "parquet" && dir_exists(prop_path)) {
+    if (per_partition) {
+      stopifnot(!is.null(states))
+      out <- lapply(states, function(st) {
+        st_path <- path(prop_path, paste0("state=", st))
+        if (!dir_exists(st_path)) return(NULL)
+        ds <- open_dataset(st_path)
+        if (!is.null(columns)) ds <- ds |> select(any_of(unique(columns)))
+        d <- as_tibble(collect(ds))
+        d$state <- st
+        d
+      })
+      return(dplyr::bind_rows(out))
+    }
     ds <- open_dataset(prop_path, partitioning = "state")
     if (!is.null(states))  ds <- ds |> filter(state %in% states)
     if (!is.null(columns)) ds <- ds |> select(any_of(unique(c(columns, "state"))))

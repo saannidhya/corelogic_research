@@ -1,0 +1,31 @@
+\begin{table}[!htbp]\centering
+\caption{Calibrated price-discovery effect vs.\ the data's ceiling}
+\label{tab:calibration}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+ & \multicolumn{3}{c}{Buyer-error share of residual variance}\\
+\cmidrule(lr){2-4}
+Comp window & 0.10 & 0.33 & 1.00\\
+\midrule
+$k=4$ & 0.009 & 0.055 & 0.226\\
+$k=6$ & 0.013 & 0.082 & 0.338\\
+$k=8$ & 0.017 & 0.109 & 0.449\\
+\midrule
+\multicolumn{4}{l}{Data: 95\% one-sided ceiling (IQR measure) = 0.17 log points}\\
+\multicolumn{4}{l}{Pinned $\sigma_a$ (Zillow within-ZIP-year residual SD) = 0.188; published off-market error $\approx$ 0.10}\\
+\bottomrule
+\end{tabular}}
+\begin{minipage}{0.92\linewidth}\footnotesize\vspace{2pt}
+\emph{Notes:} Each cell is the model's predicted rise in within-segment
+residual dispersion (log points, at mean Zillow exposure) when the machine
+signal is removed, $\rho(v_m)(V_0-V_1)$ converted to a standard-deviation
+change, evaluated at the machine's deed footprint ($v_m \approx$ twice the
+mean purchase share) and $\sigma_a$ pinned from Zillow's own purchase-price
+residual dispersion. The data's 95\% one-sided ceiling (
+0.17 log points) lies \emph{below} the model's
+most aggressive cells (large comp windows and high buyer-error share; 3 of 9 columns shown), which the design therefore rejects, and above its
+central calibrations, with which it is consistent. The externality is
+bounded tightly, not point-identified; either way it is economically small.
+\end{minipage}
+\end{table}

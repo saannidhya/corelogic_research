@@ -1,0 +1,69 @@
+\documentclass[10pt, aspectratio=169]{beamer}
+
+\input{../../../Preambles/header.tex}
+
+\title{{{PROJECT_NAME}}}
+\subtitle{Seminar — preliminary results}
+\author{Saani Rawat}
+\institute{Marquette University}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{Motivation}
+
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item {{MOTIVATION_BULLET_1}}
+    \item {{MOTIVATION_BULLET_2}}
+  \end{itemize}
+\end{frame}
+
+\section{Data}
+
+\begin{frame}{Data}
+  CoreLogic University-of-Cincinnati extract:
+  \begin{itemize}
+    \item Owner Transfer (transactions)
+    \item Property Characteristics
+    \item Coverage: {{COVERAGE_PLACEHOLDER}}
+  \end{itemize}
+\end{frame}
+
+\section{Strategy}
+
+\begin{frame}{Empirical Strategy}
+  \begin{equation*}
+    y_{it} = \alpha + \beta D_{it} + \gamma X_{it} + \mu_i + \lambda_t + \varepsilon_{it}
+  \end{equation*}
+\end{frame}
+
+\section{Results}
+
+\begin{frame}{Main results}
+  \input{../manuscript/tables/T2_main_results.tex}
+\end{frame}
+
+\begin{frame}{Trend in prices}
+  \centering
+  \includegraphics[width=0.8\linewidth]{../manuscript/figures/F1_median_price_trend.pdf}
+\end{frame}
+
+\section{Discussion}
+
+\begin{frame}{Takeaways}
+  \begin{enumerate}
+    \item {{TAKEAWAY_1}}
+    \item {{TAKEAWAY_2}}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[plain]
+  \centering
+  \Large Thank you. \\
+  saani.rawat@marquette.edu
+\end{frame}
+
+\end{document}

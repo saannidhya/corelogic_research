@@ -1,0 +1,27 @@
+\begin{table}[!htbp]\centering
+\caption{Exit design: robustness and inference}
+\label{tab:T5}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccc}
+\toprule
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+Outcome & Drop & Top- & ZIP & Weight & Wins.\ & Excl.\ & Perm.\ & Wild\\
+ & liq. & quart. & clust. & & 95th & Phx & $p$ & $p$\\
+\midrule
+Log volume (household) & -0.1015$^{***}$ & -0.0222$^{*}$ & -0.1004$^{***}$ & -0.0925$^{***}$ & -0.0979$^{***}$ & -0.0946$^{**}$ & 0.010 & 0.008\\
+ & (0.0363) & (0.0127) & (0.0279) & (0.0295) & (0.0344) & (0.0348) & & \\[2pt]
+Residual SD & 0.0086 & 0.0009 & 0.0084 & 0.0159 & 0.0073 & 0.0072 & 0.442 & 0.510\\
+ & (0.0103) & (0.0043) & (0.0077) & (0.0125) & (0.0119) & (0.0120) & & \\[2pt]
+\bottomrule
+\end{tabular}}
+\begin{minipage}{0.97\linewidth}\footnotesize\vspace{2pt}
+\emph{Notes:} Zillow-share$\times$Post coefficient under variants of
+Table~\ref{tab:T3} (primary household-volume and SD-dispersion outcomes).
+(1) drops 2021Q4--2022Q2; (2) top-quartile exposure indicator; (3) ZIP
+clustering; (4) transaction-weighted; (5) 95th-pct winsorization; (6)
+excluding Phoenix; (7) permutation $p$ from 999 within-CBSA reshuffles,
+$(1+\#\{|t|\geq|t_{obs}|\})/(B+1)$; (8) wild cluster bootstrap (Webb
+weights, 999 reps, null imposed). The Opendoor/Offerpad placebo loading is
+near zero in every variant (Appendix).
+\end{minipage}
+\end{table}

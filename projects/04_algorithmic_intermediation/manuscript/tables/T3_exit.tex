@@ -1,0 +1,37 @@
+\begin{table}[!htbp]\centering
+\caption{The Zillow Offers shutdown: difference-in-differences}
+\label{tab:T3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+ & Zillow share & Opendoor/Offerpad & \\
+Outcome & $\times$ Post & share $\times$ Post & N\\
+\midrule
+Log volume (household) & -0.1004$^{***}$ & -0.0047 & 53,343\\
+ & (0.0350) & (0.0068) & \\[1pt]\midrule
+Log volume (incl.\ machine deeds) & -0.0804$^{**}$ & -0.0066 & 53,343\\
+ & (0.0354) & (0.0069) & \\[2pt]
+Residual SD & 0.0084 & -0.0058 & 49,130\\
+ & (0.0106) & (0.0039) & \\[2pt]
+Residual IQR/1.349 & -0.0020 & -0.0029 & 49,130\\
+ & (0.0063) & (0.0023) & \\[2pt]
+Left-tail share (demeaned) & 0.0052 & -0.0021 & 49,130\\
+ & (0.0054) & (0.0028) & \\[2pt]
+Left-tail share (raw) & 0.0039 & -0.0045 & 49,130\\
+ & (0.0067) & (0.0039) & \\[2pt]
+Log median price & 0.0155 & 0.0037 & 53,343\\
+ & (0.0176) & (0.0047) & \\[2pt]
+\bottomrule
+\end{tabular}}
+\begin{minipage}{0.92\linewidth}\footnotesize\vspace{2pt}
+\emph{Notes:} ZIP$\times$quarter panel, 2019Q1--2024Q2, ZIPs in CBSAs with
+$\geq 50$ Zillow Offers purchases (
+2425 ZIPs, 27 CBSAs, 940 zero-exposure controls
+). The \emph{primary} volume outcome is household-only (machine purchases
+and resales netted out); the gross row is shown for transparency. Exposure
+= firm purchases as a percent of ZIP transactions over 2018Q2--2021Q3,
+winsorized at the 99th percentile. Post $=$ from 2021Q4 (announced Nov 2,
+2021). ZIP and CBSA$\times$quarter fixed effects; SEs clustered by CBSA (27
+clusters). $^{*}p<0.1$, $^{**}p<0.05$, $^{***}p<0.01$.
+\end{minipage}
+\end{table}

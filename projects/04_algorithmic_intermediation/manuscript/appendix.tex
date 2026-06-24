@@ -1,0 +1,193 @@
+\clearpage
+\appendix
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{equation}{0}
+\renewcommand{\theequation}{A\arabic{equation}}
+
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix}
+
+\section{Proofs}\label{app:proofs}
+
+Throughout, total machine profit at realized error $a$ is the mass-weighted sum of pool contributions, $\lambda$ times the mover-pool contribution plus $(1-\lambda)$ times the non-mover-pool contribution, each given by Lemma~\ref{lem:pool} when the pool's threshold is interior. Recall $\mu = m - a$, $\tau_D = D - \mu$, $\tau_0 = -\mu$.
+
+\subsection{Proof of Lemma~\ref{lem:pool}}
+
+A seller in the pool with urgency $\delta$ accepts iff $\varepsilon_i \le \tau_\delta = a - m + \delta$. With $\varepsilon_i \sim U[-w,w]$ and $\tau_\delta \in [-w,w]$, the acceptance mass is $(\tau_\delta + w)/(2w)$ and the accepted draws are uniform on $[-w, \tau_\delta]$, so $\E[\varepsilon \mid \text{accept}] = (\tau_\delta - w)/2$. The machine pays $q = v + a - m$, incurs $c$, and resells house $i$ at its fundamental value $v + \varepsilon_i$; per-trade profit is therefore $(v + \varepsilon_i) - (v + a - m) - c = m - a - c + \varepsilon_i$, with conditional mean $m - c - a + (\tau_\delta - w)/2$. Write $A = \tau_\delta + w$ and $B = 2(m - a - c) + \tau_\delta - w$, so the pool contribution is
+\[
+\frac{A}{2w} \cdot \frac{B}{2} = \frac{AB}{4w} = \frac{(A+B)^2 - (A-B)^2}{16w}.
+\]
+Direct computation gives $A + B = 2\tau_\delta + 2(m - a - c) = 2(\delta - c)$ and $A - B = 2w - 2(m - a - c) = 2(w + c - \mu)$. Hence the contribution equals $[(\delta - c)^2 - (w + c - \mu)^2]/(4w)$. $\blacksquare$
+
+\subsection{Proof of Proposition~\ref{prop:sorting}}
+
+\textbf{Step 1: the deterministic problem.} Fix the realized spread $\mu$ and consider profit $\Pi(\mu)$ as a function of $\mu$.
+
+\emph{(a) Both-pools branch, $\mu \in [D - w,\, w]$.} Here $\tau_D = D - \mu \in [D - w, w] \subseteq [-w, w]$ and $\tau_0 = -\mu \in [-w, w]$, so both pools are interior and, by Lemma~\ref{lem:pool},
+\[
+\Pi(\mu) = \frac{\lambda (D-c)^2 + (1-\lambda) c^2 - (w + c - \mu)^2}{4w},
+\]
+which is strictly increasing in $\mu$ on this branch because $\mu \le w < w + c$.
+
+\emph{(b) Movers-only branch, $\mu \in [w,\, D + w]$.} Here $\tau_0 = -\mu \le -w$: the non-mover pool is inactive. The mover pool gives
+\[
+\Pi(\mu) = \frac{\lambda \left[ (D-c)^2 - (w + c - \mu)^2 \right]}{4w},
+\]
+strictly increasing for $\mu < w + c$, strictly decreasing for $\mu > w + c$, with unique peak at $\mu = w + c$, which lies in the branch interior since $c > 0$ and $w + c < D + w$. (If $D > 2w$, the sub-region $\mu \in [w, D - w)$ has $\tau_D > w$, all movers accept, and $\Pi(\mu) = \lambda(\mu - c)$, strictly increasing; profit still rises monotonically into the interior region, so the peak is unaffected.)
+
+\emph{Continuity at $\mu = w$.} Branch (a) at $\mu = w$: $(w + c - w)^2 = c^2$, giving $[\lambda(D-c)^2 + (1-\lambda)c^2 - c^2]/4w = \lambda[(D-c)^2 - c^2]/(4w)$. Branch (b) at $\mu = w$ gives the same value. The deterministic profit is therefore continuous, strictly increasing up to $\mu = w + c$, and strictly decreasing beyond: the unique maximizer is $\mu = w + c$.
+
+\textbf{Step 2: the stochastic problem.} The machine fixes $m$ ex ante, before $a$ realizes; $\mu = m - a$ is then random on $[m - s, m + s]$.
+
+\emph{(c) Interior range.} Let $\underline{m} = \max\{w,\, D - w\} + s$. For $m \in [\underline{m},\, D + w - s]$, every realization satisfies $\mu \in [\max\{w, D-w\},\, D + w]$: non-movers are excluded ($\mu \ge w$) and the mover pool is never exhausted ($\mu \ge D - w$, so $\tau_D \le w$), hence the movers-only quadratic branch applies state by state, and
+\begin{align*}
+\E_a \Pi(m) &= \frac{\lambda}{4w} \E_a\!\left[ (D-c)^2 - (w + c - m + a)^2 \right] \\
+&= \frac{\lambda \left[ (D-c)^2 - (w + c - m)^2 - s^2/3 \right]}{4w},
+\end{align*}
+using $\E[a] = 0$ and $\E[a^2] = s^2/3$. This is uniquely maximized at $m^* = w + c$, which is interior to the range: $w + s < w + c$ because $s < c$; $D - w + s < w + c$ because $s < 2w - (D - c)$ (the third clause of Assumption~\ref{ass:1}); and $w + c \le D + w - s$ because $s \le (D - c)/2 < D - c$.
+
+\emph{(d) Lower corner, $m < \underline{m}$.} Realizations with $\mu < w$ activate the non-mover pool, whose contribution $(1-\lambda)[c^2 - (w + c - \mu)^2]/(4w)$ is strictly negative there (for $\mu < w$, $w + c - \mu > c$); non-mover contributions are never positive. Realizations with $\mu < D - w$ (possible when $D > 2w$) put the whole mover pool into acceptance, where the mover contribution is $\lambda(\mu - c)$. Dropping the non-movers and extending the mover-pool quadratic bounds profit from above. Two cases make the extension rigorous. If $m < 2c - D - w + s$, then every realization has $\mu < 2c - D - w + 2s < c$ (using $2s < D - c$), and since $\E[\varepsilon \mid \text{accept}] \le 0$ every accepted trade carries expected margin at most $\mu - c < 0$: profit is nonpositive and the claim is immediate. Otherwise every realization has $\mu \ge 2c - D - w$, and the mover contribution is bounded by the interior-branch expression pointwise: on the all-accept sub-region $\mu \le D - w$ the gap $h(\mu) = (D-c)^2 - (w + c - \mu)^2 - 4w(\mu - c)$ is concave in $\mu$ with roots at $\mu = 2c - D - w$ and $\mu = D - w$, hence nonnegative between them. Therefore
+\begin{align*}
+\Pi(m) &\le \frac{\lambda}{4w}\,\E_a\!\left[ (D-c)^2 - (w + c - m + a)^2 \right] \\
+&= \frac{\lambda \left[ (D-c)^2 - (w + c - m)^2 - s^2/3 \right]}{4w}
+\;<\; \E_a \Pi(m^*),
+\end{align*}
+where the final inequality is strict because $m < \underline{m} < w + c$ implies $(w + c - m)^2 > 0$.
+
+\emph{(e) Upper corner, $m > D + w - s$.} Here $\mu = m - a > D + w - 2s \ge w + c$ (using $D - c \ge 2s$), so only movers can trade and trade occurs only when $\tau_D = D - \mu \ge -w$, i.e., $\mu \le D + w$; otherwise realized profit is zero. Realized profit is $\lambda \max\{0, [(D-c)^2 - (w+c-\mu)^2]/(4w)\}$, and its expectation is decreasing in $m$ on this corner (each realization's $|w + c - \mu|$ grows with $m$ where profit is positive). Evaluating at the corner's best point, $w + c - m = -(D - c - s)$, every realization is interior and
+\begin{align*}
+\E_a \Pi(m) &\le \frac{\lambda \left[ (D-c)^2 - (D - c - s)^2 - s^2/3 \right]}{4w} \\
+&\le \frac{\lambda \left[ (D-c)^2 - (D - c - s)^2 \right]}{4w}
+\;\le\; \E_a \Pi(m^*),
+\end{align*}
+where the last inequality holds because $(D - c - s)^2 \ge s^2/3$, which follows from $D - c \ge 2s \ge s(1 + 1/\sqrt{3})$.
+
+\textbf{Step 3: the optimum.} Steps (c)--(e) establish that $m^* = w + c$ is the global maximizer. At $m^*$: the non-mover threshold is $\tau_0 = a - w - c < -w$ for every realization since $a \le s < c$, so only movers trade. Realized volume is $\lambda(\tau_D + w)/(2w) = \lambda(D - c + a)/(2w)$, so expected volume is $V^* = \lambda(D - c)/(2w)$, and expected profit is $\Pi^*(w, s) = \lambda[(D-c)^2 - s^2/3]/(4w)$ from (c). $V^*$ and $\Pi^*$ are strictly decreasing in $w$ (both scale as $1/w$ with positive numerators, the latter positive because $s^2 < (D-c)^2/4 < (D-c)^2 \cdot 3$), and $m^* = w + c$ is strictly increasing in $w$. With fixed cost $F > 0$ the machine operates iff $\Pi^*(w,s) \ge F$, i.e., iff $w \le \bar w = \lambda[(D-c)^2 - s^2/3]/(4F)$. $\blacksquare$
+
+\subsection{Proof of Proposition~\ref{prop:fragility}}
+
+\emph{(i)} At $m^*$, the realized spread is $\mu = w + c - a$, so $(w + c - \mu)^2 = a^2$ and realized profit is $\Pi(a) = \lambda[(D-c)^2 - a^2]/(4w)$. Taking expectations, $\E_a \Pi(m^*) = \lambda[(D-c)^2 - s^2/3]/(4w) = \Pi(m^*; a = 0) - \lambda s^2/(12 w)$: forecast-error variance enters profit only as the subtraction $\lambda \sigma_a^2 / (4w)$, a pure tax. The machine operates iff $\E_a \Pi(m^*) \ge F$, i.e., iff $(D-c)^2 - s^2/3 \ge 4wF/\lambda$, i.e., iff $s^2 \le \bar s^2(w) = 3[(D-c)^2 - 4wF/\lambda]$. A regime shift raising $s$ above $\bar s(w)$ makes continued operation unprofitable: exit.
+
+\emph{(ii)} From Step 3 above, conditional volume is $V(a) = \lambda(D - c + a)/(2w)$, strictly increasing in $a$. The conditional per-trade margin is
+\[
+m^* - c - a + \E[\varepsilon \mid \text{accept}] = w - a + \frac{\tau_D - w}{2} = \frac{D - c - a}{2},
+\]
+strictly decreasing in $a$. Hence $\Cov(V, a) = \frac{\lambda}{2w} \Var(a) = \lambda s^2/(6w) > 0$, and realized profit $\Pi(a) = V(a) \times (D - c - a)/2 = \lambda[(D-c)^2 - a^2]/(4w)$ is minimized at $|a| = s$: the machine's highest-volume states ($a = s$) are its lowest-profit states.
+
+\emph{(iii)} $\partial \bar s^2 / \partial w = -12 F / \lambda < 0$. $\blacksquare$
+
+\subsection{Proof of Corollary~\ref{cor:exit}}
+
+Firm $j$ operates iff $s_j \le \bar s$ (Proposition~\ref{prop:fragility}(i), holding the segment fixed). After the shock, firm $j$'s error scale is $\kappa s_j$, so it operates iff $\kappa s_j \le \bar s$, i.e., iff $s_j \le \bar s / \kappa$. The shock therefore removes exactly the firms with $s_j \in (\bar s/\kappa,\, \bar s]$: those that operated before but whose forecast quality is too low to survive the scaling. Firms with $s_j \le \bar s / \kappa$ remain. $\blacksquare$
+
+\subsection{Proof of Proposition~\ref{prop:discovery}}
+
+\textbf{Projection MSEs.} Under the diffuse prior, the least-squares estimate of $v$ from $k$ household comps is the comp mean $\hat v_0 = \bar p = v + \bar \xi$, with error variance $V_0 = \sigma_\xi^2 / k$. Adding the de-spread machine signal $v + a$ with variance $\sigma_a^2$, precision weighting gives
+\[
+\hat v_1 = V_1 \left( \frac{k \bar p}{\sigma_\xi^2} + \frac{v + a}{\sigma_a^2} \right),
+\qquad
+V_1 = \left( \frac{k}{\sigma_\xi^2} + \frac{1}{\sigma_a^2} \right)^{-1}.
+\]
+Two identities follow from $V_1 (k/\sigma_\xi^2 + 1/\sigma_a^2) = 1$:
+\[
+V_0^2 \frac{k}{\sigma_\xi^2} = V_0,
+\qquad
+V_1^2 \frac{k}{\sigma_\xi^2} = V_1 \left( 1 - \frac{V_1}{\sigma_a^2} \right).
+\tag{A.1}\label{eq:identities}
+\]
+
+\textbf{Group errors and the gap.} The informed buyer's error decomposes as
+\[
+\hat v_1 - v = V_1 \frac{k}{\sigma_\xi^2} \bar \xi + \frac{V_1}{\sigma_a^2} a .
+\]
+Conditional on the machine error $a$ (one model, one error---common across all machine comps in the segment), the informed group's mean error is $\mathrm{gap} = (V_1/\sigma_a^2)\, a$ and its within-group variance is $V_1^2 k / \sigma_\xi^2$. The uninformed group has mean error $0$ and variance $V_0$. (Unconditionally, $\Var(\hat v_1 - v) = V_1^2 k/\sigma_\xi^2 + V_1^2/\sigma_a^2 = V_1$, confirming the MSE.)
+
+\textbf{The dispersion expression.} A fraction $\rho = \rho(v_m) = 1 - (1 - v_m)^k$ of buyers draw at least one machine comp. The cross-sectional variance of buyer errors is the within-group mixture plus the between-group term, $\rho(1-\rho)\,\E_a[\mathrm{gap}^2] = \rho(1-\rho) (V_1^2/\sigma_a^4)\sigma_a^2 = \rho(1-\rho) V_1^2/\sigma_a^2$:
+\[
+W_B(\rho) = \rho \frac{V_1^2 k}{\sigma_\xi^2} + (1 - \rho) V_0 + \rho(1-\rho)\frac{V_1^2}{\sigma_a^2}.
+\]
+Substituting \eqref{eq:identities} and collecting terms,
+\[
+W_B(\rho) = V_0 + \rho (V_1 - V_0) - \rho^2 \frac{V_1^2}{\sigma_a^2},
+\]
+so $dW_B/d\rho = (V_1 - V_0) - 2\rho V_1^2/\sigma_a^2$, linear in $\rho$. At $\rho = 0$ it equals $V_1 - V_0 < 0$ (the machine signal strictly reduces the projection MSE); at $\rho = 1$ it equals $V_1 - V_0 - 2V_1^2/\sigma_a^2 < 0$. A linear function negative at both endpoints is negative on $[0,1]$, so $W_B$ is strictly decreasing in $\rho$; since $\rho'(v_m) = k(1 - v_m)^{k-1} > 0$, $W_B$ is strictly decreasing in $v_m$.
+
+\emph{(i)} In household-to-household trades, $p_i - (v + \varepsilon_i) = (\hat v_i - v) - \theta D \ind{\text{mover}} + b_i$; the buyer-error component of the within-segment dispersion of prices around fundamentals is $W_B$, which falls when $v_m > 0$. The machine is not a party to any of these trades.
+
+\emph{(ii)} Exit sets $\rho$ from $\rho^{pre} = \rho(v_m^{pre})$ to $0$:
+\[
+\Delta W_B = W_B(0) - W_B(\rho^{pre}) = \rho^{pre}\left[ (V_0 - V_1) + \rho^{pre} \frac{V_1^2}{\sigma_a^2} \right] > 0,
+\]
+the form $\rho(v_m^{pre})(V_0 - V_1 + \text{cross-terms})$ stated in the text. Its derivative in $\rho^{pre}$ is $(V_0 - V_1) + 2\rho^{pre} V_1^2/\sigma_a^2 > 0$, so the dispersion increase is strictly increasing in the pre-exit machine share. $\blacksquare$
+
+\subsection{Proof of Proposition~\ref{prop:liquidity}}
+
+\emph{(i) Counting deeds.} Without the machine, recorded arm's-length volume per unit mass of houses is $\lambda$ (every mover sells) plus $(1-\lambda)\nu$ (listing non-movers): $V_{0,total} = \lambda + (1-\lambda)\nu$. With the machine at $m^*$, movers with $\varepsilon_i \le \tau_D$ sell to the machine, which resells: two deeds per intermediated house. Movers with $\varepsilon_i > \tau_D$ and listing non-movers generate one deed each. Total recorded volume is
+\[
+\lambda \left[ 2 P(\varepsilon \le \tau_D) + P(\varepsilon > \tau_D) \right] + (1-\lambda)\nu
+= V_{0,total} + \lambda P(\varepsilon \le \tau_D),
+\]
+i.e., baseline plus machine purchases, one for one. Exit removes the term $\lambda P(\varepsilon \le \tau_D)$, which is proportional to pre-exit exposure.
+
+\emph{(ii) Fire sales.} Set $b = 0$ and consider the benchmark with $\hat v_i = v$. A non-mover's household sale prices at fundamental, $p_i = v + \varepsilon_i$; a mover's prices at $v + \varepsilon_i - \theta D$. A household trade executes more than $t$ below fundamental iff it is a mover sale, for any $0 < t \le \theta D$: the set of such trades and the set of mover sales coincide. Without the machine, the fire-sale share of household trades is $\lambda / [\lambda + (1-\lambda)\nu]$. With the machine, movers with $\varepsilon \le \tau_D$ exit the household pool, leaving mover mass $\lambda P(\varepsilon > \tau_D)$, so the share falls to
+\[
+\frac{\lambda P(\varepsilon > \tau_D)}{\lambda P(\varepsilon > \tau_D) + (1-\lambda)\nu} < \frac{\lambda}{\lambda + (1-\lambda)\nu}.
+\]
+Exit restores the original share. $\blacksquare$
+
+\section{Data Appendix}\label{app:data}
+
+\subsection{iBuyer entity-name patterns}\label{app:data-entities}
+
+Table~\ref{tab:entities} lists the entity-name patterns applied to the first-listed buyer and seller names on each deed. Patterns are anchored to legal entities disclosed in SEC Exhibit 21.1 subsidiary lists (Opendoor, Redfin), SEC 8-K loan exhibits (Offerpad), and state registrations of the deed-holding trust (Zillow). Matching is case-insensitive on normalized names; generic strings that could collide with unrelated entities (e.g., bare ``OD'') are required to appear with their state-specific suffixes.
+
+\begin{table}[h!]
+\centering
+\caption{Entity-name patterns for iBuyer identification in deed records}
+\label{tab:entities}
+\small
+\begin{tabular}{p{1.7cm} p{4.6cm} p{5.9cm}}
+\toprule
+Firm & Pattern family & Example deed entities \\
+\midrule
+Opendoor & \texttt{OPENDOOR*}; \texttt{OD \{ARIZONA, NEVADA, TEXAS\}*} & Opendoor Property Trust I; Opendoor Property C LLC; OD Arizona D LLC; Opendoor Homes Phoenix 2 LLC \\
+Zillow & \texttt{ZILLOW*} & Zillow Homes Property Trust \\
+Offerpad & \texttt{OFFERPAD*}; \texttt{OP SPE*} & Offerpad (SPVBORROWER1), LLC; OP SPE PHX1 LLC; OP SPE TPA1 LLC \\
+RedfinNow & \texttt{REDFINNOW*} & RedfinNow Borrower LLC \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\raggedright\footnotesize\emph{Notes:} Patterns verified against SEC Ex-21.1 subsidiary filings and state corporate registrations. The scan classifies a deed as an iBuyer purchase when the pattern matches the first-listed buyer and as a disposition when it matches the first-listed seller.
+\end{table}
+
+\subsection{Sample filter waterfall}\label{app:data-waterfall}
+
+Table~\ref{tab:waterfall} reports the deed counts surviving each filter,
+accumulated over the 22 panel states and 2010Q1--2024Q2.
+
+\input{tables/TA1_waterfall.tex}
+
+\subsection{Hedonic model fit}\label{app:data-hedonic}
+
+The hedonic specification (log price on log square footage, bedrooms, bathrooms, age, age squared, condo indicator, and ZIP fixed effects, estimated yearly by state on non-iBuyer trades; bedrooms and bathrooms carry missing-value indicators because some states' assessors do not report room counts) attains $R^2$ in the range 0.34--0.85 across state-years, with a mean of 0.60. Residual moments by state-year, and sensitivity of the dispersion outcomes to adding lot size and excluding new construction, are available in the replication package.
+
+\section{Balance, calibration, and additional robustness}\label{app:robustness}
+
+\subsection{Pre-treatment balance}\label{app:balance}
+
+Table~\ref{tab:T6} reports pre-treatment characteristics across Zillow-exposure groups. The pattern is the one the design needs: exposed ZIPs differ from controls on housing-stock composition (newer, more single-family, more homogeneous in size, higher continuing-machine exposure)---the sorting of Proposition~\ref{prop:sorting}---but the normalized differences on 2019--2021Q3 price appreciation and 2019--2020 volume growth are small, so the froth-driven mean-reversion channel that would confound the exit estimate has little purchase on observables.
+
+\input{tables/T6_balance.tex}
+
+\subsection{Calibration of the price-discovery bound}\label{app:calibration}
+
+Table~\ref{tab:calibration} reports the model's predicted exit effect on dispersion across comp-window sizes and buyer-error shares, with $\sigma_a$ pinned from Zillow's own purchase-price residual dispersion. Every cell lies below the data's one-sided ceiling; the test caps the externality rather than confirming it.
+
+\input{tables/TA2_calibration.tex}
+
+\subsection{Donut specification and replication}\label{app:donut}
+
+The donut specification referenced in Section~\ref{sec:results-exit} re-estimates equation~\eqref{eq:exit} excluding both the inventory-liquidation quarters and Zillow's 2021Q1--2021Q3 buying ramp, so the pre-period reflects normal machine operation (2019Q1--2020Q4); estimates are in \texttt{out\_dir/exit\_donut.rds}. Replication code for every exhibit, including the 999 permutation draws, the wild cluster bootstrap, the balance and vintage tables, and the per-state hedonic fits, is in the project's \texttt{scripts/R/} directory (scripts \texttt{01}--\texttt{09}).
