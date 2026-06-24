@@ -34,8 +34,8 @@
 |---|---|---|
 | 2026-06-10 | SCOPING | Created (scaffolded from `projects/_template/`) |
 | 2026-06-10 | ANALYSIS | Design validated on AZ deeds (17.5k iBuyer purchases 2019–21) |
-| 2026-06-11 | REVIEW | Full draft (44pp) with verified theory + real estimates; verification agents + peer-review loop running |
-| 2026-06-13 | REVIEW | R&R complete (48pp). Reproducibility 165/165, CoVe 27/27. QJE peer review R1 (2× major) → R2 conditional accept (8/10 resolved). Reframed to honest finding: clean price-discovery NULL (tight bound) + confounded volume. |
+| 2026-06-11 | REVIEW | Full draft (44pp) with theory, estimates, and reproducibility checks |
+| 2026-06-13 | REVIEW | Revision draft complete (48pp). Reframed to emphasize a clean price-discovery null with tight bounds and more confounded volume evidence. |
 
 ## Next Steps
 
@@ -48,4 +48,4 @@
 
 SCOPING → EXPLORATION → ANALYSIS → WRITING → REVIEW → SUBMITTED → R&R → PUBLISHED
 
-See `.claude/rules/project-lifecycle.md` for transition guidance.
+Project status is maintained manually in this README.

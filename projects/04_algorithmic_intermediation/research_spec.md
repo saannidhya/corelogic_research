@@ -53,7 +53,7 @@ entry → entry design uses not-yet-treated controls + event-study pretrends.
 |---|---|---|---|
 | CoreLogic OT | sale amount/date, buyer/seller names, corp indicators, ZIP, FIPS, deed/sale type, resale & arm's-length flags | iBuyer-active states, 2000–2024 | loader: `load_corelogic_ot()` |
 | CoreLogic Prop | clip, sqft, beds, baths, year built, lat/long, CBSA, land use | same states | hedonics + stock counts |
-| Public record | entry/exit dates per market, entity aliases | — | fact-pack agent, cross-validated vs deeds |
+| Public record | entry/exit dates per market, entity aliases | — | Cross-validated against deeds |
 
 ## Empirical Strategy
 

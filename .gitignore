@@ -1,6 +1,34 @@
-# ==============================================================================
-# .gitignore for Academic Claude Code Projects
-# ==============================================================================
+# CoreLogic research repository ignore rules
+
+# Local agent/assistant workflow files. Keep these on this machine, but do not
+# publish them in the research repo.
+.claude/
+.codex/
+.agents/
+.tmp/
+CLAUDE.md
+CLAUDE.local.md
+MEMORY.md
+
+# Local workflow logs, reviews, plans, scratch work, and templates.
+quality_reports/
+projects/*/quality_reports/
+explorations/
+tmp/
+templates/
+projects/_template/
+master_supporting_docs/
+scripts/quality_score.py
+projects/*/LEARNING_GUIDE.md
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
 
 # LaTeX build artifacts
 *.aux
@@ -17,102 +45,6 @@
 *.synctex.gz
 *.run.xml
 *-blx.bib
-
-# Compiled PDFs (uncomment to track specific PDFs)
-# *.pdf
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-
-# R
-.Rproj.user/
-.Rhistory
-.RData
-.Rdata
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Claude Code local files (not shared across machines)
-.claude/settings.local.json
-.claude/state/
-.claude/scheduled_tasks.lock
-CLAUDE.local.md
-
-# IDE
-# .vscode/settings.json is tracked (carries Claude Code permission-mode recommendations).
-# Other .vscode/ content is developer-machine-specific.
-.vscode/*
-!.vscode/settings.json
-.idea/
-*.swp
-*.swo
-*~
-
-# Quarto rendering artifacts
-.quarto/
-
-# quality_reports/ — per-project session logs, plans, specs, merges.
-# The directory structure ships in the template (via .gitkeep), but the
-# content is PROJECT-INTERNAL and shouldn't be inherited by forks.
-quality_reports/plans/*
-quality_reports/specs/*
-quality_reports/session_logs/*
-quality_reports/merges/*
-quality_reports/decisions/*
-quality_reports/checkpoints/*
-quality_reports/preregistrations/*
-!quality_reports/plans/.gitkeep
-!quality_reports/specs/.gitkeep
-!quality_reports/session_logs/.gitkeep
-!quality_reports/merges/.gitkeep
-!quality_reports/decisions/.gitkeep
-!quality_reports/checkpoints/.gitkeep
-!quality_reports/preregistrations/.gitkeep
-
-# R analysis outputs (generated artifacts; keep scripts, ignore outputs)
-scripts/R/_outputs/
-
-# Ignore data folder contents (allow .gitkeep + README/PROVENANCE markers, see negations below)
-/data/*
-/data/*/*
-
-# Output artifacts — uncomment lines below based on your preference
-# *.rds
-# output/**/*.rds
-
-# ==============================================================================
-# CoreLogic Research project additions (2026-05-18)
-# ==============================================================================
-
-# Data working store — data/ contents are gitignored above; these are explicit
-# per-subdirectory .gitkeep + doc allowances so the directory structure ships
-# in fresh clones. Order matters: we re-include subdirs, then re-include the
-# allowed files within them.
-!/data/.gitkeep
-!/data/README.md
-!/data/corelogic_extracts/
-!/data/corelogic_baseline/
-!/data/external/
-!/data/derived/
-!/data/corelogic_extracts/.gitkeep
-!/data/corelogic_baseline/.gitkeep
-!/data/corelogic_baseline/PROVENANCE.md
-!/data/external/.gitkeep
-!/data/derived/.gitkeep
-
-# Per-project intermediate outputs (gitignored; .gitkeep ships)
-projects/*/scripts/R/_outputs/
-projects/*/scripts/python/_outputs/
-projects/*/scripts/julia/_outputs/
-!projects/*/scripts/R/_outputs/.gitkeep
-!projects/*/scripts/python/_outputs/.gitkeep
-!projects/*/scripts/julia/_outputs/.gitkeep
-
-# Per-project LaTeX build artifacts
 projects/*/manuscript/*.aux
 projects/*/manuscript/*.bbl
 projects/*/manuscript/*.blg
@@ -130,18 +62,15 @@ projects/*/slides/*.snm
 projects/*/slides/*.toc
 projects/*/slides/*.vrb
 
-# Per-project reference PDFs (copyrighted academic work — don't redistribute)
-projects/*/docs/*.pdf
-projects/*/docs/*.PDF
-!projects/*/docs/README.md
-!projects/*/docs/.gitkeep
-
-# Parquet/Arrow files anywhere (always gitignored — too big, regenerable)
-*.parquet
-*.arrow
-*.feather
-
-# R environment management
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Rdata
+scripts/R/_outputs/
+projects/*/scripts/R/_outputs/
+projects/*/scripts/python/_outputs/
+projects/*/scripts/julia/_outputs/
 renv/library/
 renv/local/
 renv/staging/
@@ -150,11 +79,42 @@ renv/sandbox/
 !renv/activate.R
 !renv/settings.json
 
-# Python environment management
+# Python
+__pycache__/
+*.pyc
+*.pyo
 .venv/
 .uv/
-__pycache__/
 *.egg-info/
 
-# Julia depot (local install caches)
+# Julia
 .julia/
+
+# Quarto/rendering artifacts
+.quarto/
+
+# Data. Only documented structure and provenance markers are tracked.
+/data/*
+/data/*/*
+!/data/.gitkeep
+!/data/README.md
+!/data/corelogic_extracts/
+!/data/corelogic_baseline/
+!/data/external/
+!/data/derived/
+!/data/corelogic_extracts/.gitkeep
+!/data/corelogic_baseline/.gitkeep
+!/data/corelogic_baseline/PROVENANCE.md
+!/data/external/.gitkeep
+!/data/derived/.gitkeep
+
+# Large or regenerable data products
+*.parquet
+*.arrow
+*.feather
+
+# Copyrighted reference PDFs should not be redistributed from docs folders.
+projects/*/docs/*.pdf
+projects/*/docs/*.PDF
+!projects/*/docs/README.md
+!projects/*/docs/.gitkeep

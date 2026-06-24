@@ -26,4 +26,4 @@ This directory holds reference papers cited in the project spec.
 
 1. Download each paper from the link above to this directory
 2. Reference paths in code: `here::here("projects/01_property_tax_regressivity/docs/berry2021.pdf")`
-3. For Claude Code sessions: I can `Read` PDFs from this directory directly when verifying claims
+3. Use these local PDFs only for private research and claim verification.

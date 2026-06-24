@@ -1,8 +1,7 @@
 """CoreLogic loader (Python) — duckdb thin wrapper around the partitioned parquet store.
 
 Mirrors the R loader contract (`shared_utils/R/corelogic_loader.R`).
-Read-only access to C:\\CoreLogic\\ enforced via the data protocol rule
-(.claude/rules/corelogic-data-protocol.md) — this module only ever READS.
+This module only reads source data; project scripts control any writes.
 
 Default parquet store: <repo_root>/data/corelogic_extracts/by_state/
 """
@@ -17,12 +16,12 @@ import polars as pl
 
 
 def _repo_root() -> Path:
-    """Locate the repo root by walking up from this file until we find CLAUDE.md."""
+    """Locate the repo root by walking up to ordinary repository markers."""
     p = Path(__file__).resolve()
     for parent in p.parents:
-        if (parent / "CLAUDE.md").exists():
+        if (parent / "README.md").exists() and (parent / "shared_utils").exists():
             return parent
-    raise RuntimeError("Could not locate repo root (CLAUDE.md not found upward).")
+    raise RuntimeError("Could not locate repo root (README.md and shared_utils not found upward).")
 
 
 def _default_parquet_root() -> Path:

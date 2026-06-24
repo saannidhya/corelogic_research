@@ -1,57 +1,55 @@
-# CoreLogic Research Codebase
+# CoreLogic Research
 
-> Multi-project research repository centered on CoreLogic property + transaction data.
-> Maintained by [Saani Rawat](https://www.marquette.edu/business/faculty-staff/saani-rawat.php), Assistant Professor of Real Estate at Marquette University.
+Research code and manuscript sources for projects using CoreLogic property and deed records. The repository is organized around applied housing, real-estate, and local-public-finance papers, with shared data loaders and common manuscript infrastructure at the root.
 
-## What's here
+Maintained by [Saani Rawat](https://www.marquette.edu/business/faculty-staff/saani-rawat.php), Assistant Professor of Real Estate at Marquette University.
 
-End-to-end research workflow for papers using the CoreLogic University-of-Cincinnati extract (transactions + property characteristics). Each paper lives under `projects/NN_<slug>/` with its own scripts, manuscript, and slides. Shared infrastructure (data loaders, LaTeX preamble, bibliography, Quarto theme) lives at the root.
+## Projects
 
-## Languages
+| Folder | Project | Status | Core question |
+|---|---|---:|---|
+| `projects/01_property_tax_regressivity` | Property Tax Assessment Regressivity | Exploration | How much tax revenue is misallocated by assessment regressivity, and which mechanisms drive it? |
+| `projects/02_cash_buyer_premium` | Cash Buyer Premium | Writing | What do national deed records reveal about cash buyers, mortgage buyers, investors, and transaction prices? |
+| `projects/03_family_homes` | Keeping the House in the Family | Writing | How large is the non-market intra-family housing-transfer channel, and how does tax policy affect whether inherited homes reach the market? |
+| `projects/04_algorithmic_intermediation` | Algorithmic Intermediation and Price Discovery | Review | Did iBuyer entry and exit improve information aggregation in decentralized housing markets? |
 
-- **R** — main analysis, reduced-form econometrics
-- **Python** — data scraping, ACS pulls, geocoding pipelines
-- **Julia** — structural modeling, optimization
-- **LaTeX** — manuscripts (journal-agnostic article + natbib)
-- **Quarto / Beamer** — seminars + conference slides
+Each project contains its own `README.md`, `research_spec.md`, numbered scripts, manuscript source, tables, figures, and slides where available.
 
-## Current projects
+## Repository Layout
 
-_None yet. Start with `/new-project <slug>` from within Claude Code._
-
-## Workflow
-
-This repo uses the [Claude Code academic workflow](https://github.com/pedrohcgs/claude-code-my-workflow) (v1.8.0 fork), customized for CoreLogic research. Key commands:
-
-- `/new-project <slug>` — scaffold a new project
-- `/interview-me` — formalize a research idea
-- `/lit-review <topic>` — literature search + synthesis
-- `/data-analysis` — guided R analysis
-- `/review-paper --peer <journal>` — simulated peer-review
-- `/audit-reproducibility` — paper ↔ code consistency check
-
-See [CLAUDE.md](CLAUDE.md) for the full command list and folder structure.
+- `projects/` - paper-specific analysis, manuscript, and slide folders.
+- `shared_utils/` - reusable CoreLogic loaders, filters, data dictionaries, themes, and tests.
+- `scripts/` - shared one-off data-building scripts that are not project-specific.
+- `Preambles/` - shared LaTeX preamble files.
+- `Bibliography_base.bib` - shared bibliography entries.
+- `data/` - ignored working data directory; only structure and provenance notes are tracked.
+- `renv.lock`, `pyproject.toml`, `uv.lock`, `Project.toml`, `Manifest.toml` - R, Python, and Julia environment metadata.
 
 ## Data
 
-CoreLogic raw extracts live at `C:\CoreLogic\` (read-only). The repo's `data/` directory is gitignored and holds working data: parquet conversions, samples, baseline-wrapped prior outputs, external sources (ACS, weather, Zillow, etc.), and per-project derived datasets.
+CoreLogic raw extracts and working parquet files are not redistributed. Local data live under `data/` and are ignored by Git, except for directory placeholders and documentation. See `data/README.md` and `data/corelogic_baseline/PROVENANCE.md` for the local data layout and provenance notes.
 
-See [data/README.md](data/README.md) for the data inventory and [.claude/rules/corelogic-data-protocol.md](.claude/rules/corelogic-data-protocol.md) for the read-only contract.
+The intended pattern is:
+
+1. Keep licensed raw extracts outside the public repository.
+2. Convert or wrap local inputs into ignored working data under `data/`.
+3. Run project scripts in numbered order from each project folder.
+4. Track code, manuscript source, tables, figures, and selected compiled PDFs only when useful for review.
 
 ## Reproducibility
 
-- **R:** `renv` (lockfile at `renv.lock`)
-- **Python:** `uv` (lockfile at `uv.lock`)
-- **Julia:** `Pkg.instantiate()` from `Project.toml`
+R is the main analysis language, with selected Python and Julia utilities where useful. The repository tracks environment files for all three ecosystems:
 
-To replicate a paper: navigate to `projects/NN_<slug>/`, restore the environment, then run scripts in numbered order (`00_setup.R` → `01_clean.R` → …).
+- R: `renv.lock`
+- Python: `pyproject.toml` and `uv.lock`
+- Julia: `Project.toml` and `Manifest.toml`
+
+Most project scripts start from a project-local `scripts/R/00_setup.R` and write intermediate outputs to ignored data or output directories. Large parquet, Arrow, Feather, and raw data files are intentionally ignored.
+
+## Local-Only Workflow Files
+
+Agentic workflow files, scratch explorations, review logs, local memory, temp renders, and planning artifacts are kept out of the public repository. They may exist locally for the maintainer's workflow, but `.gitignore` excludes paths such as `.claude/`, `.codex/`, `quality_reports/`, `projects/*/quality_reports/`, `explorations/`, `tmp/`, and workflow templates.
 
 ## License
 
-- Code: MIT (see [LICENSE](LICENSE))
-- CoreLogic data: not redistributed; licensed via University of Cincinnati academic agreement
-- Workflow infrastructure: forked from pedrohcgs/claude-code-my-workflow under its original license
-
-## Acknowledgments
-
-Workflow infrastructure adapted from [Pedro H. C. Sant'Anna's academic Claude Code workflow](https://github.com/pedrohcgs/claude-code-my-workflow). All research errors are my own.
+Code is released under the MIT License. CoreLogic data are not included and remain subject to the relevant academic license agreements.

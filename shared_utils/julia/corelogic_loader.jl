@@ -1,8 +1,7 @@
 # CoreLogic loader (Julia) — DuckDB.jl thin wrapper.
 #
 # Mirrors the R loader contract (shared_utils/R/corelogic_loader.R).
-# Read-only access to C:\CoreLogic\ enforced via the data protocol rule
-# (.claude/rules/corelogic-data-protocol.md) — this module only ever READS.
+# This module only reads source data; project scripts control any writes.
 #
 # Default parquet store: <repo_root>/data/corelogic_extracts/by_state/
 #
@@ -17,12 +16,12 @@ function _repo_root()::String
     p = abspath(@__FILE__)
     d = dirname(p)
     while d != dirname(d)  # walk up until we hit filesystem root
-        if isfile(joinpath(d, "CLAUDE.md"))
+        if isfile(joinpath(d, "README.md")) && isdir(joinpath(d, "shared_utils"))
             return d
         end
         d = dirname(d)
     end
-    error("Could not locate repo root (CLAUDE.md not found upward).")
+    error("Could not locate repo root (README.md and shared_utils not found upward).")
 end
 
 function _default_parquet_root()::String

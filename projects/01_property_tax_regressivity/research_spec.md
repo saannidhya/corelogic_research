@@ -2,10 +2,10 @@
 
 **Slug:** `property_tax_regressivity`
 **Date drafted:** 2026-05-19
-**Status:** APPROVED (CoVe-verified 2026-05-19; 4 PASS / 2 PARTIAL / 2 FAIL→CORRECTED — see Verification Block at end)
+**Status:** APPROVED (citation audit completed 2026-05-19; see citation audit notes)
 **Paper type:** Reduced-form + structural (mixed; reduced-form replication → structural estimation → mechanism decomposition)
 **Researcher:** Saani Rawat (Marquette University)
-**Spec produced via:** `/interview-me` session 2026-05-19
+**Spec produced via:** research scoping session, 2026-05-19
 
 ---
 
@@ -171,7 +171,7 @@ Standard errors via bootstrap (block-bootstrap on jurisdiction-year clusters). I
 2. **Clean:** `01_clean.R` reads national OT + Prop via `load_corelogic_ot()` + `load_corelogic_prop()`, joins on `clip`, applies `filter_arms_length()`, computes `assessment_ratio = assessed_value / sale_amount`. Saves intermediate parquet at `data/derived/01_property_tax_regressivity/national_panel.parquet`.
 3. **Replicate:** `02_replicate_berry.R` runs Berry's main regression: $\log(\text{tax\_rate}_{ij}) = \alpha_j + \beta \log(\text{sale\_price}_{ij}) + \varepsilon_{ij}$ with jurisdiction fixed effects $\alpha_j$. Target estimate: $\hat\beta \approx -0.37$.
 4. **Compare to Berry's Table 4:** report our $\hat\beta$ for matching Berry's 2007–2017 sample; report $\hat\beta$ for our extended 2007–2024 sample.
-5. **Replication report:** save to `quality_reports/specs/replication_berry_2021.md` per `.claude/rules/replication-protocol.md`.
+5. **Replication report:** save a local replication note with the sample definition, regression specification, and comparison to Berry's published estimate.
 
 **Pass/fail criterion:** $|\hat\beta_{\text{ours}} - \hat\beta_{\text{Berry}}| < 0.05$ on matching sample (well within Berry's standard errors).
 
@@ -201,8 +201,8 @@ Each test produces a row in Table 3 (Mechanism Tests).
 - Border-MSA results limited to single MSAs with very thick coverage
 - Alternative arms-length filter thresholds
 - Alternative jurisdiction definitions (school district vs county vs municipality)
-- Manuscript draft + internal review via `/review-paper --adversarial`
-- Pre-submission review via `/review-paper --peer aej_applied` (or `jpube`)
+- Manuscript draft and internal review
+- Pre-submission review against AEJ: Applied or Journal of Public Economics standards
 
 ---
 
@@ -251,17 +251,17 @@ This paper differs from Berry (2021) in three ways: (a) it quantifies the fiscal
 
 | Milestone | Target date |
 |---|---|
-| Spec approved + CoVe-verified | 2026-05-20 |
-| `/lit-review` complete, ~30 entries in `Bibliography_base.bib` | 2026-05-25 |
+| Spec approved + citation audit complete | 2026-05-20 |
+| Literature review complete, ~30 entries in `Bibliography_base.bib` | 2026-05-25 |
 | Phase 1 (Berry replication) complete + report | 2026-06-15 |
 | Phase 2 (reduced-form mechanisms) complete | 2026-08-01 |
 | EXPLORATION → ANALYSIS transition | 2026-08-15 |
 | Phase 3 (structural estimation) complete | 2026-11-15 |
 | ANALYSIS → WRITING transition | 2026-12-01 |
 | Phase 4 (robustness + draft) complete | 2027-02-15 |
-| Internal review via `/review-paper --adversarial` | 2027-03-01 |
+| Internal review | 2027-03-01 |
 | WRITING → REVIEW transition | 2027-03-15 |
-| Pre-submission peer review via `/review-paper --peer aej_applied` | 2027-04-01 |
+| Pre-submission journal-fit review | 2027-04-01 |
 | Submit to AEJ:Applied | 2027-04-15 |
 
 Aggressive but feasible. Structural estimation timeline can extend; reduced-form-only "Paper 1a" carve-out is available if structural stalls.
@@ -281,17 +281,13 @@ Aggressive but feasible. Structural estimation timeline can extend; reduced-form
 
 ## Decision references
 
-The following ADRs (Architecture Decision Records) document the major choices made during this interview:
-
-- `quality_reports/decisions/2026-05-19_national-scope.md` — chose national all-states scope over OH-only or hierarchical
-- `quality_reports/decisions/2026-05-19_three-source-identification.md` — chose three-source ID strategy over single instrument
-- `quality_reports/decisions/2026-05-19_smm-estimator.md` — chose SMM over MLE/calibration
+Local decision notes document three major choices: national all-states scope, a three-source identification strategy, and SMM rather than MLE or pure calibration for the structural extension.
 
 ---
 
-## Citation Verification
+## Citation Audit
 
-The following citations appear in the Motivation, Identification Strategy, and Contribution sections and require CoVe verification before this spec is finalized:
+The following citations appear in the Motivation, Identification Strategy, and Contribution sections and were checked during the initial citation audit:
 
 | # | Citation | Claim |
 |---|---|---|
@@ -304,9 +300,7 @@ The following citations appear in the Motivation, Identification Strategy, and C
 | C7 | Dube, Arindrajit, Lester, T. William, and Reich, Michael (2010) "Minimum Wage Effects Across State Borders" *REStat* | Methodological precedent for border-county design |
 | C8 | Atuahene, Bernadette (USC Gould Law). Key works: "Predatory Cities" (2020 *California Law Review*); "Taxed Out" (2019 *UC Irvine Law Review*, co-authored) | Cited as the legal-scholarship line on civil-rights framing of Detroit property tax overassessment |
 
-**Verification protocol:** Each citation will be checked by the `claim-verifier` agent (forked context, sees only claims and source pointers, not this draft). PASS / PARTIAL / FAIL block to be attached below before this spec is moved from DRAFT to APPROVED.
-
-### Verification Block (CoVe run 2026-05-19)
+### Citation Audit Notes (2026-05-19)
 
 | Citation | Status | Evidence |
 |---|---|---|
@@ -319,11 +313,11 @@ The following citations appear in the Motivation, Identification Strategy, and C
 | C7 (Dube, Lester, Reich 2010) | **PASS** | REStat 92(4):945-964, 2010. Border-county design confirmed. |
 | C8 (Atuahene) | **PASS** | Confirmed USC Gould Law affiliation. Key works added: "Predatory Cities" (California Law Review 2020), "Taxed Out" (UC Irvine Law Review 2019). |
 
-**Summary:** 4 PASS, 2 PARTIAL, 2 FAIL — both FAILs were wrong journal attributions that the spec author (Claude) made; **corrected in-place** above. PARTIALs (C1, C2) are gaps in independent access (SSRN 403, Syracuse PDF binary) not contradictions of the claims.
+**Summary:** 4 PASS, 2 PARTIAL, 2 FAIL. Both FAILs were wrong journal attributions and were corrected in-place above. PARTIALs (C1, C2) are gaps in independent access (SSRN 403, Syracuse PDF binary), not contradictions of the claims.
 
 **Spec status:** DRAFT → **APPROVED** (citations reconciled). Sources: see footer of this spec.
 
-### Source URLs (CoVe-verified, 2026-05-19)
+### Source URLs (checked 2026-05-19)
 
 - [Berry 2021 SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3800536) (access blocked at verification time; PDF locally at `docs/berry2021.pdf`)
 - [Berry & Wang 2024 Syracuse Maxwell PDF](https://www.maxwell.syr.edu/docs/default-source/research/cpr/property-tax-webinar-series/2023-2024/berry-and-wang-2024-accessible.pdf)

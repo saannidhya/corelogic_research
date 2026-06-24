@@ -2,7 +2,7 @@
 
 **Project:** 03_family_homes
 **Date:** 2026-06-09
-**Status:** DRAFT (institutional details pending claim-verifier confirmation)
+**Status:** DRAFT (institutional details pending confirmation)
 **Target outlet:** top-5 general interest (QJE/AER/JPE-style), Glaeser-register writing
 
 ---
@@ -25,7 +25,7 @@ systematically fail to return to the market, the family is a first-order housing
 institution that rations a scarce asset by birth rather than by price — and federal and
 state tax law actively subsidizes it.
 
-## Verified data facts (probes, 2026-06-09; explorations/probe_*_20260609.R)
+## Verified data facts (initial probes, 2026-06-09)
 
 - OT usable window: **2007–mid-2024** (~160M deed records; 2024 truncates ~August).
 - `primary_category_code`: A = arm's-length market sale (2.6% interfamily flag, 8.2%
@@ -119,7 +119,7 @@ range. Short section.
 
 - `manuscript/paper.tex` full first draft (intro, facts, design, results, mechanism,
   policy, conclusion) with all numbers from `scripts/R/_outputs/`.
-- Reviewed by: claim-verifier (CoVe), r-reviewer, review-paper agents.
+- Internal review notes and reproducibility checks are kept locally.
 
 ## Open questions
 

@@ -1,7 +1,7 @@
 [project]
 name = "corelogic-research"
 version = "0.1.0"
-description = "Add your description here"
+description = "CoreLogic-based housing and property-tax research utilities"
 requires-python = ">=3.14"
 dependencies = [
     "beautifulsoup4>=4.14.3",

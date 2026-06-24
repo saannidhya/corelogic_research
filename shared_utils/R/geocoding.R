@@ -11,7 +11,7 @@
 #'
 #' See:
 #'   - data/corelogic_baseline/PROVENANCE.md — what was done before
-#'   - .claude/rules/corelogic-data-protocol.md — data contract
+#'   - shared_utils/R/corelogic_loader.R for the read-only CoreLogic loader
 #'   - shared_utils/python/ — consider Python (geopandas) for spatial joins
 
 # Placeholder: list known baseline geocoded variants

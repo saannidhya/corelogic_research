@@ -9,7 +9,8 @@
 #' Falls back to raw CSV streaming with predicate pushdown if parquet doesn't
 #' exist for the requested slice.
 #'
-#' See .claude/rules/corelogic-data-protocol.md for the full contract.
+#' This loader treats CoreLogic source data as read-only and writes only to
+#' project-controlled output paths.
 
 suppressPackageStartupMessages({
   library(arrow)
