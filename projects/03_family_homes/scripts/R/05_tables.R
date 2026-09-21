@@ -132,6 +132,24 @@ message("Wrote T3")
 vol <- readRDS(path(out_dir, "prop19_did_volume.rds"))
 haz19 <- readRDS(path(out_dir, "prop19_ddd_hazard.rds"))
 abs19 <- readRDS(path(out_dir, "prop19_absentee_did.rds"))
+vol_csv <- read_csv(path(tables_out_dir, "prop19_did_volume.csv"),
+                    show_col_types = FALSE)
+perm_vol <- read_csv(path(tables_out_dir, "ref_perm_volume.csv"),
+                     show_col_types = FALSE)
+prefit_ca <- read_csv(path(tables_out_dir, "ref_prop19_prefit_placebo.csv"),
+                      show_col_types = FALSE) |>
+  filter(base_window == "2019")
+
+fmt_p <- function(x) sprintf("%.3f", as.numeric(x))
+fmt_rank_p <- function(rank, n, p) {
+  paste0(rank, "/", n, " (p=", fmt_p(p), ")")
+}
+
+fam_perm <- perm_vol |> filter(outcome == "fam")
+mkt_perm <- perm_vol |> filter(outcome == "market")
+net_perm <- perm_vol |> filter(outcome == "net")
+net_coef <- (vol_csv |> filter(model == "fam") |> pull(coef)) -
+  (vol_csv |> filter(model == "market_placebo") |> pull(coef))
 
 etable(
   vol$fam, vol$market_placebo, haz19$fam, haz19$market_placebo, abs19,
@@ -139,14 +157,27 @@ etable(
            "state" = "State", "sale_year" = "Year", "ym" = "Cohort month",
            "n_fam" = "Family transfers", "n_market" = "Market sales",
            "sold24" = "Sold within 24m", "absentee_share" = "Absentee share"),
-  signif.code = c("***" = 0.01, "**" = 0.05, "*" = 0.10),
+  signif.code = NA,
   fitstat = ~ n + r2,
+  extralines = list(
+    "Ann. placebo rank" = c(
+      fmt_rank_p(round(fam_perm$perm_p * fam_perm$n_states), fam_perm$n_states, fam_perm$perm_p),
+      fmt_rank_p(round(mkt_perm$perm_p * mkt_perm$n_states), mkt_perm$n_states, mkt_perm$perm_p),
+      "", "", ""
+    ),
+    "Fam. $-$ market log effect" = c(sprintf("%.3f", net_coef), "", "", "", ""),
+    "Monthly pre-fit rank" = c(
+      fmt_rank_p(prefit_ca$post2223_rank_ratio, prefit_ca$n_states, prefit_ca$post2223_p_ratio),
+      "", "", "", ""
+    )
+  ),
+  fontsize = "scriptsize",
   tex = TRUE,
   file = path(tables_dir, "T4_prop19.tex"),
   replace = TRUE,
-  title = "Proposition 19 and the market release of family-held homes",
+  title = "Proposition 19: volume, selection, and composition",
   label = "tab:prop19",
-  notes = "Cols (1)-(2): state-year counts, 2017-2019 vs 2022-2023. Cols (3)-(5): cohort cells (2017m1-2018m12 vs 2021m7-2022m6), weighted by cell size. Clustered (state) SEs shown for transparency; with a single treated state they understate uncertainty -- permutation p-values reported in the text are the basis for inference."
+  notes = "Cols (1)-(2): state-year counts, 2017-2019 vs 2022-2023. Cols (3)-(5): cohort cells (2017m1-2018m12 vs 2021m7-2022m6), weighted by cell size. Clustered (state) SEs are shown only for scale; single-treated-state inference uses placebo ranks. The monthly pre-fit rank is the 2022-2023 California gap divided by its 2018m1-2020m10 counterfactual RMSPE, ranked against leave-one-out placebo states."
 )
 message("Wrote T4")
 

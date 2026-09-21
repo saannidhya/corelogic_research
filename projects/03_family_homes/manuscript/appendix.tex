@@ -51,15 +51,60 @@ family aggregate yields a CA $\times$ Post coefficient of $-0.241$
 in family transfers is not an artifact of reclassification between direct
 family deeds and trust vehicles.
 
-\paragraph{Permutation inference.} Because California is the only treated
-state, the text reports placebo-state permutation $p$-values: each donor
-state is assigned the treatment in turn, each design is re-estimated, and
-California's coefficient is ranked in the absolute-value distribution across
-all 51 estimates. For the family-volume DiD, California ranks 5th of 51
-($p \approx 0.10$); for the placebo-netted estimate, 9th ($p \approx 0.18$);
-for the sold-within-24-months triple difference, $p = 0.67$; for the
-estate/trust-seller market-sale DiD, $p = 0.71$ (levels) and $p = 0.63$
-(net of overall market).
+\paragraph{Synthetic-control in-space placebo.} The main-text inference for the
+steady-state decline assigns the treatment to each donor state in turn and ranks
+California's post/pre mean squared prediction error ratio in the resulting
+distribution; California is second of fifty-one (Figure~\ref{fig:scm_mspe},
+exact randomization $p = 0.039$).
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.82\linewidth]{figures/F7_scm_mspe_ratio.pdf}
+  \caption{Synthetic-control in-space placebo: the post/pre mean squared
+  prediction error ratio for each state assigned the treatment in turn.
+  California (red) is second of fifty-one ($p=0.039$).}
+  \label{fig:scm_mspe}
+\end{figure}
+
+\paragraph{Permutation and pre-fit-adjusted ranks.} As transparent alternatives
+to the synthetic control, each donor state is assigned the treatment in turn,
+each design is re-estimated, and California's coefficient is ranked in the
+placebo distribution. For the annual
+family-volume DiD, California ranks 5th of 51 ($p = 0.098$); for the
+placebo-netted estimate, 9th ($p = 0.176$). The monthly counterfactual also
+reports ranks after scaling each state's policy-window gap by its own
+2018m1--2020m10 RMSPE. Under the 2019 same-month baseline, California ranks
+3rd of 51 in raw anticipation, February, and 2022--2023 gaps ($p = 0.059$),
+but 1st of 51 after pre-fit scaling in all three windows ($p = 0.020$). Using
+a 2018--2019 same-month baseline leaves the pre-fit-adjusted ranks unchanged.
+For the sold-within-24-months triple difference, $p = 0.67$; for the
+estate/trust-seller market-sale DiD, $p = 0.71$ (levels) and $p = 0.63$ (net
+of overall market).
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.92\linewidth]{figures/F7_prop19_placebo_ranks.pdf}
+  \caption{Placebo ranks for the monthly Proposition~19 counterfactual. Red
+  points mark California; gray points assign the same policy window to each
+  donor state in turn. Raw gaps rank California third in the baseline
+  comparison, while gap divided by pre-period RMSPE ranks California first.}
+  \label{fig:placebo_ranks}
+\end{figure}
+
+\paragraph{Selection: sold within 24 months by cohort.} Figure~\ref{fig:sold24_cohorts}
+plots the conditional-margin series discussed in Section~\ref{sec:prop19}; it is
+relegated here because the triple difference is statistically unremarkable
+($p = 0.67$) and the identified action is on the volume margin.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/F5_sold24_cohorts.pdf}
+  \caption{Share of family-transferred homes sold on the open market within
+  24 months, by cohort month. The plotted windows exclude the transition
+  period around Proposition~19; lines are not connected across the omitted
+  gap.}
+  \label{fig:sold24_cohorts}
+\end{figure}
 
 \paragraph{Raw difference-in-differences means.} Table~\ref{tab:raw22}
 reports the unadjusted means underlying the sold-within-24-months estimates.

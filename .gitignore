@@ -30,6 +30,11 @@ Thumbs.db
 *.swo
 *~
 
+# Secrets / credentials (API keys, tokens) — never commit
+.env
+.env.*
+!.env.example
+
 # LaTeX build artifacts
 *.aux
 *.bbl

@@ -145,7 +145,42 @@ print(es_tab)
 write_csv_strict(es_tab, path(tables_out_dir, "ref_event_study.csv"))
 saveRDS(m_es, path(out_dir, "ref_event_study.rds"))
 
-# ---- (d) Reconciliation stats ---------------------------------------------
+# ---- (d) Pre-fit-adjusted placebo inference for monthly counterfactual -----
+cf_placebo_summary <- read_csv(path(tables_out_dir, "prop19_cf_placebo_summary.csv"),
+                               show_col_types = FALSE)
+assert_rows(cf_placebo_summary, 100, "prop19_cf_placebo_summary")
+
+rank_cols <- c("antic", "feb", "post2223")
+for (prefix in rank_cols) {
+  rank_col <- paste0(prefix, "_rank_ratio")
+  p_col <- paste0(prefix, "_p_ratio")
+  if (any(abs(cf_placebo_summary[[p_col]] -
+              cf_placebo_summary[[rank_col]] / cf_placebo_summary$n_states) > 1e-12)) {
+    stop("Rank/p-value mismatch in ", p_col)
+  }
+}
+
+prefit_ca <- cf_placebo_summary |>
+  filter(treated_state == "CA") |>
+  select(
+    base_window, treated_state, n_states, donor_count,
+    pre_rmspe, pre_mae,
+    antic_gap, antic_rank_raw, antic_p_raw, antic_ratio,
+    antic_rank_ratio, antic_p_ratio,
+    feb_gap, feb_rank_raw, feb_p_raw, feb_ratio,
+    feb_rank_ratio, feb_p_ratio,
+    post2223_gap, post2223_rank_raw, post2223_p_raw, post2223_ratio,
+    post2223_rank_ratio, post2223_p_ratio
+  )
+
+message("Pre-fit-adjusted placebo inference (CA rows):")
+print(as.data.frame(prefit_ca))
+write_csv_strict(cf_placebo_summary,
+                 path(tables_out_dir, "ref_prop19_prefit_placebo_all.csv"))
+write_csv_strict(prefit_ca,
+                 path(tables_out_dir, "ref_prop19_prefit_placebo.csv"))
+
+# ---- (e) Reconciliation stats ---------------------------------------------
 recon <- dbGetQuery(con, glue("
   SELECT
     SUM(CASE WHEN class IN {fam_classes} AND sale_year <= 2023 THEN 1 ELSE 0 END) AS fam_broad_0723,
@@ -167,7 +202,7 @@ message("Reconciliation:")
 print(as.data.frame(recon))
 write_csv_strict(recon, path(tables_out_dir, "ref_reconciliation.csv"))
 
-# ---- (e) Permutation inference: sold24 DDD --------------------------------
+# ---- (f) Permutation inference: sold24 DDD --------------------------------
 cells <- read_csv(path(tables_out_dir, "prop19_cohort_cells.csv"),
                   show_col_types = FALSE) |>
   filter(!state %in% territories) |>

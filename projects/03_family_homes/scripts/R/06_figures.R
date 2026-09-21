@@ -9,6 +9,8 @@
 #          manuscript/figures/F3_km_curves.pdf
 #          manuscript/figures/F4_prop19_bunching.pdf
 #          manuscript/figures/F5_sold24_cohorts.pdf
+#          manuscript/figures/F6_prop19_quarterly_gap.pdf
+#          manuscript/figures/F7_prop19_placebo_ranks.pdf
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -80,11 +82,12 @@ save_fig(f3, "F3_km_curves")
 # ---- F4: Prop 19 bunching ------------------------------------------------
 cf <- read_csv(path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"),
                show_col_types = FALSE) |>
-  mutate(date = as.Date(paste0(sale_year, "-", sale_month, "-01")))
+  mutate(date = as.Date(paste0(sale_year, "-", sale_month, "-01")),
+         gap = (ca_actual - ca_cf) / ca_cf)
 
 f4 <- ggplot(cf, aes(date)) +
   geom_line(aes(y = ca_actual / 1000, color = "California, actual"), linewidth = 0.9) +
-  geom_line(aes(y = ca_cf / 1000, color = "Counterfactual (2019 CA × rest-of-US growth)"),
+  geom_line(aes(y = ca_cf / 1000, color = "Counterfactual (2019 CA x donor growth)"),
             linewidth = 0.9, linetype = "22") +
   geom_vline(xintercept = as.Date(c("2020-11-03", "2021-02-16")),
              linetype = "dotted", color = "grey30") +
@@ -108,11 +111,73 @@ f5_dat <- cells |>
 
 f5 <- ggplot(f5_dat, aes(date, sold24, color = group)) +
   geom_point(size = 1.4, alpha = 0.85) +
-  geom_line(linewidth = 0.5, alpha = 0.6) +
+  geom_line(aes(group = interaction(group, post)), linewidth = 0.5, alpha = 0.6) +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   scale_y_continuous(labels = percent_format()) +
   labs(x = "Family-transfer cohort month",
        y = "Sold on open market within 24 months", color = NULL)
 save_fig(f5, "F5_sold24_cohorts")
+
+# ---- F6: quarterly Prop 19 counterfactual gaps ----------------------------
+gap_q <- cf |>
+  mutate(
+    quarter = (sale_month - 1L) %/% 3L + 1L,
+    quarter_date = as.Date(paste0(sale_year, "-", (quarter - 1L) * 3L + 1L, "-01"))
+  ) |>
+  group_by(quarter_date) |>
+  summarise(
+    ca_actual = sum(ca_actual),
+    ca_cf = sum(ca_cf),
+    gap = (ca_actual - ca_cf) / ca_cf,
+    .groups = "drop"
+  ) |>
+  mutate(direction = if_else(gap >= 0, "Actual above counterfactual",
+                             "Actual below counterfactual"))
+
+f6 <- ggplot(gap_q, aes(quarter_date, gap, fill = direction)) +
+  geom_hline(yintercept = 0, color = "grey35", linewidth = 0.3) +
+  geom_col(width = 70, alpha = 0.88) +
+  geom_vline(xintercept = as.Date(c("2020-11-03", "2021-02-16")),
+             linetype = "dotted", color = "grey30") +
+  scale_fill_manual(values = c("Actual above counterfactual" = palette_paper()[2],
+                               "Actual below counterfactual" = palette_paper()[1])) +
+  scale_y_continuous(labels = percent_format()) +
+  guides(fill = guide_legend(nrow = 1)) +
+  labs(x = NULL, y = "Actual minus counterfactual", fill = NULL)
+save_fig(f6, "F6_prop19_quarterly_gap")
+
+# ---- F7: placebo ranks, raw and pre-fit-adjusted --------------------------
+prefit <- read_csv(path(tables_out_dir, "prop19_cf_placebo_summary.csv"),
+                   show_col_types = FALSE) |>
+  filter(base_window == "2019")
+
+placebo_rank_dat <- bind_rows(
+  prefit |> transmute(state = treated_state, window = "Anticipation",
+                      statistic = "Raw gap", value = antic_gap),
+  prefit |> transmute(state = treated_state, window = "Anticipation",
+                      statistic = "Gap / pre-fit RMSPE", value = antic_ratio),
+  prefit |> transmute(state = treated_state, window = "February 2021",
+                      statistic = "Raw gap", value = feb_gap),
+  prefit |> transmute(state = treated_state, window = "February 2021",
+                      statistic = "Gap / pre-fit RMSPE", value = feb_ratio),
+  prefit |> transmute(state = treated_state, window = "2022-2023 decline",
+                      statistic = "Raw gap", value = -post2223_gap),
+  prefit |> transmute(state = treated_state, window = "2022-2023 decline",
+                      statistic = "Gap / pre-fit RMSPE", value = post2223_ratio)
+) |>
+  group_by(window, statistic) |>
+  mutate(rank = min_rank(desc(value)),
+         is_ca = state == "CA") |>
+  ungroup()
+
+f7 <- ggplot(placebo_rank_dat, aes(rank, value, color = is_ca)) +
+  geom_point(alpha = 0.9, size = 1.8) +
+  facet_grid(window ~ statistic, scales = "free_y") +
+  scale_color_manual(values = c("FALSE" = "grey70", "TRUE" = palette_paper()[2]),
+                     guide = "none") +
+  scale_x_continuous(breaks = c(1, 10, 20, 30, 40, 51)) +
+  labs(x = "Placebo rank (1 = largest policy-direction deviation)",
+       y = "Statistic")
+save_fig(f7, "F7_prop19_placebo_ranks", width = 8, height = 7)
 
 message("Finished 06_figures at ", Sys.time())

@@ -1,0 +1,198 @@
+Received: from PH0PR01MB7458.prod.exchangelabs.com (2603:10b6:510:f1::6) by
+ SA1PR01MB8111.prod.exchangelabs.com with HTTPS; Sun, 6 Sep 2026 20:59:52
+ +0000
+Received: from SJ0PR05CA0126.namprd05.prod.outlook.com (2603:10b6:a03:33d::11)
+ by PH0PR01MB7458.prod.exchangelabs.com (2603:10b6:510:f1::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.15; Sun, 6 Sep 2026 20:59:50 +0000
+Received: from SJ1PEPF00002315.namprd03.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::35) by SJ0PR05CA0126.outlook.office365.com
+ (2603:10b6:a03:33d::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.6 via Frontend Transport; Sun, 6
+ Sep 2026 20:59:50 +0000
+Authentication-Results: spf=pass (sender IP is 192.174.90.91)
+ smtp.mailfrom=sn-bounce.springernature.com; dkim=pass (signature was
+ verified) header.d=springernature.com;dmarc=pass action=none
+ header.from=springernature.com;compauth=pass reason=100
+Received-SPF: Pass (protection.outlook.com: domain of
+ sn-bounce.springernature.com designates 192.174.90.91 as permitted sender)
+ receiver=protection.outlook.com; client-ip=192.174.90.91;
+ helo=mta-90-91.sparkpostmail.com; pr=E
+Received: from mta-90-91.sparkpostmail.com (192.174.90.91) by
+ SJ1PEPF00002315.mail.protection.outlook.com (10.167.242.169) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Sun, 6 Sep 2026 20:59:49 +0000
+X-MSFBL: qQfxZrHK6CS/ILLa7mST/P591xe/XhUk83GM/7VBytQ=|eyJ0ZW5hbnRfaWQiOiJ
+	zcGMiLCJjdXN0b21lcl9pZCI6IjE3NjM4IiwiciI6InNhYW5uaWRoeWEucmF3YXR
+	AbWFycXVldHRlLmVkdSIsInN1YmFjY291bnRfaWQiOiIxODEzIiwibWVzc2FnZV9
+	pZCI6IjZhOWI0NWQ0OWQ2YTgxMTUwZmMzIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=springernature.com;
+	s=scph1116; t=1788728389; i=@springernature.com;
+	bh=kaxCA8NJ9iaPnZDlVhdFcwB/8I7OWOARgOfZZEauJu4=;
+	h=To:Message-ID:Date:Content-Type:Subject:From:From:To:Cc:Subject:
+	 Feedback-Id;
+	b=hWUZ7YRNsIEakb2Qp9QibzsygS7o5zNt4H4xsYQTvvOzl8gCFKqriwqON/BhX8eV7
+	 lxJmlu05/in1qsPKfblEguwKmsK1VfApAwuOwZvrle2+kB4ZrIv6+HO2q7aq7Hv/SJ
+	 PwXkmOnAe4MvLzGTbpA/JBg1O0CcWlz4RLgeWIFM=
+Received: from [10.90.10.187] ([10.90.10.187])
+	by i-0595ff8149b586cb3.mta1vrest.sd.prd.sparkpost (ecelerity 5.3.0.76404 r(msys-ecelerity:tags/5.3.0.10)) with REST
+	id 3C/F8-31516-544DD9A6; Sun, 06 Sep 2026 20:59:49 +0000
+To: saannidhya.rawat@marquette.edu
+Message-ID: <3C.F8.31516.544DD9A6@i-0595ff8149b586cb3.mta1vrest.sd.prd.sparkpost>
+Date: Sun, 06 Sep 2026 20:59:49 +0000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Decision on your submission to The Journal of Real Estate Finance and Economics
+From: "The Journal of Real Estate Finance and Economics" <kentrenzo.culabat@springernature.com>
+Return-Path: msprvs1=20709d9PZTPts=bounces-17638-1813@sn-bounce.springernature.com
+X-MS-Exchange-Organization-ExpirationStartTime: 06 Sep 2026 20:59:49.8574
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 8fd6a697-ff05-41a1-e565-08df0c59ca7a
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: abe32f68-c72d-420d-b5bd-750c63a268e4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002315:EE_|PH0PR01MB7458:EE_|SA1PR01MB8111:EE_
+X-MS-Exchange-Organization-AuthSource: SJ1PEPF00002315.namprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 8fd6a697-ff05-41a1-e565-08df0c59ca7a
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: 1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|704162111799003|30052699003|29132699027|4139299006|10067099003|18003699003|19002099009|55112099003|16102099003|5063699009|56012099006|11063799006;
+X-Forefront-Antispam-Report: CIP:192.174.90.91;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta-90-91.sparkpostmail.com;PTR:mta-90-91.sparkpostmail.com;CAT:NONE;SFS:(13230040)(704162111799003)(30052699003)(29132699027)(4139299006)(10067099003)(18003699003)(19002099009)(55112099003)(16102099003)(5063699009)(56012099006)(11063799006);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 20:59:49.7595
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fd6a697-ff05-41a1-e565-08df0c59ca7a
+X-MS-Exchange-CrossTenant-Id: abe32f68-c72d-420d-b5bd-750c63a268e4
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002315.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB7458
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.1876293
+X-MS-Exchange-Processed-By-BccFoldering: 15.21.0382.004
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930201)(20251009189)(140003)(1420198);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WVNJWmdaamR3clFzRk5TN2c4NVhuZXVvREg0TjJlT0JVSHJ3QVdYd1FnOU9N?=
+ =?utf-8?B?OHJEMmIzZ2RTelR0cHg1ZEd1bzVMZ0lLVXJocTJXNDRuM2t0Tm52WVJYcDcy?=
+ =?utf-8?B?cXFxUHF3bmpnRE1hVDNrakh0Q2hCdzNwMTFaVnI3OXBtQjM0TnlsaG5PUjNG?=
+ =?utf-8?B?dEZxOW0xZVlONWxIeUFYeVU5TW9SaVZybkd6QjVSYi9XUGhoa24wMEpFZmhW?=
+ =?utf-8?B?NkRGSlptR3lGYWc0RkdGNVlFUGxBTlBsMlFKSmVZMVYxd3UvbnJlL3V3SW1W?=
+ =?utf-8?B?MFpaR0FXb2NPand3WEN3OEFObFptYWxQRWFCUjB5aHVRN3FYWGtxUy9RMTh0?=
+ =?utf-8?B?RjVRN3VqZlpYWEdZeXkyOTRyODZrNHRWdVJKTnQ3TVlkTnhKSy9pWUoyZGti?=
+ =?utf-8?B?QkE4QmRhTjhXZTU0VG1ydmdpTlE1azRTc0Jka25KV0pqOFpnZksySVlsUGMy?=
+ =?utf-8?B?S3EvNUNwQjFSbXV1S1FVeDlCSlgreVhxeThsdjlVQU5sTlhOb3RGcEtHR3FP?=
+ =?utf-8?B?alVyeENWcU82YjRRTDhxUHVkT0dpZE41K2ZGUGNCSFR1cjFsRFZ1cU42eXFY?=
+ =?utf-8?B?NFN4dW92MlZmRDNpR2JOMVBKQXdwckpYemxOeGg2c1haR2Z0NzlCdVlWdmxs?=
+ =?utf-8?B?TE9ZMEJXcERTNExOYTBabmtoV3FMRXcxbGZJQmI1aGNyY1F5dXNQTzNGWVAr?=
+ =?utf-8?B?ZnhZazB0K3I5dTIvbWlXVk1hUHFmSHpRYjQ4MHNCbDdsaDJibnNBQmJjKzNw?=
+ =?utf-8?B?TUY0WnoyaFVTaHk3M1lCcWR1L29LRzlKS3hiMW9DbktRU0lqUmdRYkRaSW9L?=
+ =?utf-8?B?NUtzSFFCdkxadDgvRTNUcDdURG9YUVgzeE12S2ljclJnRU95NG9PdUtFR0Uw?=
+ =?utf-8?B?TFNHanFtbXR2NlFrNzJtbHhQNGVzM2ozYlJKZThWS3JRRGJ5cEpCRHNiT20v?=
+ =?utf-8?B?RzBrYjZ6djRDRldtcmkzNVZuRkZIem55UlBNQjFlUlFwaG9kNHRsOVRkMFBN?=
+ =?utf-8?B?V1dCTFZKdGJXcmwwRTl3ekhldnQxMUNoSmhtL0QySENEZURqbGg0Und1dEl2?=
+ =?utf-8?B?T2xIUndjNFdHTUR1Qm80TDlvWnhySEhwR1pueDZGU01sRVY2K01tbHRiMU1h?=
+ =?utf-8?B?S0ErQWFUejBCL0o4QmFiZko4dTg5WnlwOGx0Y2ozOFFlOVJSbmJQMnJ2SEs5?=
+ =?utf-8?B?V1doYU41cDF4K0tFa2pPNFZnOERkVXNUMmMreXZZeG5MdnlIUlpjYlgyeFlp?=
+ =?utf-8?B?NW1LbkV6cTVRV0tvRVNRNzdkd0FFOGMxUlAwWUtObjdTRGd0ZWxGdnRoNGtK?=
+ =?utf-8?B?MTMrS3pRcGV2WHYyT3k3UnJTbVk5RmJkNGpyaWprbi9sb2lweE1ETWYxMVA3?=
+ =?utf-8?B?YmJwblZBQXJiSVdRNVBkazh4Q3FESW9aT3NZZWRrOGZjdlcrMVR1OVFsT1l2?=
+ =?utf-8?B?QXR1Vmh5K2lzeHYrREN2Y3hGeS9LWTVLYXV5eS8zNGhLVko3K2EwczF5V2E2?=
+ =?utf-8?B?eDVwVlNCYlhqSDhwbHR5MnB5NGtXMmwxeE1BaDNjQUJyb0lwa2EzYmt2U3RK?=
+ =?utf-8?B?T3hqWlVLNG96b2dmU0p0dFNJRlhScldDeTZmRjB1OW5pNzU4aW1tOHhXb0VN?=
+ =?utf-8?B?RXp2eU9LejlQZm9mT0NZaGFxRVRBUjdBT3l5VmRMaEdqV0VSZjhNZDIyNVdk?=
+ =?utf-8?B?cGpWMkFVL05IMC9IRzhsVDN5MkFtcTA3dlNPK1dmMXZhVDZIRm1JN0w4R25n?=
+ =?utf-8?B?bFp6RUhXR3lBWGdFYjdzWC9Ud0M5c0ZEYlJETXNJam9uYXE0aXVmZ1RSUGZp?=
+ =?utf-8?B?ZnVOZGJjdHB2eTVYaGpJU05GNnB2Rk1NSXA0aTdaVW5ld3ZLRXhwdUFzUWtj?=
+ =?utf-8?B?dGFVRHpNd2xudFJpem8vMWJHUEI5TE9SK1FyT2ZvRTRmSmd0bjNDQnhNb3pl?=
+ =?utf-8?B?NDFjbmZUenIzY0txUmduQklxZXlES0NkMkJuWVBPMUVGQXdKeUZVUHIwNERj?=
+ =?utf-8?B?M2FXSm9aWEVWYTlmelUxZWZvWEpXc25tR0pnWVZSc3ZHMFIwSGh0MkFTOWwy?=
+ =?utf-8?B?U1F2dGE0ME9vUnNYNnNncVh2dkhYcmhnNHdEOUM1aENXSzdVS2xKL2RPVjRw?=
+ =?utf-8?B?Q1JmVXlaV2FJV09VWEoyL09vMFZQTFYwNFk3TmI2VWhxWHg2ZGxWelBtQVVn?=
+ =?utf-8?B?L0ZZdG40eG04d2Zzb0xhWGttcW11cTViL2hJanM4SGZLMEZIcC84aG5Ib2NP?=
+ =?utf-8?B?TmVPOU1xRm1pb0VtU0NHQnd5ODk1b2ZPQTB3SENrOTRPbSt1VDQzMi8xclYy?=
+ =?utf-8?B?ZEFReGs5MWVxSEVMYkY1VWZWVEtzam9vK3pWQi83OU1TT3ZqTytncnFmS3dD?=
+ =?utf-8?B?L2pxYy9BTkJuUGdYODZLTXRacVh2aXFEK2xpRkJ2cGFOTFJCN1REZXJBeFVP?=
+ =?utf-8?B?azlSbnBqK0FTTG5zOXZMZlRnbm8xcDkxWWdkQUJiY1daUWNkYWxpQXcwZWdG?=
+ =?utf-8?B?cDNZbWxKazlJSUxGbGNkelV2NThYdGhtTWlwdkpsaWVRQjViR3Y2cFAzenlw?=
+ =?utf-8?B?YS8zNjJ0WWRQR3BjVGpDSWMrbGVBMGJIT21xTlNjcWpmWW1vT21RamlJMHQ5?=
+ =?utf-8?B?QmdwNkd2K21KZUZVa2NqNTZINzZFNkpGWjFYZ0lhQVhRSWhkVThqUGNKeUpl?=
+ =?utf-8?B?OTRrdFJYL1p6T1BWOTg4SkhhUDJWRnRaekluQXdFelp4R084Vm4zNHBZOWZZ?=
+ =?utf-8?B?TEx4K3ZYR0xIVWQyYWp6MVJzdm5mMk45WFZzS0NKOHFwOHZsYkVGY1lzT042?=
+ =?utf-8?B?R1A2aXRIMVIrRDRoWGxtVVA4MWtZN0hrdkVTbDAvdWxEZG9iV2ZDeDVMZ3JH?=
+ =?utf-8?B?M3dOc1kxNnBRc1RRV0FXOHJnaUdWenVkWlFUNkgwUHBRUjNOQURjM1UvbWJZ?=
+ =?utf-8?B?VmhWNEZ1K1dMT09USTMrK040T0swdTUwb0l6Q0Rrc0YyVjg0U2Z4MDVvWDlN?=
+ =?utf-8?B?MEFEWjdWV2YycWVnZFpFdXRzQ05tWmh6VDR3VzFIcnE2OVloaDBUNmYwS0Ew?=
+ =?utf-8?B?bmJ5b05GcThKUEtPYjJDam85eFJnZkQ4N1A5Snh5eTNQT3FQQitBMmxETWJ4?=
+ =?utf-8?B?ZzAvNE1tSi9LYkFIOEtIRHZ6VEVqcFhDbTVSdzNBR3REZk1QaXFHNmpRdW15?=
+ =?utf-8?B?OTdublhHMXIzRmlQeGhEbVRHamFjTjNDeHNEbDhLeUZNQ01WQ0xUemdMd05x?=
+ =?utf-8?B?MS9xN20yUE5qaE0zYlhIb01qTHpaV2V6aGM0QnBxNzh1emwwREoxazhBd3lI?=
+ =?utf-8?B?bTYvcEpVTUlXMjVRMlFPbzAwdkdFTnI3eFd2SFBsN0dXR3o1WmNFWlBtYURj?=
+ =?utf-8?B?UU0rZjIwU0x2OXhEM0NkcWhqYis3VG1HRFBCb2g1VGNvWTlTTU5DMVFYdz09?=
+MIME-Version: 1.0
+
+CAUTION:  This email originated outside of Marquette University.  Do not cl=
+ick links or open attachments unless you recognize the sender and know the =
+content is safe.
+
+
+
+Ref: Submission ID cc42a609-6f42-4e72-8353-9b3ca4b35b11
+
+Dear Dr Rawat,
+
+Your manuscript "Keeping the House in the Family: Non-Market Transfers and =
+the Supply of American Homes" has now been assessed. Regrettably, after car=
+eful consideration, we have decided not to send your paper for external pee=
+r review. We do not believe there is a good match between the manuscript an=
+d the Journal of Real Estate Finance and Economics. We do not find the marg=
+inal contribution of the paper to the existing body of knowledge significan=
+t enough to warrant publication in the Journal. The paper documents an inte=
+resting aspect of transactions in housing markets. However, it fails to con=
+vince the reader about the significance of this exercise. As you mention in=
+ the paper, these non-market transactions would lead to inefficient allocat=
+ion of these houses. What I would suggest is that you zoom more into this i=
+nefficiency and try to measure the subsequent efficiency / welfare losses. =
+This would make the paper more relevant for policy makers.
+
+As an editor, these decisions are never easy but given that we can only acc=
+ept a limited number of submissions, our selection process is highly compet=
+itive. Consequently, I strive to maximize the efficient use of referees' va=
+luable time and to respect your time as well. Therefore, I think it is best=
+ to avoid a review process that is unlikely to lead to publication.
+
+This decision should not be taken as a final assessment of the value added =
+by your paper, but rather as an effort to facilitate the timely turnaround =
+of submissions. Given our low acceptance rate, we must decline many excelle=
+nt papers.
+
+Thank you for the opportunity to review your work. I'm sorry that we cannot=
+ be more positive on this occasion and hope you will not be deterred from s=
+ubmitting future work to The Journal of Real Estate Finance and Economics.
+
+
+Kind regards,
+
+Abdullah Yavas
+Editor
+The Journal of Real Estate Finance and Economics
+
+Transfer recommendation
+
+While I'm sorry we cannot publish your work in The Journal of Real Estate F=
+inance and Economics, your manuscript may be a good fit for one of our othe=
+r journals.
+
+
+What=E2=80=99s next
+
+At Springer Nature we provide a free service to give authors a range of per=
+sonalised journal recommendations. The submitting author will receive a not=
+ification with more information shortly.
+If you decide to proceed with this option and transfer your manuscript to a=
+ different journal, the details from your previous submission will be retai=
+ned, making the process faster.
+

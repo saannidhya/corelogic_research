@@ -38,6 +38,7 @@ stopifnot(file_exists(events_path))
 ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
 
 fam_classes <- "('family_person','family_other','family_estate')"
+territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ---- (a) Monthly series + bunching ---------------------------------------
 monthly <- dbGetQuery(con, glue("
@@ -53,8 +54,15 @@ monthly <- dbGetQuery(con, glue("
 assert_rows(monthly, 2000, "prop19_monthly_series")
 write_csv_strict(monthly, path(tables_out_dir, "prop19_monthly_series.csv"))
 
-ca <- monthly |> filter(state == "CA")
-donors <- monthly |>
+monthly_states <- monthly |>
+  filter(!state %in% territories) |>
+  mutate(n_fam = as.numeric(n_fam),
+         n_market = as.numeric(n_market))
+states <- sort(unique(monthly_states$state))
+stopifnot("CA" %in% states, length(states) == 51)
+
+ca <- monthly_states |> filter(state == "CA")
+donors <- monthly_states |>
   filter(state != "CA") |>
   group_by(ym, sale_year, sale_month) |>
   summarise(n_fam = sum(n_fam), n_market = sum(n_market), .groups = "drop")
@@ -87,6 +95,169 @@ bunch <- tibble(
 print(bunch, width = Inf)
 write_csv_strict(bunch, path(tables_out_dir, "prop19_bunching_summary.csv"))
 saveRDS(bunch, path(out_dir, "prop19_bunching_summary.rds"))
+
+# ---- (a2) Leave-one-out counterfactuals + pre-fit placebo inference --------
+cf_base_windows <- list("2019" = 2019L, "2018_2019" = 2018:2019)
+
+build_cf_for_state <- function(treated_state, base_label, base_years) {
+  treated <- monthly_states |>
+    filter(state == treated_state) |>
+    select(ym, sale_year, sale_month, actual_fam = n_fam)
+
+  donor_series <- monthly_states |>
+    filter(state != treated_state) |>
+    group_by(ym, sale_year, sale_month) |>
+    summarise(
+      donor_fam = sum(n_fam),
+      donor_count = n_distinct(state),
+      treated_in_donor = as.integer(any(state == treated_state)),
+      .groups = "drop"
+    )
+
+  base_treated <- treated |>
+    filter(sale_year %in% base_years) |>
+    group_by(sale_month) |>
+    summarise(base_treated_fam = mean(actual_fam), .groups = "drop")
+
+  base_donor <- donor_series |>
+    filter(sale_year %in% base_years) |>
+    group_by(sale_month) |>
+    summarise(base_donor_fam = mean(donor_fam), .groups = "drop")
+
+  treated |>
+    left_join(donor_series, by = c("ym", "sale_year", "sale_month")) |>
+    left_join(base_treated, by = "sale_month") |>
+    left_join(base_donor, by = "sale_month") |>
+    mutate(
+      base_window = base_label,
+      treated_state = treated_state,
+      cf_fam = base_treated_fam * donor_fam / base_donor_fam,
+      excess_fam = actual_fam - cf_fam,
+      gap_fam = excess_fam / cf_fam,
+      .before = 1
+    ) |>
+    arrange(treated_state, ym)
+}
+
+cf_placebo_monthly <- imap_dfr(
+  cf_base_windows,
+  ~ map_dfr(states, build_cf_for_state, base_label = .y, base_years = .x)
+)
+
+stopifnot(
+  all(cf_placebo_monthly$donor_count == length(states) - 1),
+  all(cf_placebo_monthly$treated_in_donor == 0),
+  all(is.finite(cf_placebo_monthly$cf_fam)),
+  all(cf_placebo_monthly$cf_fam > 0),
+  all(cf_placebo_monthly$base_donor_fam > 0)
+)
+
+write_csv_strict(cf_placebo_monthly,
+                 path(tables_out_dir, "prop19_cf_placebo_monthly.csv"))
+
+rank_ge <- function(x) {
+  vapply(x, function(z) sum(x >= z), integer(1))
+}
+
+rank_le <- function(x) {
+  vapply(x, function(z) sum(x <= z), integer(1))
+}
+
+cf_placebo_summary <- cf_placebo_monthly |>
+  group_by(base_window, treated_state) |>
+  summarise(
+    donor_count = first(donor_count),
+    pre_start_ym = 201801L,
+    pre_end_ym = 202010L,
+    pre_rmspe = sqrt(mean(gap_fam[ym >= pre_start_ym & ym <= pre_end_ym]^2)),
+    pre_mae = mean(abs(gap_fam[ym >= pre_start_ym & ym <= pre_end_ym])),
+    antic_gap = sum(excess_fam[ym >= 202011 & ym <= 202102]) /
+      sum(cf_fam[ym >= 202011 & ym <= 202102]),
+    feb_gap = sum(excess_fam[ym == 202102]) / sum(cf_fam[ym == 202102]),
+    post2021_gap = sum(excess_fam[ym >= 202103 & ym <= 202212]) /
+      sum(cf_fam[ym >= 202103 & ym <= 202212]),
+    post2223_gap = sum(excess_fam[ym >= 202201 & ym <= 202312]) /
+      sum(cf_fam[ym >= 202201 & ym <= 202312]),
+    antic_ratio = antic_gap / pre_rmspe,
+    feb_ratio = feb_gap / pre_rmspe,
+    post2223_ratio = -post2223_gap / pre_rmspe,
+    .groups = "drop"
+  ) |>
+  group_by(base_window) |>
+  mutate(
+    n_states = n(),
+    antic_rank_raw = rank_ge(antic_gap),
+    feb_rank_raw = rank_ge(feb_gap),
+    post2223_rank_raw = rank_le(post2223_gap),
+    antic_rank_ratio = rank_ge(antic_ratio),
+    feb_rank_ratio = rank_ge(feb_ratio),
+    post2223_rank_ratio = rank_ge(post2223_ratio),
+    antic_p_raw = antic_rank_raw / n_states,
+    feb_p_raw = feb_rank_raw / n_states,
+    post2223_p_raw = post2223_rank_raw / n_states,
+    antic_p_ratio = antic_rank_ratio / n_states,
+    feb_p_ratio = feb_rank_ratio / n_states,
+    post2223_p_ratio = post2223_rank_ratio / n_states
+  ) |>
+  ungroup() |>
+  relocate(n_states, .after = treated_state)
+
+write_csv_strict(cf_placebo_summary,
+                 path(tables_out_dir, "prop19_cf_placebo_summary.csv"))
+saveRDS(list(monthly = cf_placebo_monthly, summary = cf_placebo_summary),
+        path(out_dir, "prop19_cf_placebo.rds"))
+
+sensitivity_windows <- tribble(
+  ~window, ~start_ym, ~end_ym, ~direction,
+  "anticipation", 202011L, 202102L, "positive",
+  "february", 202102L, 202102L, "positive",
+  "post_202103_202212", 202103L, 202212L, "negative",
+  "steady_2022_2023", 202201L, 202312L, "negative"
+)
+
+window_stats <- pmap_dfr(sensitivity_windows, function(window, start_ym, end_ym, direction) {
+  cf_placebo_monthly |>
+    filter(ym >= start_ym, ym <= end_ym) |>
+    group_by(base_window, treated_state) |>
+    summarise(
+      window = window,
+      start_ym = start_ym,
+      end_ym = end_ym,
+      direction = direction,
+      gap = sum(excess_fam) / sum(cf_fam),
+      .groups = "drop"
+    )
+})
+
+prop19_window_sensitivity <- window_stats |>
+  left_join(
+    cf_placebo_summary |> select(base_window, treated_state, n_states, pre_rmspe),
+    by = c("base_window", "treated_state")
+  ) |>
+  mutate(
+    directional_gap = if_else(direction == "positive", gap, -gap),
+    ratio = directional_gap / pre_rmspe
+  ) |>
+  group_by(base_window, window) |>
+  mutate(
+    raw_rank = rank_ge(directional_gap),
+    raw_p = raw_rank / n_states,
+    ratio_rank = rank_ge(ratio),
+    ratio_p = ratio_rank / n_states
+  ) |>
+  ungroup() |>
+  filter(treated_state == "CA") |>
+  transmute(
+    base_window, window, start_ym, end_ym, direction,
+    ca_gap = gap,
+    ca_ratio = ratio,
+    raw_rank, raw_p, ratio_rank, ratio_p, n_states
+  )
+
+write_csv_strict(prop19_window_sensitivity,
+                 path(tables_out_dir, "prop19_window_sensitivity.csv"))
+saveRDS(prop19_window_sensitivity,
+        path(out_dir, "prop19_window_sensitivity.rds"))
 
 # ---- (b) Steady-state volume DiD ------------------------------------------
 # ln(family transfers) state x year; pre = 2017-2019, post = 2022-2023;

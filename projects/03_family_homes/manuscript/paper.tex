@@ -3,49 +3,43 @@
 % Shared preamble (palette, macros, geometry)
 \input{../../../Preambles/header.tex}
 
+\definecolor{classic-link-blue}{HTML}{0645AD}
+\hypersetup{colorlinks=true, allcolors=classic-link-blue, pdfborder={0 0 0}}
+
 \usepackage[round, sort&compress, authoryear]{natbib}
 \bibliographystyle{aer}
 \usepackage{setspace}
 \onehalfspacing
 \usepackage[margin=1.1in]{geometry}
 
-\title{Keeping the House in the Family:\\ Non-Market Transfers and the Supply of American Homes\thanks{Saani Rawat, Marquette University. Email: saani.rawat@marquette.edu. CoreLogic deed and property records were obtained through the University of Cincinnati's academic license. We thank \dots\ for helpful comments. All errors are our own.}}
-\author{Saani Rawat\\Marquette University}
-\date{\today\\\vspace{4pt}\textit{Preliminary and incomplete --- please do not cite without permission}}
+\title{Keeping the House in the Family:\\ Non-Market Transfers and the Supply of American Homes
+\thanks{Saannidhya Rawat, Marquette University. Email: saannidhya.rawat@marquette.edu. CoreLogic deed and property records were obtained through the University of Cincinnati's academic license.
+We thank \dots\ for helpful comments. 
+All errors are our own.}}
+\author{Saannidhya Rawat}
+
+% Move the date up slightly on the title page
+% \date{\vspace{-15pt}\today}  
+
+% \date{\today\\\vspace{4pt}\textit{Preliminary and incomplete --- please do not cite without permission}}
 
 \begin{document}
 \maketitle
 
+\begingroup
+\singlespacing
+\vspace{-2em}
 \begin{abstract}
-\noindent A large share of American homes change hands without a market.
-Using 144 million deed records covering the universe of recorded residential
-transfers from 2007 to 2023, this paper provides the first
-national deeds-based accounting of intra-family housing transfers. After
-stripping out trust retitling and same-person co-owner changes, families
-moved nearly 20 million homes between relatives over this period---one
-family transfer for every 3.6 market sales---almost always at a recorded
-price of zero. These transfers are not a staging step toward sale: three in
-five family-transferred homes have not sold on the open market a decade
-later. A simple model shows that when heirs inherit a below-market
-property-tax assessment along with the house, families keep homes that the
-market values more. California's Proposition~19, which abruptly ended
-assessment inheritance for non-occupant heirs in February 2021, provides the
-experiment. Family transfers surged 31 percent above counterfactual in the
-four months before the deadline---February, normally the quietest month,
-became the busiest in the series---and then fell to a new, persistently
-lower level: 35 percent below baseline by 2022--2023, 23 percent net of a
-market-sale placebo (placebo-state permutation $p \approx 0.10$ and $0.18$),
-a missing flow of roughly 58,000 deeds per year, commensurate with the
-60,000--80,000 tax-excluded inherited properties the state's fiscal analyst
-counted annually under the old regime. The homes that exited the family
-channel have not yet surfaced as estate sales, indicating deferred
-successions rather than immediate listings. Our results suggest that family transfers are not outside the housing market but one of its allocation mechanisms, and property-tax rules can shift scarce homes from price-based matching to lineage-based retention. \\
+\noindent A large share of American homes change hands without a market. 
+Using 144 million deed records that cover the universe of recorded residential transfers from 2007 to 2023, this paper provides national stylized facts on intra-family housing transfers.
+After stripping out trust retitling and same-person co-owner changes, families moved nearly 20 million homes between relatives over this period---one family transfer for every 3.6 market sales---almost always at a recorded price of zero. These transfers are not a staging step toward sale: three in five family-transferred homes have not sold on the open market a decade later. A simple model shows that when heirs inherit a below-market property-tax assessment along with the house, as permitted by California's Propositions~13, 58, and 193, families keep homes that the market values more. California's Proposition~19, which abruptly ended assessment inheritance for non-occupant heirs in February 2021, provides a natural experiment to examine the effect of this tax wedge on family transfers: family transfers surged 31\% above counterfactual in the four months before the effective date and then fell to a new, persistently lower level: a donor-weighted synthetic control reveals a 2022--2023 decline of 33\%, which decreases to 26\% after adjusting for the elderly population. Net of California's own market-sale slump, the missing flow is roughly 58,000 deeds per year. The homes that exited the family channel have not yet surfaced as estate sales, indicating deferred successions rather than immediate listings. Our results suggest that family transfers are not outside the housing market but are one of its allocation mechanisms and property-tax rules can shift scarce homes from price-based matching to lineage-based retention. \\
 \textbf{JEL classification:} R21, R31, H22, D64 \\
 \textbf{Keywords:} housing supply, intergenerational transfers, bequests, property taxes, Proposition 19
 \end{abstract}
+\endgroup
 
-\clearpage
-
+\clearpage 
+ 
 \section{Introduction}\label{sec:intro}
 
 The housing market that economists study is the one with prices. Sales are
@@ -64,7 +58,7 @@ The largest asset most households ever own is routinely allocated not by the
 market but by the family---and the deed records that document this
 allocation have gone largely unexamined.
 
-This paper makes three contributions. First, it measures the family channel. We
+This paper makes three contributions. First, it measures the family-transfer channel in housing. We
 construct a taxonomy of all 144 million recorded residential deed events in
 the United States from 2007 to 2023, separating arm's-length market sales
 from inter-person family transfers, trust self-transfers, same-person
@@ -80,8 +74,7 @@ where one family transfer is recorded for every 1.6 market sales---2.3 times
 the national ratio---and where, not coincidentally, the property-tax code
 made dynastic holding most valuable.
 
-Second, it follows the houses. Because each parcel carries a permanent
-identifier, we can ask what happens to a home after it passes within a family.
+Second, it follows the transferred houses and asks, what happens to a home after it passes within a family? Because each parcel carries a permanent identifier, the deed records can be linked across successive owners to track the time to first market sale.
 The answer is bimodal. A minority of family transfers are settlement
 waypoints: among cross-surname family conveyances---the class that includes
 estate distributions---one in ten reaches the open market within a year, as
@@ -91,11 +84,13 @@ sold on the open market, a retention rate exceeding that of homes bought on
 the market by their owner-occupants and investors combined. Houses that enter
 the family channel mostly stay there.
 
-Third, and centrally, it shows that tax policy shapes this allocation. The
-mechanism is easiest to see in California. Proposition~13 (1978) ties each
-parcel's assessed value to its acquisition price; Propositions~58 (1986) and
+Third, it shows that tax policy shapes this allocation. Does the tax benefit of keeping a home in the
+   family affect whether inherited homes reach the market? 
+   California offers the cleanest test for this question. 
+   Proposition~13 (1978) ties each
+parcel's assessed value to its acquisition price. Propositions~58 (1986) and
 193 (1996) let parents pass that assessed value to children along with the
-house. An heir could thereby inherit a Pasadena house worth \$1.5 million and
+house. For instance, an heir could thereby inherit a Pasadena house worth \$1.5 million and
 pay property taxes on a 1980s basis---a subsidy available only if the family
 \emph{kept} the house. The state's Legislative Analyst's Office estimated
 that 60,000 to 80,000 inherited properties escaped reassessment each year and
@@ -111,22 +106,25 @@ only up to a value cap; for rentals and second homes it vanished entirely
 The deeds record the response with unusual clarity. In the four months
 between passage and the deadline, California families rushed to lock in the
 old basis: family transfers ran 31 percent---29,000 deeds---above a
-counterfactual built from California's own seasonal pattern and the rest of
-the country's contemporaneous growth. After the deadline they collapsed to a
-persistently lower level. In the 2022--2023 steady state, family transfers
-were 35 percent below their pre-reform baseline relative to other states;
-netting out California's contemporaneous slump in market sales leaves a 23
-percent decline, roughly 58,000 transfers per year. Because California is a
-single treated state, we assess these estimates against a placebo
-distribution in which every other state is assigned the treatment in turn;
-California's decline ranks fifth of fifty-one ($p \approx 0.10$), with the
-larger placebo declines concentrated in its boom-and-bust Western neighbors.
-The timing evidence is harder to mimic: within California, family transfers
-were flat relative to 2019 through 2021 and then dropped 28 percent in 2022
-and 36 percent in 2023. The missing flow is commensurate with the
-Legislative Analyst's count of 60,000--80,000 tax-favored inherited
-properties per year: the reform did not trim the family channel at the
-margin so much as excise its tax-motivated core.
+counterfactual built from California's own seasonal pattern and other states'
+contemporaneous growth. After the deadline they collapsed to a
+persistently lower level. In the 2022--2023 steady state, a donor-weighted synthetic
+control---California matched to a weighted combination of the other fifty
+states on its pre-reform trajectory---places family transfers 33 percent
+below synthetic California. Because California is a single treated unit, we
+assess this against a placebo distribution in which every other state is
+assigned the treatment in turn: California's post-to-pre prediction-error
+ratio is the second largest of fifty-one ($p = 0.039$). Adjusting for the
+elderly population leaves a 26 percent gap, so we read the steady-state
+decline as 26 to 33 percent. Net of California's contemporaneous market-sale
+slump, the missing flow is roughly 58,000 transfers per year, commensurate
+with the Legislative Analyst's count of 60,000--80,000 tax-favored inherited
+properties annually. The timing is harder to mimic
+still: a monthly event study shows family transfers drifting up as the
+measure advances to the ballot, spiking in February 2021, and then settling
+0.3 to 0.5 log points below their 2018--2019 baseline through 2022--2023---a
+within-year swing that annual data average away, consistent with the reform
+removing a large tax-motivated component of the channel.
 
 What happened to the homes that no longer pass between relatives? A simple
 model of the heir's keep-or-sell decision makes the prediction precise, and
@@ -150,7 +148,7 @@ homes will face market-value reassessment in the hands of any non-occupant
 heir. The reform's supply effect is real but deferred---an unusually clean
 prediction for future data to test.
 
-These findings connect three literatures that have largely run on separate
+Our findings connect three literatures that have largely run on separate
 tracks. The economics of bequests---from strategic motives
 \citep{bernheimshleifersummers1985bequest} to inter-vivos timing
 \citep{mcgarry1999intervivos} to estate-tax planning \citep{kopczuk2007bequest}
@@ -166,7 +164,7 @@ owners in place---Proposition~13 lengthened California tenures
 \citep{ferreira2010takeit}, low mortgage rates immobilize borrowers
 \citep{fonsecaliu2024lockin}, and property-tax design shapes allocation
 generally \citep{covenetal2024proptax}---but its unit of observation is the
-living owner; this paper shows the lock survives death. And the
+living owner. This paper shows that in certain cases, the lock survives death. Quite separately, the
 transaction-tax literature \citep{kopczukmunroe2015mansion,
 slemrodwebershan2017dc, bestkleven2018notches, hilberlyytikainen2017transfer}
 establishes that property transactions respond sharply to tax notches through
@@ -178,7 +176,7 @@ blood---rather than by willingness to pay, the loss is not a transfer but
 forgone surplus, and the houses withheld from the market are disproportionately
 the older, cheaper stock through which housing filters down to lower-income
 buyers \citep{rosenthal2014filtering}. To our knowledge, no prior academic
-study provides a national, deeds-microdata accounting of intra-family housing
+study provides a national, deeds-based stylized facts on intra-family housing
 transfers or a causal evaluation of Proposition~19's inheritance provisions;
 the nearest antecedents are an industry tabulation of inheritance deeds
 \citep{delventhal2026inherited}, measurements of the heirs'-property subset
@@ -186,9 +184,9 @@ the nearest antecedents are an industry tabulation of inheritance deeds
 Analyst's own assessment-roll counts \citep{lao2017inheritance}.
 
 Two scope conditions discipline the welfare reading. First, family transfers
-are not waste; they carry sentimental value, insure family members, and
+are not waste as they carry sentimental value, insure family members, and
 economize on transaction costs, and when the heir values the home most, the
-family allocation is also the efficient one. The problem is the wedge: a tax
+family allocation is also the efficient one. The problem is the \emph{tax wedge}: a tax
 code that pays heirs to hold homes they value below the market price converts
 a private gift into a social misallocation, larger where housing is scarcest.
 Second, the Proposition~19 estimates measure the response of recorded
@@ -378,9 +376,8 @@ transfer of control---track trust self-transfers almost exactly (9.1 versus
 
 This is a descriptive fact, and selection is its content: families keep the
 homes they receive. Four caveats discipline its reading. First, the
-comparison pools states and cohorts; family transfers concentrate in older
-homes and in low-turnover states, so part of the gap is composition (a
-stratified version is planned for the next draft). Second, the two clocks
+comparison pools states and cohorts as family transfers concentrate in older
+homes and in low-turnover states, so part of the gap is composition. Second, the two clocks
 measure different objects: a market purchase starts a fresh tenure, while a
 family deed often changes title without changing occupancy---a force that
 should, if anything, \emph{raise} the family class's sale hazard, since
@@ -406,7 +403,7 @@ cannot say---and what Proposition~19 can.
 
 \section{A Simple Framework}\label{sec:framework}
 
-A two-line model clarifies why tax institutions matter for whether inherited
+A simple model clarifies why tax institutions matter for whether inherited
 homes reach the market, and organizes the California evidence.
 
 A house yields a flow value $u_m$ to the marginal market buyer. With property
@@ -418,7 +415,7 @@ sale---the price capitalizes the tax burden in perpetuity:
 where $r$ is the discount rate. Now consider an heir at the moment of
 succession who values living in the house (or renting it out) at flow $u_h$.
 If the family keeps the house, the heir pays taxes on assessed value $A$; if
-it sells, it receives $p$. Keeping is optimal if and only if
+the family sells, the heir receives $p$. Keeping the house is optimal if and only if
 \begin{equation}
   \frac{u_h - tA}{r} \;\ge\; p
   \quad\Longleftrightarrow\quad
@@ -449,14 +446,15 @@ February 2021---should do to each observable margin.
 
 First, \emph{retiming}: because a transfer completed before the deadline
 locks in $A_0$, families with latent transfer plans rush to record deeds
-before the effective date, and recorded transfers collapse afterward
-\citep[cf. the transaction-tax notch literature:][]{kopczukmunroe2015mansion,
-slemrodwebershan2017dc, bestkleven2018notches}. Second, the \emph{extensive
+before the effective date, and recorded transfers collapse afterward\footnote{See the transaction-tax notch literature for more details \citep[][]{kopczukmunroe2015mansion,
+slemrodwebershan2017dc, bestkleven2018notches}.}. Second, the \emph{extensive
 margin}: with the wedge removed, every heir in
-$[\,u_m - t(p - A_0),\; u_m)$ switches from keep to sell---these homes exit
-the family channel entirely and flow to the market as estate sales. The
-steady-state volume of family transfers falls by the mass of heirs in the
-wedge; that volume decline \emph{is} the supply release. Third,
+$[\,u_m - t(p - A_0),\; u_m)$ switches out of the recorded family-transfer
+channel. If succession is imminent, the home can sell directly from the
+estate; if the pre-reform deed was advance tax planning, title simply remains
+with the parent until a later succession. The steady-state volume of family
+transfers falls by the mass of heirs in the wedge, and the supply release is
+therefore real but not necessarily contemporaneous. Third,
 \emph{selection}: the family transfers that survive are those with
 $u_h \ge u_m$---heirs who genuinely want the house, disproportionately
 owner-occupants, whom the surviving (occupancy-conditional) exclusion still
@@ -509,16 +507,18 @@ reported as robustness.
 
 Figure~\ref{fig:bunching} plots monthly California family transfers against a
 transparent counterfactual: California's 2019 volume in the same calendar
-month, scaled by the rest of the country's contemporaneous growth in family
-transfers. The counterfactual thus inherits both California's seasonality and
-every national shock---COVID disruption, the 2020--2021 housing boom, the
-estate-planning surge.
+month, scaled by contemporaneous family-transfer growth in the other fifty
+states and DC. The counterfactual thus inherits both California's seasonality
+and national shocks---COVID disruption, the 2020--2021 housing boom, the
+estate-planning surge---while excluding California from the donor pool. Before
+passage, it fits tightly: over 2018m1--2020m10, the mean absolute monthly error
+is 3.9 percent and the RMSPE is 5.7 percent.
 
 \begin{figure}[!t]
   \centering
   \includegraphics[width=0.92\linewidth]{figures/F4_prop19_bunching.pdf}
   \caption{California monthly family transfers (broad class) versus
-  counterfactual (CA 2019 same-calendar-month volume $\times$ rest-of-US
+  counterfactual (CA 2019 same-calendar-month volume $\times$ donor-state
   growth). Dotted lines: November 3, 2020 (passage) and February 16, 2021
   (parent-child provisions effective).}
   \label{fig:bunching}
@@ -527,24 +527,60 @@ estate-planning surge.
 California tracks the counterfactual closely until November 2020. Between
 passage and the deadline, the two series tear apart: from November 2020
 through February 2021, actual family transfers total 123,486 against a
-counterfactual of 94,620---an excess of 28,866 deeds, 31 percent above
+counterfactual of 94,617---an excess of 28,869 deeds, 31 percent above
 counterfactual, crammed into four months. February 2021, ordinarily the
 year's quietest month, became the busiest family-transfer month in the
 2018--2023 California series. This is the anticipatory bunching that notch
 designs recover for taxed market transactions \citep{bestkleven2018notches,
 slemrodwebershan2017dc}, reproduced in transfers with no price: families
-re-timed successions to bequeath a tax basis. Because the response is timed
-to the day-specific deadline within a single state, no slow-moving
-confounder---pandemic, migration, the housing cycle---can mimic it.
+re-timed successions to bequeath a tax basis. In leave-one-out placebo
+counterfactuals, California's anticipation gap is third of fifty-one in raw
+size ($p=0.059$) but first after dividing each state's gap by its own
+pre-period RMSPE ($p=0.020$). Because the response is timed to the
+day-specific deadline within a single state, no slow-moving confounder---
+pandemic, migration, the housing cycle---can mimic it.
 
 \subsection{The steady-state decline}
 
 Retiming alone would imply a transitory post-deadline trough followed by
 recovery. Instead, the gap persists and widens. From March 2021 through
-December 2022, actual transfers run 85,000 below counterfactual (16
+December 2022, actual transfers run 85,351 below counterfactual (16
 percent); by 2023, California family transfers (147,441) are 41 percent below
 their 2018--2019 average (251,256)---while national volumes returned to
-trend.
+trend. A donor-weighted synthetic control sharpens the comparison. Following
+\citet{abadie2010synthetic}, we build a synthetic California from a convex
+combination of the other fifty states and the District of Columbia, with
+weights chosen to match California's pre-reform family-transfer trajectory.
+Because California is the largest state---an outlier in the \emph{level} of
+transfers, which forces a level-matched synthetic onto a single large donor---we
+match on each state's volume normalized to its own 2018--2019 mean. The
+synthetic reproduces California's pre-reform path to a root mean squared error
+of 5.0 percent (Figure~\ref{fig:scm}); after the February 2021 deadline,
+California's family transfers run 33 percent below synthetic California through
+2022--2023, and the gap lies at the extreme lower edge of the donor placebo
+distribution (Figure~\ref{fig:scm_envelope}).
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figures/F5_scm_california.pdf}
+  \caption{California monthly family transfers against a donor-weighted
+  synthetic California \citep[normalized-index match;][]{abadie2010synthetic}.
+  The series track closely before the reform and diverge after the deadline.
+  Dotted lines: passage (November 3, 2020) and the parent-child effective date
+  (February 16, 2021).}
+  \label{fig:scm}
+\end{figure}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figures/F6_scm_gap_envelope.pdf}
+  \caption{California's relative gap from synthetic control (red) against the
+  same gap computed for each donor state run as a placebo (grey lines), with a
+  shaded 2.5--97.5 percentile band over donors that fit California comparably
+  well before the reform. California lies at the extreme lower edge across
+  2022--2023.}
+  \label{fig:scm_envelope}
+\end{figure}
 
 The difference-in-differences estimates in Table~\ref{tab:prop19} formalize
 this. Using state-by-year counts for 2017--2019 versus 2022--2023 (the
@@ -558,23 +594,56 @@ transfers per year against the 2018--2019 base. Reclassification into trusts
 cannot explain it: including trust self-transfers in the family aggregate
 yields a decline of 0.241 log points (21 percent).
 
-Two pieces of evidence address the design's limits. First, inference:
-assigning the treatment to each donor state in turn, California's family
-decline ranks fifth of fifty-one in absolute size (permutation
-$p \approx 0.10$; for the placebo-netted estimate, $p \approx 0.18$), with
-the largest placebo declines in Utah and Nevada---Western states sharing
-California's boom-and-bust cycle, which is precisely what the market-sale
-adjustment is for. Second, timing: an event-study version (California
-$\times$ year, 2019 omitted) shows leads of $-0.03$ in 2018, $+0.06$ in
-2020, and $-0.01$ in 2021---flat through the reform year, as the
-pre-deadline rush and post-deadline collapse offset within 2021---followed
-by $-0.33$ in 2022 and $-0.44$ in 2023 (28 and 36 percent below trend); the
-one wobble is a $+0.15$ lead in 2017, so a conservative reading anchors the
-baseline at 2018--2019, which yields almost the same post-period decline.
-The missing annual flow, 58,000 deeds, sits inside the Legislative Analyst's
-60,000--80,000 count of tax-excluded inherited properties per year: the
-reform removed much of the tax-motivated component of the channel, and
-little else.
+Two pieces of evidence address the design's limitations. First, because
+California is a single treated unit, we use the synthetic-control in-space
+placebo: each donor state is assigned the treatment in turn, and the ratio of
+its post- to pre-reform mean squared prediction error measures how extreme its
+post-period deviation is relative to its own pre-reform fit. California's ratio
+is the second largest of fifty-one states---an exact randomization $p=0.039$
+(Appendix Figure~\ref{fig:scm_mspe})---sharper than, and free of the scaling
+choices in, the transparent counterfactual's rank-based inference
+\citep{conley2011inference}. A demographic adjustment brackets the magnitude
+rather than overturning it: re-estimating the synthetic control on family
+transfers per resident aged 65 and over (American Community Survey one-year
+estimates) leaves a 26 percent gap ($p=0.137$). Because the eliminated deeds
+are predominantly inter-vivos tax-planning transfers rather than death-driven
+successions (Section~\ref{subsec:directtest}), a denominator in the elderly
+population over-corrects; we read the steady-state decline as 26--33 percent,
+with 33 percent the central estimate. The anticipatory bunching above, timed to
+a single legislative deadline, is immune to differential mortality and aging by
+construction and remains the cleanest causal signature, with the steady-state
+decline as corroboration.
+
+Second, timing. A monthly event study resolves what the annual specification
+hides. We regress $\log$ family transfers on California-by-month indicators
+with state and year-month fixed effects, the other fifty states and DC as
+controls, and the 2018--2019 months pooled as the omitted baseline.
+Figure~\ref{fig:event_study} traces the whole path: California sits near its
+2018--2019 baseline in early 2020, drifts upward through the anticipation period
+as Proposition~19 reaches the ballot and passes, spikes to $+0.32$ log points in
+February 2021---the deadline month---and then settles into a persistent decline
+of $0.3$ to $0.5$ log points through 2022--2023. An annual event study reports
+essentially zero for 2021 only because the pre-deadline rush and the
+post-deadline collapse cancel within the calendar year; at monthly resolution
+the two are plainly distinct, and the post-reform level shift is unmistakable.
+The missing annual flow, roughly 58,000 deeds, sits inside the Legislative
+Analyst's 60,000--80,000 count of tax-excluded inherited properties per year,
+consistent with the reform removing a large tax-motivated component of the
+channel.
+
+\begin{figure}[!t]
+  \centering 
+  \includegraphics[width=0.95\linewidth]{figures/F_event_study_monthly.pdf}
+  \caption{Monthly event study of California family transfers. Points are
+  California-by-month coefficients from a regression of $\log$ family transfers
+  on state and year-month fixed effects, with the 2018--2019 months pooled as
+  the omitted baseline and the other fifty states and DC as controls. Whiskers
+  are 95 percent state-clustered confidence intervals. Shaded regions mark the
+  anticipation build-up (ballot to passage), the rush between passage and the
+  February 16, 2021 effective date, and the post-reform period; dashed lines
+  mark the passage and effective dates.}
+  \label{fig:event_study}
+\end{figure}
 
 \input{tables/T4_prop19.tex}
 
@@ -591,7 +660,8 @@ cohort-month fixed effects, weighted by cell size, clustered by state), with
 the identical regression run on market \emph{purchases} as a placebo for
 California-specific housing-cycle shocks; the triple-difference nets the two.
 
-The raw numbers tell the story. Before the reform, California
+The raw numbers tell the story (Appendix Figure~\ref{fig:sold24_cohorts}).
+Before the reform, California
 family-transferred homes reached the market \emph{more} often than the
 national average (16.1 versus 13.1 percent within 24 months)---California's
 inherited-basis regime made even hold-motivated transfers cheap to unwind
@@ -612,25 +682,26 @@ lives.
 
 \subsection{Where are the missing homes? A direct test}\label{subsec:directtest}
 
-If the heirs in the wedge now sell at succession instead of taking title,
-the missing family deeds should eventually reappear as market sales by
-estates and trusts. The deed names permit a direct test: market sales whose
-seller carries an estate, executor, or trust designation. The answer, so
-far, is that they have not reappeared. Estate- and trust-seller market sales
-in California fall 8 percent relative to donor states between 2017--2019 and
-2022--2023 (permutation $p = 0.71$); relative to California's overall market
-slump they \emph{gain} 8 log points---their share of California market sales
-rises from 28.4 to 31.9 percent---but similar share gains occur elsewhere
-(permutation $p = 0.63$).
+If the missing deeds were near-succession transfers, they should reappear as
+market sales by estates and trusts. If they were advance tax-planning deeds,
+they need not surface immediately: the parent simply keeps title until death.
+The deed names permit a direct test of the near-succession channel: market
+sales whose seller carries an estate, executor, or trust designation. The
+answer, so far, is that they have not reappeared. Estate- and trust-seller
+market sales in California fall 8 percent relative to donor states between
+2017--2019 and 2022--2023 (permutation $p = 0.71$); relative to California's
+overall market slump they \emph{gain} 8 log points---their share of
+California market sales rises from 28.4 to 31.9 percent---but similar share
+gains occur elsewhere (permutation $p = 0.63$).
 
-This null is informative rather than embarrassing, because it discriminates
+This null is informative as it discriminates
 between two readings of the volume decline. If the eliminated deeds had been
 transfers of homes whose succession was imminent---parents recently deceased,
 estates in settlement---the market should have received those homes within
 the 2022--2023 window. It did not. The eliminated deeds were instead
 predominantly \emph{inter-vivos} transfers, executed while the parent was
 alive precisely to lock in the tax basis years or decades ahead of
-succession; absent the tax motive, the parents simply keep title, and
+succession. Absent the tax motive, the parents simply keep title, and
 nothing observable happens until they die. The reform's effect on market
 supply is therefore real but deferred: every one of these postponed
 successions now ends with reassessment at market value in the hands of any
@@ -641,37 +712,43 @@ whether they are---a sharp, falsifiable prediction this paper leaves armed.
 \subsection{Threats to identification}
 
 California is a single treated state, so conventional
-clustered standard errors understate uncertainty regardless of the number of control
-states. Table~\ref{tab:prop19} reports them for
-transparency. We also use placebo-state permutation for inference:
-each donor state is assigned the treatment in turn, the design is
-re-estimated, and California's coefficient is ranked in the resulting
-distribution.
+clustered standard errors understate uncertainty regardless of the number of
+control states. Table~\ref{tab:prop19} reports them for scale, not as the
+basis for inference. We instead rely on the synthetic-control in-space
+placebo---each donor state is assigned the treatment in turn and California's
+post-to-pre prediction-error ratio is ranked against the resulting
+distribution (second of fifty-one, $p=0.039$)---together with Conley--Taber
+intervals built from the same placebo gaps. Placebo-state ranks for the
+transparent counterfactual, scaled by each state's pre-period RMSPE so that
+poorly fit placebos do not mechanically dominate, are reported as a
+corroborating alternative in Appendix~\ref{app:robustness}.
 
-Five substantive threats to identification deserve mention.
+Five threats to identification deserve mention.
 
 \begin{itemize}
 \item \emph{COVID and the 2020--2021
 turbulence}: the bunching counterfactual absorbs national pandemic shocks by
-construction (with the caveat that it is anchored to California's 2019
-seasonal pattern, so its pre-period fit is validated out of sample only in
-2018 and the first ten months of 2020); the steady-state DiD excludes
-2020--2021 entirely; and the placebo run on market sales nets out
-California-specific cycle effects.
+construction, and its pre-period fit is checked over 2018m1--2020m10; the
+steady-state DiD excludes 2020--2021 entirely; and the placebo run on market
+sales nets out California-specific cycle effects.
 \item \emph{Differential mortality and
 migration}: family transfers are driven by deaths and aging, and California's
 cumulative COVID mortality was below the national average while elevated
-mortality elsewhere pulled successions forward---both forces depress
+mortality elsewhere pulled successions forward---both forces could depress
 California's 2022--2023 family transfers relative to donors through channels
-the market placebo does not absorb. The event-study leads below bound how
-much pre-existing divergence this style of confound could ride on, and a
-demographic-adjusted specification (deaths among residents 65 and over) is a
-planned refinement.
+the market placebo does not absorb. We address this directly: re-estimating
+the synthetic control on family transfers per resident aged 65 and over
+(American Community Survey one-year estimates) leaves a 26 percent gap
+($p=0.137$). Because the eliminated deeds are predominantly inter-vivos
+transfers rather than death-driven successions, a denominator in the elderly
+population over-corrects, so we treat 26 percent as a conservative floor and
+the unadjusted 33 percent as the central estimate; the deadline bunching is
+immune to this channel by construction.
 \item \emph{The pulled-forward stock}: some of the post-period
 shortfall reflects transfers executed early during the rush rather than
 abandoned. The paper's own numbers bound this: even if every one of the
-28,866 excess deeds was borrowed from the March 2021--December 2022 window,
-retiming would account for at most a third of that window's 85,365-deed
+28,869 excess deeds was borrowed from the March 2021--December 2022 window,
+retiming would account for at most a third of that window's 85,351-deed
 shortfall---and none of the 2023 decline, which is the largest.
 \item \emph{Placebo
 contamination}: two forces push California market sales \emph{up} after 2021
@@ -708,8 +785,8 @@ eventual stakes are visible in the stock: at the pre-reform pace, the
 eliminated flow compounds to half a million California homes per decade
 whose succession now happens at market-value taxes rather than inherited
 ones, against a state market currently transacting 340,000 sales per year.
-How much of that converts to listings is the sharpest open question the
-data will answer as successions mature.
+% How much of that converts to listings is the sharpest open question the
+% data will answer as successions mature.
 
 \paragraph{The nation.} The wedge $t(p - A_0)$ requires an assessment gap,
 and California's acquisition-value system---half a century old, in the
@@ -737,23 +814,25 @@ homes that sell on the open market, another changes hands without one. This
 paper's contribution is to make that parallel circulation visible---nearly 20
 million family transfers from 2007 to 2023, nine in ten at a recorded price
 of zero, three in five still in family hands a decade later---and to show
-that it responds to tax incentives exactly as a market would: bunching at
-deadlines and contracting sharply when the subsidy to dynastic holding ends. The family is not outside the housing market; it is a
+that it responds in market-like ways to tax incentives: bunching at deadlines
+and contracting sharply when the subsidy to dynastic holding ends. The family is not outside the housing market; it is a
 housing-market institution, one that allocates by birth and that policy has
-been subsidizing for nearly half a century in the largest state.
+been subsidizing for nearly half a century in The Golden State.
 
-The agenda this opens is concrete. Longer post-reform horizons will reveal
+% The agenda this paper opens is clear. 
+Longer post-reform horizons will reveal
 how many of the missing California successions surface as estate sales,
 closing the bounds in Section~\ref{sec:magnitudes}. Linking transferred
 parcels to rental listings and occupancy records would quantify the
-under-utilization of family-held homes directly. And the distributional
+under-utilization of family-held homes directly. Nevertheless, the distributional
 question looms: family transfers transmit housing wealth within families
 that have it---\citet{charleshurst2003wealth} document how tightly wealth
 correlates across generations---while withholding the filtering stock from
-families that do not \citep{rosenthal2014filtering}. Whether the family
-channel narrows or widens the gap between those who inherit homes and those
-who must buy them is, on the evidence here, a question tax policy helps
-decide.
+families that do not \citep{rosenthal2014filtering}. Our findings show that whether the family channel narrows or widens the gap between inheritors and buyers remains fundamentally a function of the tax policy that shapes it. 
+
+% Whether the family channel narrows or widens the gap between those who inherit homes and those
+% who must eventually buy them is, based on our findings, precisely the question tax policy helps
+% decide.
 
 \bibliography{../../../Bibliography_base}
 

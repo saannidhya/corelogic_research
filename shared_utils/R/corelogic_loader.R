@@ -46,11 +46,19 @@ default_raw_root <- function() {
 #' @param sample If TRUE, read the 10K-row sample instead of full data.
 #' @param source One of "parquet" (default) or "raw".
 #' @param parquet_root (Internal/testing) override parquet root.
+#' @param per_partition If TRUE, read each requested state's directory
+#'   directly with its own (native) per-year schema instead of the unified
+#'   dataset schema. Use when cross-state type drift breaks the unified
+#'   scan (e.g., a column stored as string in one state and numeric in
+#'   another, with values the unified type cannot parse — this surfaces as
+#'   an arrow "Failed to parse value" error on collect()). Requires
+#'   `states` to be non-NULL.
 #' @return Tibble.
 load_corelogic_ot <- function(states = NULL, years = NULL, columns = NULL,
                               sample = FALSE,
                               source = c("parquet", "raw"),
-                              parquet_root = default_parquet_root()) {
+                              parquet_root = default_parquet_root(),
+                              per_partition = FALSE) {
   source <- match.arg(source)
 
   if (sample) {
@@ -60,6 +68,20 @@ load_corelogic_ot <- function(states = NULL, years = NULL, columns = NULL,
   ot_path <- path(parquet_root, "by_state", "ot")
 
   if (source == "parquet" && dir_exists(ot_path)) {
+    if (per_partition) {
+      stopifnot(!is.null(states))
+      out <- lapply(states, function(st) {
+        st_path <- path(ot_path, paste0("state=", st))
+        if (!dir_exists(st_path)) return(NULL)
+        ds <- open_dataset(st_path)
+        if (!is.null(years))   ds <- ds |> filter(year %in% years)
+        if (!is.null(columns)) ds <- ds |> select(any_of(unique(c(columns, "year"))))
+        d <- as_tibble(collect(ds))
+        d$state <- st
+        d
+      })
+      return(dplyr::bind_rows(out))
+    }
     ds <- open_dataset(ot_path, partitioning = c("state", "year"))
     if (!is.null(states))  ds <- ds |> filter(state %in% states)
     if (!is.null(years))   ds <- ds |> filter(year  %in% years)

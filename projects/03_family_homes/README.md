@@ -21,9 +21,14 @@
 - `scripts/R/01_build_panel.R` — national transfer-event panel + name-based taxonomy
 - `scripts/R/02_facts.R` — RQ1 national facts (volume, composition, trends)
 - `scripts/R/03_hazard.R` — RQ2 post-transfer time-to-market-sale hazard
-- `scripts/R/04_prop19.R` — RQ3 Prop 19 event study + DiD
+- `scripts/R/04_prop19.R` — RQ3 Prop 19 bunching counterfactual + volume DiD
+- `scripts/R/06b_prop19_scm_figures.R` — SCM figures (F5–F7) + monthly event study (Section 6 rebuild)
+- `scripts/R/08_within_ca.R` — within-CA DiD (built, dropped as causal — wrong sign; descriptive only)
+- `scripts/R/09_scm_inference.R` — donor-weighted synthetic control + MSPE-ratio + Conley–Taber inference
+- `scripts/R/09b_event_study.R` — monthly TWFE event study (2018–19 baseline) + placebo band
+- `scripts/R/10_mortality.R` — tidycensus 65+ pull + per-65+ demographic-adjusted SCM
 - `scripts/R/05_tables.R` — manuscript tables
-- `scripts/R/06_figures.R` — manuscript figures
+- `scripts/R/06_figures.R` — manuscript figures (F1–F4 + legacy)
 - `manuscript/paper.tex` — manuscript draft
 - `slides/seminar.tex` — seminar slides (Beamer source of truth)
 
@@ -35,14 +40,16 @@
 | 2026-06-09 | EXPLORATION | Feasibility probes confirmed flag semantics, name taxonomy, and a visible Prop 19 spike |
 | 2026-06-09 | WRITING | Full pipeline run (148.7M events); first complete manuscript draft compiled (23pp) |
 | 2026-06-10 | WRITING | Panel rebuilt with retitle class and data fixes; permutation inference and direct supply test added; numbers recomputed; draft v2 compiled (25pp) |
+| 2026-06-25 | WRITING | Section 6 (Prop 19 causal) rebuilt: synthetic control (MSPE-ratio p=0.039) + Conley–Taber replace the placebo rank; monthly event study; 65+ demographic bracket (−26% to −33%); within-CA DiD tried and dropped; F5–F7 swapped to SCM figures, old placebo-rank + sold24 figures relegated to appendix |
 
 ## Next Steps
 
-- [x] Feasibility probes (flag semantics, name population, clip linkage, Prop 19 visibility)
-- [ ] Lit review — intergenerational housing transfers, Prop 13/19, transfer-tax timing, misallocation
-- [ ] Build national transfer-event panel with taxonomy (01)
-- [ ] National facts (02), hazard (03), Prop 19 causal core (04)
-- [ ] First full manuscript draft and internal review
+- [x] Pipeline (01), national facts (02), hazard (03), Prop 19 core (04), first full draft
+- [x] Section 6 rebuild (June 2026) — synthetic control + monthly event study + 65+ demographic bracket; figures swapped
+- [ ] Table 4: add SCM / event-study / demographic-adjusted rows (currently shows only the legacy DiD)
+- [ ] Within-CA descriptive paragraph (Prop 19 concentrated in the primary-residence channel) + update the mortality "planned refinement" threats bullet
+- [ ] Tier-2 robustness: bunching excess-mass + bootstrap, HonestDiD sensitivity, trust/LLC substitution bounds
+- [ ] Re-run `/review-paper --peer` on the rebuilt Section 6; `renv::snapshot()` for the new packages (tidysynth, tidycensus)
 
 ## Status definitions
 

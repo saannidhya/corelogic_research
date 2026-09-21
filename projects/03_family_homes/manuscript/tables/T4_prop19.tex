@@ -1,31 +1,33 @@
 
 \begin{table}[htbp]
-   \caption{\label{tab:prop19} Proposition 19 and the market release of family-held homes}
+   \caption{\label{tab:prop19} Proposition 19: volume, selection, and composition}
    \centering
+   \scriptsize
    \begin{tabular}{lccccc}
       \tabularnewline \midrule \midrule
       Dependent Variables: & log(n\_fam) & log(n\_market) & \multicolumn{2}{c}{Sold within 24m} & Absentee share\\
-      Model:            & (1)             & (2)             & (3)             & (4)             & (5)\\  
+      Model:                     & (1)            & (2)             & (3)      & (4)      & (5)\\
       \midrule
       \emph{Variables}\\
-      CA $\times$ Post  & -0.4253$^{***}$ & -0.1626$^{***}$ & -0.0178$^{***}$ & -0.0104$^{***}$ & -0.0016\\   
-                        & (0.0352)        & (0.0293)        & (0.0032)        & (0.0019)        & (0.0032)\\   
+      CA $\times$ Post           & -0.4253        & -0.1626         & -0.0178  & -0.0104  & -0.0016\\
+                                 & (0.0352)       & (0.0293)        & (0.0032) & (0.0019) & (0.0032)\\
+      Synthetic-control rank     & 2/51 (p=0.039) &                 &          &          & \\
+      Ann. placebo rank          & 5/51 (p=0.098) & 17/51 (p=0.333) &          &          & \\
+      Fam. $-$ market log effect & -0.263         &                 &          &          & \\
+      Monthly pre-fit rank       & 1/51 (p=0.020) &                 &          &          & \\
       \midrule
       \emph{Fixed-effects}\\
-      State             & Yes             & Yes             & Yes             & Yes             & Yes\\  
-      Year              & Yes             & Yes             &                 &                 & \\  
-      Cohort month      &                 &                 & Yes             & Yes             & Yes\\  
+      State                      & Yes            & Yes             & Yes      & Yes      & Yes\\
+      Year                       & Yes            & Yes             &          &          & \\
+      Cohort month               &                &                 & Yes      & Yes      & Yes\\
       \midrule
       \emph{Fit statistics}\\
-      Observations      & 255             & 255             & 1,836           & 1,836           & 1,836\\  
-      R$^2$             & 0.98575         & 0.98961         & 0.84936         & 0.85147         & 0.90764\\  
+      Observations               & 255            & 255             & 1,836    & 1,836    & 1,836\\
+      R$^2$                      & 0.98575        & 0.98961         & 0.84936  & 0.85147  & 0.90764\\
       \midrule \midrule
       \multicolumn{6}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
-      \multicolumn{6}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
    \end{tabular}
-   
-   \par \raggedright 
-   Cols (1)-(2): state-year counts, 2017-2019 vs 2022-2023. Cols (3)-(5): cohort cells (2017m1-2018m12 vs 2021m7-2022m6), weighted by cell size. Clustered (state) SEs shown for transparency; with a single treated state they understate uncertainty -- permutation p-values reported in the text are the basis for inference.
+
+   \par \raggedright
+   Cols (1)-(2): state-year counts, 2017-2019 vs 2022-2023. Cols (3)-(5): cohort cells (2017m1-2018m12 vs 2021m7-2022m6), weighted by cell size. Clustered (state) SEs are shown only for scale. Single-treated-state inference for the steady-state volume decline is the synthetic-control in-space placebo (MSPE-ratio rank 2/51, $p=0.039$; Appendix Figure~\ref{fig:scm_mspe}); the annual and monthly-counterfactual placebo ranks are reported as transparent alternatives. The monthly pre-fit rank is the 2022-2023 California gap divided by its 2018m1-2020m10 counterfactual RMSPE, ranked against leave-one-out placebo states.
 \end{table}
-
-
