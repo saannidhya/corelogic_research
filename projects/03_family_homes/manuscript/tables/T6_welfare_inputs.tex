@@ -1,0 +1,16 @@
+\begin{table}[!ht]\centering
+\caption{Inputs to the welfare calibration}\label{tab:welfare_inputs}
+{\small
+\begin{tabular}{p{0.22\textwidth}p{0.25\textwidth}p{0.42\textwidth}}\toprule
+Input & Value & Evidence status \\
+\midrule
+Recorded-deed flow & 58,045 per year & Net DiD scaled by 2018--2019 CA baseline \\
+Net DiD inference & $p=0.176$ & State placebo rank; not a welfare test \\
+Annual tax wedge & \$3,729--\$4,972 & LAO long-held Los Angeles benchmark \\
+Source dollar year & 2017 & Assumed publication-year dollars; CPI to 2023 \\
+Allocation conversion & $\alpha\in[0,1]$ & Assumed properties per missing deed \\
+Mean surplus gap & $\lambda w$ & Uniform benchmark $\lambda=1/2$ \\
+Persistence & CA parcel-episode survival & Proxy; marginal survival is not identified \\
+Delay / horizon & 0, 5, 10 / 10 years & Assumptions; grandfathered stock excluded \\
+\bottomrule\end{tabular}}
+\begin{minipage}{0.96\textwidth}\vspace{3pt}{\scriptsize\textit{Notes:} The tax wedge is an external benchmark, not a statewide marginal estimate. The SCM estimates are reported separately and do not enter the net-DiD reference flow. The conversion parameter includes legal-title-only responses and multiple deeds per property; it is not estimated using the national deeds-per-parcel ratio.}\end{minipage}\end{table}

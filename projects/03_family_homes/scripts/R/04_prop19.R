@@ -13,6 +13,7 @@
 #          _outputs/prop19_did_volume.rds (+csv)
 #          _outputs/prop19_ddd_hazard.rds (+csv)
 #          _outputs/prop19_absentee_did.rds (+csv)
+# Log:     10/02/2026: moved event aggregation and spells into R memory.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -29,59 +30,57 @@ on.exit(sink(), add = TRUE)
 
 message("Starting 04_prop19 at ", Sys.time())
 
-con <- open_corelogic_duckdb()
-on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
-dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
-
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
-ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
+ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
-fam_classes <- "('family_person','family_other','family_estate')"
+fam_classes <- c("family_person", "family_other", "family_estate")
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
-# ---- (a) Monthly series + bunching ---------------------------------------
-monthly <- dbGetQuery(con, glue("
-  SELECT state, ym, sale_year, sale_month,
-         SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END) AS n_fam,
-         SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END) AS n_trust,
-         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
-  FROM {ev}
-  WHERE sale_year BETWEEN 2018 AND 2023
-  GROUP BY state, ym, sale_year, sale_month
-  ORDER BY state, ym
-"))
+# ============================================================
+# 1. Monthly series and bunching ----
+# ============================================================
+monthly <- ev_data %>%
+  filter(between(sale_year, 2018L, 2023L)) %>%
+  group_by(state, ym, sale_year, sale_month) %>%
+  summarize(
+    n_fam = sum(class %in% fam_classes),
+    n_trust = sum(class == "family_trust", na.rm = TRUE),
+    n_market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(state, ym)
 assert_rows(monthly, 2000, "prop19_monthly_series")
 write_csv_strict(monthly, path(tables_out_dir, "prop19_monthly_series.csv"))
 
-monthly_states <- monthly |>
-  filter(!state %in% territories) |>
+monthly_states <- monthly %>%
+  filter(!state %in% territories) %>%
   mutate(n_fam = as.numeric(n_fam),
          n_market = as.numeric(n_market))
 states <- sort(unique(monthly_states$state))
-stopifnot("CA" %in% states, length(states) == 51)
 
-ca <- monthly_states |> filter(state == "CA")
-donors <- monthly_states |>
-  filter(state != "CA") |>
-  group_by(ym, sale_year, sale_month) |>
+ca <- monthly_states %>% filter(state == "CA")
+donors <- monthly_states %>%
+  filter(state != "CA") %>%
+  group_by(ym, sale_year, sale_month) %>%
   summarise(n_fam = sum(n_fam), n_market = sum(n_market), .groups = "drop")
 
 # Counterfactual CA(m) = CA(2019, same calendar month) * donors(m)/donors(2019, same month)
-base_ca <- ca |> filter(sale_year == 2019) |> select(sale_month, ca_base = n_fam)
-base_dn <- donors |> filter(sale_year == 2019) |> select(sale_month, dn_base = n_fam)
+base_ca <- ca %>% filter(sale_year == 2019) %>% select(sale_month, ca_base = n_fam)
+base_dn <- donors %>% filter(sale_year == 2019) %>% select(sale_month, dn_base = n_fam)
 
-cf <- ca |>
-  select(ym, sale_year, sale_month, ca_actual = n_fam) |>
-  left_join(donors |> select(ym, dn_actual = n_fam), by = "ym") |>
-  left_join(base_ca, by = "sale_month") |>
-  left_join(base_dn, by = "sale_month") |>
+cf <- ca %>%
+  select(ym, sale_year, sale_month, ca_actual = n_fam) %>%
+  left_join(donors %>% select(ym, dn_actual = n_fam), by = "ym") %>%
+  left_join(base_ca, by = "sale_month") %>%
+  left_join(base_dn, by = "sale_month") %>%
   mutate(ca_cf = ca_base * dn_actual / dn_base,
          excess = ca_actual - ca_cf)
 write_csv_strict(cf, path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"))
 
-window_antic <- cf |> filter(ym >= 202011, ym <= 202102)
-window_post  <- cf |> filter(ym >= 202103, ym <= 202212)
+window_antic <- cf %>% filter(ym >= 202011, ym <= 202102)
+window_post  <- cf %>% filter(ym >= 202103, ym <= 202212)
 bunch <- tibble(
   excess_antic_window = sum(window_antic$excess),
   antic_actual = sum(window_antic$ca_actual),
@@ -96,17 +95,19 @@ print(bunch, width = Inf)
 write_csv_strict(bunch, path(tables_out_dir, "prop19_bunching_summary.csv"))
 saveRDS(bunch, path(out_dir, "prop19_bunching_summary.rds"))
 
-# ---- (a2) Leave-one-out counterfactuals + pre-fit placebo inference --------
+# ============================================================
+# 2. Leave-one-out counterfactuals and pre-fit placebo inference ----
+# ============================================================
 cf_base_windows <- list("2019" = 2019L, "2018_2019" = 2018:2019)
 
 build_cf_for_state <- function(treated_state, base_label, base_years) {
-  treated <- monthly_states |>
-    filter(state == treated_state) |>
+  treated <- monthly_states %>%
+    filter(state == treated_state) %>%
     select(ym, sale_year, sale_month, actual_fam = n_fam)
 
-  donor_series <- monthly_states |>
-    filter(state != treated_state) |>
-    group_by(ym, sale_year, sale_month) |>
+  donor_series <- monthly_states %>%
+    filter(state != treated_state) %>%
+    group_by(ym, sale_year, sale_month) %>%
     summarise(
       donor_fam = sum(n_fam),
       donor_count = n_distinct(state),
@@ -114,20 +115,20 @@ build_cf_for_state <- function(treated_state, base_label, base_years) {
       .groups = "drop"
     )
 
-  base_treated <- treated |>
-    filter(sale_year %in% base_years) |>
-    group_by(sale_month) |>
+  base_treated <- treated %>%
+    filter(sale_year %in% base_years) %>%
+    group_by(sale_month) %>%
     summarise(base_treated_fam = mean(actual_fam), .groups = "drop")
 
-  base_donor <- donor_series |>
-    filter(sale_year %in% base_years) |>
-    group_by(sale_month) |>
+  base_donor <- donor_series %>%
+    filter(sale_year %in% base_years) %>%
+    group_by(sale_month) %>%
     summarise(base_donor_fam = mean(donor_fam), .groups = "drop")
 
-  treated |>
-    left_join(donor_series, by = c("ym", "sale_year", "sale_month")) |>
-    left_join(base_treated, by = "sale_month") |>
-    left_join(base_donor, by = "sale_month") |>
+  treated %>%
+    left_join(donor_series, by = c("ym", "sale_year", "sale_month")) %>%
+    left_join(base_treated, by = "sale_month") %>%
+    left_join(base_donor, by = "sale_month") %>%
     mutate(
       base_window = base_label,
       treated_state = treated_state,
@@ -135,7 +136,7 @@ build_cf_for_state <- function(treated_state, base_label, base_years) {
       excess_fam = actual_fam - cf_fam,
       gap_fam = excess_fam / cf_fam,
       .before = 1
-    ) |>
+    ) %>%
     arrange(treated_state, ym)
 }
 
@@ -163,8 +164,8 @@ rank_le <- function(x) {
   vapply(x, function(z) sum(x <= z), integer(1))
 }
 
-cf_placebo_summary <- cf_placebo_monthly |>
-  group_by(base_window, treated_state) |>
+cf_placebo_summary <- cf_placebo_monthly %>%
+  group_by(base_window, treated_state) %>%
   summarise(
     donor_count = first(donor_count),
     pre_start_ym = 201801L,
@@ -182,8 +183,8 @@ cf_placebo_summary <- cf_placebo_monthly |>
     feb_ratio = feb_gap / pre_rmspe,
     post2223_ratio = -post2223_gap / pre_rmspe,
     .groups = "drop"
-  ) |>
-  group_by(base_window) |>
+  ) %>%
+  group_by(base_window) %>%
   mutate(
     n_states = n(),
     antic_rank_raw = rank_ge(antic_gap),
@@ -198,8 +199,8 @@ cf_placebo_summary <- cf_placebo_monthly |>
     antic_p_ratio = antic_rank_ratio / n_states,
     feb_p_ratio = feb_rank_ratio / n_states,
     post2223_p_ratio = post2223_rank_ratio / n_states
-  ) |>
-  ungroup() |>
+  ) %>%
+  ungroup() %>%
   relocate(n_states, .after = treated_state)
 
 write_csv_strict(cf_placebo_summary,
@@ -216,9 +217,9 @@ sensitivity_windows <- tribble(
 )
 
 window_stats <- pmap_dfr(sensitivity_windows, function(window, start_ym, end_ym, direction) {
-  cf_placebo_monthly |>
-    filter(ym >= start_ym, ym <= end_ym) |>
-    group_by(base_window, treated_state) |>
+  cf_placebo_monthly %>%
+    filter(ym >= start_ym, ym <= end_ym) %>%
+    group_by(base_window, treated_state) %>%
     summarise(
       window = window,
       start_ym = start_ym,
@@ -229,24 +230,24 @@ window_stats <- pmap_dfr(sensitivity_windows, function(window, start_ym, end_ym,
     )
 })
 
-prop19_window_sensitivity <- window_stats |>
+prop19_window_sensitivity <- window_stats %>%
   left_join(
-    cf_placebo_summary |> select(base_window, treated_state, n_states, pre_rmspe),
+    cf_placebo_summary %>% select(base_window, treated_state, n_states, pre_rmspe),
     by = c("base_window", "treated_state")
-  ) |>
+  ) %>%
   mutate(
     directional_gap = if_else(direction == "positive", gap, -gap),
     ratio = directional_gap / pre_rmspe
-  ) |>
-  group_by(base_window, window) |>
+  ) %>%
+  group_by(base_window, window) %>%
   mutate(
     raw_rank = rank_ge(directional_gap),
     raw_p = raw_rank / n_states,
     ratio_rank = rank_ge(ratio),
     ratio_p = ratio_rank / n_states
-  ) |>
-  ungroup() |>
-  filter(treated_state == "CA") |>
+  ) %>%
+  ungroup() %>%
+  filter(treated_state == "CA") %>%
   transmute(
     base_window, window, start_ym, end_ym, direction,
     ca_gap = gap,
@@ -259,21 +260,22 @@ write_csv_strict(prop19_window_sensitivity,
 saveRDS(prop19_window_sensitivity,
         path(out_dir, "prop19_window_sensitivity.rds"))
 
-# ---- (b) Steady-state volume DiD ------------------------------------------
+# ============================================================
+# Steady-state volume DiD ----
+# ============================================================
 # ln(family transfers) state x year; pre = 2017-2019, post = 2022-2023;
 # transition years 2020-2021 excluded (anticipation + deadline retiming).
-sy <- dbGetQuery(con, glue("
-  SELECT state, sale_year,
-         SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END) AS n_fam,
-         SUM(CASE WHEN class IN ('family_person','family_other','family_estate',
-                                 'family_trust') THEN 1 ELSE 0 END) AS n_fam_wtrust,
-         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
-  FROM {ev}
-  WHERE sale_year IN (2017, 2018, 2019, 2022, 2023)
-  GROUP BY state, sale_year
-"))
-sy <- sy |>
-  filter(!state %in% c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")) |>
+sy <- ev_data %>%
+  filter(sale_year %in% c(2017L, 2018L, 2019L, 2022L, 2023L)) %>%
+  group_by(state, sale_year) %>%
+  summarize(
+    n_fam = sum(class %in% fam_classes),
+    n_fam_wtrust = sum(class %in% c(fam_classes, "family_trust")),
+    n_market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  )
+sy <- sy %>%
+  filter(!state %in% c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")) %>%
   mutate(post = as.integer(sale_year >= 2022),
          ca = as.integer(state == "CA"))
 stopifnot(nrow(sy) > 200, sum(sy$ca) == 5)
@@ -296,68 +298,72 @@ write_csv_strict(
   path(tables_out_dir, "prop19_did_volume.csv")
 )
 
-# ---- (c) Supply release: sold-within-24m DiD + market placebo -------------
+
+
+# ============================================================
+# 3. Supply release: sold-within-24m DiD and market placebo ----
+# ============================================================
 # Cohorts: PRE = transfers 2017-01..2018-12; POST = 2021-07..2022-06.
 # All outcome windows close before the 2024-06-30 censor.
-dbExecute(con, glue("
-  CREATE OR REPLACE TEMP VIEW ev_dated AS
-  SELECT *,
-    make_date(
-      CAST(sale_raw / 10000 AS INTEGER),
-      CAST((sale_raw / 100) % 100 AS INTEGER),
-      CASE WHEN CAST(sale_raw % 100 AS INTEGER) = 0 THEN 1
-           ELSE CAST(sale_raw % 100 AS INTEGER) END
-    ) AS sale_date
-  FROM {ev}
-  WHERE CAST((sale_raw / 100) % 100 AS INTEGER) BETWEEN 1 AND 12
-"))
+ev_date_audit <- ev_data %>%
+  mutate(sale_date = parse_event_dates(sale_raw))
 
-dbExecute(con, glue("
-  CREATE OR REPLACE TEMP TABLE cohort19 AS
-  SELECT clip, state, ym, sale_date, absentee_buyer,
-         CASE WHEN class IN {fam_classes} THEN 'fam' ELSE 'market' END AS grp,
-         CASE WHEN ym BETWEEN 202107 AND 202206 THEN 1 ELSE 0 END AS post
-  FROM ev_dated
-  WHERE (ym BETWEEN 201701 AND 201812 OR ym BETWEEN 202107 AND 202206)
-    AND (class IN {fam_classes} OR class = 'market_sale')
-    AND corp_buyer = 0
-"))
-
-dbExecute(con, "
-  CREATE OR REPLACE TEMP TABLE market_sales AS
-  SELECT clip, sale_date AS msale_date FROM ev_dated WHERE class = 'market_sale'
-")
-
-cells <- dbGetQuery(con, "
-  WITH spells AS (
-    -- clip MUST be in the select list: GROUP BY ALL without it collapses
-    -- all same-date/state/group events into one spell (caught 2026-06-09:
-    -- produced sold24 = 0.65 vs true ~0.10 and 40x undercounted cohorts)
-    SELECT c.clip, c.state, c.ym, c.grp, c.post, c.absentee_buyer, c.sale_date,
-           MIN(m.msale_date) AS next_market_date
-    FROM cohort19 c
-    LEFT JOIN market_sales m
-      ON m.clip = c.clip AND m.msale_date > c.sale_date
-    GROUP BY ALL
+date_audit <- ev_date_audit %>%
+  summarize(
+    n = n(),
+    n_day_imputed = sum(as.numeric(sale_raw) %% 100 == 0, na.rm = TRUE),
+    n_invalid = sum(is.na(sale_date))
   )
-  SELECT state, ym, grp, post,
-    COUNT(*) AS n,
-    AVG(CASE WHEN next_market_date IS NOT NULL
-              AND next_market_date <= sale_date + INTERVAL 24 MONTH
-             THEN 1.0 ELSE 0 END) AS sold24,
-    AVG(CASE WHEN absentee_buyer IS NOT NULL THEN CAST(absentee_buyer AS DOUBLE) END) AS absentee_share,
-    SUM(CASE WHEN absentee_buyer IS NOT NULL THEN 1 ELSE 0 END) AS n_absentee_obs
-  FROM spells
-  GROUP BY state, ym, grp, post
-")
+print(date_audit)
+stopifnot(date_audit$n > 0, date_audit$n_invalid / date_audit$n < 0.001)
+write_csv_strict(date_audit, path(tables_out_dir, "04_date_audit.csv"))
+
+ev_dated <- ev_date_audit %>%
+  filter(!is.na(sale_date))
+
+cohort19 <- ev_dated %>%
+  filter(
+    between(ym, 201701L, 201812L) | between(ym, 202107L, 202206L),
+    class %in% c(fam_classes, "market_sale"),
+    corp_buyer == 0
+  ) %>%
+  transmute(
+    clip, state, ym,
+    grp = if_else(class %in% fam_classes, "fam", "market"),
+    post = as.integer(between(ym, 202107L, 202206L)),
+    absentee_buyer, sale_date
+  )
+
+market_sales <- ev_dated %>%
+  filter(class == "market_sale") %>%
+  dplyr::select(clip, msale_date = sale_date)
+
+# Keep clip in each spell: distinct properties must never collapse into one cell.
+spells <- join_next_market_sale(cohort19, market_sales)
+
+spell_outcomes <- spells %>%
+  mutate(
+    sold24 = coalesce(next_market_date <= add_calendar_months(sale_date, 24L), FALSE)
+  )
+
+cells <- spell_outcomes %>%
+  group_by(state, ym, grp, post) %>%
+  summarize(
+    n = n(),
+    sold24 = mean(sold24),
+    # SQL AVG ignores nulls and returns null for an entirely missing group.
+    absentee_share = if (all(is.na(absentee_buyer))) NA_real_ else mean(absentee_buyer, na.rm = TRUE),
+    n_absentee_obs = sum(!is.na(absentee_buyer)),
+    .groups = "drop"
+  )
 assert_rows(cells, 2000, "prop19_cohort_cells")
-cells <- cells |>
-  filter(!state %in% c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")) |>
+cells <- cells %>%
+  filter(!state %in% c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")) %>%
   mutate(ca = as.integer(state == "CA"))
 write_csv_strict(cells, path(tables_out_dir, "prop19_cohort_cells.csv"))
 
-cells_fam <- cells |> filter(grp == "fam")
-cells_mkt <- cells |> filter(grp == "market")
+cells_fam <- cells %>% filter(grp == "fam")
+cells_mkt <- cells %>% filter(grp == "market")
 
 # Magnitude sanity: national family transfers run >1M/yr, so the pooled
 # 3-year cohort must exceed 2M spells; same order for market sales.
@@ -371,7 +377,7 @@ m_haz_mkt <- feols(sold24 ~ ca:post | state + ym, data = cells_mkt,
                    weights = ~n, cluster = ~state)
 # Triple difference: pool, allow group-specific FEs (ca:fam and post:fam
 # are absorbed by state^grp and ym^grp; excluded to keep etable clean)
-cells_pooled <- cells |>
+cells_pooled <- cells %>%
   mutate(fam = as.integer(grp == "fam"))
 m_ddd <- feols(sold24 ~ ca:post:fam + ca:post
                | state^grp + ym^grp, data = cells_pooled,
@@ -381,18 +387,20 @@ saveRDS(list(fam = m_haz_fam, market_placebo = m_haz_mkt, ddd = m_ddd),
         path(out_dir, "prop19_ddd_hazard.rds"))
 
 # Raw 2x2 for transparency
-raw22 <- cells_fam |>
-  group_by(ca, post) |>
+raw22 <- cells_fam %>%
+  group_by(ca, post) %>%
   summarise(sold24 = weighted.mean(sold24, n), n = sum(n), .groups = "drop")
 print(raw22)
 write_csv_strict(raw22, path(tables_out_dir, "prop19_raw_2x2_fam.csv"))
-raw22_mkt <- cells_mkt |>
-  group_by(ca, post) |>
+raw22_mkt <- cells_mkt %>%
+  group_by(ca, post) %>%
   summarise(sold24 = weighted.mean(sold24, n), n = sum(n), .groups = "drop")
 write_csv_strict(raw22_mkt, path(tables_out_dir, "prop19_raw_2x2_market.csv"))
 
-# ---- (d) Composition: absentee recipient share DiD ------------------------
-cells_abs <- cells_fam |> filter(n_absentee_obs > 0, !is.na(absentee_share))
+# ============================================================
+# 4. Composition: absentee recipient share DiD ----
+# ============================================================
+cells_abs <- cells_fam %>% filter(n_absentee_obs > 0, !is.na(absentee_share))
 m_abs <- feols(absentee_share ~ ca:post | state + ym, data = cells_abs,
                weights = ~n_absentee_obs, cluster = ~state)
 print(etable(m_abs))

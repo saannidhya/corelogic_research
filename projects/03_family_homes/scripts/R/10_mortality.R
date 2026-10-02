@@ -29,6 +29,12 @@ sink(log_file, split = TRUE)
 on.exit(sink(), add = TRUE)
 message("Starting 10_mortality at ", Sys.time())
 
+# ---- Reuse the documented population input for reproduction --------------
+pop65_path <- path(here("data", "external"), "state_pop65_acs.parquet")
+if (file_exists(pop65_path)) {
+  pop65 <- arrow::read_parquet(pop65_path)
+  message("Using cached ACS population input: ", pop65_path)
+} else {
 # ---- Census API key from gitignored .env ----------------------------------
 readRenviron(here::here(".env"))
 key <- Sys.getenv("CENSUS_API_KEY")
@@ -52,7 +58,12 @@ pop_2020 <- pop_raw |> filter(sale_year %in% c(2019, 2021)) |>
   summarise(sale_year = 2020L, pop65 = mean(pop65), .groups = "drop")
 pop65 <- bind_rows(pop_raw, pop_2020) |> arrange(state, sale_year)
 stopifnot(n_distinct(pop65$state) == 51, nrow(pop65) == 51 * 6)
-arrow::write_parquet(pop65, path(here("data", "external"), "state_pop65_acs.parquet"))
+arrow::write_parquet(pop65, pop65_path)
+}
+stopifnot(nrow(pop65) == 306L, n_distinct(pop65$state) == 51L,
+          n_distinct(paste(pop65$state, pop65$sale_year)) == 306L,
+          setequal(pop65$sale_year, 2018:2023),
+          all(is.finite(pop65$pop65)), all(pop65$pop65 > 0))
 message("65+ population pulled: ", nrow(pop65), " state-years, CA 2023 = ",
         format(pop65$pop65[pop65$state == "CA" & pop65$sale_year == 2023], big.mark = ","))
 

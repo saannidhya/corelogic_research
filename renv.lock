@@ -463,6 +463,11 @@
       ],
       "Hash": "7f6db50cf8183cce63c06510fc74a318"
     },
+    "duckdb": {
+      "Package": "duckdb",
+      "Version": "1.5.5",
+      "Source": "Repository"
+    },
     "evaluate": {
       "Package": "evaluate",
       "Version": "1.0.5",

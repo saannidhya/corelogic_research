@@ -28,6 +28,9 @@
 - `scripts/R/09b_event_study.R` — monthly TWFE event study (2018–19 baseline) + placebo band
 - `scripts/R/10_mortality.R` — tidycensus 65+ pull + per-65+ demographic-adjusted SCM
 - `scripts/R/05_tables.R` — manuscript tables
+- `scripts/R/11_welfare.R` — conditional allocation-gain calibration, CA parcel-episode persistence, valuation audit, and generated welfare exhibits
+- `scripts/R/11_welfare_helpers.R` — episode and finite-horizon accounting functions
+- `scripts/R/check_welfare_invariants.R` — synthetic date, episode, survival, timing, and welfare accounting checks
 - `scripts/R/06_figures.R` — manuscript figures (F1–F4 + legacy)
 - `manuscript/paper.tex` — manuscript draft
 - `slides/seminar.tex` — seminar slides (Beamer source of truth)
@@ -41,6 +44,35 @@
 | 2026-06-09 | WRITING | Full pipeline run (148.7M events); first complete manuscript draft compiled (23pp) |
 | 2026-06-10 | WRITING | Panel rebuilt with retitle class and data fixes; permutation inference and direct supply test added; numbers recomputed; draft v2 compiled (25pp) |
 | 2026-06-25 | WRITING | Section 6 (Prop 19 causal) rebuilt: synthetic control (MSPE-ratio p=0.039) + Conley–Taber replace the placebo rank; monthly event study; 65+ demographic bracket (−26% to −33%); within-CA DiD tried and dropped; F5–F7 swapped to SCM figures, old placebo-rank + sold24 figures relegated to appendix |
+| 2026-09-21 | WRITING | Reordered national facts → Prop 19 → framework and conditional future allocation gains. Added 4,050 calibration scenarios, CA parcel-episode survival, public-wedge provenance, and valuation audit. Explicit calendar-date parsing reproduces prior hazard and policy results. |
+
+## Welfare revision and reproduction
+
+The current paper uses ordinary sections: introduction, data, four national
+facts, Proposition 19, framework with potential allocation gains, and
+conclusion. The third contribution is a conditional calibration, not an
+estimate of realized welfare. The net-DiD placebo result remains material;
+the two SCM specifications are kept separate from the deed-flow reference.
+
+Restore the repository's R environment with `renv::restore()` before running
+analysis. After the existing pipeline outputs are available, run from the
+repository root:
+
+```text
+Rscript projects/03_family_homes/scripts/R/11_welfare.R
+Rscript projects/03_family_homes/scripts/R/check_welfare_invariants.R
+```
+
+The welfare script reads the derived event panel, saved policy estimates,
+and California property fields through the shared loader. It writes audit
+and scenario CSVs under `scripts/R/_outputs/tables/`, plus manuscript tables,
+number macros, and Figure 8. It does not write raw data. The external CPI
+input and its source documentation are in `scripts/R/inputs/`.
+
+The revision memo, numerical comparison with pre-revision outputs, build
+logs, and visual checks are under
+`quality_reports/family_welfare_2026-09-21/` at the repository root.
+Historical status entries below refer to the earlier section numbering.
 
 ## Next Steps
 

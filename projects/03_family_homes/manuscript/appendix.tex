@@ -25,7 +25,7 @@ category, the highest recorded consideration.
 
 \paragraph{Classification.} The taxonomy in Section~\ref{sec:data} is
 implemented with the recorder-derived interfamily indicator, the
-arm's-length category code, deed type, recorded consideration, and
+arm's-length category code, recorded consideration, and
 string features of the buyer and seller name fields (surname equality;
 exact same-person matches on either buyer slot, which define the
 same-person retitle class; trust keywords; estate, executor, probate, and
@@ -33,14 +33,66 @@ administrator keywords).
 Name fields are populated for the large majority of records (the seller
 surname is non-missing for 84 percent of interfamily events and the buyer
 surname for 66 percent); missing names can only push true family transfers
-into the ``other interfamily'' class, never into the market class, so the
-same-surname series is a strict lower bound on inter-person family transfers.
+into the ``other interfamily'' class, never into the market class, but imperfect full-name matching can also misclassify retitling. The same-surname series is a narrower proxy, not a formally established lower bound on true inter-person transfers.
 
 \paragraph{Absentee recipients.} A recipient is absentee when the buyer
 mailing ZIP on the deed differs from the property's situs ZIP, among records
 where both are observed (77 percent of events in 2007, rising to 98 percent
-by 2023). Within-state comparisons are unaffected by the secular improvement
-in coverage; difference-in-differences designs absorb it in time effects.
+by 2023). Time effects absorb common coverage changes; differential changes across states or transfer classes remain a measurement concern.
+
+\subsection{Recorded property types}\label{app:propertytypes}
+
+We retain the Owner Transfer land-use and property-indicator codes as
+text. Detailed labels use five entries from a
+\href{https://www.osti.gov/servlets/purl/1606747}{published CoreLogic crosswalk};
+remaining codes are retained in the data without an asserted detailed
+label. The property indicator provides a broader cross-check: in this
+extract, indicator 11 accompanies both condominium and apartment land-use
+codes. It therefore cannot distinguish those assets by itself.
+
+\input{tables/T7_property_types.tex}
+
+\begin{figure}[!ht]\centering
+\includegraphics[width=.95\linewidth]{figures/F9_property_types.pdf}
+\caption{Family share of family-plus-market deeds by recorded type,
+2007--2023. The broad family definition excludes trust self-transfers.
+Apartment coverage is incomplete.}\label{fig:propertytypes}
+\end{figure}
+
+Types are static recorded characteristics and may differ across records
+for a parcel. Counts are parcel-date deeds, not dwelling units. In the
+full source audit, only 13 percent of apartment-coded rows carry the
+residential flag required by the existing panel. Apartment comparisons
+therefore do not describe the complete multifamily sector. We preserve
+the original residential restriction for this reproduction.
+
+Type-specific five-year resale comparisons also differ. Among 2008--2018
+cohorts, weighting broad-family and market events to the same market
+state/cohort distribution gives sale rates of 32.1 versus 26.4 percent for
+condominiums, 19.6 versus 22.0 percent for duplexes, and 24.0 versus 23.4
+percent for single-family properties. These comparisons pool family
+classes, unlike the main-text same-surname benchmark, and do not identify
+an effect of inheriting an asset. They caution against a uniform
+interpretation of family deeds as lock-in.
+
+\input{tables/T8_property_retention.tex}
+
+The same-surname comparison at ten years also differs by recorded type.
+Kaplan--Meier estimates leave 68.4 percent of duplex family properties
+unsold versus 62.8 percent of market purchases, and 61.8 versus 58.4
+percent for single-family properties. For condominiums, the ordering
+reverses: 48.9 percent of same-surname family properties remain unsold
+versus 51.7 percent of market purchases. These pooled comparisons do not
+hold state and cohort composition fixed, but the heterogeneity persists
+when the family class is restricted to the same-surname proxy.
+
+An exploratory repetition of the transparent 2019-scaled deadline
+counterfactual yields anticipation excesses of 29.8 percent for
+single-family properties, 36.9 percent for condominiums, and 50.5 percent
+for duplexes. These comparisons have neither type-interaction inference
+nor direct measures of statutory eligibility; they are descriptive
+heterogeneity checks. Building type alone does not establish whether
+the property is a qualifying principal residence.
 
 \section{Robustness Checks}\label{app:robustness}
 
@@ -55,7 +107,7 @@ family deeds and trust vehicles.
 steady-state decline assigns the treatment to each donor state in turn and ranks
 California's post/pre mean squared prediction error ratio in the resulting
 distribution; California is second of fifty-one (Figure~\ref{fig:scm_mspe},
-exact randomization $p = 0.039$).
+placebo-rank $p = 0.039$).
 
 \begin{figure}[!ht]
   \centering
@@ -65,6 +117,8 @@ exact randomization $p = 0.039$).
   California (red) is second of fifty-one ($p=0.039$).}
   \label{fig:scm_mspe}
 \end{figure}
+
+\paragraph{SCM inference sensitivity.} The saved Conley--Taber-style calculation gives $p=0.167$ and a normalized-index gap interval of $[-0.626,0.185]$. This interval includes zero and is in index-gap units, not percentage-change units. The population-adjusted calculation gives $p=0.188$ under the same alternative procedure. These results qualify the sharper MSPE-ratio ranks; different statistics and assumptions need not give the same inference.
 
 \paragraph{Permutation and pre-fit-adjusted ranks.} As transparent alternatives
 to the synthetic control, each donor state is assigned the treatment in turn,
@@ -130,3 +184,62 @@ excluded). The difference-in-differences for family transfers is $-1.8$pp;
 for market purchases, $-1.1$pp; the triple difference is $-0.74$pp
 (regression counterpart in Table~\ref{tab:prop19}; permutation $p = 0.67$).}\end{minipage}
 \end{table}
+
+% \subsection{Threats to identification}
+
+% California is a single treated state, so conventional
+% clustered standard errors understate uncertainty regardless of the number of
+% control states. Table~\ref{tab:prop19} reports them for scale, not as the
+% basis for inference. We instead rely on the synthetic-control in-space
+% placebo---each donor state is assigned the treatment in turn and California's
+% post-to-pre prediction-error ratio is ranked against the resulting
+% distribution (second of fifty-one, $p=0.039$)---together with Conley--Taber
+% intervals built from the same placebo gaps. Placebo-state ranks for the
+% transparent counterfactual, scaled by each state's pre-period RMSPE so that
+% poorly fit placebos do not mechanically dominate, are reported as a
+% corroborating alternative in Appendix~\ref{app:robustness}.
+
+% Five threats to identification deserve mention.
+
+% \begin{itemize}
+% \item \emph{COVID and the 2020--2021
+% turbulence}: the bunching counterfactual absorbs national pandemic shocks by
+% construction, and its pre-period fit is checked over 2018m1--2020m10; the
+% steady-state DiD excludes 2020--2021 entirely; and the placebo run on market
+% sales nets out California-specific cycle effects.
+% \item \emph{Differential mortality and
+% migration}: family transfers are driven by deaths and aging, and California's
+% cumulative COVID mortality was below the national average while elevated
+% mortality elsewhere pulled successions forward---both forces could depress
+% California's 2022--2023 family transfers relative to donors through channels
+% the market placebo does not absorb. We address this directly: re-estimating
+% the synthetic control on family transfers per resident aged 65 and over
+% (American Community Survey one-year estimates) leaves a 26 percent gap
+% ($p=0.137$). Because the eliminated deeds are predominantly inter-vivos
+% transfers rather than death-driven successions, a denominator in the elderly
+% population over-corrects, so we treat 26 percent as a conservative floor and
+% the unadjusted 33 percent as the central estimate; the deadline bunching is
+% immune to this channel by construction.
+% \item \emph{The pulled-forward stock}: some of the post-period
+% shortfall reflects transfers executed early during the rush rather than
+% abandoned. The paper's own numbers bound this: even if every one of the
+% 28,869 excess deeds was borrowed from the March 2021--December 2022 window,
+% retiming would account for at most a third of that window's 85,351-deed
+% shortfall---and none of the 2023 decline, which is the largest.
+% \item \emph{Placebo
+% contamination}: two forces push California market sales \emph{up} after 2021
+% ---the portability arm of Proposition~19 itself and the predicted release of
+% inherited homes---which makes the market-sale placebo an imperfect cycle
+% control; together with the evident acyclicality of family-transfer volumes
+% (their ratio to market sales was as high in the 2009 bust as the 2021 boom),
+% this brackets the steady-state effect between the placebo-adjusted estimate
+% and the unadjusted one.
+% \item \emph{Recording substitution}: families might route
+% around the reform via instruments that escape the interfamily flag---LLCs,
+% irrevocable trusts. The trust-inclusive estimate bounds substitution into
+% trusts; substitution into opaque vehicles would have to be implausibly large
+% to overturn the net decline, though it remains a reason to read the recorded
+% magnitude as a lower bound on the behavioral response.
+% \end{itemize}
+
+\input{welfare_appendix.tex}

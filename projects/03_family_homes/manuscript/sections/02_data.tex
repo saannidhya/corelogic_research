@@ -1,0 +1,71 @@
+\section{Data and the Anatomy of a Non-Market Transfer}\label{sec:data}
+
+\subsection{Deeds}
+
+Property records come from CoreLogic's Owner Transfer file
+\citep{corelogic_data}, obtained through an academic license, which compiles
+the universe of recorded deeds from county recorder offices. A deed is filed
+whenever the legal ownership of a parcel changes---not only when a house is
+sold. The same administrative trail that records a \$400,000 sale records a
+mother quitclaiming her house to her son for nothing. Market-based datasets
+(MLS listings, repeat-sales indices, mortgage originations) discard these
+zero-price events by construction. Here they are the object of study.
+
+The extract covers all fifty states and the District of Columbia. Coverage
+is dense from 2007 through mid-2024; we use 2007--2023 for annual statistics
+and treat 2024 as a partial year. Restricting to residential parcels and
+deduplicating to one event per parcel per derived sale date yields 148.7 million
+deed events (144.0 million in 2007--2023), linked through a permanent parcel
+identifier that follows each house across successive owners.
+
+\subsection{Classifying transfers}
+
+CoreLogic flags each record with a primary category---arm's length or
+not---and an interfamily indicator constructed from the recorder's
+consideration, deed type, and name fields. We sharpen these flags into a
+taxonomy using the buyer and seller names on the deed:
+
+\begin{enumerate}
+  \item \textbf{Market sale}: arm's-length category, recorded price of at
+        least \$10,000, not flagged interfamily (71.1 million events,
+        2007--2023).
+  \item \textbf{Same-person retitle}: the named principal is the same person
+        on both sides of the deed---an owner adding or removing a co-owner,
+        potentially at marriage, divorce, or refinancing (7.1 million). The
+        matched name remains, but ownership shares can change. These deeds
+        are tracked separately from the operational family aggregate.
+  \item \textbf{Family transfer, same surname}: flagged interfamily, buyer
+        and seller sharing a surname but not the same person, no trust
+        detected (13.6 million). This is a narrower proxy for inter-person
+        family transfers: it misses unmatched surnames but can also retain
+        same-person events with inconsistent full names. It is not a formal
+        lower bound on true family transfers.
+  \item \textbf{Family transfer, other}: flagged interfamily without a
+        detected surname match after the earlier exclusions, plus the
+        separately coded estate/executor residual (6.1 million). Missing
+        surname fields and transfers involving entities can enter this group;
+        the code does not verify the relationship between the parties.
+  \item \textbf{Trust self-transfer (operational label)}: the interfamily
+        flag is set and a primary party name contains a trust keyword
+        (12.1 million). This can include estate-planning retitling and
+        distributions to different beneficiaries. Unchanged control is not
+        verified; the class is excluded from the family aggregate.
+  \item \textbf{Other non-arm's-length}: the remainder---divorce divisions
+        across surnames, title corrections, nominal-price conveyances, and
+        foreclosure-related instruments (34.0 million).
+\end{enumerate}
+
+Table~\ref{tab:taxonomy} reports observable differences across the classes.
+Same-surname family deeds differ sharply from the defined market-sales class: 90 percent of same-surname transfers record a zero or missing
+price, against 0 percent of market sales (which require a price by
+construction) and 65 percent of the residual non-arm's-length class; 40
+percent travel by quitclaim deed---the instrument of gift---against 2 percent
+of market sales. Where a price is recorded at all in a same-surname transfer,
+the median is \$97,000, well under half the \$224,000 median market price:
+the comparison is descriptive because the houses and transferred interests can differ. Corporate buyers, who take 10
+percent of market purchases, are essentially absent from same-surname
+transfers. These patterns are consistent with gifts and succession, but do not verify their prevalence or exclude other transactions. One
+note on probate: formal estate keywords (``estate of,'' executor,
+administrator) rarely appear in the recorded name fields, and the earlier trust, same-person, and surname rules also take precedence over the estate rule. The small residual estate class therefore cannot measure all successions.
+
+\input{tables/T1_taxonomy.tex}

@@ -11,6 +11,7 @@
 #          fact_headline_ratios.csv, fact_validation_moments.csv
 #          fact_age_profile.csv, fact_value_quintiles.csv, fact_senior.csv
 #          fact_prop_match_rate.csv
+# Log:     10/02/2026: moved facts and property correlates to in-memory R.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -23,170 +24,224 @@ on.exit(sink(), add = TRUE)
 
 message("Starting 02_facts at ", Sys.time())
 
-con <- open_corelogic_duckdb()
-on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
-dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
+# ============================================================
+# Importing event data ----
+# ============================================================
 
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
-ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
 
-# Family classes: trust self-transfers are NOT counted as family transfers
-fam_classes <- "('family_person','family_other','family_estate')"
+# Trust self-transfers are not counted as family transfers.
+fam_classes <- c("family_person", "family_other", "family_estate")
 
-# ---- 1. National volumes by year x class --------------------------------
-nat <- dbGetQuery(con, glue("
-  SELECT sale_year, class, COUNT(*) AS n,
-         AVG(CASE WHEN amt IS NULL OR amt = 0 THEN 1.0 ELSE 0 END) AS zero_price_share,
-         median(CASE WHEN amt > 0 THEN amt END) AS med_pos_price
-  FROM {ev}
-  WHERE sale_year BETWEEN {window_start_year} AND {full_year_end}
-  GROUP BY sale_year, class ORDER BY sale_year, class
-"))
-assert_rows(nat, 100, "fact_national_by_year_class")
+# Load all events into R; subsequent calculations use in-memory data frames.
+ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
+
+# Keep complete calendar years for national facts and validation moments.
+ev_window <- ev_data %>%
+  filter(between(sale_year, window_start_year, full_year_end))
+
+# ============================================================
+# National volumes and validation ----
+# ============================================================
+
+# |- 1. National volumes by year and class ----
+nat <- ev_window %>%
+  group_by(sale_year, class) %>%
+  summarize(
+    n = n(),
+    zero_price_share = mean(is.na(amt) | amt == 0),
+    med_pos_price = median(amt[!is.na(amt) & amt > 0]),
+    .groups = "drop"
+  ) %>%
+  arrange(sale_year, class)
+
 write_csv_strict(nat, path(tables_out_dir, "fact_national_by_year_class.csv"))
 
-# ---- 2. Headline ratios -------------------------------------------------
-headline <- dbGetQuery(con, glue("
-  WITH t AS (
-    SELECT sale_year,
-      SUM(CASE WHEN class = 'family_person' THEN 1 ELSE 0 END) AS fam_conservative,
-      SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END)  AS fam_broad,
-      SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END)  AS trust,
-      SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)   AS market
-    FROM {ev}
-    WHERE sale_year BETWEEN {window_start_year} AND {full_year_end}
-    GROUP BY sale_year
-  )
-  SELECT *,
-         fam_conservative * 1.0 / market AS ratio_conservative,
-         fam_broad * 1.0 / market        AS ratio_broad
-  FROM t ORDER BY sale_year
-"))
+# |- 2. Headline ratios ----
+headline <- ev_window %>%
+  group_by(sale_year) %>%
+  summarize(
+    fam_conservative = sum(class == "family_person", na.rm = TRUE),
+    fam_broad = sum(class %in% fam_classes),
+    trust = sum(class == "family_trust", na.rm = TRUE),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ratio_conservative = fam_conservative / market,
+    ratio_broad = fam_broad / market
+  ) %>%
+  arrange(sale_year)
+
 assert_rows(headline, 15, "fact_headline_ratios")
 write_csv_strict(headline, path(tables_out_dir, "fact_headline_ratios.csv"))
 saveRDS(headline, path(out_dir, "fact_headline_ratios.rds"))
 
-# ---- 3. State x class (2017-2023 pooled) --------------------------------
-st <- dbGetQuery(con, glue("
-  SELECT state,
-    SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END)  AS fam_broad,
-    SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END)  AS trust,
-    SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)   AS market,
-    COUNT(*) AS n_all
-  FROM {ev}
-  WHERE sale_year BETWEEN 2017 AND {full_year_end}
-  GROUP BY state ORDER BY state
-"))
+# |- 3. State and class volumes, pooled 2017-2023 ----
+ev_pooled <- ev_data %>%
+  filter(between(sale_year, 2017L, full_year_end))
+
+st <- ev_pooled %>%
+  group_by(state) %>%
+  summarize(
+    fam_broad = sum(class %in% fam_classes),
+    trust = sum(class == "family_trust", na.rm = TRUE),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    n_all = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(state)
+
 assert_rows(st, 45, "fact_state_class")
 write_csv_strict(st, path(tables_out_dir, "fact_state_class_2017_2023.csv"))
 
-# ---- 4. Validation moments by class -------------------------------------
-val <- dbGetQuery(con, glue("
-  SELECT class,
-         COUNT(*) AS n,
-         AVG(CASE WHEN amt IS NULL OR amt = 0 THEN 1.0 ELSE 0 END) AS zero_price,
-         median(CASE WHEN amt > 0 THEN amt END)                    AS med_pos_price,
-         AVG(CASE WHEN dtype = 'Q' THEN 1.0 ELSE 0 END)            AS quitclaim_share,
-         AVG(CASE WHEN absentee_buyer = 1 THEN 1.0 ELSE 0 END)     AS absentee_share_raw,
-         AVG(CASE WHEN absentee_buyer IS NOT NULL THEN 1.0 ELSE 0 END) AS absentee_obs,
-         AVG(CASE WHEN corp_buyer = 1 THEN 1.0 ELSE 0 END)         AS corp_buyer_share
-  FROM {ev}
-  WHERE sale_year BETWEEN {window_start_year} AND {full_year_end}
-  GROUP BY class ORDER BY n DESC
-"))
+# |- 4. Validation moments by class ----
+# Missing indicators contribute zero, retaining all events in each denominator.
+val <- ev_window %>%
+  group_by(class) %>%
+  summarize(
+    n = n(),
+    zero_price = mean(is.na(amt) | amt == 0),
+    med_pos_price = median(amt[!is.na(amt) & amt > 0]),
+    quitclaim_share = mean(coalesce(dtype == "Q", FALSE)),
+    absentee_share_raw = mean(coalesce(absentee_buyer == 1, FALSE)),
+    absentee_obs = mean(!is.na(absentee_buyer)),
+    corp_buyer_share = mean(coalesce(corp_buyer == 1, FALSE)),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(n))
+
 write_csv_strict(val, path(tables_out_dir, "fact_validation_moments.csv"))
 
-# ---- 5. Property correlates (prop join; 2017-2023 events) ---------------
-prop_glob <- sql_quote_path(prop_parquet_glob())
-dbExecute(con, glue("
-  CREATE OR REPLACE TEMP VIEW prop_slim AS
-  -- One row per clip (deterministic), so the event join cannot fan out
-  -- (r-review M4); fan-out would silently double-count correlate cells.
-  SELECT clip, year_built, total_value, senior_exempt, homestead_exempt, prop_state
-  FROM (
-    SELECT
-      TRY_CAST(clip AS BIGINT) AS clip,
-      TRY_CAST(year_built AS INTEGER) AS year_built,
-      TRY_CAST(calculated_total_value AS DOUBLE) AS total_value,
-      CASE WHEN senior_exempt_indicator = 'Y' THEN 1 ELSE 0 END AS senior_exempt,
-      CASE WHEN homestead_exempt_indicator = 'Y' THEN 1 ELSE 0 END AS homestead_exempt,
-      state AS prop_state,
-      ROW_NUMBER() OVER (
-        PARTITION BY TRY_CAST(clip AS BIGINT)
-        ORDER BY TRY_CAST(calculated_total_value AS DOUBLE) DESC NULLS LAST,
-                 TRY_CAST(year_built AS INTEGER) DESC NULLS LAST, state
-      ) AS rn
-    FROM read_parquet('{prop_glob}', union_by_name = true)
-    WHERE TRY_CAST(clip AS BIGINT) IS NOT NULL
-  ) WHERE rn = 1
-"))
+# ============================================================
+# Property correlates, 2017-2023 events ----
+# ============================================================
 
-dbExecute(con, glue("
-  CREATE OR REPLACE TEMP TABLE ev_recent AS
-  SELECT clip, state, sale_year, class
-  FROM {ev}
-  WHERE sale_year BETWEEN 2017 AND {full_year_end}
-    AND class IN ('family_person','family_other','family_estate',
-                  'family_trust','market_sale')
-"))
+# |- Importing and deduplicating property records ----
+# Read each state through the shared loader; harmonize types before binding
+# because property columns can be numeric in one partition and text in another.
+prop_columns <- c("clip", "year_built", "calculated_total_value",
+                  "senior_exempt_indicator", "homestead_exempt_indicator")
+prop_states <- dir_ls(path(default_parquet_root(), "by_state", "prop"),
+                      type = "directory") %>%
+  path_file() %>%
+  sub("^state=", "", .)
 
-n_ev_recent <- dbGetQuery(con, "SELECT COUNT(*) AS n FROM ev_recent")$n
-match_rate <- dbGetQuery(con, "
-  SELECT
-    COUNT(*) AS n_events,
-    AVG(CASE WHEN p.clip IS NOT NULL THEN 1.0 ELSE 0 END) AS match_rate
-  FROM ev_recent e LEFT JOIN prop_slim p USING (clip)
-")
-# Join must be 1:1 on events — equality fails if prop_slim still has dup clips
+prop_data <- purrr::map_dfr(prop_states, function(st) {
+  message("Loading property records: ", st)
+  load_corelogic_prop(states = st, columns = prop_columns,
+                      per_partition = TRUE) %>%
+    transmute(
+      # Cast numeric IDs directly; normalize the suffix only for text IDs.
+      clip = if (is.character(clip)) {
+        bit64::as.integer64(sub("\\.0$", "", clip))
+      } else {
+        bit64::as.integer64(clip)
+      },
+      year_built = suppressWarnings(as.integer(round(as.numeric(year_built)))),
+      total_value = suppressWarnings(as.numeric(calculated_total_value)),
+      senior_exempt = as.integer(coalesce(senior_exempt_indicator == "Y", FALSE)),
+      homestead_exempt = as.integer(coalesce(homestead_exempt_indicator == "Y", FALSE)),
+      prop_state = state
+    )
+})
+
+# Keep one row per clip so repeated property records cannot multiply events.
+# Prefer the highest value, then newest structure, then alphabetic state.
+prop_slim <- prop_data %>%
+  filter(!is.na(clip)) %>%
+  arrange(clip, desc(total_value), desc(year_built), prop_state) %>%
+  distinct(clip, .keep_all = TRUE)
+
+# |- Matching recent events to property records ----
+ev_recent <- ev_pooled %>%
+  filter(class %in% c(fam_classes, "family_trust", "market_sale")) %>%
+  dplyr::select(clip, state, sale_year, class)
+
+n_ev_recent <- nrow(ev_recent)
+
+# SQL joins do not match missing keys; keep that behavior in the R join.
+ev_prop <- ev_recent %>%
+  left_join(prop_slim %>% mutate(prop_matched = TRUE),
+            by = "clip", na_matches = "never", relationship = "many-to-one")
+
+match_rate <- ev_prop %>%
+  summarize(
+    n_events = n(),
+    match_rate = mean(!is.na(prop_matched))
+  )
+
 stopifnot(match_rate$n_events == n_ev_recent)
 message("Prop join match rate: ", round(match_rate$match_rate, 4),
         " on ", format(match_rate$n_events, big.mark = ","), " events")
 write_csv_strict(match_rate, path(tables_out_dir, "fact_prop_match_rate.csv"))
-# MEMORY.md lesson: assert the RATE, not just non-emptiness
+
+# MEMORY.md lesson: assert the rate, not just non-emptiness.
 if (match_rate$match_rate < 0.5) {
-  stop("Prop join match rate ", match_rate$match_rate, " < 0.5 — investigate before using correlates")
+  stop("Prop join match rate ", match_rate$match_rate,
+       " < 0.5 ? investigate before using correlates")
 }
 
-age_profile <- dbGetQuery(con, glue("
-  SELECT
-    CASE
-      WHEN e.sale_year - p.year_built < 10 THEN '0-9'
-      WHEN e.sale_year - p.year_built < 30 THEN '10-29'
-      WHEN e.sale_year - p.year_built < 50 THEN '30-49'
-      WHEN e.sale_year - p.year_built < 75 THEN '50-74'
-      ELSE '75+' END AS age_bin,
-    SUM(CASE WHEN e.class IN {fam_classes} THEN 1 ELSE 0 END) AS fam,
-    SUM(CASE WHEN e.class = 'market_sale' THEN 1 ELSE 0 END)  AS market
-  FROM ev_recent e JOIN prop_slim p USING (clip)
-  WHERE p.year_built BETWEEN 1800 AND e.sale_year
-  GROUP BY 1 ORDER BY 1
-"))
+# Property correlates use matched events only, as in the original inner joins.
+ev_matched <- ev_prop %>%
+  filter(!is.na(prop_matched))
+
+# |- Structure age profile ----
+age_profile <- ev_matched %>%
+  filter(year_built >= 1800, year_built <= sale_year) %>%
+  mutate(
+    structure_age = sale_year - year_built,
+    age_bin = case_when(
+      structure_age < 10 ~ "0-9",
+      structure_age < 30 ~ "10-29",
+      structure_age < 50 ~ "30-49",
+      structure_age < 75 ~ "50-74",
+      TRUE ~ "75+"
+    )
+  ) %>%
+  group_by(age_bin) %>%
+  summarize(
+    fam = sum(class %in% fam_classes),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(age_bin)
+
 assert_rows(age_profile, 4, "fact_age_profile")
 write_csv_strict(age_profile, path(tables_out_dir, "fact_age_profile.csv"))
 
-value_q <- dbGetQuery(con, glue("
-  WITH matched AS (
-    SELECT e.class, p.total_value, p.prop_state,
-           ntile(5) OVER (PARTITION BY p.prop_state ORDER BY p.total_value) AS vq
-    FROM ev_recent e JOIN prop_slim p USING (clip)
-    WHERE p.total_value > 1000
-  )
-  SELECT vq,
-    SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END) AS fam,
-    SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS market
-  FROM matched GROUP BY vq ORDER BY vq
-"))
+# |- Value quintiles within property state ----
+# Assign quintiles across matched events (including trusts), not unique homes.
+value_matched <- ev_matched %>%
+  filter(total_value > 1000) %>%
+  group_by(prop_state) %>%
+  mutate(vq = ntile(total_value, 5L)) %>%
+  ungroup()
+
+value_q <- value_matched %>%
+  group_by(vq) %>%
+  summarize(
+    fam = sum(class %in% fam_classes),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(vq)
+
 assert_rows(value_q, 5, "fact_value_quintiles")
 write_csv_strict(value_q, path(tables_out_dir, "fact_value_quintiles.csv"))
 
-senior <- dbGetQuery(con, glue("
-  SELECT p.senior_exempt,
-    SUM(CASE WHEN e.class IN {fam_classes} THEN 1 ELSE 0 END) AS fam,
-    SUM(CASE WHEN e.class = 'market_sale' THEN 1 ELSE 0 END)  AS market
-  FROM ev_recent e JOIN prop_slim p USING (clip)
-  GROUP BY 1 ORDER BY 1
-"))
+# |- Senior exemption profile ----
+senior <- ev_matched %>%
+  group_by(senior_exempt) %>%
+  summarize(
+    fam = sum(class %in% fam_classes),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(senior_exempt)
+
 write_csv_strict(senior, path(tables_out_dir, "fact_senior.csv"))
 
 message("Finished 02_facts at ", Sys.time())

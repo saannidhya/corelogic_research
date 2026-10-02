@@ -63,6 +63,8 @@ dbExecute(con, glue("
     CAST(floor(TRY_CAST(sale_derived_date AS BIGINT) / 100) % 100 AS INTEGER)  AS sale_month,
     primary_category_code                                      AS pcat,
     deed_category_type_code                                    AS dtype,
+    regexp_replace(CAST(land_use_code_static AS VARCHAR), '\\.0$', '') AS land_use_code_static,
+    regexp_replace(CAST(property_indicator_code_static AS VARCHAR), '\\.0$', '') AS property_indicator_code_static,
     TRY_CAST(interfamily_related_indicator AS INTEGER)         AS interfam,
     TRY_CAST(sale_amount AS DOUBLE)                            AS amt,
     upper(coalesce(buyer_1_last_name, ''))                     AS b1_last,
@@ -142,6 +144,7 @@ dbExecute(con, glue("
   COPY (
     SELECT clip, state, fips5, sale_raw, sale_year, sale_month,
            sale_year * 100 + sale_month AS ym,
+           land_use_code_static, property_indicator_code_static,
            pcat, dtype, interfam, amt, class,
            same_surname, same_person, trust_kw, estate_kw, corp_buyer,
            new_construction, reo, reo_sale,

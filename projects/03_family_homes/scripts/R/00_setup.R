@@ -26,6 +26,7 @@ theme_set(theme_paper())
 project_dir    <- here("projects", "03_family_homes")
 scripts_dir    <- path(project_dir, "scripts")
 r_dir          <- path(scripts_dir, "R")
+source(path(r_dir, "00_date_helpers.R"))
 out_dir        <- path(r_dir, "_outputs")
 tables_out_dir <- path(out_dir, "tables")
 figures_out_dir <- path(out_dir, "figures")
@@ -93,3 +94,4 @@ window_end_year   <- 2024L   # data truncate ~Aug 2024; treat 2024 as partial
 full_year_end     <- 2023L   # last complete calendar year
 prop19_pass_date      <- 20201103L  # Prop 19 passed (election day)
 prop19_pc_effective   <- 20210216L  # parent-child exclusion changes effective
+

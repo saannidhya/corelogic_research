@@ -1,0 +1,142 @@
+\section{Welfare Accounting, Calibration, and Data Audit}\label{app:welfare}
+
+\subsection{Derivation and welfare boundary}
+
+The stationary benchmark fixes market prices, housing-service values, and
+tax rates. It assumes quasi-linear preferences, equal social weights on
+private households and taxpayers, and no unpriced externalities. If sale
+incurs real cost $C_i$, the private comparison is
+$(u_{hi}-t_iA_{0i})/r\geq p_i-C_i$. Substituting
+$p_i=u_{mi}/(r+t_i)$ gives $g_i\leq w_i$, where
+$g_i=u_{mi}-u_{hi}-rC_i$ and $w_i=t_i(p_i-A_{0i})$.
+The competitive-price and valuation assumptions are essential: observed
+selling prices alone do not identify $u_{mi}-u_{hi}$, and rental income
+cannot be added to the same tenant service value a second time.
+The finite-horizon totals retain this annual-equivalent cost convention;
+they do not separately estimate the timing of upfront moving or transaction
+costs. Short-run cash resource gains could differ if those costs arrive
+before the housing-service benefits.
+
+With full removal of the advantage, the switching interval is $(0,w_i]$.
+Conditional uniformity gives $E[g_i\mid w_i,\text{switcher}]=w_i/2$.
+If a positive residual advantage $w_{1i}$ remains, the interval is instead
+$(w_{1i},w_{0i}]$, and under uniformity the average gain is
+$(w_{0i}+w_{1i})/2$, not half the removed advantage. The main calculation
+therefore restricts its interpretation to the fully removed margin; it
+does not apply the half-wedge formula to the surviving occupant exclusion.
+
+For heterogeneous gains and durations the exact accounting object is
+\[
+ G_T=\sum_i g_i I_{iT},
+\]
+where $I_{iT}$ indicates that property $i$ has switched allocation by $T$
+and its counterfactual loss would still persist.
+Replacing this sum by $\lambda w N_T$ requires a common mean gain among
+survivors or the corresponding independence approximation. Survival of
+legal ownership is not identical to persistence of a surplus gap. We use
+the former only as an explicitly imperfect proxy. The support envelope
+$0\leq g_i\leq w_i$ is conditional on the model and the relevant switching
+population. It is not a data-identified welfare bound for the whole reform.
+
+\begin{table}[!ht]\centering
+\caption{Incidence ledger for the inheritance provision}\label{tab:incidence}
+{\small\begin{tabular}{p{0.22\textwidth}p{0.34\textwidth}p{0.33\textwidth}}\toprule
+Component & Private or public incidence & Treatment in allocation calculation\\\midrule
+Property-tax payments & Heir pays more; government receives more & Transfer; cancels with equal weights and budget offset\\
+Efficient family retention & Attachment, insurance, and housing services preserved & Included in family value; no assumed loss\\
+Alternative use & Buyers or tenants may obtain greater housing services & Count net resource gain only if allocation improves\\
+Switching costs & Moving, transactions, administration, or displacement & Real costs enter the net gap; unmeasured costs limit interpretation\\
+Asset-price changes & Seller/buyer capitalization effects & Held fixed; do not add capitalized taxes to their flow counterpart\\
+Public spending and financing & Depends on how receipts are used & Not quantified; no claim about total policy welfare\\
+\bottomrule\end{tabular}}\end{table}
+
+\subsection{Episode construction and timing}
+
+Calendar dates are parsed from the eight-digit derived-sale-date field.
+Day 00 would be imputed to day 01; other impossible dates would be excluded
+and counted. In the current 148,711,427-event panel, neither case occurs.
+Explicit parsing reproduces the existing national hazard outputs. This
+exercise uses the derived sale date, not a separately verified legal
+succession date or recording date.
+
+For California, an episode begins at the first qualifying family deed
+after the preceding market sale, or the first observed qualifying deed if
+there is no earlier observed sale. Episodes already beginning in 2007 are
+not restarted by a 2008 deed. Starts must fall in 2008--2018. Subsequent
+family deeds do not restart the clock. A later market sale ends the episode;
+a later family deed can begin a new, non-overlapping episode. Each parcel
+can therefore appear in more than one episode but cannot appear twice in
+the same outstanding stock. Broad-family and same-surname definitions are
+constructed separately. Missing pre-2007 history remains a limitation.
+
+We restrict observed endpoints to June 30, 2024, estimate Kaplan--Meier
+survival using exact elapsed days and the associated risk sets, and evaluate
+it at annual ages using 365.25 days per year. Tied failures precede censoring
+at the same duration. Any collision created by date normalization is
+resolved to one parcel-date record, preferring a market sale; the current
+California audit finds none. The generated episode audit reports counts,
+repeated deeds, and the absence of overlapping intervals.
+
+In the prospective accounting, cohorts enter at the beginning of each year
+2022--2031, with $S(0)=1$. Beginning-year stocks approximate property-years
+within each year; annual gains are discounted as year-end flows to the
+beginning of 2022. A five-year delay gives no gains in 2022--2026, and a
+ten-year delay gives no gains within this horizon. The real-dollar base is
+2023 throughout; the discount-date origin is a separate choice. We do not
+claim that uncounted benefits after 2031 vanish. Nor do we count a
+pre-reform, grandfathered stock as a gain caused by the reform.
+
+The factor $\alpha$ incorporates unique-property conversion and changes in
+allocation, rather than mechanically dividing missing deeds by the national
+deeds-per-parcel ratio. Prospective cohorts are interpreted as distinct new
+property episodes; aggregate deed estimates cannot verify that assumption.
+The constant annual response and its attribution to the inheritance
+provision are maintained scenarios, not identified steady-state properties.
+
+\subsection{Valuation feasibility and external inputs}
+
+\input{tables/TA_welfare_data.tex}
+
+The California file contains assessed and calculated values, but its
+market-value field (\texttt{market\_total\_value}) and property-tax-rate field are missing.
+Tax-year coverage is concentrated in 2008--2009. Current file availability
+does not make its values contemporaneous with the reform. The calculated
+value's source field is audited, but without validated field definitions
+and transaction-time alignment we do not interpret it as an independent
+market estimate. Missing parcel IDs are counted separately; the valid IDs
+have no duplicate rows. The latest available tax year is used only for the
+vintage diagnostic, not to fabricate an
+assessment history. Consequently no parcel-level historical wedge is
+reported as measured.
+
+The external illustration instead uses the LAO's \$3,000--\$4,000 saving
+for a long-held Los Angeles home. It is neither a statewide average nor the
+wedge of the policy-responsive properties. The source does not specify a
+dollar year; we assume its 2017 publication year. Annual CPI-U values are
+245.120 in 2017 and 304.702 in 2023, with the ratio used for conversion
+\citep{bls2023cpi}. The \$3,500 midpoint is an assumption. The LAO's separate
+60,000--80,000 annual property count includes administrative eligibility
+and population differences and does not validate the deed response.
+
+\subsection{Sensitivity and statistical uncertainty}
+
+\input{tables/TA_welfare_sensitivity.tex}
+
+The full grid comprises 4,050 combinations: two episode definitions,
+five conversion factors, three delays, five wedges, three valuation-gap
+fractions, three hazard scales, and three discount rates. The wedge menu
+is \$1,750, \$3,000, \$3,500, \$4,000, and \$7,000 in assumed 2017 dollars,
+all converted to 2023 dollars. The endpoints outside the LAO range are stress
+cases. Changing cumulative hazards by a factor $k$ uses $S_k(a)=S(a)^k$.
+Discount rates are 0, 3, and 5 percent. The main table varies conversion and
+delay; the appendix changes other inputs around an illustrative, explicitly
+unpreferred $\alpha=0.5$, five-year-delay case.
+
+These calculations condition on the net-DiD reference flow. They do not
+turn uncertainty about that flow into statistical confidence bands for
+welfare. Its placebo-rank $p=0.176$ and the SCM specifications' different
+inference remain material. A nonpositive true allocation response, title-only
+responses, a sufficiently long delay, or no net resource gap can eliminate
+the calculated gains. Correlation between wedges and persistence, changing
+future tax liabilities, endogenous rents and prices, heterogeneous financing
+constraints, and real public-service effects are outside this calculation.

@@ -49,7 +49,7 @@ t1 <- c(
   "\\begin{table}[!t]\\centering",
   "\\caption{Residential deed events by class, 2007--2023}",
   "\\label{tab:taxonomy}",
-  "{\\small",
+  "{\\footnotesize\\setlength{\\tabcolsep}{4pt}",
   "\\begin{tabular}{lrrrrr}",
   "\\toprule",
   " & N & Zero/no & Median & Quitclaim & Absentee \\\\",

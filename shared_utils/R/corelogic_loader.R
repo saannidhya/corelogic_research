@@ -24,6 +24,31 @@ default_parquet_root <- function() {
   here("data", "corelogic_extracts")
 }
 
+#' Register a lazy CoreLogic Parquet view without collecting rows into R.
+#' Intended for full-store aggregate audits that exceed R memory capacity.
+#' Existing collecting loader functions are unchanged.
+register_corelogic_parquet <- function(con, dataset = c("ot", "prop"),
+                                      states = NULL, view_name = "corelogic_source",
+                                      parquet_root = default_parquet_root()) {
+  dataset <- match.arg(dataset)
+  root <- path(parquet_root, "by_state", dataset)
+  stopifnot(dir_exists(root), grepl("^[A-Za-z_][A-Za-z0-9_]*$", view_name))
+  state_dirs <- if (is.null(states)) dir_ls(root, type = "directory") else {
+    stopifnot(all(grepl("^[A-Z]{2}$", states)))
+    path(root, paste0("state=", states))
+  }
+  stopifnot(length(state_dirs) > 0, all(dir_exists(state_dirs)))
+  globs <- if (dataset == "ot") path(state_dirs, "year=*", "*.parquet") else {
+    path(state_dirs, "*.parquet")
+  }
+  globs <- gsub("\\\\", "/", globs)
+  quoted <- paste(as.character(DBI::dbQuoteString(con, globs)), collapse = ",")
+  DBI::dbExecute(con, paste0("CREATE OR REPLACE TEMP VIEW ", view_name,
+    " AS SELECT * FROM read_parquet([", quoted,
+    "], union_by_name=true, hive_partitioning=true)"))
+  invisible(view_name)
+}
+
 #' Default sample paths
 default_sample_path <- function(dataset) {
   switch(dataset,

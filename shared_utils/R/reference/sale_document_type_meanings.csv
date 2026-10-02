@@ -1,0 +1,139 @@
+code,meaning,group,confidence,evidence
+WD,Warranty Deed,market_conveyance,high,79% arm's-length; nationwide
+DD,Deed (generic; type not specified),market_conveyance,med,"PA/NJ/MD/NY/VA where the standard form is titled ""Deed""; 62% arm's-length"
+GD,Grant Deed,market_conveyance,high,97% CA; typical price ~$414k
+SW,Special Warranty Deed,market_conveyance,high,TX/FL/AZ; 37% REO resales with bank sellers
+BA,Bargain and Sale Deed,market_conveyance,high,NY/NV/OR/NJ/VA (bargain-and-sale states)
+LM,Limited Warranty Deed,market_conveyance,high,75% GA; 79% arm's-length
+SU,Survivorship Deed,market_conveyance,high,76% OH (Ohio survivorship deed)
+CR,Corporation Deed,market_conveyance,med,72% corporate sellers (homebuilders e.g. Lennar/NVR/M/I Homes)
+PD,Partnership Deed,market_conveyance,med,"Sellers are partnerships (LP/LLP/LLLP); CA/OK"
+FS,Fee Simple Deed,market_conveyance,med,VT 58% / PA 33%; ordinary sales
+UD,Unit Deed (condominium unit),market_conveyance,high,NY/NJ/HI/MA; 69% corporate sellers (condo developers); price ~$697k
+AT,Apartment Deed (Hawaii condominium),market_conveyance,med,100% HI; sellers include Associations of Apartment Owners
+CN,Covenant deed (label unverified),market_conveyance,low,MA 53% / WI 24% / HI / NY; 76% arm's-length ordinary sales
+CV,Conveyance / deed of conveyance (label unverified),market_conveyance,low,KY 55% / NM 26%; mostly ordinary sales
+GW,General Warranty Deed,market_conveyance,low,3 records (TX/OH)
+BS,Bargain and Sale Deed (variant of BA),market_conveyance,low,1 record (VA)
+D,Probably truncated DD/WD,market_conveyance,low,12 records; mostly WA 2018 ordinary sales
+W,Probably truncated WD,market_conveyance,low,3 records (NC)
+wD,Warranty Deed (lowercase typo of WD),market_conveyance,low,1 record (WA)
+wd,Warranty Deed (lowercase typo of WD),market_conveyance,low,1 record (WA)
+DW,Unknown (possibly warranty deed variant),market_conveyance,low,1 record (WA)
+QC,Quitclaim Deed,quitclaim,high,deed category Q; 87% zero price; 64% interfamily
+CQ,Corrective quitclaim deed (label unverified),quitclaim,low,deed category Q; 89% zero price; mixed parties
+QD,Quitclaim deed variant,quitclaim,low,4 records
+WJ,Warranty Deed - joint tenancy,joint_tenancy_variant,med,OK/GA/MN/KS; buyers almost always couples (J-suffix pattern)
+SJ,Special Warranty Deed - joint tenancy,joint_tenancy_variant,med,OK/NM/CO; banks/builders selling to couples
+QJ,Quitclaim Deed - joint tenancy,joint_tenancy_variant,med,deed category Q; OK/MN/IL/KS; adds spouse as joint tenant
+GJ,Grant Deed - joint tenancy,joint_tenancy_variant,med,CA/IL/MT/GA; J-suffix pattern
+TJ,Trustee's Deed - joint tenancy,joint_tenancy_variant,med,94% trust sellers to couples; IL/MN/KS
+EJ,Executor's Deed - joint tenancy,joint_tenancy_variant,med,IL/GA; J-suffix pattern
+PJ,Personal Representative's Deed - joint tenancy,joint_tenancy_variant,med,NE/MN; J-suffix pattern
+JW,Joint tenancy warranty deed variant,joint_tenancy_variant,low,1 record (OK)
+JT,Joint Tenancy Deed,joint_tenancy_variant,high,70% AZ; 60% interfamily (adding/removing joint tenants)
+IT,Intrafamily Transfer,family_interspousal,high,100% CA; 100% interfamily flag
+IC,Interspousal transfer (label unverified),family_interspousal,low,98% CA; 96% interfamily; spouse-to-spouse names
+IV,Inter vivos transfer (label unverified),family_interspousal,low,89% CA; 77% interfamily; 54% of buyers are trusts
+IF,Interfamily transfer (label unverified),family_interspousal,low,CA/OK/MD; 100% interfamily flag
+IS,Unknown (interfamily-like),family_interspousal,low,3 records (CA); interfamily flag
+ID,Unknown (interfamily-like),family_interspousal,low,3 records (CA/NY); interfamily flag
+GF,Gift Deed,family_interspousal,high,98% zero price; 74% interfamily; VA/TX/CA/LA
+DS,Disclaimer Deed (Arizona spousal disclaimer),family_interspousal,high,100% AZ; 100% zero price; 98% interfamily
+DE,Donation (Louisiana act of donation) (label unverified),family_interspousal,low,LA 53% / VA 23%; 75% zero price
+DA,Unknown; Texas-dominant spouse-to-spouse transfers (possibly divorce-related),family_interspousal,low,TX 64%; 64% zero price; many same-surname pairs
+TD,Trustee's Deed (conveyance by trustee of a living/land trust; not foreclosure),trust,high,75% trust sellers; IL/FL/IN; 63% arm's-length
+TU,Transfer into trust (e.g. CA Trust Transfer Deed),trust,med,84% CA; 97% interfamily; 96% zero price; owner to own living trust
+TA,Transfer to trust / trust assignment (label unverified),trust,low,94% zero price; owner to own trust
+AF,Affidavit (death of joint tenant/spouse/trustee; TOD affidavit),estate_probate_death,high,99.8% zero price; 87% interfamily; CA/OH
+AJ,Affidavit of death of joint tenant (label unverified),estate_probate_death,low,"OK 41%; couple to surviving spouse; some ordinary sales"
+TO,Transfer-on-Death Deed,estate_probate_death,med,75% HI; 99% zero price; person to person
+EX,Executor's Deed,estate_probate_death,high,GA/NY/IL/TX/OH/CT; CoreLogic HistoryPro lists EX = Executor's Deed
+AD,Administrator's Deed,estate_probate_death,high,GA/NY/IL
+PR,Personal Representative's Deed,estate_probate_death,high,FL/CO/IN/WA/WI/OR (Uniform Probate Code states)
+FI,Fiduciary Deed,estate_probate_death,high,63% OH; trust and estate sellers
+GU,Guardian's Deed,estate_probate_death,med,IN/IL/FL/WI; sellers include guardianship programs
+DI,Deed of Distribution,estate_probate_death,med,57% SC; 98% zero price; 79% interfamily
+TE,Trustee's Deed - foreclosure (trustee's sale under deed of trust),foreclosure_distress,high,"94% REO flag; sellers ReconTrust/NDEX/TD Service; CA/TX/AZ"
+SD,Sheriff's Deed,foreclosure_distress,high,96% sheriff sellers; judicial-foreclosure states
+SC,Sheriff's Certificate (of sale),foreclosure_distress,med,MN 47% / FL 27%; sheriff and clerk-of-court sellers
+MA,Marshal's Deed,foreclosure_distress,high,81% marshal sellers
+RF,Referee's Deed,foreclosure_distress,high,89% NY; 81% referee sellers
+SR,Special Referee's Deed (label unverified),foreclosure_distress,low,SC 60%; attorney sellers to lenders
+MD,Master's Deed (SC Master-in-Equity / NM Special Master / TN Clerk & Master),foreclosure_distress,high,71% SC / 24% NM; master-in-equity sellers
+CO,Commissioner's Deed (court-appointed commissioner),foreclosure_distress,high,KY/AR/NC; COMMISSIONER/MASTER COMMISSIONER sellers; 73% REO
+CM,Commissioner's / court-ordered sale deed (exact label unclear),foreclosure_distress,low,KY/AR/NC; commissioner sellers mixed with private sales
+FD,Foreclosure Deed,foreclosure_distress,high,92% REO flag; GA/IL/MA/AL
+MF,Mortgagee's / mortgage foreclosure deed,foreclosure_distress,med,AL 71% / AR 28%; 78% REO; auctioneer sellers
+AU,Auctioneer's Deed (foreclosure),foreclosure_distress,high,77% AL; AUCTIONEER OF ... COUNTY sellers
+PT,Public Trustee's Deed (Colorado foreclosure),foreclosure_distress,high,100% CO; PUBLIC TRUSTEE OF ... sellers
+ST,Substitute Trustee's Deed (foreclosure),foreclosure_distress,med,84% MS; 94% REO flag
+SO,Selling Officer's Deed (judicial sale),foreclosure_distress,med,OH/IL; PRIVATE SELLING OFFICER and judicial-sales sellers
+PV,Private (judicial) sale deed,foreclosure_distress,med,IL 82% / OH 16%; PRIVATE SALES CORP sellers to lenders
+PA,Public auction / court officer sale deed (label unverified),foreclosure_distress,low,SC/AL/CO; special referee and auctioneer sellers; 71% REO
+TC,Certificate of Title (Florida foreclosure),foreclosure_distress,high,100% FL; clerk-of-court sellers; 94% REO
+CT,Certificate of title/foreclosure (label unverified),foreclosure_distress,low,84% CT; 42% REO (strict foreclosure) mixed with ordinary sales
+FJ,Final Judgment,foreclosure_distress,med,NJ 64%; CoreLogic HistoryPro lists FJ = Final Judgement
+DL,Deed in Lieu of Foreclosure,foreclosure_distress,high,90% REO flag
+FC,Foreclosure (variant),foreclosure_distress,low,1 record (MA)
+RC,Possibly Receiver's Deed (label unverified),foreclosure_distress,low,83% corporate buyers; includes bank-receivership transfers
+RE,Redemption Deed (label unverified),foreclosure_distress,low,MI/MN/LA/RI; treasurer and sheriff sellers; low prices
+TX,Tax Deed,tax_government,high,60% government sellers; typical price ~$4k; MI
+FR,Forfeiture Deed (sale of tax-forfeited land),tax_government,high,AR Commissioner of State Lands; OH county auditors; MN county
+CA,County Deed (sale of county-owned / tax-forfeited land),tax_government,med,OK/FL/ND; county sellers
+PN,Patent (state land patent for tax-forfeited land),tax_government,med,72% MS; STATE OF MISSISSIPPI sellers
+FL,Tax foreclosure (variant) (label unverified),tax_government,low,4 records; MI Wayne County Treasurer
+SA,Unknown; state-land and private sales,tax_government,low,AR/MN/MI; includes Commissioner of State Lands sellers
+CS,Contract of Sale / Land Contract,contract_lease,med,MI/MN/IN/IA/OH/WI (land-contract states); lower prices (~$74k)
+AG,Agreement of Sale,contract_lease,med,AZ/CA/FL/IL
+LC,Land contract (variant),contract_lease,low,1 record (WI)
+AA,Assignment of agreement/contract (label unverified),contract_lease,low,CA 43%; many Cal-Vet contract sellers
+AN,Probably an Assignment (e.g. Maryland leasehold) (label unverified),contract_lease,low,70% MD; mostly ordinary sales
+LH,Leasehold conveyance / assignment of leasehold (label unverified),contract_lease,low,FL 74% / MD 20%
+LA,Assignment of lease (label unverified),contract_lease,low,HI/FL/VT; HI leasehold lessors (e.g. Bishop Estate)
+AL,Unknown (possibly lease/leasehold assignment),contract_lease,low,FL/HI/CA; ordinary-looking sales
+SL,Unknown (possibly sublease),contract_lease,low,FL/HI/CA; club and leasehold sellers
+CD,Correction Deed,correction_rerecord,high,87% zero price; 94% non-arm's-length
+RD,Re-recorded Deed,correction_rerecord,med,70% zero price; 95% non-arm's-length; ordinary private parties
+MG,Mortgage-type document (not a deed) (label unverified),non_deed_document,low,deed category T; 93% blank seller
+MO,Mortgage / modification (not a deed) (label unverified),non_deed_document,low,deed category T; 99% blank seller; builder buyers
+CE,"CEMA (NY Consolidation, Extension and Modification Agreement)",non_deed_document,med,100% NY; deed category T; blank seller; amount = loan amount
+EQ,Equity loan / mortgage-type document (label unverified),non_deed_document,low,deed category T; 95% blank seller
+SE,Security Deed (Georgia mortgage instrument),non_deed_document,med,98% GA; deed category T; blank seller
+CL,Credit line / mortgage-type document (label unverified),non_deed_document,low,deed category T; 93% blank seller
+RV,Unknown non-deed document (possibly reverse mortgage),non_deed_document,low,deed category T; blank seller
+RL,Release (label unverified),non_deed_document,low,87% NV; blank seller; zero price
+AS,Assignment (e.g. of mortgage),non_deed_document,med,NY banks with blank buyer
+ND,Notice of default (label unverified),non_deed_document,low,MO/NV; 10 records; blank seller
+NS,Unknown non-deed document,non_deed_document,low,4 records; blank seller
+MX,Mechanic's lien (label unverified),non_deed_document,med,8 records; sellers are contractors/suppliers
+MR,Mechanic's lien-related (label unverified),non_deed_document,low,1 record (CO); supplier seller
+HX,HOA lien (label unverified),non_deed_document,low,7 records; HOA sellers
+HR,HOA lien release (label unverified),non_deed_document,low,4 records; HOA sellers
+LP,Lis pendens (label unverified),non_deed_document,low,19 records; bank parties
+IM,Unknown non-deed document,non_deed_document,low,2 records (MD); deed category T; blank seller
+TL,Unknown non-deed document,non_deed_document,low,8 records; deed category T
+TR,Unknown (mostly blank seller),non_deed_document,low,CA/AZ/TN; 89% blank seller; deed category T
+NT,Unknown (notice-type document),non_deed_document,low,CA/WA; deed category N
+DR,Unknown,non_deed_document,low,22 records; mostly blank seller
+AP,Unknown,non_deed_document,low,10 records; half blank seller
+OT,Other,other_unknown,med,"WI/VT/FL; residual ""other"" document type"
+CP,Unknown (possibly corporation deed variant),other_unknown,low,10 records (CA/CO/AZ)
+TT,Unknown; Massachusetts-specific,other_unknown,low,99% MA; ordinary sales and spouse additions
+PO,Unknown; Arizona/Florida-specific,other_unknown,low,AZ 73% / FL 26%; 98% zero price
+XD,Unknown; Louisiana/Hawaii-specific,other_unknown,low,LA 47% / HI 27%
+XL,Unknown; Hawaii-specific,other_unknown,low,100% HI; 99% zero price
+XM,Unknown; Kentucky-specific,other_unknown,low,100% KY
+XP,Unknown,other_unknown,low,NY/GA/NJ; 99 records
+IN,Unknown; Arkansas-specific,other_unknown,low,99% AR; seller recorded as OWNER RECORD; 99% zero price
+AI,Unknown,other_unknown,low,2 records (AZ)
+C,Unknown (truncated code),other_unknown,low,2 records
+DC,Unknown,other_unknown,low,1 record (AZ)
+LR,Unknown,other_unknown,low,1 record (HI)
+NF,Unknown,other_unknown,low,1 record (NC)
+PP,Unknown,other_unknown,low,3 records
+RA,Unknown,other_unknown,low,1 record (NV); HOA seller
+SB,Unknown,other_unknown,low,1 record (NJ)
+SP,Unknown,other_unknown,low,1 record (DC)
+UN,Unknown,other_unknown,low,4 records (MA)
+(missing),Missing document type code,other_unknown,high,sale_document_type_code is NULL

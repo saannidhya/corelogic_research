@@ -1,0 +1,101 @@
+\section{Introduction}\label{sec:intro}
+
+Housing turnover is usually measured through market sales. Families also
+transfer homes by gift, succession, and other non-market conveyances. These
+deeds can change legal title without generating a market price or changing
+who occupies the property. Between 2007 and 2023, our classification of
+CoreLogic residential records identifies nearly 20 million family-transfer
+deeds, one for every 3.6 market sales. Understanding this channel requires
+measuring both its scale and the institutions that shape it.
+
+This paper has three parts. First, it establishes national facts about
+within-family transfers using 144 million residential parcel-date events.
+Family deeds represent a substantial and persistent flow alongside market
+sales. Their ratio to market sales is highest in California, where the tax
+code historically allowed heirs to inherit a property's assessment as well
+as the property. Their share rises across middle-aged housing vintages,
+although it is not monotone over all ages. Many properties remain unsold
+long after a family transfer. These patterns describe a channel of housing
+ownership; none by itself identifies inefficient use or a causal tax effect.
+
+Second, the paper examines how tax incentives shape recorded family
+transfers using California's Proposition~19. Under Propositions~58 and 193,
+eligible intergenerational transfers could preserve the parent's assessed
+value. Proposition~19 narrowed this exclusion in February 2021, retaining
+conditional protection for a principal residence occupied by the heir and
+for family farms while removing it for other qualifying transfers
+\citep{boe2025prop19}. The LAO estimated that 60,000--80,000 properties
+annually had received inheritance exclusions under the earlier regime
+\citep{lao2017inheritance}. That is an administrative property count, not a
+tax-revenue estimate or a count of inefficiently allocated homes.
+
+California family deeds surged 31 percent above the transparent
+counterfactual in the four months before the deadline. They then fell to a
+persistently lower level. A synthetic control estimates a 33 percent
+2022--2023 gap; adjusting for the population aged 65 and over yields 26
+percent. These are separate specifications, not the endpoints of a
+confidence interval. A DiD adjustment for California's market-sale decline
+implies roughly \WelfareFlow\ missing deeds annually when scaled by the
+2018--2019 baseline. Inference varies across designs: the raw SCM
+post/pre-MSPE rank has $p=0.039$, while the net-DiD state-placebo rank has
+$p=0.176$. Conditional sale hazards and estate/trust-seller market sales do
+not establish an accompanying release of homes through 2023. Deferred
+succession is consistent with the evidence but is not identified by those
+null results.
+
+Third, a simple framework quantifies the potential allocation gains from
+removing the inherited-assessment advantage. The object is the distortion
+created by the tax wedge, not the existence of non-market transfers. Family
+attachment, insurance, avoided transaction costs, and efficient rental use
+can make retention socially valuable. Inefficient retention arises only
+when the tax advantage induces a family to forgo an alternative use with
+greater net surplus. Recorded deeds do not directly identify that margin.
+
+We therefore combine the estimated deed response with explicit assumptions
+about the conversion to distinct allocation-changing properties, the tax
+wedge, succession delay, and persistence. California parcel episodes supply
+a descriptive persistence proxy, and an LAO example for long-held Los
+Angeles homes supplies an external wedge benchmark. Under a uniform
+valuation-gap approximation, the annual gain per marginal property is half
+the wedge. This sufficient-statistics-inspired calculation retains the
+model assumptions needed for welfare interpretation
+\citep{chetty2009sufficient}. The resulting tables show annual gains,
+property-years, and discounted gains, including zero when deeds change but
+allocations do not. They are conditional policy calculations, not estimates
+of realized or total Proposition~19 welfare.
+
+The paper connects the economics of bequests and inter-vivos transfers
+\citep{bernheimshleifersummers1985bequest,mcgarry1999intervivos,kopczuk2007bequest,piketty2011inheritance}
+to an asset-level record of housing ownership. Research on intergenerational
+wealth transmission \citep{charleshurst2003wealth} motivates the importance
+of the asset, while evidence on heirs' property documents a distinct source
+of title-related immobility \citep{dobbsgaither2023heirs,burnettwm2025heirs}.
+Recent work studies intergenerational housing-capital persistence using
+linked Census, property, and income-tax records
+\citep{binderrischvoorheis2026housing}. Our deed-based object is the
+conveyance of particular assets, rather than the persistence of children's
+housing holdings. Closely related work by
+\citet{bakerkimbiswas2026inherited} uses parent-child exclusion claims in
+Los Angeles and San Francisco to study Proposition~19 retiming and
+subsequent sales. The present national measurement and California-wide
+comparisons complement that evidence; our recorder-based family proxy
+covers a broader population than confirmed parent-child exclusion claims.
+The nearest descriptive antecedents also include industry tabulations
+\citep{delventhal2026inherited} and the LAO's assessment-roll accounting.
+
+The analysis also extends the property-tax and housing lock-in literature
+\citep{wasiwhite2005prop13,ferreira2010takeit,fonsecaliu2024lockin,covenetal2024proptax}
+to intergenerational title transfers. The transaction-tax literature
+\citep{kopczukmunroe2015mansion,slemrodwebershan2017dc,bestkleven2018notches,hilberlyytikainen2017transfer}
+provides a comparison for timing and volume responses, although a deadline
+response alone does not reveal the valuation gaps required for welfare.
+Misallocation concerns, as in \citet{glaeserluttmer2003rentcontrol}, require
+evidence or assumptions about forgone surplus. Older housing can serve an
+important filtering role \citep{rosenthal2014filtering}, but a family-owned
+rental may already provide those services to a tenant.
+
+Section~\ref{sec:data} describes the data and classification.
+Section~\ref{sec:facts} presents the four national facts.
+Section~\ref{sec:prop19} studies the policy response, and
+Section~\ref{sec:welfare} develops the framework and conditional welfare
+calibration. Section~\ref{sec:conclusion} concludes.
