@@ -21,7 +21,10 @@
 - `scripts/R/01_build_panel.R` — national transfer-event panel + name-based taxonomy
 - `scripts/R/02_facts.R` — RQ1 national facts (volume, composition, trends)
 - `scripts/R/03_hazard.R` — RQ2 post-transfer time-to-market-sale hazard
-- `scripts/R/04_prop19.R` — RQ3 Prop 19 bunching counterfactual + volume DiD
+- `scripts/R/04a_build_wedge.R` — CA parcel tax wedge from the 2008–09 roll (Prop 13 roll-forward, hedonic AVM, repeat-sales index) + first-exit spells for fixed 2017/2019 risk sets
+- `scripts/R/04_prop19.R` — RQ3 Prop 19: aggregate retiming, long-held × CA × post DDD, wedge dose-response hazards by 2008 occupancy, competing risks, robustness, headline numbers (legacy volume DiD / sold24 / absentee kept as appendix outputs)
+- `scripts/R/00_inference_helpers.R` — wild cluster bootstrap, county pairs bootstrap, Conley–Taber, relative-magnitudes breakdown
+- `scripts/R/check_prop19_wedge_invariants.R` — synthetic checks of roll-forward, risk-set accounting, offset Poisson, competing-risk decomposition
 - `scripts/R/06b_prop19_scm_figures.R` — SCM figures (F5–F7) + monthly event study (Section 6 rebuild)
 - `scripts/R/08_within_ca.R` — within-CA DiD (built, dropped as causal — wrong sign; descriptive only)
 - `scripts/R/09_scm_inference.R` — donor-weighted synthetic control + MSPE-ratio + Conley–Taber inference

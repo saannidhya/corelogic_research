@@ -23,3 +23,17 @@ No CoreLogic market valuation is imputed from these external benchmarks.
 The generated `welfare_external_inputs.csv` records source URLs and status;
 the manuscript input table separates these benchmarks from empirical
 estimates and assumptions.
+
+## Prop 13 inflation factors
+
+`ca_boe_inflation_factors.csv` lists the final California inflation factors
+applied to base-year values under Revenue and Taxation Code section 51
+(capped at 2 percent). `roll_year` is the calendar year of the January 1
+lien date; `fiscal_year` is the assessment roll it governs. Values were
+transcribed on October 2, 2026 from the enclosure "Final Inflation Factors
+for Current and Prior Years" in BOE Letter To Assessors No. 2023/056
+(December 22, 2023): https://www.boe.ca.gov/proptaxes/pdf/lta23056.pdf.
+
+`04a_build_wedge.R` rolls a base value established in year `b` forward to
+lien year `Y` by multiplying the factors for roll years `b+1, ..., Y`. It
+asserts every factor is at most 1.02.

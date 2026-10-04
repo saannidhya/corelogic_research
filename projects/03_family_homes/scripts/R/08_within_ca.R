@@ -29,9 +29,12 @@
 #          _outputs/tables/prop19_within_ca_eventstudy.csv   (ES coefficients)
 #          _outputs/tables/prop19_within_ca_did.csv          (DiD + WCB p/CI)
 #          _outputs/prop19_within_ca.rds
+# Log:     10/02/2026: wild_cluster_boot() moved to 00_inference_helpers.R
+#          (defaults reproduce this script's bootstrap exactly).
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
+source(path(r_dir, "00_inference_helpers.R"))
 
 suppressPackageStartupMessages({
   library(fixest)
@@ -176,35 +179,7 @@ message("Wild-bootstrap balanced panel: ", n_distinct(bal$fips5), " of ",
         n_counties, " counties, ", round(100 * cov_share, 1),
         "% of family-transfer volume.")
 
-wild_cluster_boot <- function(data, yvar = "ln_n", cluster = "fips5",
-                              param = "treated:post", B = 999L) {
-  f_un <- as.formula(paste0(yvar, " ~ treated:post | fips5^treated + yq"))
-  f_r  <- as.formula(paste0(yvar, " ~ 1 | fips5^treated + yq"))
-  m_un <- feols(f_un, data = data, cluster = ~fips5)
-  b_hat  <- coef(m_un)[param]
-  se_hat <- se(m_un)[param]
-  t_hat  <- b_hat / se_hat
-  m_r <- feols(f_r, data = data)             # restricted: imposes H0 beta = 0
-  yhat_r <- predict(m_r)
-  uhat_r <- resid(m_r)
-  cl <- as.character(data[[cluster]])
-  gids <- unique(cl)
-  tstar <- numeric(B)
-  for (b in seq_len(B)) {
-    w <- sample(c(-1L, 1L), length(gids), replace = TRUE)
-    names(w) <- gids
-    d2 <- data
-    d2[[yvar]] <- yhat_r + uhat_r * w[cl]
-    mb <- feols(f_un, data = d2, cluster = ~fips5)
-    tstar[b] <- coef(mb)[param] / se(mb)[param]
-  }
-  p_boot <- (1 + sum(abs(tstar) >= abs(t_hat))) / (B + 1)
-  qd <- quantile(tstar, c(0.975, 0.025), names = FALSE)
-  ci <- b_hat - qd * se_hat                  # percentile-t 95% CI
-  list(beta = unname(b_hat), se = unname(se_hat), t = unname(t_hat),
-       p_boot = p_boot, ci_lo = ci[1], ci_hi = ci[2], B = B,
-       n_clusters = length(gids))
-}
+# wild_cluster_boot() lives in 00_inference_helpers.R (sourced at top).
 
 m_lin <- feols(ln_n ~ treated:post | fips5^treated + yq,
                data = bal, cluster = ~fips5)

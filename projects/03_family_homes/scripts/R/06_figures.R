@@ -85,16 +85,22 @@ cf <- read_csv(path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"),
   mutate(date = as.Date(paste0(sale_year, "-", sale_month, "-01")),
          gap = (ca_actual - ca_cf) / ca_cf)
 
+# prop 19 important dates:
+# Passed Legislature: June 24–26, 2020 (Approved by the Assembly and Senate)
+# Chaptered by Secretary of State: July 1, 2020 (Officially placed on the ballot)
+# Voted on by Public: November 3, 2020 (Approved by voters)
+# Effective Date: February 16, 2021 (for intergenerational transfers) and April 1, 2021
+
 f4 <- ggplot(cf, aes(date)) +
   geom_line(aes(y = ca_actual / 1000, color = "California, actual"), linewidth = 0.9) +
   geom_line(aes(y = ca_cf / 1000, color = "Counterfactual (2019 CA x donor growth)"),
             linewidth = 0.9, linetype = "22") +
-  geom_vline(xintercept = as.Date(c("2020-11-03", "2021-02-16")),
-             linetype = "dotted", color = "grey30") +
-  annotate("text", x = as.Date("2020-10-20"), y = max(cf$ca_actual) / 1000 * 0.97,
-           label = "passed", hjust = 1, size = 3, color = "grey30") +
+  geom_vline(xintercept = as.Date(c("2020-06-24", "2021-02-16")),
+             linetype = "dotted", color = "grey20") +
+  annotate("text", x = as.Date("2020-11-03"), y = max(cf$ca_actual) / 1000 * 0.97,
+           label = "prop 19 passed", hjust = 1.7, size = 3, color = "grey20") +
   annotate("text", x = as.Date("2021-03-01"), y = max(cf$ca_actual) / 1000 * 0.97,
-           label = "effective", hjust = 0, size = 3, color = "grey30") +
+           label = "prop 19 effective", hjust = -0.05, size = 3, color = "grey20") +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   labs(x = NULL, y = "CA family transfers (thousands/month)", color = NULL)
 save_fig(f4, "F4_prop19_bunching")
