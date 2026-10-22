@@ -1,17 +1,21 @@
 # ============================================================
 # 02: RQ1 — National facts: the parallel (non-market) housing market
 # Author: Saani Rawat
-# Purpose: National/state volumes by taxonomy class; family:market ratios;
+# Purpose: National/California/state volumes by taxonomy class; family:market ratios;
 #          validation moments (zero-price, absentee); property correlates
 #          (structure age, value tier, senior exemption) via prop join.
 # Inputs:  data/derived/03_family_homes/events.parquet
 #          data/corelogic_extracts/by_state/prop/ (correlates join only)
 # Outputs: _outputs/tables/fact_national_by_year_class.csv
+#          _outputs/tables/fact_california_by_year_class.csv
+#          _outputs/figures/fact_california_by_year_class.png
 #          _outputs/tables/fact_state_class_2017_2023.csv
+#          _outputs/tables/fact_state_class_2007_2023.csv
 #          fact_headline_ratios.csv, fact_validation_moments.csv
 #          fact_age_profile.csv, fact_value_quintiles.csv, fact_senior.csv
 #          fact_prop_match_rate.csv
 # Log:     10/02/2026: moved facts and property correlates to in-memory R.
+#          10/07/2026: added full-period state counts by family subclass.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -59,6 +63,61 @@ nat <- ev_window %>%
 
 write_csv_strict(nat, path(tables_out_dir, "fact_national_by_year_class.csv"))
 
+# |- 1b. California volumes by year and class ----
+ca <- ev_window %>%
+  filter(state == "CA") %>%
+  group_by(sale_year, class) %>%
+  summarize(
+    n = n(),
+    zero_price_share = mean(is.na(amt) | amt == 0),
+    med_pos_price = median(amt[!is.na(amt) & amt > 0]),
+    .groups = "drop"
+  ) %>%
+  arrange(sale_year, class)
+
+write_csv_strict(ca, path(tables_out_dir, "fact_california_by_year_class.csv"))
+
+# Plot California volumes by year and class for quick inspection.
+ca_plot <- ca %>%
+  mutate(
+    class_label = recode(
+      class,
+      market_sale = "Market sale",
+      family_person = "Family transfer: same surname",
+      family_other = "Family transfer: other interfamily",
+      family_estate = "Family transfer: estate/executor",
+      family_retitle = "Same-person retitle",
+      family_trust = "Trust self-transfer",
+      other_nonarms = "Other non-arm's-length",
+      estate_noninterfam = "Estate deed: non-interfamily",
+      .default = class
+    )
+  )
+
+ca_volume_plot <- ggplot(ca_plot, aes(x = sale_year, y = n, color = class_label)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.8) +
+  scale_x_continuous(breaks = seq(window_start_year, full_year_end, by = 2L)) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "California transaction volumes by year and class",
+    x = NULL,
+    y = "Number of events",
+    color = "Class"
+  ) +
+  theme_paper() +
+  theme(legend.position = "bottom")
+
+ggsave(
+  path(figures_out_dir, "fact_california_by_year_class.png"),
+  ca_volume_plot,
+  width = 10,
+  height = 6,
+  dpi = 300,
+  bg = "transparent"
+)
+message("Wrote: ", path(figures_out_dir, "fact_california_by_year_class.png"))
+
 # |- 2. Headline ratios ----
 headline <- ev_window %>%
   group_by(sale_year) %>%
@@ -96,6 +155,27 @@ st <- ev_pooled %>%
 
 assert_rows(st, 45, "fact_state_class")
 write_csv_strict(st, path(tables_out_dir, "fact_state_class_2017_2023.csv"))
+
+# |- 3b. State and class volumes, pooled 2007-2023 ----
+# Pool counts before dividing; each family subclass uses the same market total.
+st_full <- ev_window %>%
+  group_by(state) %>%
+  summarize(
+    family_person = sum(class == "family_person", na.rm = TRUE),
+    family_other = sum(class == "family_other", na.rm = TRUE),
+    family_estate = sum(class == "family_estate", na.rm = TRUE),
+    fam_broad = sum(class %in% fam_classes),
+    trust = sum(class == "family_trust", na.rm = TRUE),
+    market = sum(class == "market_sale", na.rm = TRUE),
+    n_all = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(state)
+
+assert_rows(st_full, 45, "fact_state_class_2007_2023")
+stopifnot(all(st_full$fam_broad ==
+                st_full$family_person + st_full$family_other + st_full$family_estate))
+write_csv_strict(st_full, path(tables_out_dir, "fact_state_class_2007_2023.csv"))
 
 # |- 4. Validation moments by class ----
 # Missing indicators contribute zero, retaining all events in each denominator.

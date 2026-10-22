@@ -128,7 +128,7 @@ fev <- ggplot(es, aes(date, estimate)) +
   scale_x_date(date_breaks = "6 months", date_labels = "%b %Y",
                expand = expansion(mult = c(0.01, 0.02))) +
   coord_cartesian(ylim = c(-0.74, 0.52)) +
-  labs(x = NULL, y = "Family transfers vs pre-period baseline (log points)") +
+  labs(x = NULL, y = "Family transfers in California (log points)") +
   theme(panel.grid.major.x = element_blank(),
         axis.text.x = element_text(angle = 0, size = 8))
 save_fig(fev, "F_event_study_monthly", width = 9, height = 4.8)

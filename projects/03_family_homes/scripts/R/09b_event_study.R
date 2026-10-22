@@ -2,8 +2,8 @@
 # 09b: RQ3 — Monthly event study of CA family transfers (Prop 19)
 # Author: Saani Rawat
 # Purpose: The annual event study hides the reform-year effect because the
-#          pre-deadline rush (Nov 2020-Feb 2021) and post-deadline collapse
-#          offset WITHIN 2021. A monthly event study relative to the pooled
+#          pre-deadline rush (June 2020-Feb 2021) and post-deadline collapse
+#          offset starting 2021. A monthly event study relative to the pooled
 #          2018-2019 baseline separates them: a sharp
 #          positive spike in the four anticipation months, then a persistent
 #          negative level through 2022-2023.
@@ -76,6 +76,7 @@ stopifnot("CA" %in% states, length(states) == 51)
 # clean pre-period gives a flat baseline; coefficients are estimated for
 # 2020m1-2023m12 relative to it.
 ref_set <- sort(unique(panel$ym[panel$sale_year %in% 2018:2019]))
+# ref_set <- 202003L
 ref_str <- paste(ref_set, collapse = ",")   # inlined into the i(ref=c(...)) call
 f_es <- function(treat) as.formula(
   paste0("lnf ~ i(ym, ", treat, ", ref = c(", ref_str, ")) | state + ym"))
@@ -92,6 +93,7 @@ parse_es <- function(m, label) {
 # Estimating the California event study ----
 # ============================================================
 m_ca <- feols(f_es("ca"), data = panel, cluster = ~state)
+summary(m_ca)
 es_ca <- parse_es(m_ca, "CA") %>%
   arrange(ym) %>%
   mutate(date = as.Date(sprintf("%d-%02d-01", ym %/% 100, ym %% 100)))
@@ -120,7 +122,52 @@ placebo_band <- placebo %>%
 # Exporting results ----
 # ============================================================
 
+# Combining the California event study results with the placebo band ----
 es <- es_ca %>% left_join(placebo_band, by = "ym")
+
+
+# Plotting the event study results ----
+legislature_date <- as.Date("2020-06-24")  # Approved by the California State Legislature
+eff_date         <- as.Date("2021-02-16")  # parent-child provisions take effect
+xend        <- max(es$date) + 20
+phase_rects <- tibble(
+  phase = factor(c("Anticipation & Rush", "Post-reform"),
+                 levels = c("Anticipation & Rush", "Post-reform")),
+  xmin = c(legislature_date, eff_date),
+  xmax = c(eff_date, xend))
+
+fev <- ggplot(es, aes(date, estimate)) +
+  geom_rect(data = phase_rects, inherit.aes = FALSE,
+            aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = phase),
+            alpha = 0.6) +
+  scale_fill_manual(values = c(`Anticipation & Rush` = "#fbeccb",
+                               `Post-reform` = "#f4ece9"), guide = "none") +
+  geom_hline(yintercept = 0, color = "grey45", linewidth = 0.35) +
+  geom_vline(xintercept = c(legislature_date, eff_date), linetype = "dashed",
+             color = "grey35", linewidth = 0.45) +
+  geom_pointrange(aes(ymin = conf.low, ymax = conf.high),
+                  color = palette_paper()[2], linewidth = 0.45, size = 0.22) +
+  # phase labels along the top
+  annotate("text", x = legislature_date + (eff_date - legislature_date) / 2, y = 0.46,
+           label = "Anticipation & Rush", size = 3.0, color = "#9a6700",
+           fontface = "bold.italic") +
+  annotate("text", x = as.Date("2022-05-01"), y = 0.46,
+           label = "Post-reform decline", size = 2.9, color = "grey40", fontface = "italic") +
+  # event-date callouts near the dashed lines
+  annotate("text", x = legislature_date - 14, y = -0.66,
+           label = "Prop 19 pass date\nJune 2020",
+           hjust = 1, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
+  annotate("text", x = eff_date + 14, y = -0.66, label = "Prop 19 Effective date\nFeb 2021",
+           hjust = 0, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
+  scale_y_continuous(labels = scales::label_number(style_positive = "plus")) +
+  scale_x_date(date_breaks = "6 months", date_labels = "%b %Y",
+               expand = expansion(mult = c(0.01, 0.02))) +
+  coord_cartesian(ylim = c(-0.74, 0.52)) +
+  labs(x = NULL, y = "Family transfers in California (log points)") +
+  theme(panel.grid.major.x = element_blank(),
+        axis.text.x = element_text(angle = 0, size = 8))
+# fev
+
 write_csv_strict(es, path(tables_out_dir, "prop19_event_study_monthly.csv"))
 saveRDS(list(model = m_ca, es = es, ref_set = ref_set),
         path(out_dir, "prop19_event_study.rds"))

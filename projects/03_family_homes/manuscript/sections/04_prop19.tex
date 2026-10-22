@@ -36,7 +36,7 @@ Throughout this section, ``family transfers'' means the broad class
 state from the event panel; results including trust self-transfers are
 reported as robustness.
 
-\subsection{Retiming: the rush to beat the deadline}
+% \subsection{Retiming: the rush to beat the deadline}
 
 Figure~\ref{fig:bunching} plots monthly California family transfers against a
 transparent counterfactual: California's 2019 volume in the same calendar
@@ -70,7 +70,63 @@ counterfactuals, California's anticipation gap is third of fifty-one in raw
 size ($p=0.059$) but first after dividing each state's gap by its own
 pre-period RMSPE ($p=0.020$). The concentration around the deadline supports a tax-timing interpretation, although monthly counts do not identify the exact legal transfer date or rule out every contemporaneous influence.
 
-\subsection{The steady-state decline}
+\subsection{Empirical Strategy}
+
+We compare California with the other 49 states and the District of Columbia.
+Identification requires that, absent the reform, California's family-transfer
+trajectory would have followed the relevant control trajectory.
+
+\subsubsection{Synthetic control}
+
+Following \citet{abadie2010synthetic}, we construct a convex combination of
+donor states using monthly family-transfer counts normalized by each state's
+2018--2019 monthly mean. We choose weights to match the January 2018--May
+2020 trajectory, ending the fitting window before the June 2020 ballot
+announcement. The post-reform effect is the average proportional gap
+relative to synthetic California in 2022--2023. Inference uses in-space
+placebos ranked by the post/pre mean squared prediction error ratio and
+intervals based on donor-state gaps. As a demographic sensitivity check, we
+normalize transfers by the population aged 65 and over; this specification
+fits through October 2020.
+
+\subsubsection{Difference-in-differences}
+
+Using annual data, we estimate the following difference-in-differences specification:
+\begin{equation}
+  \log F_{sy}=\alpha_s+\lambda_y+
+  \delta\,\mathbf{1}\{s=\mathrm{CA}\}\mathbf{1}\{y\geq 2022\}
+  +\varepsilon_{sy},
+\end{equation}
+where $F_{sy}$ denotes family transfers in state $s$ and year $y$.
+The sample includes 2017--2019 and 2022--2023, excluding the anticipation
+and transition years 2020--2021. We estimate the same specification for
+market sales and report the difference between the two coefficients
+separately, since assessment portability may also affect market sales.
+Inference reassigns treatment across states and ranks California's
+absolute coefficient in the resulting placebo distribution.
+
+\subsubsection{Event-study design}
+
+To separate anticipation from the post-deadline response, we estimate a
+monthly event study over 2018--2023 using the following specification:
+\begin{equation}
+  \log F_{st}=\alpha_s+\lambda_t+
+  \sum_{\tau\in\mathcal{T}\setminus\mathcal{B}}
+  \beta_\tau\,\mathbf{1}\{s=\mathrm{CA}\}\mathbf{1}\{t=\tau\}
+  +\varepsilon_{st},
+\end{equation}
+where $t$ indexes calendar months, $\mathcal{T}$ is the sample period, and
+$\mathcal{B}$ pools January 2018--December 2019 as the omitted baseline.
+State and calendar-month fixed effects absorb persistent state differences
+and common shocks; $\beta_\tau$ measures California's differential change
+relative to the baseline. 
+% If any state-month count is zero, we use
+% $\log(1+F_{st})$ throughout. 
+We report clustered confidence intervals at the state level.
+% and construct placebo bands by assigning each control state treatment in
+% turn, given the single treated state.
+
+\subsection{Results: The Rush and the post-reform decline}
 
 Retiming alone would imply a transitory post-deadline trough followed by
 recovery. Instead, the gap persists and widens. From March 2021 through
@@ -87,8 +143,7 @@ match on each state's volume normalized to its own 2018--2019 mean. The
 synthetic reproduces California's pre-reform path to a root mean squared error
 of 5.0 percent (Figure~\ref{fig:scm}); after the February 2021 deadline,
 California's family transfers run 33 percent below synthetic California through
-2022--2023, and the gap lies at the extreme lower edge of the donor placebo
-distribution (Figure~\ref{fig:scm_envelope}).
+2022--2023.
 
 \begin{figure}[!t]
   \centering
@@ -101,17 +156,7 @@ distribution (Figure~\ref{fig:scm_envelope}).
   \label{fig:scm}
 \end{figure}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=0.9\linewidth]{figures/F6_scm_gap_envelope.pdf}
-  \caption{California's relative gap from synthetic control (red) against the
-  same gap computed for each donor state run as a placebo (grey lines), with a
-  shaded 2.5--97.5 percentile band over donors that fit California comparably
-  well before the reform. California lies at the extreme lower edge across
-  2022--2023.}
-  \label{fig:scm_envelope}
-\end{figure}
-
+% DID was annual
 The difference-in-differences estimates in Table~\ref{tab:prop19} formalize
 this. Using state-by-year counts for 2017--2019 versus 2022--2023 (the
 transition years 2020--2021 are excluded as contaminated by anticipation and
@@ -124,22 +169,23 @@ transfers per year against the 2018--2019 base. Reclassification into trusts
 cannot explain it: including trust self-transfers in the family aggregate
 yields a decline of 0.241 log points (21 percent).
 
-Two pieces of evidence address the design's limitations. First, because
-California is a single treated unit, we use the synthetic-control in-space
-placebo: each donor state is assigned the treatment in turn, and the ratio of
-its post- to pre-reform mean squared prediction error measures how extreme its
-post-period deviation is relative to its own pre-reform fit. California's ratio
-is the second largest of fifty-one units, including DC---a placebo-rank $p=0.039$
-(Appendix Figure~\ref{fig:scm_mspe})---using a different statistic from the transparent counterfactual's rank-based inference
-\citep{conley2011inference}. A demographic adjustment changes the estimated magnitude: re-estimating the synthetic control on family
-transfers per resident aged 65 and over (American Community Survey one-year
-estimates) leaves a 27 percent gap ($p=0.137$). These specifications use different denominators and identifying assumptions. The 27--33 percent range summarizes sensitivity across them; it is neither a confidence interval nor an identified lower and upper bound. For the market-adjusted DiD, the state-placebo $p$-value is 0.176. The SCM Conley--Taber-style interval also includes zero (Appendix~\ref{app:robustness}). The welfare exercise in Section~\ref{sec:welfare} retains this uncertainty rather than treating the response as precisely known.
+% California is a single treated unit
+% Two pieces of evidence address the design's limitations. First, because
+% California is a single treated unit, we use the synthetic-control in-space
+% placebo: each donor state is assigned the treatment in turn, and the ratio of
+% its post- to pre-reform mean squared prediction error measures how extreme its
+% post-period deviation is relative to its own pre-reform fit. California's ratio
+% is the second largest of fifty-one units, including DC---a placebo-rank $p=0.039$
+% (Appendix Figure~\ref{fig:scm_mspe})---using a different statistic from the transparent counterfactual's rank-based inference
+% \citep{conley2011inference}. A demographic adjustment changes the estimated magnitude: re-estimating the synthetic control on family
+% transfers per resident aged 65 and over (American Community Survey one-year
+% estimates) leaves a 27 percent gap ($p=0.137$). These specifications use different denominators and identifying assumptions. The 27--33 percent range summarizes sensitivity across them; it is neither a confidence interval nor an identified lower and upper bound. For the market-adjusted DiD, the state-placebo $p$-value is 0.176. The SCM Conley--Taber-style interval also includes zero (Appendix~\ref{app:robustness}). The welfare exercise in Section~\ref{sec:welfare} retains this uncertainty rather than treating the response as precisely known.
 
-Second, timing. A monthly event study resolves what the annual specification
-hides. We regress $\log$ family transfers on California-by-month indicators
+% Timing: DID was annual, but monthly event study shows the rush and the post-deadline decline are distinct.
+Figure~\ref{fig:event_study} shows monthly event-study results. We regress $\log$ family transfers on California-by-month indicators
 with state and year-month fixed effects, the other 49 states and DC as
 controls, and the 2018--2019 months pooled as the omitted baseline.
-Figure~\ref{fig:event_study} traces the whole path: California sits near its
+ California sits near its
 2018--2019 baseline in early 2020, drifts upward through the anticipation period
 as Proposition~19 reaches the ballot and passes, spikes to $+0.32$ log points in
 February 2021---the deadline month---and then settles into a persistent decline
@@ -169,7 +215,7 @@ identify how many properties change allocation.
 
 \input{tables/T4_prop19.tex}
 
-\subsection{Selection: who still keeps the house}
+\subsubsection{Selection: who still keeps the house}
 
 If the reform discourages transfers to heirs who would otherwise retain the house for its tax basis, the surviving transfers can become more selected toward long-term retention. This is a possible mechanism, formalized in Section~\ref{sec:framework}, rather than an implication of the volume estimate alone.
 We take
@@ -198,7 +244,7 @@ triple-difference sits well within the placebo-state distribution
 (permutation $p = 0.67$), and the absentee-recipient share is flat
 ($-0.2$ percentage points). These imprecise conditional effects do not independently identify selection or rule out a change in settlement deeds. They concern the transfers still observed after the reform, not the missing transfers. The clearest response is in recorded volume.
 
-\subsection{Do missing deeds reappear as estate sales?}\label{subsec:directtest}
+\subsubsection{Do missing deeds reappear as estate sales?}\label{subsec:directtest}
 
 If the reform redirected near-succession transfers into market sales,
 one possible implication would be more sales by estates and trusts. Advance

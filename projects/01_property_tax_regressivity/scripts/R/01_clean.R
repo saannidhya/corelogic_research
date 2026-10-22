@@ -107,9 +107,15 @@ if (USE_SAMPLE) {
 }
 
 # ---- arms-length filter on OT (sale-side cleaning) ----
-log_msg("Pre-filter OT rows: ", format(nrow(ot), big.mark = ","))
+# Before 2026-10-22, filter_arms_length() compared the 0/1 interfamily and REO
+# flags to "Y", so neither was dropped; panels built before then include them.
+log_msg("Pre-filter OT rows: ", format(nrow(ot), big.mark = ","),
+        " (interfamily: ", sum(is_flag_set(ot$interfamily_related_indicator)),
+        ", REO: ", sum(is_flag_set(ot$foreclosure_reo_indicator)), ")")
 ot_clean <- filter_arms_length(ot, min_price = ARM_MIN_PRICE)
 log_msg("Post-arms-length OT rows: ", format(nrow(ot_clean), big.mark = ","))
+stopifnot(!any(is_flag_set(ot_clean$interfamily_related_indicator)),
+          !any(is_flag_set(ot_clean$foreclosure_reo_indicator)))
 
 # Drop sales without a usable date; restrict to SALE_YEARS in full mode
 if ("sale_derived_date" %in% names(ot_clean)) {

@@ -40,6 +40,17 @@ test_that("filter_arms_length keeps foreclosures when allow_foreclosure = TRUE",
   expect_true("A002" %in% result$APN)
 })
 
+test_that("filter_arms_length drops 0/1 numeric flags as stored in the parquet store", {
+  ot <- tibble::tibble(
+    APN = c("B001", "B002", "B003", "B004"),
+    sale_amount = c(250000, 250000, 250000, 250000),
+    interfamily_related_indicator = c(0, 1, NA, 0),
+    foreclosure_reo_indicator = c(0, 0, 0, 1)
+  )
+  expect_equal(filter_arms_length(ot)$APN, c("B001", "B003"))
+  expect_equal(filter_arms_length(ot, allow_foreclosure = TRUE)$APN, c("B001", "B003", "B004"))
+})
+
 test_that("validate_state_code accepts 50 states + DC + valid territories + APO", {
   expect_true(is_valid_state_code("CA"))
   expect_true(is_valid_state_code("OH"))

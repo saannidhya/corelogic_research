@@ -30,6 +30,18 @@ is_valid_state_code <- function(code) {
   }, logical(1), USE.NAMES = FALSE)
 }
 
+#' Check whether a CoreLogic indicator flag is set
+#'
+#' The parquet store holds OT indicators as 0/1 doubles; older extracts and
+#' test fixtures use "Y"/"N". NA counts as not set.
+#' @param x Numeric, logical, or character flag vector.
+#' @return Logical vector, never NA.
+is_flag_set <- function(x) {
+  if (is.logical(x)) return(!is.na(x) & x)
+  if (is.numeric(x)) return(!is.na(x) & round(x) == 1)
+  !is.na(x) & toupper(trimws(x)) %in% c("Y", "1", "1.0", "TRUE")
+}
+
 #' Filter to arms-length transactions
 #'
 #' Drops intra-family transfers, foreclosures (by default), and
@@ -37,9 +49,9 @@ is_valid_state_code <- function(code) {
 #'
 #' Column names expected (post normalize_cols() in the conversion script):
 #'   - sale_amount                          : numeric sale price
-#'   - interfamily_related_indicator        : "Y" / "N" intra-family flag
-#'   - foreclosure_reo_indicator            : "Y" / "N" foreclosure flag
-#'   - foreclosure_reo_sale_indicator       : "Y" / "N" REO sale flag
+#'   - interfamily_related_indicator        : 0/1 (or "Y"/"N") intra-family flag
+#'   - foreclosure_reo_indicator            : 0/1 (or "Y"/"N") foreclosure flag
+#'   - foreclosure_reo_sale_indicator       : 0/1 (or "Y"/"N") REO sale flag
 #'
 #' Backward-compatible: also accepts legacy UPPER_SNAKE names
 #'   (INTRA_FAMILY_FLAG, SALE_AMOUNT, TRANSACTION_TYPE) used in the
@@ -55,7 +67,7 @@ filter_arms_length <- function(df, min_price = 1000, allow_foreclosure = FALSE) 
 
   # Drop intra-family
   if ("interfamily_related_indicator" %in% cols) {
-    out <- out |> filter(is.na(interfamily_related_indicator) | interfamily_related_indicator != "Y")
+    out <- out |> filter(!is_flag_set(interfamily_related_indicator))
   } else if ("INTRA_FAMILY_FLAG" %in% cols) {
     out <- out |> filter(is.na(INTRA_FAMILY_FLAG) | INTRA_FAMILY_FLAG != "Y")
   }
@@ -70,7 +82,7 @@ filter_arms_length <- function(df, min_price = 1000, allow_foreclosure = FALSE) 
   # Drop foreclosures unless explicitly allowed
   if (!allow_foreclosure) {
     if ("foreclosure_reo_indicator" %in% cols) {
-      out <- out |> filter(is.na(foreclosure_reo_indicator) | foreclosure_reo_indicator != "Y")
+      out <- out |> filter(!is_flag_set(foreclosure_reo_indicator))
     } else if ("TRANSACTION_TYPE" %in% cols) {
       out <- out |> filter(is.na(TRANSACTION_TYPE) | TRANSACTION_TYPE != "FORECLOSURE")
     }

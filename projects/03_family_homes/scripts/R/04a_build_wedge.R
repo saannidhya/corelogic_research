@@ -16,9 +16,11 @@
 # Name    : Saani Rawat
 # Created : 10/02/2026
 # Log     : 10/02/2026: created (parcel universe, base roll-forward,
-#           hedonic AVM with holdout, county repeat-sales index, wedge,
+#           hedonic Automated Valuation Model (AVM) with holdout, county repeat-sales index, wedge,
 #           tenure, value-cap flag, first-exit spells for 2017 and 2019
 #           baselines, 2008-owner surname match on exits).
+#           10/07/2026: 2019 main distribution and appendix figure script,
+#           with reference statistics conditional on positive wedges.
 # Inputs  : CA PropertyCharacteristics via load_corelogic_prop()
 #           CA OwnerTransfer seller names via load_corelogic_ot()
 #           data/derived/03_family_homes/events.parquet
@@ -143,7 +145,7 @@ ca_parcels_2008 <- ca_prop_raw %>%
   filter(type %in% c("10", "11"), !is.na(clip), str_starts(fips5, "06")) %>%
   arrange(clip, desc(tax_year), desc(assessed_2008)) %>%
   distinct(clip, .keep_all = TRUE)
-rm(ca_prop_raw); gc(verbose = FALSE)
+# rm(ca_prop_raw); gc(verbose = FALSE)
 
 n_parcels_raw <- nrow(ca_parcels_2008)
 message("NOTE: ", format(n_parcels_raw, big.mark = ","), " unique CA SFR/condo parcels")
@@ -588,6 +590,10 @@ wedge_distribution <- parcel_wedge %>%
   )
 print(wedge_distribution, width = Inf)
 write_csv_strict(wedge_distribution, path(tables_out_dir, "wedge_distribution_tenure_hox.csv"))
+
+# Main and appendix figures use the 2019 baseline; reference statistics exclude zeros.
+source(path(r_dir, '04b_wedge_figures.R'))
+build_wedge_figures(parcel_wedge)
 
 # LAO (2017) put the annual saving for a long-held Los Angeles home at $3k-$4k
 wedge_lao_benchmark <- parcel_wedge %>%
