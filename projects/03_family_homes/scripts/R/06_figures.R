@@ -16,6 +16,7 @@
 #          manuscript/figures/F6_prop19_quarterly_gap.pdf
 #          manuscript/figures/F7_prop19_placebo_ranks.pdf
 # Log:     10/07/2026: added full-period state ratios and family decomposition.
+#          10/22/2026: use the shared setup path for state-ratio figure output.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -188,7 +189,7 @@ f2b <- ggplot(st_full, aes(x = state, y = ratio)) +
   theme(axis.text.y = element_text(size = 6.5))
 save_fig(
   f2b, "F2b_state_ratio_2007_2023", width = 7, height = 8,
-  output_dir = "C:/Users/rawats/OneDrive - Marquette University/Rprojects/corelogic_research/projects/03_family_homes/scripts/R/_outputs/figures"
+  output_dir = figures_out_dir
 )
 
 # ---- F2c: state ratio decomposed into the three included family classes ----
