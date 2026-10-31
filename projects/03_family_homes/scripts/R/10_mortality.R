@@ -14,6 +14,8 @@
 # Outputs: data/external/state_pop65_acs.parquet
 #          _outputs/tables/prop19_scm_pc_inference.csv
 #          _outputs/prop19_scm_pc.rds
+# Log:     10/22/2026: treatment starts June 2020 (ballot placement) and the
+#          pre-fit runs through May 2020, matching 09_scm_inference.R.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -96,8 +98,8 @@ base_pc <- panel |> filter(sale_year %in% 2018:2019) |>
 panel <- panel |> left_join(base_pc, by = "state") |>
   mutate(rel_pc = fam_pc / base)
 
-t_treat <- tmap$t[tmap$ym == 202011]
-pre_t   <- tmap$t[tmap$ym <= 202010]
+t_treat <- tmap$t[tmap$ym == prop19_antic_start_ym]   # June 2020 ballot placement
+pre_t   <- tmap$t[tmap$ym <= prop19_pre_end_ym]       # January 2018 - May 2020
 
 # ---- SCM on the per-65+-resident index ------------------------------------
 scm <- panel |>
@@ -107,7 +109,7 @@ scm <- panel |>
                      rel_2018 = mean(rel_pc, na.rm = TRUE)) |>
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2019],
                      rel_2019 = mean(rel_pc, na.rm = TRUE)) |>
-  generate_predictor(time_window = tmap$t[tmap$sale_year == 2020 & tmap$sale_month <= 10],
+  generate_predictor(time_window = tmap$t[tmap$sale_year == 2020 & tmap$sale_month <= 5],
                      rel_2020 = mean(rel_pc, na.rm = TRUE)) |>
   generate_weights(optimization_window = pre_t) |>
   generate_control()
@@ -116,7 +118,7 @@ series <- scm |> grab_synthetic_control(placebo = FALSE) |>
   rename(t = time_unit, ca_rel = real_y, synth_rel = synth_y) |>
   left_join(tmap, by = "t") |>
   mutate(gap = ca_rel - synth_rel, gap_rel = (ca_rel - synth_rel) / synth_rel)
-pre_rmspe_ca <- sqrt(mean(series$gap[series$ym <= 202010]^2))
+pre_rmspe_ca <- sqrt(mean(series$gap[series$ym <= prop19_pre_end_ym]^2))
 gap_ss_ca    <- mean(series$gap[series$ym >= 202201])
 gap_ss_pct   <- 100 * mean(series$gap_rel[series$ym >= 202201])
 
@@ -127,7 +129,7 @@ gaps_all <- scm |> grab_synthetic_control(placebo = TRUE) |>
   rename(unit = .id, is_placebo = .placebo, t = time_unit) |>
   left_join(tmap, by = "t") |> mutate(gap = real_y - synth_y)
 unit_summ <- gaps_all |> group_by(unit, is_placebo) |>
-  summarise(pre_rmspe = sqrt(mean(gap[ym <= 202010]^2, na.rm = TRUE)),
+  summarise(pre_rmspe = sqrt(mean(gap[ym <= prop19_pre_end_ym]^2, na.rm = TRUE)),
             gap_ss = mean(gap[ym >= 202201], na.rm = TRUE), .groups = "drop")
 placebo_gaps <- unit_summ |> filter(is_placebo == 1, pre_rmspe <= 5 * pre_rmspe_ca) |> pull(gap_ss)
 ct_p <- (1 + sum(abs(placebo_gaps) >= abs(gap_ss_ca))) / (1 + length(placebo_gaps))

@@ -220,10 +220,8 @@ type_plot <- ggplot(plot_data, aes(property_type, family_share_family_market)) +
   labs(x = NULL, y = "Family share of family plus market deeds",
        subtitle = "2007–2023; recorded land-use codes; apartment sample is incomplete") +
   theme(axis.text.x = element_text(angle = 15, hjust = 1))
-for (extension in c("pdf", "png")) {
-  ggsave(path(figures_dir, paste0("F9_property_types.", extension)), type_plot,
-         width = 8, height = 4.5, bg = "transparent", dpi = 300)
-}
+ggsave(path(figures_dir, "F9_property_types.png"), type_plot,
+       width = 8, height = 4.5, bg = "transparent", dpi = 300)
 tex_rows <- plot_data %>%
   mutate(row = glue("{property_type} & {formatC(family,format='f',digits=0,big.mark=',')} & ",
                     "{formatC(market,format='f',digits=0,big.mark=',')} & ",

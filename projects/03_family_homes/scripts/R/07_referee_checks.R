@@ -12,6 +12,9 @@
 # Outputs: _outputs/tables/ref_perm_volume.csv, ref_perm_ddd.csv,
 #          ref_estate_seller_did.csv, ref_event_study.csv,
 #          ref_reconciliation.csv (+ rds)
+#          prop19_ddd_volume.csv, prop19_ddd_volume.rds (headline DDD)
+# Log:     10/22/2026: added the pooled family-vs-market triple difference
+#          for volumes, the paper's headline post-reform estimate.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -98,6 +101,41 @@ write_csv_strict(perm_vol, path(tables_out_dir, "ref_perm_volume_all.csv"))
 write_csv_strict(perm_summary, path(tables_out_dir, "ref_perm_volume.csv"))
 saveRDS(list(all = perm_vol, summary = perm_summary),
         path(out_dir, "ref_perm_volume.rds"))
+
+# ---- (a2) Headline triple difference: family vs market deeds ---------------
+# Stacking family and market counts and letting every fixed effect vary by
+# deed group nets California's post-2021 market slump out of the family
+# decline in one regression. With group-specific state and year effects, the
+# DDD coefficient equals coef_fam - coef_mkt exactly, so the "net" placebo
+# distribution above is its permutation distribution.
+sy_stacked <- sy_did |>
+  select(state, sale_year, post, n_fam, n_market) |>
+  pivot_longer(c(n_fam, n_market), names_to = "grp", values_to = "n") |>
+  mutate(fam = as.integer(grp == "n_fam"),
+         ca = as.integer(state == "CA"))
+
+m_ddd_vol <- feols(log(n) ~ ca:post:fam + ca:post | state^grp + sale_year^grp,
+                   data = sy_stacked, cluster = ~state)
+print(summary(m_ddd_vol))
+
+ddd_vol_coef <- unname(coef(m_ddd_vol)["ca:post:fam"])
+net_ca <- perm_vol$coef_net[perm_vol$state == "CA"]
+stopifnot(abs(ddd_vol_coef - net_ca) < 1e-8)
+
+ddd_vol_summary <- tibble(
+  estimate = ddd_vol_coef,
+  pct_effect = 100 * (exp(ddd_vol_coef) - 1),
+  crve_se_state = unname(se(m_ddd_vol)["ca:post:fam"]),
+  perm_p = p_rank(perm_vol, "coef_net"),
+  perm_rank = sum(abs(perm_vol$coef_net) >= abs(net_ca)),
+  n_states = length(states),
+  nobs = nobs(m_ddd_vol)
+)
+message("Volume triple difference (family vs market, CA x Post):")
+print(ddd_vol_summary, width = Inf)
+write_csv_strict(ddd_vol_summary, path(tables_out_dir, "prop19_ddd_volume.csv"))
+saveRDS(list(model = m_ddd_vol, summary = ddd_vol_summary),
+        path(out_dir, "prop19_ddd_volume.rds"))
 
 # ---- (b) Direct supply test: estate/trust-seller market sales -------------
 m_est <- feols(log(n_mkt_estate_trust) ~ tr:post | state + sale_year,

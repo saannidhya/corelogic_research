@@ -1,0 +1,12 @@
+\begin{table}[!ht]\centering
+\caption{Hedonic market-value model: holdout fit and coverage}\label{tab:wedge_avm}
+\begin{adjustbox}{max width=\textwidth}{\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrrr}\toprule
+ & Training & Holdout & $R^2$ & Median abs. & Within & Within & Parcels \\
+Model & sales & sales & (log price) & error (\%) & 10\% & 20\% & valued (\%) \\\midrule
+All holdout sales &  & 133,231 & 0.812 & 11.1 & 46.1 & 71.8 & 100.0 \\
+Full hedonic model & 492,988 & 124,006 & 0.838 & 10.6 & 47.7 & 73.8 & 91.9 \\
+Without square footage & 523,628 & 7,790 & 0.652 & 20.8 & 26.0 & 48.4 & 6.5 \\
+County $\times$ type fallback & 521,960 & 1,435 & 0.328 & 35.9 & 15.1 & 28.8 & 1.7 \\
+\bottomrule\end{tabular}}\end{adjustbox}
+\begin{minipage}{0.96\textwidth}\vspace{3pt}{\scriptsize\textit{Notes:} Arm's-length, non-distressed California sales of single-family and condominium parcels, 2016--2017, priced \$30,000--\$20 million. A random 20 percent of sales is held out. Each parcel is valued with the richest model that yields a prediction. Errors compare predicted with recorded prices in the sale month; the last column is the share of the January 2019 parcel universe valued by each model.}\end{minipage}\end{table}

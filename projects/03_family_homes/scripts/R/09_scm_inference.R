@@ -25,6 +25,8 @@
 #          manuscript/figures/F_scm_california.png
 # Log:     10/05/2026: moved event aggregation to in-memory R and applied
 #          Saani coding style; preserved SCM, inference, and existing outputs.
+#          10/22/2026: anticipation window constants from 00_setup.R (June 2020
+#          start); donor pre-fit filter aligned to May 2020; event labels fixed.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -94,8 +96,8 @@ panel <- panel %>%
   mutate(rel_fam = n_fam / base)
 base_ca <- base_mean$base[base_mean$state == "CA"]
 
-t_treat <- tmap$t[tmap$ym == 202006]            # first anticipation month
-pre_t   <- tmap$t[tmap$ym <= 202005]            # January 2018 - May 2020
+t_treat <- tmap$t[tmap$ym == prop19_antic_start_ym]   # June 2020 ballot placement
+pre_t   <- tmap$t[tmap$ym <= prop19_pre_end_ym]       # January 2018 - May 2020
 
 # ============================================================
 # Estimating synthetic control and state placebos ----
@@ -123,7 +125,7 @@ sc_series <- scm %>%
          gap_rel = (ca_rel - synth_rel) / synth_rel)
 write_csv_strict(sc_series, path(tables_out_dir, "prop19_scm_series.csv"))
 
-pre_rmspe_ca <- sqrt(mean(sc_series$gap[sc_series$ym <= 202005]^2))
+pre_rmspe_ca <- sqrt(mean(sc_series$gap[sc_series$ym <= prop19_pre_end_ym]^2))
 gap_ss_ca    <- mean(sc_series$gap[sc_series$ym >= 202201])           # rel units
 gap_ss_pct   <- 100 * mean(sc_series$gap_rel[sc_series$ym >= 202201])  # % of synth
 message(sprintf("CA pre-fit RMSPE (rel): %.4f | 2022-23 mean gap: %.4f (%.1f%% of counterfactual)",
@@ -135,14 +137,17 @@ message(sprintf("CA pre-fit RMSPE (rel): %.4f | 2022-23 mean gap: %.4f (%.1f%% o
 sc_plot <- sc_series %>%
   mutate(date = as.Date(sprintf("%d-%02d-01", sale_year, sale_month)))
 
-legislature_date <- as.Date("2020-06-24")
-eff_date <- as.Date("2021-02-16")
+# Shading starts at ballot placement, the first anticipation month.
+antic_start_date <- prop19_event_dates[["ballot"]]
+eff_date <- prop19_event_dates[["effective"]]
 xend <- max(sc_plot$date) + 20
+label_top <- max(sc_plot$ca_n) / 1000 * 0.99
+label_drop <- 0.7 * (max(sc_plot$ca_n) - min(sc_plot$ca_n)) / 1000
 
 phase_rects <- tibble(
   phase = factor(c("Anticipation & Rush", "Post-reform"),
                  levels = c("Anticipation & Rush", "Post-reform")),
-  xmin = c(legislature_date, eff_date),
+  xmin = c(antic_start_date, eff_date),
   xmax = c(eff_date, xend)
 )
 
@@ -157,14 +162,7 @@ f_scm <- ggplot(sc_plot, aes(date)) +
             linewidth = 0.9) +
   geom_line(aes(y = synth_n / 1000, color = "Synthetic California"),
             linewidth = 0.9, linetype = "22") +
-  geom_vline(xintercept = c(legislature_date, eff_date),
-             linetype = "dashed", color = "grey35", linewidth = 0.45) +
-  annotate("text", x = legislature_date - 14, y = max(sc_plot$ca_n) / 1000 * 0.97,
-           label = "Prop 19 pass date\nJune 2020", hjust = 1,
-           size = 2.6, color = "grey25", lineheight = 0.9) +
-  annotate("text", x = eff_date + 14, y = max(sc_plot$ca_n) / 1000 * 0.97,
-           label = "Prop 19 effective date\nFeb 2021", hjust = 0,
-           size = 2.6, color = "grey25", lineheight = 0.9) +
+  prop19_event_layers(label_y = label_top, label_step = label_drop) +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   scale_fill_manual(values = c(`Anticipation & Rush` = "#fbeccb",
                                `Post-reform` = "#f4ece9"), guide = "none") +
@@ -220,11 +218,11 @@ write_csv_strict(
   gaps_all %>% select(unit, is_placebo, ym, sale_year, sale_month, gap, gap_rel),
   path(tables_out_dir, "prop19_scm_placebos.csv"))
 
-# Preserve the original donor-fit window through October 2020.
-# California fit and SCM optimization above use the window through May 2020.
+# Donor pre-fit uses the same January 2018 - May 2020 window as California,
+# so the 5x RMSPE filter compares like with like.
 unit_summ <- gaps_all %>%
   group_by(unit, is_placebo) %>%
-  summarise(pre_rmspe = sqrt(mean(gap[ym <= 202010]^2, na.rm = TRUE)),
+  summarise(pre_rmspe = sqrt(mean(gap[ym <= prop19_pre_end_ym]^2, na.rm = TRUE)),
             gap_ss    = mean(gap[ym >= 202201], na.rm = TRUE),
             .groups = "drop")
 keep <- unit_summ %>%

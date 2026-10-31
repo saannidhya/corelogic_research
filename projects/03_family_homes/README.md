@@ -1,4 +1,4 @@
-﻿# Project: Keeping the House in the Family — Non-Market Transfers and the Supply of Homes
+# Project: Keeping the House in the Family — Non-Market Transfers and the Supply of Homes
 
 **Slug:** `family_homes`
 **Number:** 03
@@ -74,7 +74,7 @@ input and its source documentation are in `scripts/R/inputs/`.
 
 The revision memo, numerical comparison with pre-revision outputs, build
 logs, and visual checks are under
-`quality_reports/family_welfare_2026-09-21/` at the repository root.
+`projects/03_family_homes/quality_reports/family_welfare_2026-09-21/`.
 Historical status entries below refer to the earlier section numbering.
 
 ## Next Steps
@@ -91,3 +91,7 @@ Historical status entries below refer to the earlier section numbering.
 SCOPING → EXPLORATION → ANALYSIS → WRITING → REVIEW → SUBMITTED → R&R → PUBLISHED
 
 Project status is maintained manually in this README.
+
+## Figures and quality reports
+
+Figure exporters write PNG only; manuscript figure references use PNG. Project-specific plans, reviews, audit artifacts and session logs live in `projects/03_family_homes/quality_reports/`. Root `quality_reports/` is for shared or repository-wide work.

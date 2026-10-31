@@ -3,6 +3,8 @@
 # Inputs: saved DiD/SCM outputs, derived events, CA prop via loader
 # Outputs: welfare_*.csv, generated TeX tables/macros, F8_welfare_stock
 # Note: scenario calibration, not identified welfare or a confidence bound.
+# Log: 10/22/2026: main wedge is the measured mean wedge of inherited homes
+#      (04c_wedge_tables.R); LAO range kept as validation/sensitivity.
 # ============================================================
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 source(path(r_dir, "11_welfare_helpers.R"))
@@ -15,7 +17,7 @@ save_csv <- function(x, name) write_csv_strict(x, path(tables_out_dir, paste0("w
 read_result <- function(name) read_csv(path(tables_out_dir, name), show_col_types = FALSE)
 fmt <- function(x, digits = 0) formatC(x, digits = digits, format = "f", big.mark = ",")
 
-# ---- 1. Reference flow: baseline-scaled net DiD -------------------------
+# ---- 1. Reference flow: baseline-scaled triple difference (net DiD) -----
 did <- read_result("prop19_did_volume.csv")
 perm <- read_result("ref_perm_volume.csv")
 scm <- read_result("prop19_scm_inference.csv")
@@ -155,14 +157,24 @@ cpi_2017 <- cpi_annual$cpi[cpi_annual$year==2017]
 cpi_2023 <- cpi_annual$cpi[cpi_annual$year==2023]
 stopifnot(cpi_2017==245.120,cpi_2023==304.702)
 inflator <- cpi_2023 / cpi_2017
-wedge_mid <- 3500 * inflator
-save_csv(tibble(parameter = c("CPI_2017","CPI_2023","wedge_low_2017","wedge_mid_2017","wedge_high_2017"),
-  value = c(cpi_2017,cpi_2023,3000,3500,4000),
-  status = c("external","external","external benchmark","assumed midpoint","external benchmark"),
+# Measured wedge of inherited homes (2018-19 family transfers, January 2017
+# baseline) from 04c; the mean is the aggregation-relevant moment.
+inherited <- read_result("wedge_inherited_homes.csv")
+stopifnot(abs(inherited$inflator_2017_2023 - inflator) < 1e-6)
+main_wedge_2017 <- inherited$mean_wedge_2017usd
+median_wedge_2017 <- inherited$median_wedge_2017usd
+wedge_mid <- main_wedge_2017 * inflator
+wedge_median <- median_wedge_2017 * inflator
+save_csv(tibble(parameter = c("CPI_2017","CPI_2023","wedge_median_measured_2017",
+    "wedge_mean_measured_2017","wedge_low_lao_2017","wedge_high_lao_2017"),
+  value = c(cpi_2017,cpi_2023,median_wedge_2017,main_wedge_2017,3000,4000),
+  status = c("external","external","measured (04c)","measured (04c), main",
+             "external benchmark","external benchmark"),
   source = c(rep("https://www.bls.gov/regions/mid-atlantic/data/consumerpriceindexhistorical_us_table.htm",2),
-             rep("https://lao.ca.gov/Publications/Report/3706",3))), "external_inputs")
+             rep("wedge_inherited_homes.csv",2),
+             rep("https://lao.ca.gov/Publications/Report/3706",2))), "external_inputs")
 grid <- expand_grid(group = c("broad","same_surname"), alpha = c(0,.25,.5,.75,1),
-  delay = c(0,5,10), wedge_2017 = c(1750,3000,3500,4000,7000),
+  delay = c(0,5,10), wedge_2017 = c(median_wedge_2017,3000,main_wedge_2017,4000,7000),
   lambda = c(.25,.5,.75), hazard_scale = c(.5,1,2), discount = c(0,.03,.05)) |>
   mutate(scenario_id = row_number(), wedge = wedge_2017 * inflator)
 annual <- vector("list", nrow(grid)); summary_rows <- vector("list", nrow(grid))
@@ -180,7 +192,7 @@ save_csv(summary_grid, "scenarios")
 save_csv(annual_grid, "annual_paths")
 
 # ---- 5. Generated manuscript interfaces -------------------------------
-main <- summary_grid |> filter(group=="broad",wedge_2017==3500,lambda==.5,
+main <- summary_grid |> filter(group=="broad",wedge_2017==main_wedge_2017,lambda==.5,
                                hazard_scale==1,discount==.03) |> arrange(alpha,delay)
 make_table <- function(name, caption, label, columns, header, rows, notes) {
   writeLines(c("\\begin{table}[!ht]\\centering",paste0("\\caption{",caption,"}\\label{",label,"}"),
@@ -193,24 +205,29 @@ rows <- with(main, sprintf("%.2f & %d & %s & %s & %s & %s \\\\",alpha,delay,
   fmt(stock_2031/1000,1),fmt(property_years/1000,1),fmt(annual_gain_2031/1e6,1),fmt(pv_gain/1e6,1)))
 make_table("T5_welfare.tex","Potential allocation gains: conditional calibration","tab:welfare",
   "rrrrrr","$\\alpha$ & Delay & Stock in 2031 & Property-years & Annual gain & Ten-year PV \\\\\n & (years) & (thousands) & (thousands) & (\\$m, 2031) & (\\$m) \\\\",rows,
-  "All dollars are 2023 dollars. The assumed annual wedge is the CPI-adjusted LAO midpoint; $\\lambda=1/2$, the real discount rate is 3\\%, and persistence uses California broad-family parcel episodes. Cohorts enter annually in 2022--2031. No value of $\\alpha$ is empirically preferred. Rows are scenarios, not confidence intervals; zero response and ten-year delay give zero gains within the horizon.")
+  "All dollars are 2023 dollars. The annual wedge is the measured mean wedge of inherited homes (2018--2019 family transfers, January 2017 baseline), CPI-adjusted; $\\lambda=1/2$, the real discount rate is 3\\%, and persistence uses California broad-family parcel episodes. Cohorts enter annually in 2022--2031. No value of $\\alpha$ is empirically preferred. Rows are scenarios, not confidence intervals; zero response and ten-year delay give zero gains within the horizon.")
 inputs <- c(
-  paste0("Recorded-deed flow & ",fmt(flow)," per year & Net DiD scaled by 2018--2019 CA baseline \\\\"),
-  paste0("Net DiD inference & $p=",fmt(perm$perm_p[perm$outcome=="net"],3),"$ & State placebo rank; not a welfare test \\\\"),
-  paste0("Annual tax wedge & \\$",fmt(3000*inflator),"--\\$",fmt(4000*inflator)," & LAO long-held Los Angeles benchmark \\\\"),
-  "Source dollar year & 2017 & Assumed publication-year dollars; CPI to 2023 \\\\",
+  paste0("Recorded-deed flow & ",fmt(flow)," per year & Triple difference scaled by 2018--2019 CA baseline \\\\"),
+  paste0("Triple-difference inference & $p=",fmt(perm$perm_p[perm$outcome=="net"],3),"$ & State placebo rank; not a welfare test \\\\"),
+  paste0("Annual tax wedge (main) & \\$",fmt(wedge_mid)," & Measured mean, inherited homes 2018--2019 \\\\"),
+  paste0("Annual tax wedge (median) & \\$",fmt(wedge_median)," & Measured median; sensitivity \\\\"),
+  paste0("LAO benchmark & \\$",fmt(3000*inflator),"--\\$",fmt(4000*inflator)," & Long-held Los Angeles home; validation and sensitivity \\\\"),
+  "Dollar year & 2017 baseline & CPI-U to 2023 dollars \\\\",
   "Allocation conversion & $\\alpha\\in[0,1]$ & Assumed properties per missing deed \\\\",
   "Mean surplus gap & $\\lambda w$ & Uniform benchmark $\\lambda=1/2$ \\\\",
   "Persistence & CA parcel-episode survival & Proxy; marginal survival is not identified \\\\",
   "Delay / horizon & 0, 5, 10 / 10 years & Assumptions; grandfathered stock excluded \\\\")
 make_table("T6_welfare_inputs.tex","Inputs to the welfare calibration","tab:welfare_inputs",
   "p{0.22\\textwidth}p{0.25\\textwidth}p{0.42\\textwidth}","Input & Value & Evidence status \\\\",inputs,
-  "The tax wedge is an external benchmark, not a statewide marginal estimate. The SCM estimates are reported separately and do not enter the net-DiD reference flow. The conversion parameter includes legal-title-only responses and multiple deeds per property; it is not estimated using the national deeds-per-parcel ratio.")
+  "The measured wedge is a parcel-level estimate for homes inherited before the reform, not the wedge of the marginal heir, which is not identified. The SCM estimates are reported separately and do not enter the triple-difference reference flow. The conversion parameter includes legal-title-only responses and multiple deeds per property; it is not estimated using the national deeds-per-parcel ratio.")
 reference <- main |> filter(alpha==.5,delay==5)
 macro <- function(n,v) paste0("\\newcommand{\\",n,"}{",v,"}")
 writeLines(c(macro("WelfareFlow",fmt(flow)),macro("WelfareBaseline",fmt(base_flow)),
   macro("WelfareNetPercent",fmt(100*(1-exp(beta_net)),1)),
-  macro("WelfareWedge",fmt(wedge_mid)),macro("WelfareWedgeLow",fmt(3000*inflator)),
+  macro("WelfareWedge",fmt(wedge_mid)),macro("WelfareWedgeMedian",fmt(wedge_median)),
+  macro("WelfareWedgeLow",fmt(3000*inflator)),
+  macro("WelfareDWLCohort",fmt(.5*wedge_mid*flow/1e6,1)),
+  macro("WelfareDWLCohortMedian",fmt(.5*wedge_median*flow/1e6,1)),
   macro("WelfareWedgeHigh",fmt(4000*inflator)),macro("WelfareInflator",fmt(inflator,4)),
   macro("WelfareExampleStock",fmt(reference$stock_2031)),
   macro("WelfareExampleAnnual",fmt(reference$annual_gain_2031/1e6,1)),
@@ -243,16 +260,15 @@ p <- ggplot(fig,aes(year,stock/1000,color=factor(alpha),group=alpha))+
   scale_x_continuous(breaks=c(2022,2025,2028,2031))+
   labs(x=NULL,y="Potentially avoided misallocation (thousand properties)")+
   theme(axis.text.x=element_text(angle=45,hjust=1))
-ggsave(path(figures_dir,"F8_welfare_stock.pdf"),p,width=9,height=4.5)
 ggsave(path(figures_dir,"F8_welfare_stock.png"),p,width=9,height=4.5,dpi=180)
 
 # One-at-a-time sensitivities around the explicitly illustrative alpha=.5, L=5 case.
 sens <- summary_grid |> filter(alpha==.5,delay==5) |>
   filter((group=="broad" & lambda==.5 & hazard_scale==1 & discount==.03) |
-    (wedge_2017==3500 & group=="broad" & hazard_scale==1 & discount==.03) |
-    (wedge_2017==3500 & group=="broad" & lambda==.5 & discount==.03) |
-    (wedge_2017==3500 & group=="broad" & lambda==.5 & hazard_scale==1) |
-    (wedge_2017==3500 & lambda==.5 & hazard_scale==1 & discount==.03))
+    (wedge_2017==main_wedge_2017 & group=="broad" & hazard_scale==1 & discount==.03) |
+    (wedge_2017==main_wedge_2017 & group=="broad" & lambda==.5 & discount==.03) |
+    (wedge_2017==main_wedge_2017 & group=="broad" & lambda==.5 & hazard_scale==1) |
+    (wedge_2017==main_wedge_2017 & lambda==.5 & hazard_scale==1 & discount==.03))
 sens_rows <- with(sens,sprintf("%s & %s & %.2f & %.1f & %.0f & %s \\\\",
   ifelse(group=="broad","Broad","Same surname"),fmt(wedge),lambda,hazard_scale,
   100*discount,fmt(pv_gain/1e6,1)))

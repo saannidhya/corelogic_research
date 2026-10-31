@@ -3,30 +3,36 @@
    \caption{\label{tab:prop19} Proposition 19: volume, selection, and composition}
    \centering
    \scriptsize
-   \begin{tabular}{lccccc}
-      \tabularnewline \midrule \midrule
-       & \multicolumn{2}{c}{Log volume} & \multicolumn{2}{c}{Sold within 24 months} & Absentee recipient \\ 
-                        & Family transfers & Market sales & Family transfers & Market purchases & Family transfers \\   
-      Model:            & (1)              & (2)          & (3)              & (4)              & (5)\\  
-      \midrule
-      \emph{Variables}\\
-      CA $\times$ Post  & -0.4253          & -0.1626      & -0.0178          & -0.0104          & -0.0017\\   
-                        & (0.0352)         & (0.0293)     & (0.0032)         & (0.0019)         & (0.0032)\\   
-      \midrule
-      \emph{Fixed-effects}\\
-      State             & Yes              & Yes          & Yes              & Yes              & Yes\\  
-      Year              & Yes              & Yes          &                  &                  & \\  
-      Cohort month      &                  &              & Yes              & Yes              & Yes\\  
-      \midrule
-      \emph{Fit statistics}\\
-      Observations      & 255              & 255          & 1,836            & 1,836            & 1,836\\  
-      R$^2$             & 0.98575          & 0.98961      & 0.84935          & 0.85148          & 0.90779\\  
-      \midrule \midrule
-      \multicolumn{6}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
-   \end{tabular}
-   
-   \par \raggedright 
-   Columns (1)-(2): state-year counts, 2017-2019 versus 2022-2023. Columns (3)-(5): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; inference with one treated state uses state placebos.
+   \begin{adjustbox}{max width = \textwidth}
+      \begin{tabular}{lcccccc}
+         \tabularnewline \midrule \midrule
+          & \multicolumn{3}{c}{Log volume} & \multicolumn{2}{c}{Sold within 24 months} & Absentee recipient \\ 
+                                            & Family transfers & Market sales & Family vs. market & Family transfers & Market purchases & Family transfers \\   
+         Model:                             & (1)              & (2)          & (3)               & (4)              & (5)              & (6)\\  
+         \midrule
+         \emph{Variables}\\
+         CA $\times$ Post                   & -0.4253          & -0.1626      &                   & -0.0178          & -0.0104          & -0.0017\\   
+                                            & (0.0352)         & (0.0293)     &                   & (0.0032)         & (0.0019)         & (0.0032)\\   
+         CA $\times$ Post $\times$ Family   &                  &              & -0.2627           &                  &                  &   \\   
+                                            &                  &              & (0.0322)          &                  &                  &   \\   
+         \midrule
+         \emph{Fixed-effects}\\
+         State                              & Yes              & Yes          &                   & Yes              & Yes              & Yes\\  
+         Year                               & Yes              & Yes          &                   &                  &                  & \\  
+         State-deed group                   &                  &              & Yes               &                  &                  & \\  
+         Year-deed group                    &                  &              & Yes               &                  &                  & \\  
+         Cohort month                       &                  &              &                   & Yes              & Yes              & Yes\\  
+         \midrule
+         \emph{Fit statistics}\\
+         Observations                       & 255              & 255          & 510               & 1,836            & 1,836            & 1,836\\  
+         R$^2$                              & 0.98575          & 0.98961      & 0.99094           & 0.84935          & 0.85148          & 0.90779\\  
+         \midrule \midrule
+         \multicolumn{7}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
+      \end{tabular}
+   \end{adjustbox}
+   \par\vspace{2pt}\begin{minipage}{0.95\textwidth}\scriptsize
+   \textit{Notes:} Columns (1)-(3): state-year counts, 2017-2019 versus 2022-2023. Column (3) stacks family and market counts with state and year effects that vary by deed group; its CA $\times$ Post $\times$ Family coefficient is the triple difference, equal to column (1) minus column (2). Columns (4)-(6): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; inference with one treated state uses state placebos.
+   \end{minipage}
 \end{table}
 
 

@@ -92,6 +92,56 @@ write_csv_strict <- function(x, file) {
 window_start_year <- 2007L   # OT density begins 2007 (probe 2026-06-09)
 window_end_year   <- 2024L   # data truncate ~Aug 2024; treat 2024 as partial
 full_year_end     <- 2023L   # last complete calendar year
+prop19_ballot_date    <- 20200624L  # Legislature placed Prop 19 on the ballot
 prop19_pass_date      <- 20201103L  # Prop 19 passed (election day)
 prop19_pc_effective   <- 20210216L  # parent-child exclusion changes effective
+
+# Anticipation starts at ballot placement (decided 10/22/2026); every Prop 19
+# design fits its pre-period through May 2020 and treats June 2020 onward.
+prop19_antic_start_ym <- 202006L    # first anticipation month (ballot placement)
+prop19_antic_end_ym   <- 202102L    # deadline month
+prop19_pre_end_ym     <- 202005L    # last clean pre-period month
+prop19_event_dates <- as.Date(c(ballot    = "2020-06-24",
+                                passage   = "2020-11-03",
+                                effective = "2021-02-16"))
+prop19_event_labels <- c(ballot    = "Placed on ballot\nJun 24, 2020",
+                         passage   = "Passed by voters\nNov 3, 2020",
+                         effective = "Parent-child rules\neffective Feb 16, 2021")
+
+#' Prop 19 event lines and labels for monthly date-axis figures
+#'
+#' Ballot placement and the effective date are dashed; voter passage is dotted.
+#' Labels sit left of the ballot and passage lines (passage one row lower) and
+#' right of the effective-date line, so the three never overlap.
+#' @param label_y y position of the top label row, in data units.
+#' @param label_step vertical drop of the passage label below label_y.
+#' @param show_labels FALSE draws the lines only.
+#' @return List of ggplot layers.
+prop19_event_layers <- function(label_y, label_step = 0, show_labels = TRUE,
+                                label_size = 2.6) {
+  event_lines <- tibble(
+    event = names(prop19_event_dates),
+    date = unname(prop19_event_dates),
+    label = unname(prop19_event_labels[names(prop19_event_dates)]),
+    line_type = if_else(event == "passage", "dotted", "dashed"),
+    label_x = date + if_else(event == "effective", 14, -14),
+    label_y = if_else(event == "passage", label_y - label_step, label_y),
+    label_hjust = if_else(event == "effective", 0, 1)
+  )
+  layers <- list(
+    geom_vline(data = event_lines, aes(xintercept = date, linetype = I(line_type)),
+               color = "grey35", linewidth = 0.45)
+  )
+  if (show_labels) {
+    layers <- c(layers, list(
+      # white backing keeps a label legible where it crosses a neighbouring line
+      geom_label(data = event_lines, inherit.aes = FALSE,
+                 aes(x = label_x, y = label_y, label = label, hjust = label_hjust),
+                 vjust = 1, size = label_size, color = "grey25", lineheight = 0.9,
+                 fill = "white", border.colour = NA,
+                 label.padding = unit(0.1, "lines"))
+    ))
+  }
+  layers
+}
 

@@ -67,9 +67,8 @@ message("Wrote T1")
 # ---- T2: volumes by year ---------------------------------------------------
 headline <- read_csv(path(tables_out_dir, "fact_headline_ratios.csv"),
                      show_col_types = FALSE)
-t2_years <- c(2007, 2010, 2013, 2016, 2019, 2021, 2022, 2023)
 t2_rows <- headline |>
-  filter(sale_year %in% t2_years) |>
+  arrange(sale_year) |>
   mutate(row = glue("{sale_year} & {fmt_n(market)} & {fmt_n(fam_conservative)} & ",
                     "{fmt_n(fam_broad)} & {fmt_n(trust)} & ",
                     "{sprintf('%.2f', ratio_broad)} \\\\")) |>
@@ -130,30 +129,58 @@ message("Wrote T3")
 
 # ---- T4: Prop 19 regressions ----------------------------------------------
 vol <- readRDS(path(out_dir, "prop19_did_volume.rds"))
+ddd_vol <- readRDS(path(out_dir, "prop19_ddd_volume.rds"))   # headline DDD (07)
 haz19 <- readRDS(path(out_dir, "prop19_ddd_hazard.rds"))
 abs19 <- readRDS(path(out_dir, "prop19_absentee_did.rds"))
 
+# State-placebo rank p-value for the headline triple difference
+ddd_perm_p <- sprintf("%.3f", ddd_vol$summary$perm_p)
+
 etable(
-  vol$fam, vol$market_placebo, haz19$fam, haz19$market_placebo, abs19,
+  vol$fam, vol$market_placebo, ddd_vol$model, haz19$fam, haz19$market_placebo, abs19,
   dict = c("ca:post" = "CA $\\times$ Post",
-           "state" = "State", "sale_year" = "Year", "ym" = "Cohort month"),
+           "ca:post:fam" = "CA $\\times$ Post $\\times$ Family",
+           "state" = "State", "sale_year" = "Year", "ym" = "Cohort month",
+           "grp" = "deed group"),
+  order = c("Family", "Post"),
   depvar = FALSE,
   headers = list(
-    c("Log volume", "Log volume", "Sold within 24 months", "Sold within 24 months",
-      "Absentee recipient"),
-    c("Family transfers", "Market sales", "Family transfers", "Market purchases",
-      "Family transfers")
+    c("Log volume", "Log volume", "Log volume", "Sold within 24 months",
+      "Sold within 24 months", "Absentee recipient"),
+    c("Family transfers", "Market sales", "Family vs. market", "Family transfers",
+      "Market purchases", "Family transfers")
   ),
+  extralines = list("State-placebo $p$ (DDD)" = c("", "", ddd_perm_p, "", "", "")),
   signif.code = NA,
   fitstat = ~ n + r2,
   fontsize = "scriptsize",
+  adjustbox = "max width = \\textwidth",   # six columns exceed the text width
   tex = TRUE,
   file = path(tables_dir, "T4_prop19.tex"),
   replace = TRUE,
   title = "Proposition 19: volume, selection, and composition",
-  label = "tab:prop19",
-  notes = "Columns (1)-(2): state-year counts, 2017-2019 versus 2022-2023. Columns (3)-(5): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; inference with one treated state uses state placebos."
+  label = "tab:prop19"
 )
+
+# Notes go below the adjustbox so they wrap at text width instead of
+# widening the box and shrinking the table.
+t4_notes <- paste0("Columns (1)-(3): state-year counts, 2017-2019 versus 2022-2023. ",
+                   "Column (3) stacks family and market counts with state and year effects ",
+                   "that vary by deed group; its CA $\\times$ Post $\\times$ Family ",
+                   "coefficient is the triple difference, equal to column (1) minus column (2). ",
+                   "Columns (4)-(6): transfer-cohort cells, January 2017-December 2018 ",
+                   "versus July 2021-June 2022, weighted by cell size. Standard errors are ",
+                   "clustered by state and shown for scale; inference with one treated ",
+                   "state uses state placebos.")
+t4_path <- path(tables_dir, "T4_prop19.tex")
+t4_lines <- readLines(t4_path)
+end_table <- max(grep("\\end{table}", t4_lines, fixed = TRUE))
+t4_lines <- append(t4_lines,
+                   c("   \\par\\vspace{2pt}\\begin{minipage}{0.95\\textwidth}\\scriptsize",
+                     paste0("   \\textit{Notes:} ", t4_notes),
+                     "   \\end{minipage}"),
+                   after = end_table - 1)
+writeLines(t4_lines, t4_path)
 message("Wrote T4")
 
 message("Finished 05_tables at ", Sys.time())

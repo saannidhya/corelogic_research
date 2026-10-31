@@ -1,68 +1,113 @@
 \section{Introduction}\label{sec:intro}
 
-Housing turnover is usually measured through market sales. Families also
-transfer homes by gift, succession, and other non-market conveyances. These
-deeds can change legal title without generating a market price or changing
-who occupies the property. Between 2007 and 2023, our classification of
-CoreLogic residential records identifies nearly 20 million family-transfer
-deeds, one for every 3.6 market sales. Understanding this channel requires
+The housing market that economists study is the one with prices.
+For half a century, that market has been one of the most productive objects
+in applied economics. Hedonic methods recover what buyers pay for each
+feature of a home \citep{rosen1974hedonic}, repeat-sales indexes track how
+the value of the same house moves over time
+\citep{baileymuthnourse1963regression,case1989efficiency}, and search models
+explain why homes sit unsold, why prices and volume rise together, and why
+sellers hold out for prices the market will not pay
+\citep{wheaton1990vacancy,genesovemayer2001loss,genesove2012search,ngai2014hot,piazzesi2020segmented}.
+The same transactions tell us how regulation limits new supply
+\citep{glaesergyourkosaks2005manhattan,hsiehmoretti2019housing} and how
+often owners move when prices fall or rates rise
+\citep{ferreiragyourkotracy2010busts,fonsecaliu2024lockin}.
+Housing turnover is measured through market sales. Sales are recorded, indexed and aggregated.
+Each of these literatures starts, sensibly, from a sale between strangers,
+because presumably only such a sale reveals what a home is worth. However, many homes change hands without a market. Families transfer homes to each other by gift, inheritance, and other non-market conveyances -- a father quitclaiming a bungalow to his son, or siblings dividing a family estate among themselves. These deed transfers are recorded, but they usually do not generate a market price, and thereby ignored by the literature as ``non-arms length'' transactions.
+For anyone building a price index, that filter is the right one. A deed from
+a mother to her daughter for one dollar says little about what the house is
+worth. But the filter also discards a question: who ends up living in a home
+when no price is ever consulted? An older literature does study what passes
+between generations, yet it focuses on dollars rather than houses. Economists have
+long disagreed about how much of American wealth is inherited rather than
+saved over a lifetime \citep{kotlikoffsummers1981role,modigliani1988role},
+and about why parents give their wealth to their children: to help the child who earns less, to
+reward the child who visits, or because they did not expect to die so soon
+\citep{beckertomes1979equilibrium,bernheimshleifersummers1985bequest,mcgarry1999intervivos,kopczuklupton2007leave,kopczuk2007bequest}.
+Inherited wealth has regained weight in rich economies
+\citep{piketty2011inheritance}, the home is the largest asset in the
+portfolio of the typical middle-class American family
+\citep{kuhnschularicksteins2020income}, and housing wealth persists strongly
+across generations \citep{charleshurst2003wealth,binderrischvoorheis2026housing}.
+Yet the bequest literature treats a house as a sum in an estate, while the
+housing literature treats the same deed as noise to be cleaned out of a price
+index. Neither follows the home itself. That omission matters because houses
+are durable and outlive their owners \citep{glaesergyourko2005durable}, and
+when prices do not allocate homes, nothing ensures that each home goes to the
+person who values it most. Rent control misallocates apartments across
+tenants \citep{glaeserluttmer2003rentcontrol}. Property taxes can do the
+same thing to owners. Under an assessment cap, such as California's
+Proposition~13, a home is taxed on its purchase price plus at most two
+percent a year, so a long-time owner's tax bill falls far below what a new
+buyer would pay for the same house. Selling forfeits that discount, because
+moving even across the street means paying the market tax on the next home.
+The low bill
+is therefore a reward for staying put, and it should lock owners in, as
+simulations predicted that it would
+\citep{osullivansextonsheffrin1995property}. But the first comparison of
+California's metropolitan areas with those of other states found no clear
+change in mobility after 1978 \citep{nagy1997proposition}. With longer data,
+the property tax lock-in became visible: California owners now stay in their homes longer
+than owners in comparable states \citep{wasiwhite2005prop13}, and letting
+older Californians carry their assessment to a new home made them more likely
+to move \citep{ferreira2010takeit}. Florida's caps on assessment growth have
+raised the same question \citep{ihlanfeldt2011caps}. The tax discount works much like a below-market
+mortgage rate, which also keeps owners from moving
+\citep{ferreiragyourkotracy2010busts,fonsecaliu2024lockin}. Recent work
+shows how such taxes shape who holds which homes when buyers face financial
+constraints \citep{covenetal2024proptax}. Transaction taxes, for their part,
+change when and whether homes trade at all
+\citep{kopczukmunroe2015mansion,hilberlyytikainen2017transfer,bestkleven2018notches}.
+A family transfer can have both features at once. The home moves without a
+price, and in California it could, until recently, carry the parent's tax
+basis with it. Before Proposition~19, the inheritance exclusion let the
+lock-in outlive the owner. An heir who kept the house kept the parent's tax
+bill, sometimes decades old. An heir who sold it gave that discount up,
+because the buyer would be taxed at market value. The older homes that families keep are also the homes that
+would otherwise filter down to new and often poorer buyers
+\citep{rosenthal2014filtering}. In this paper, we study one of the largest non-market channels of housing turnover: within-family transfers. We document their scale and persistence, and we study how they respond to property-tax incentives.
+We find that this channel is not small. From 2007 through 2023, county recorders logged
+about 28 family-transfer deeds for every 100 market sales, and the ratio
+stayed between 0.25 and 0.34 in every year, through the bust, the recovery,
+and the pandemic boom.
+Understanding this channel requires
 measuring both its scale and the institutions that shape it.
 
 This paper has three parts. First, it establishes national facts about
-within-family transfers using 144 million residential parcel-date events.
-Family deeds represent a substantial and persistent flow alongside market
+within-family transfers using 144 million residential deed transfer events.
+We document that family deeds represent a substantial and persistent flow alongside market
 sales. Their ratio to market sales is highest in California, where the tax
 code historically allowed heirs to inherit a property's assessment as well
 as the property. Their share rises across middle-aged housing vintages,
 although it is not monotone over all ages. Many properties remain unsold
-long after a family transfer. These patterns describe a channel of housing
-ownership; none by itself identifies inefficient use or a causal tax effect.
+long after a family transfer. 
+% These patterns describe a channel of housing
+% ownership; none by itself identifies inefficient use or a causal tax effect.
 
 Second, the paper examines how tax incentives shape recorded family
-transfers using California's Proposition~19. Under Propositions~58 and 193,
-eligible intergenerational transfers could preserve the parent's assessed
-value. Proposition~19 narrowed this exclusion in February 2021, retaining
+transfers using California's Proposition~19. Under Proposition 13, Propositions~58 and 193, growth rate of assessment values of homes in California were capped at 2 percent per year, and eligible intergenerational transfers could preserve the parent's assessed
+value, thereby allowing heirs to inherit a below-market property-tax assessment along with the house. Proposition~19 narrowed this exclusion in February 2021, retaining
 conditional protection for a principal residence occupied by the heir and
 for family farms while removing it for other qualifying transfers
-\citep{boe2025prop19}. The LAO estimated that 60,000--80,000 properties
-annually had received inheritance exclusions under the earlier regime
-\citep{lao2017inheritance}. That is an administrative property count, not a
-tax-revenue estimate or a count of inefficiently allocated homes.
+\citep{boe2025prop19}. We use the ballot placement and implementation of Proposition~19 as a natural experiment to study how inherited property-tax assessments shape the family transfer channel. 
+% The LAO estimated that 60,000--80,000 properties
+% annually had received inheritance exclusions under the earlier regime
+% \citep{lao2017inheritance}. That is an administrative property count, not a
+% tax-revenue estimate or a count of inefficiently allocated homes.
+We find that California family deeds rose 17.4 percent above the
+counterfactual over the whole anticipation period, from the June 2020 ballot
+placement to the February 2021 deadline. They then fell to a persistently
+lower level. A triple difference that compares family deeds with market
+sales, in California and in other states, before and after the reform, shows
+family transfers 23 percent lower in 2022--2023 net of California's
+market-sale decline, roughly \WelfareFlow\ missing deeds annually when
+scaled by the 2018--2019 baseline. A synthetic control and a monthly event
+study trace the same persistent post-reform gap. 
 
-California family deeds surged 31 percent above the transparent
-counterfactual in the four months before the deadline. They then fell to a
-persistently lower level. A synthetic control estimates a 33 percent
-2022--2023 gap; adjusting for the population aged 65 and over yields 26
-percent. These are separate specifications, not the endpoints of a
-confidence interval. A DiD adjustment for California's market-sale decline
-implies roughly \WelfareFlow\ missing deeds annually when scaled by the
-2018--2019 baseline. Inference varies across designs: the raw SCM
-post/pre-MSPE rank has $p=0.039$, while the net-DiD state-placebo rank has
-$p=0.176$. Conditional sale hazards and estate/trust-seller market sales do
-not establish an accompanying release of homes through 2023. Deferred
-succession is consistent with the evidence but is not identified by those
-null results.
+Third, we develop a simple framework that quantifies the potential allocation gains from removing the inherited-assessment advantage. The framework follows a marginal heir's decision to keep a home or sell it, and the components involved in that decision: the value of the home to the heir, the market value of the home, and the inherited property-tax assessment. The framework shows that the tax advantage tips only those heirs who value the home less than the market does, and we measure the distortion using the tax wedge for each parcel. We estimate each component of the tax wedge using the 2018--2019 cohort of California family transfers, and we combine the estimated tax wedge with our framework's predictions to quantify the potential deadweight loss from the misallocation. The homes that California families passed down in 2018--2019 carried a median wedge of \$\WelfareWedgeMedian\ a year in 2023 dollars, including homes with zero wedges. Their total inherited tax savings were about \$544 million a year, a transfer from other taxpayers to heirs rather than a loss to the economy. The deadweight loss is the much smaller triangle beneath that transfer: if each of the \WelfareFlow\ missing deeds a year sent a home to a higher-value user, assigning each home the median wedge and a distortion equal to half that wedge would yield about \$\WelfareDWLCohortMedian\ million a year of avoided deadweight loss per annual cohort.
 
-Third, a simple framework quantifies the potential allocation gains from
-removing the inherited-assessment advantage. The object is the distortion
-created by the tax wedge, not the existence of non-market transfers. Family
-attachment, insurance, avoided transaction costs, and efficient rental use
-can make retention socially valuable. Inefficient retention arises only
-when the tax advantage induces a family to forgo an alternative use with
-greater net surplus. Recorded deeds do not directly identify that margin.
-
-We therefore combine the estimated deed response with explicit assumptions
-about the conversion to distinct allocation-changing properties, the tax
-wedge, succession delay, and persistence. California parcel episodes supply
-a descriptive persistence proxy, and an LAO example for long-held Los
-Angeles homes supplies an external wedge benchmark. Under a uniform
-valuation-gap approximation, the annual gain per marginal property is half
-the wedge. This sufficient-statistics-inspired calculation retains the
-model assumptions needed for welfare interpretation
-\citep{chetty2009sufficient}. The resulting tables show annual gains,
-property-years, and discounted gains, including zero when deeds change but
-allocations do not. They are conditional policy calculations, not estimates
-of realized or total Proposition~19 welfare.
 
 The paper connects the economics of bequests and inter-vivos transfers
 \citep{bernheimshleifersummers1985bequest,mcgarry1999intervivos,kopczuk2007bequest,piketty2011inheritance}

@@ -4,19 +4,22 @@
 # Purpose: Figures for paper.tex, built ONLY from _outputs/ artifacts
 #          produced by 02-04 (no direct CoreLogic access here).
 # Inputs:  _outputs/tables/*.csv, _outputs/*.rds
-# Outputs: manuscript/figures/F1_volumes.pdf
-#          manuscript/figures/F1_size.pdf, F1_size_decomposed.pdf
-#          manuscript/figures/F1_annual_ratio.pdf (also PNG versions)
-#          manuscript/figures/F2_state_ratio.pdf
-#          manuscript/figures/F2b_state_ratio_2007_2023.pdf (also PNG)
-#          manuscript/figures/F2c_state_ratio_decomposed_2007_2023.pdf (also PNG)
-#          manuscript/figures/F3_km_curves.pdf
-#          manuscript/figures/F4_prop19_bunching.pdf
-#          manuscript/figures/F5_sold24_cohorts.pdf
-#          manuscript/figures/F6_prop19_quarterly_gap.pdf
-#          manuscript/figures/F7_prop19_placebo_ranks.pdf
-# Log:     10/07/2026: added full-period state ratios and family decomposition.
+# Outputs: manuscript/figures/F1_volumes.png
+#          manuscript/figures/F1_size.png, F1_size_decomposed.png
+#          manuscript/figures/F1_annual_ratio.png
+#          manuscript/figures/F2_state_ratio.png
+#          manuscript/figures/F2b_state_ratio_2007_2023.png
+#          manuscript/figures/F2c_state_ratio_decomposed_2007_2023.png
+#          manuscript/figures/F3_km_curves.png
+#          manuscript/figures/F4_prop19_bunching.png
+#          manuscript/figures/F5_sold24_cohorts.png
+#          manuscript/figures/F6_prop19_quarterly_gap.png
+#          manuscript/figures/F7_prop19_placebo_ranks.png
+# Log:     10/22/2026: export figures as PNG only.
+#          10/07/2026: added full-period state ratios and family decomposition.
 #          10/22/2026: use the shared setup path for state-ratio figure output.
+#          10/22/2026: F4/F6 event lines relabelled (ballot placement Jun 24,
+#          passage Nov 3, effective Feb 16) via prop19_event_layers().
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -24,8 +27,6 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 set.seed(20260609)
 
 save_fig <- function(p, name, width = 9, height = 5, output_dir = figures_dir) {
-  ggsave(file.path(output_dir, paste0(name, ".pdf")), p,
-         width = width, height = height, bg = "transparent")
   ggsave(file.path(output_dir, paste0(name, ".png")), p,
          width = width, height = height, bg = "transparent", dpi = 300)
   message("Saved figure: ", name)
@@ -270,12 +271,9 @@ f4 <- ggplot(cf, aes(date)) +
   geom_line(aes(y = ca_actual / 1000, color = "California, actual"), linewidth = 0.9) +
   geom_line(aes(y = ca_cf / 1000, color = "Counterfactual (2019 CA x donor growth)"),
             linewidth = 0.9, linetype = "22") +
-  geom_vline(xintercept = as.Date(c("2020-06-24", "2021-02-16")),
-             linetype = "dotted", color = "grey20") +
-  annotate("text", x = as.Date("2020-11-03"), y = max(cf$ca_actual) / 1000 * 0.97,
-           label = "prop 19 passed", hjust = 1.7, size = 3, color = "grey20") +
-  annotate("text", x = as.Date("2021-03-01"), y = max(cf$ca_actual) / 1000 * 0.97,
-           label = "prop 19 effective", hjust = -0.05, size = 3, color = "grey20") +
+  # ballot placement, voter passage, and parent-child effective date
+  prop19_event_layers(label_y = max(cf$ca_actual) / 1000 * 0.99,
+                      label_step = 0.7 * (max(cf$ca_actual) - min(cf$ca_actual)) / 1000) +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   labs(x = NULL, y = "CA family transfers (thousands/month)", color = NULL)
 save_fig(f4, "F4_prop19_bunching")
@@ -318,8 +316,7 @@ gap_q <- cf |>
 f6 <- ggplot(gap_q, aes(quarter_date, gap, fill = direction)) +
   geom_hline(yintercept = 0, color = "grey35", linewidth = 0.3) +
   geom_col(width = 70, alpha = 0.88) +
-  geom_vline(xintercept = as.Date(c("2020-11-03", "2021-02-16")),
-             linetype = "dotted", color = "grey30") +
+  prop19_event_layers(label_y = 0, show_labels = FALSE) +
   scale_fill_manual(values = c("Actual above counterfactual" = palette_paper()[2],
                                "Actual below counterfactual" = palette_paper()[1])) +
   scale_y_continuous(labels = percent_format()) +

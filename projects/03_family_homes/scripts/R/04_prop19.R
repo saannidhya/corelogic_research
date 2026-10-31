@@ -34,11 +34,16 @@
 #          _outputs/tables/prop19_dose_*.csv, prop19_exits_decomposition_*.csv,
 #          prop19_robustness_*.csv, prop19_headlines.csv
 #          manuscript/tables/prop19_numbers.tex
-#          manuscript/figures/F_prop19_dose_*.pdf/.png
-# Log:     10/02/2026: moved event aggregation and spells into R memory.
+#          manuscript/figures/F_prop19_dose_*.png
+# Log:     10/22/2026: export figures as PNG only.
+#          10/02/2026: moved event aggregation and spells into R memory.
 #          10/02/2026: rebuilt around parcel wedge dose-response, competing
 #          risks, cross-state DDD, headline numbers. Aggregate sections and
 #          appendix outputs kept byte-identical in logic and filenames.
+#          10/22/2026: anticipation now starts at the June 2020 ballot
+#          placement (constants from 00_setup.R): bunching, pre-fit, placebo,
+#          DDD transition, dose-response periods, and fake reform aligned;
+#          Nov 2020-Feb 2021 rush kept as a sensitivity window.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -60,17 +65,20 @@ message("Starting 04_prop19 at ", Sys.time())
 # Settings ----
 #============================================#
 
-# policy windows (YYYYMM): passage Nov 3 2020; parent-child deadline Feb 16 2021
-antic_start_ym <- 202011L
-antic_end_ym <- 202102L
+# policy windows (YYYYMM): ballot placement Jun 24 2020 (anticipation start, set
+# in 00_setup.R); passage Nov 3 2020; parent-child deadline Feb 16 2021
+antic_start_ym <- prop19_antic_start_ym
+antic_end_ym <- prop19_antic_end_ym
+pre_end_ym <- prop19_pre_end_ym
+rush_start_ym <- 202011L      # passage-to-deadline sub-window, kept as a sensitivity
 post21_end_ym <- 202112L      # Mar-Dec 2021: post-deadline transition
 steady_start_ym <- 202201L    # 2022 onward: steady state
-es_ref_quarter <- "2020Q3"    # last clean quarter before anticipation
+es_ref_quarter <- "2020Q1"    # last clean quarter before anticipation (Q2 includes June)
 
-# fake reform for the pre-period placebo (two years earlier)
-fake_antic <- c(201811L, 201902L)
+# fake reform for the pre-period placebo (same 9-month window, two years earlier)
+fake_antic <- c(201806L, 201902L)
 fake_post_start <- 201903L
-fake_sample_end <- 202010L
+fake_sample_end <- pre_end_ym
 
 # parcel design
 main_cohort <- "d2017"
@@ -136,7 +144,7 @@ cf <- ca %>%
          excess = ca_actual - ca_cf)
 write_csv_strict(cf, path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"))
 
-window_antic <- cf %>% filter(ym >= 202011, ym <= 202102)
+window_antic <- cf %>% filter(ym >= antic_start_ym, ym <= antic_end_ym)
 window_post  <- cf %>% filter(ym >= 202103, ym <= 202212)
 bunch <- tibble(
   excess_antic_window = sum(window_antic$excess),
@@ -226,11 +234,11 @@ cf_placebo_summary <- cf_placebo_monthly %>%
   summarise(
     donor_count = first(donor_count),
     pre_start_ym = 201801L,
-    pre_end_ym = 202010L,
+    pre_end_ym = pre_end_ym,
     pre_rmspe = sqrt(mean(gap_fam[ym >= pre_start_ym & ym <= pre_end_ym]^2)),
     pre_mae = mean(abs(gap_fam[ym >= pre_start_ym & ym <= pre_end_ym])),
-    antic_gap = sum(excess_fam[ym >= 202011 & ym <= 202102]) /
-      sum(cf_fam[ym >= 202011 & ym <= 202102]),
+    antic_gap = sum(excess_fam[ym >= antic_start_ym & ym <= antic_end_ym]) /
+      sum(cf_fam[ym >= antic_start_ym & ym <= antic_end_ym]),
     feb_gap = sum(excess_fam[ym == 202102]) / sum(cf_fam[ym == 202102]),
     post2021_gap = sum(excess_fam[ym >= 202103 & ym <= 202212]) /
       sum(cf_fam[ym >= 202103 & ym <= 202212]),
@@ -267,7 +275,8 @@ saveRDS(list(monthly = cf_placebo_monthly, summary = cf_placebo_summary),
 
 sensitivity_windows <- tribble(
   ~window, ~start_ym, ~end_ym, ~direction,
-  "anticipation", 202011L, 202102L, "positive",
+  "anticipation", antic_start_ym, antic_end_ym, "positive",
+  "rush_202011_202102", rush_start_ym, antic_end_ym, "positive",
   "february", 202102L, 202102L, "positive",
   "post_202103_202212", 202103L, 202212L, "negative",
   "steady_2022_2023", 202201L, 202312L, "negative"
@@ -350,7 +359,7 @@ write_csv_strict(prop19_retiming_summary, path(tables_out_dir, "prop19_retiming_
 # age, and so COVID-era mortality, in every state; only in California does it
 # also proxy a large Prop 13 wedge. State x month FE absorb state shocks
 # (mortality, housing cycle); long-held x month FE absorb the national
-# tenure-mortality profile. Transition months (Nov 2020 - Dec 2021) are
+# tenure-mortality profile. Transition months (Jun 2020 - Dec 2021) are
 # excluded from the static estimate.
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
@@ -1129,7 +1138,7 @@ prop19_headlines <- tribble(
   "H1", "annual wedge flow carried by new inheritances", h1_subsidy$annual_wedge_flow_2023usd, NA, NA, "2023 $ per year",
   "H1", "PV of tax savings, one year of inheritances (risk set)", h1_subsidy$pv_wedge_flow_2023usd, NA, NA, "2023 $",
   "H1", "PV of tax savings, scaled to all CA family deeds", h1_subsidy$pv_wedge_flow_statewide_2023usd, NA, NA, "2023 $",
-  "H2", "deadline excess deeds (Nov 2020-Feb 2021)", prop19_retiming_summary$excess_antic_deeds, NA, NA, "deeds",
+  "H2", "anticipation excess deeds (Jun 2020-Feb 2021)", prop19_retiming_summary$excess_antic_deeds, NA, NA, "deeds",
   "H2", "missing deeds (Mar 2021-Dec 2022)", prop19_retiming_summary$missing_post_deeds, NA, NA, "deeds",
   "H2", "retiming ratio (excess / missing)", prop19_retiming_summary$retiming_ratio, NA, NA, "ratio",
   "H3", "non-HOX: % change in family hazard per $1k wedge (steady)", h3_response$pct_per_1k[1], h3_response$pct_per_1k_lo[1], h3_response$pct_per_1k_hi[1], "percent",
@@ -1187,8 +1196,7 @@ writeLines(c(
 group_labels <- c(nonhox = "Not owner-occupied in 2008 (lost exclusion)",
                   hox_under_cap = "Owner-occupied, under $1M cap (kept exclusion)",
                   hox_over_cap = "Owner-occupied, over $1M cap (partial)")
-save_both <- function(p, name, width = 9, height = 4.5) {
-  ggsave(path(figures_dir, paste0(name, ".pdf")), p, width = width, height = height, bg = "transparent")
+save_fig <- function(p, name, width = 9, height = 4.5) {
   ggsave(path(figures_dir, paste0(name, ".png")), p, width = width, height = height, dpi = 180, bg = "transparent")
 }
 
@@ -1196,7 +1204,7 @@ f_es <- dose_es_tab %>%
   filter(group %in% c("nonhox", "hox_under_cap")) %>%
   ggplot(aes(date, 100 * estimate, color = group, fill = group)) +
   geom_hline(yintercept = 0, linewidth = 0.3) +
-  annotate("rect", xmin = as.Date("2020-10-01"), xmax = as.Date("2021-03-01"),
+  annotate("rect", xmin = as.Date("2020-06-01"), xmax = as.Date("2021-03-01"),
            ymin = -Inf, ymax = Inf, alpha = 0.12) +
   geom_ribbon(aes(ymin = 100 * ci_lo, ymax = 100 * ci_hi), alpha = 0.15, color = NA) +
   geom_line(linewidth = 0.7) +
@@ -1204,7 +1212,7 @@ f_es <- dose_es_tab %>%
   scale_color_manual(values = palette_paper()[1:2], labels = group_labels, name = NULL) +
   scale_fill_manual(values = palette_paper()[1:2], labels = group_labels, name = NULL) +
   labs(x = NULL, y = "Change in family-transfer hazard\nper $1,000 of annual wedge (log points x 100)")
-save_both(f_es, "F_prop19_dose_event_study")
+save_fig(f_es, "F_prop19_dose_event_study")
 
 f_bins <- dose_bins_tab %>%
   filter(period == "steady") %>%
@@ -1216,7 +1224,7 @@ f_bins <- dose_bins_tab %>%
   scale_color_manual(values = palette_paper()[1:2], labels = group_labels, name = NULL) +
   labs(x = "Mean annual tax wedge in bin ($ thousand, 2023 dollars)",
        y = "Change in family-transfer hazard, 2022-24\nrelative to lowest-wedge bin (%)")
-save_both(f_bins, "F_prop19_dose_response_bins")
+save_fig(f_bins, "F_prop19_dose_response_bins")
 
 f_decomp <- exits_decomposition %>%
   filter(str_starts(statistic, "share_")) %>%
@@ -1230,7 +1238,7 @@ f_decomp <- exits_decomposition %>%
   geom_col(fill = palette_paper()[1], width = 0.6) +
   geom_errorbar(aes(ymin = 100 * boot_lo, ymax = 100 * boot_hi), width = 0.15) +
   labs(x = NULL, y = "Share of deterred family transfers (%)")
-save_both(f_decomp, "F_prop19_exit_decomposition")
+save_fig(f_decomp, "F_prop19_exit_decomposition")
 
 # |- kill criterion check (pre-registered in the plan) ----
 kill_flags <- pretrend_tests %>%

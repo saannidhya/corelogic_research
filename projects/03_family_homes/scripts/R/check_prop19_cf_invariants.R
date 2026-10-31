@@ -79,8 +79,8 @@ if (any(monthly$base_donor_fam <= 0) || any(monthly$cf_fam <= 0)) {
   stop("Counterfactual denominators and predictions must be positive.", call. = FALSE)
 }
 
-if (any(summary$pre_start_ym < 201801) || any(summary$pre_end_ym > 202010)) {
-  stop("Pre-fit diagnostics must be bounded by 2018m1-2020m10.", call. = FALSE)
+if (any(summary$pre_start_ym < 201801) || any(summary$pre_end_ym > 202005)) {
+  stop("Pre-fit diagnostics must be bounded by 2018m1-2020m5.", call. = FALSE)
 }
 if (any(!is.finite(summary$pre_rmspe)) || any(summary$pre_rmspe <= 0)) {
   stop("Pre-fit RMSPE must be finite and positive.", call. = FALSE)
@@ -112,8 +112,8 @@ if (ca_2019$antic_rank_ratio != 1 ||
        call. = FALSE)
 }
 
-expected_sensitivity_windows <- c("anticipation", "february", "post_202103_202212",
-                                  "steady_2022_2023")
+expected_sensitivity_windows <- c("anticipation", "rush_202011_202102", "february",
+                                  "post_202103_202212", "steady_2022_2023")
 if (!all(expected_sensitivity_windows %in% unique(sensitivity$window))) {
   stop("Sensitivity artifact missing expected windows: ",
        paste(setdiff(expected_sensitivity_windows, unique(sensitivity$window)),

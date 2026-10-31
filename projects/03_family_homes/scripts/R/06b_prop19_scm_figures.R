@@ -1,24 +1,25 @@
 # ============================================================
 # 06b: New Prop 19 cross-state figures from the synthetic control (09)
 # Author: Saani Rawat
-# Purpose: Replace the weak/redundant F5 (selection cohorts) and F6 (bare gap
-#          bars) with two exhibits built on the donor-weighted synthetic control:
+# Purpose: Plot the donor-weighted synthetic control and monthly event study:
 #   F5_scm_california     — California vs synthetic California (levels), gap shaded
-#   F6_scm_gap_envelope   — the "money figure": CA's gap vs the 50-state placebo
-#                           envelope, so the reader SEES CA escape the null.
+#   F7_scm_mspe_ratio     — post/pre MSPE-ratio in-space placebo distribution.
 #          Continuous monthly series (P2: nothing truncated). The selection
 #          cohort figure is demoted to the appendix elsewhere.
 # Inputs:  _outputs/tables/prop19_scm_series.csv, prop19_scm_placebos.csv,
 #          prop19_scm_inference.csv
-# Outputs: manuscript/figures/F5_scm_california.{pdf,png}
-#          manuscript/figures/F6_scm_gap_envelope.{pdf,png}
+# Outputs: manuscript/figures/F5_scm_california.png
+#          manuscript/figures/F7_scm_mspe_ratio.png
+#          manuscript/figures/F_event_study_monthly.png
+# Log:     10/22/2026: export figures as PNG only.
+#          10/22/2026: MSPE ratio uses the June 2020 treatment start and May
+#          2020 pre-fit (matching 09); event lines relabelled (ballot placement,
+#          passage, effective date); F5 no longer reads an undefined cf.
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 save_fig <- function(p, name, width = 9, height = 5) {
-  ggsave(path(figures_dir, paste0(name, ".pdf")), p,
-         width = width, height = height, bg = "transparent")
   ggsave(path(figures_dir, paste0(name, ".png")), p,
          width = width, height = height, bg = "transparent", dpi = 300)
   message("Saved figure: ", name)
@@ -34,7 +35,9 @@ plc <- read_csv(path(tables_out_dir, "prop19_scm_placebos.csv"),
 inf <- read_csv(path(tables_out_dir, "prop19_scm_inference.csv"),
                 show_col_types = FALSE)
 
-vl <- as.Date(c("2020-06-24", "2021-02-16"))
+# Event lines and labels come from prop19_event_layers() in 00_setup.R.
+scm_label_top  <- max(series$ca_n) / 1000 * 0.99
+scm_label_drop <- 0.7 * (max(series$ca_n) - min(series$ca_n)) / 1000
 
 # ---- F5: California vs synthetic California (levels, thousands/month) ------
 f5 <- ggplot(series, aes(date)) +
@@ -44,15 +47,11 @@ f5 <- ggplot(series, aes(date)) +
   geom_line(aes(y = ca_n / 1000, color = "California (actual)"), linewidth = 0.9) +
   geom_line(aes(y = synth_n / 1000, color = "Synthetic California"),
             linewidth = 0.9, linetype = "22") +
-  geom_vline(xintercept = vl, linetype = "dotted", color = "grey30") +
-  annotate("text", x = as.Date("2020-11-03"), y = max(cf$ca_actual) / 1000 * 0.97,
-           label = "prop 19 passed", hjust = 1.7, size = 3, color = "grey20") +  
-  annotate("text", x = vl[2] + 20, y = max(series$ca_n / 1000) * 0.98,
-           label = "Prop 19 effective", hjust = 0, size = 3, color = "grey20") +
+  prop19_event_layers(label_y = scm_label_top, label_step = scm_label_drop) +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   labs(x = NULL, y = "CA family transfers (thousands/month)", color = NULL,
        caption = sprintf(paste0("Synthetic California = donor-weighted control (ADH). Pre-period fit RMSPE %.3f. ",
-                                "2022-2023 gap %.0f%% below counterfactual; MSPE-ratio rank %d/51 (Fisher p = %.3f)."),
+                                "2022-2023 gap %.0f%% below counterfactual;\nMSPE-ratio rank %d/51 (Fisher p = %.3f)."),
                          inf$ca_pre_rmspe, inf$gap_ss_pct, inf$scm_mspe_rank, inf$scm_mspe_p))
 save_fig(f5, "F5_scm_california")
 
@@ -62,8 +61,9 @@ save_fig(f5, "F5_scm_california")
 # the p-value (rank / 51). Reproduces grab_significance() from the gap series.
 sigdat <- plc |>
   group_by(unit, is_placebo) |>
-  summarise(pre_mspe  = mean(gap[ym <= 202010]^2),
-            post_mspe = mean(gap[ym >= 202011]^2), .groups = "drop") |>
+  # tidysynth counts i_time (June 2020) in the pre-period, so match it here
+  summarise(pre_mspe  = mean(gap[ym <= prop19_antic_start_ym]^2),
+            post_mspe = mean(gap[ym > prop19_antic_start_ym]^2), .groups = "drop") |>
   mutate(mspe_ratio = post_mspe / pre_mspe, is_ca = unit == "CA")
 ca_ratio <- sigdat$mspe_ratio[sigdat$is_ca]
 ca_rank  <- sum(sigdat$mspe_ratio >= ca_ratio)
@@ -91,14 +91,15 @@ save_fig(f7, "F7_scm_mspe_ratio", width = 8, height = 4.2)
 # show the clustered point estimates + CIs and the three policy phases.
 es <- read_csv(path(tables_out_dir, "prop19_event_study_monthly.csv"),
                show_col_types = FALSE) |> mutate(date = as.Date(date))
-legislature_date <- as.Date("2020-06-24")  # Approved by the California State Legislature
-eff_date         <- as.Date("2021-02-16")  # parent-child provisions take effect
+# Shading starts at ballot placement (June 2020), the first anticipation month.
+antic_start_date <- prop19_event_dates[["ballot"]]
+eff_date         <- prop19_event_dates[["effective"]]
 xend        <- max(es$date) + 20
 
 phase_rects <- tibble(
   phase = factor(c("Anticipation & Rush", "Post-reform"),
                  levels = c("Anticipation & Rush", "Post-reform")),
-  xmin = c(legislature_date, eff_date),
+  xmin = c(antic_start_date, eff_date),
   xmax = c(eff_date, xend))
 
 fev <- ggplot(es, aes(date, estimate)) +
@@ -108,22 +109,15 @@ fev <- ggplot(es, aes(date, estimate)) +
   scale_fill_manual(values = c(`Anticipation & Rush` = "#fbeccb",
                                `Post-reform` = "#f4ece9"), guide = "none") +
   geom_hline(yintercept = 0, color = "grey45", linewidth = 0.35) +
-  geom_vline(xintercept = c(legislature_date, eff_date), linetype = "dashed",
-             color = "grey35", linewidth = 0.45) +
+  prop19_event_layers(label_y = -0.50, label_step = 0.12) +
   geom_pointrange(aes(ymin = conf.low, ymax = conf.high),
                   color = palette_paper()[2], linewidth = 0.45, size = 0.22) +
   # phase labels along the top
-  annotate("text", x = legislature_date + (eff_date - legislature_date) / 2, y = 0.46,
+  annotate("text", x = antic_start_date + (eff_date - antic_start_date) / 2, y = 0.46,
            label = "Anticipation & Rush", size = 3.0, color = "#9a6700",
            fontface = "bold.italic") +
   annotate("text", x = as.Date("2022-05-01"), y = 0.46,
            label = "Post-reform decline", size = 2.9, color = "grey40", fontface = "italic") +
-  # event-date callouts near the dashed lines
-  annotate("text", x = legislature_date - 14, y = -0.66,
-           label = "Prop 19 pass date\nJune 2020",
-           hjust = 1, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
-  annotate("text", x = eff_date + 14, y = -0.66, label = "Prop 19 Effective date\nFeb 2021",
-           hjust = 0, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
   scale_y_continuous(labels = scales::label_number(style_positive = "plus")) +
   scale_x_date(date_breaks = "6 months", date_labels = "%b %Y",
                expand = expansion(mult = c(0.01, 0.02))) +
