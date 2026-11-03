@@ -73,7 +73,7 @@ message("65+ population pulled: ", nrow(pop65), " state-years, CA 2023 = ",
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- "('family_person','family_other','family_estate')"
+fam_classes <- "('family_person','family_estate')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 ms <- dbGetQuery(con, glue("

@@ -12,7 +12,7 @@ set.seed(20260921)
 con <- open_corelogic_duckdb(threads = 4L)
 dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
 ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- c("family_person", "family_other", "family_estate")
+fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
 save_csv <- function(x, name) write_csv_strict(x, path(tables_out_dir, paste0("welfare_", name, ".csv")))
 read_result <- function(name) read_csv(path(tables_out_dir, name), show_col_types = FALSE)
 fmt <- function(x, digits = 0) formatC(x, digits = digits, format = "f", big.mark = ",")
@@ -24,7 +24,7 @@ scm <- read_result("prop19_scm_inference.csv")
 scm_pc <- read_result("prop19_scm_pc_inference.csv")
 baseline <- dbGetQuery(con, glue("SELECT sale_year, COUNT(*) AS n FROM {ev}
   WHERE state='CA' AND sale_year IN (2018,2019)
-  AND class IN ('family_person','family_other','family_estate') GROUP BY sale_year"))
+  AND class IN ('family_person','family_estate') GROUP BY sale_year"))
 stopifnot(nrow(baseline) == 2)
 base_flow <- mean(baseline$n)
 beta_net <- did$coef[did$model == "fam"] - did$coef[did$model == "market_placebo"]
@@ -47,11 +47,11 @@ dbExecute(con, "CREATE TEMP TABLE ca_events AS
     SELECT clip, class, sale_date, ROW_NUMBER() OVER (PARTITION BY clip, sale_date
       ORDER BY CASE WHEN class='market_sale' THEN 0 ELSE 1 END, sale_raw, class) AS rn
     FROM ev_dated WHERE state='CA' AND sale_date <= DATE '2024-06-30'
-      AND class IN ('market_sale','family_person','family_other','family_estate')
+      AND class IN ('market_sale','family_person','family_estate')
   ) WHERE rn=1")
 collisions <- dbGetQuery(con, "SELECT COUNT(*) AS n FROM (
   SELECT clip,sale_date FROM ev_dated WHERE state='CA' AND sale_date <= DATE '2024-06-30'
-    AND class IN ('market_sale','family_person','family_other','family_estate')
+    AND class IN ('market_sale','family_person','family_estate')
   GROUP BY clip,sale_date HAVING COUNT(*)>1)")
 save_csv(collisions, "parsed_date_collisions")
 all_surv <- list(); episode_stats <- list()

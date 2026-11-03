@@ -35,11 +35,24 @@ message("Starting 02_facts at ", Sys.time())
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 
-# Trust self-transfers are not counted as family transfers.
-fam_classes <- c("family_person", "family_other", "family_estate")
+# Trust self-transfers and family_other (flagged interfamily, no surname match)
+# are not counted as family transfers (decided 10/31/2026).
+fam_classes <- c("family_person", "family_estate")
 
-# Load all events into R; subsequent calculations use in-memory data frames.
-ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+# Trust-rule tallies by year come straight from the parquet (trust_rel is NULL
+# outside family_trust), so the string column never enters R memory.
+trust_by_year <- arrow::open_dataset(events_path) %>%
+  filter(class == "family_trust", sale_year >= window_start_year,
+         sale_year <= full_year_end) %>%
+  group_by(sale_year) %>%
+  summarize(
+    trust_clear = sum(as.integer(trust_rel == "clear"), na.rm = TRUE),
+    trust_ambig = sum(as.integer(trust_rel == "ambiguous"), na.rm = TRUE),
+    trust_self  = sum(as.integer(trust_rel %in% c("self", "none")), na.rm = TRUE)
+  ) %>%
+  collect()
+# Load all events into R (without the trust audit columns; see read_events_df)
+ev_data <- read_events_df(events_path)
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # Keep complete calendar years for national facts and validation moments.
@@ -125,16 +138,24 @@ headline <- ev_window %>%
     fam_conservative = sum(class == "family_person", na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
     trust = sum(class == "family_trust", na.rm = TRUE),
+    # Alternative definitions for Table 2 (main definition stays fam_broad)
+    fam_wide = sum(class %in% c(fam_classes, "family_other")),
     market = sum(class == "market_sale", na.rm = TRUE),
     .groups = "drop"
   ) %>%
+  left_join(trust_by_year, by = "sale_year") %>%
   mutate(
     ratio_conservative = fam_conservative / market,
-    ratio_broad = fam_broad / market
+    ratio_broad = fam_broad / market,
+    ratio_wide = fam_wide / market,
+    ratio_trust_lower = trust_clear / market,
+    ratio_trust_upper = (trust_clear + trust_ambig) / market
   ) %>%
   arrange(sale_year)
 
 assert_rows(headline, 15, "fact_headline_ratios")
+stopifnot(all(headline$trust_clear + headline$trust_ambig + headline$trust_self ==
+                headline$trust))
 write_csv_strict(headline, path(tables_out_dir, "fact_headline_ratios.csv"))
 saveRDS(headline, path(out_dir, "fact_headline_ratios.rds"))
 
@@ -174,7 +195,7 @@ st_full <- ev_window %>%
 
 assert_rows(st_full, 45, "fact_state_class_2007_2023")
 stopifnot(all(st_full$fam_broad ==
-                st_full$family_person + st_full$family_other + st_full$family_estate))
+                st_full$family_person + st_full$family_estate))
 write_csv_strict(st_full, path(tables_out_dir, "fact_state_class_2007_2023.csv"))
 
 # |- 4. Validation moments by class ----
@@ -199,9 +220,25 @@ write_csv_strict(val, path(tables_out_dir, "fact_validation_moments.csv"))
 # Property correlates, 2017-2023 events ----
 # ============================================================
 
+# |- Freeing event memory before the property join ----
+# Only 2017-2023 family/trust/market events are needed from here on. Build that
+# slim table, then drop the full event copies (ev_data, ev_window, ev_pooled hold
+# ~150M rows each and exhausted R's memory once national property records loaded).
+rm(ev_window, ev_pooled)   # free two of the three full copies before filtering
+invisible(gc())
+ev_recent <- ev_data %>%
+  dplyr::select(clip, state, sale_year, class) %>%
+  filter(between(sale_year, 2017L, full_year_end),
+         class %in% c(fam_classes, "family_trust", "market_sale"))
+recent_clips <- ev_recent %>% distinct(clip)
+rm(ev_data)
+invisible(gc())
+
 # |- Importing and deduplicating property records ----
 # Read each state through the shared loader; harmonize types before binding
 # because property columns can be numeric in one partition and text in another.
+# Keep only parcels that appear in recent events: the dedupe below is per clip,
+# so restricting first leaves every matched parcel's chosen record unchanged.
 prop_columns <- c("clip", "year_built", "calculated_total_value",
                   "senior_exempt_indicator", "homestead_exempt_indicator")
 prop_states <- dir_ls(path(default_parquet_root(), "by_state", "prop"),
@@ -225,7 +262,8 @@ prop_data <- purrr::map_dfr(prop_states, function(st) {
       senior_exempt = as.integer(coalesce(senior_exempt_indicator == "Y", FALSE)),
       homestead_exempt = as.integer(coalesce(homestead_exempt_indicator == "Y", FALSE)),
       prop_state = state
-    )
+    ) %>%
+    semi_join(recent_clips, by = "clip", na_matches = "never")
 })
 
 # Keep one row per clip so repeated property records cannot multiply events.
@@ -236,10 +274,6 @@ prop_slim <- prop_data %>%
   distinct(clip, .keep_all = TRUE)
 
 # |- Matching recent events to property records ----
-ev_recent <- ev_pooled %>%
-  filter(class %in% c(fam_classes, "family_trust", "market_sale")) %>%
-  dplyr::select(clip, state, sale_year, class)
-
 n_ev_recent <- nrow(ev_recent)
 
 # SQL joins do not match missing keys; keep that behavior in the R join.

@@ -34,6 +34,13 @@ logs_dir       <- path(out_dir, "logs")
 manuscript_dir <- path(project_dir, "manuscript")
 tables_dir     <- path(manuscript_dir, "tables")
 figures_dir    <- path(manuscript_dir, "figures")
+# FAM_EXHIBIT_DIR redirects manuscript tables/figures (refresh runs compared
+# against the draft before it is updated); unset = write into the manuscript.
+exhibit_root <- Sys.getenv("FAM_EXHIBIT_DIR", "")
+if (nzchar(exhibit_root)) {
+  tables_dir  <- path(exhibit_root, "tables")
+  figures_dir <- path(exhibit_root, "figures")
+}
 
 # Project-specific derived data lives here (gitignored)
 data_dir <- here("data", "derived", "03_family_homes")
@@ -80,6 +87,20 @@ assert_rows <- function(df, min_rows, label) {
          ifelse(is.data.frame(df), nrow(df), NA), " rows (need >= ", min_rows, ")")
   }
   invisible(df)
+}
+
+#' Read events.parquet into R without the trust-rule audit columns
+#'
+#' The string columns trust_dir/trust_rel (01, 2026-10-31) add ~1 GB per copy
+#' and exhausted R memory in scripts that hold the full panel in memory.
+#' Query trust_rel through duckdb/arrow instead.
+#' @param events_path Path to events.parquet.
+#' @param drop Columns to skip.
+#' @return Tibble of events.
+read_events_df <- function(events_path,
+                           drop = c("trust_dir", "trust_rel", "trust_prior_found")) {
+  keep <- setdiff(names(arrow::open_dataset(events_path)$schema), drop)
+  arrow::read_parquet(events_path, col_select = all_of(keep), as_data_frame = TRUE)
 }
 
 write_csv_strict <- function(x, file) {

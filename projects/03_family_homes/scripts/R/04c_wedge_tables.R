@@ -25,7 +25,7 @@
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 # Settings ----
-fam_classes <- c("family_person", "family_other", "family_estate")
+fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
 population_cohort <- "d2019"   # matches the distribution figure (04b)
 inherited_cohort <- "d2017"    # baseline before the 2018-2019 transfers
 inherited_window <- as.Date(c("2018-01-01", "2019-12-31"))
@@ -53,7 +53,9 @@ inherited <- parcels %>%
   filter(cohort == inherited_cohort, end_type %in% fam_classes,
          between(spell_end, inherited_window[1], inherited_window[2]))
 rm(parcels); gc(verbose = FALSE)
-stopifnot(nrow(population) > 7e6, nrow(inherited) > 2e5)
+# Inherited floor lowered from 2e5 when family_other left the family definition
+# (10/31/2026): ~139k same-surname + estate transfers vs ~269k before.
+stopifnot(nrow(population) > 7e6, nrow(inherited) > 1e5)
 message("NOTE: ", fmt(nrow(population)), " parcels (2019); ",
         fmt(nrow(inherited)), " inherited homes (2018-2019 family transfers)")
 
@@ -151,7 +153,7 @@ t9 <- c(
          "California single-family and condominium parcels on the 2008--2009 roll. ",
          "$\\hat w=\\hat t\\max(\\hat p-\\hat A,0)$ in nominal dollars of the baseline year. ",
          "All-parcel and positive-wedge columns use the January 2019 lien date. Inherited homes ",
-         "are parcels whose first ownership change after January 2017 was a family transfer ",
+         "are parcels whose first ownership change after January 2017 was a family transfer (a same-surname interfamily or estate deed) ",
          "recorded in 2018--2019; their terms are measured at the January 2017 lien date, before ",
          "Proposition~19 reached the ballot. Medians are taken term by term, so the median wedge ",
          "is not the product of the median rate and median gap. Allowance share: 2021 gap ",

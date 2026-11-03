@@ -48,8 +48,9 @@ state tax law actively subsidizes it.
 
 Event classification for residential deed records:
 
-1. **Market sale**: `primary_category_code = 'A'`, price ≥ $10k (project-02 convention),
-   not interfamily.
+1. **Market sale**: `primary_category_code = 'A'`, no price floor,
+   not interfamily. (Changed 2026-10-31 from price ≥ $10k: in non-disclosure states
+   ~37% of category-A deeds have missing/zero price; ODU symposium discussant.)
 2. **Family transfer (inter-person)**: interfamily = 1 AND same-surname buyer/seller
    (non-empty), no trust keyword. Proxy for gifts/inheritance between relatives.
    *Caveat: misses transfers to married daughters w/ name change; undercount → bounds.*
@@ -60,6 +61,45 @@ Event classification for residential deed records:
 
 Headline counts reported for (2) alone [conservative] and (2)+(4)+share of (5) [upper];
 trust transfers shown separately, never in the headline.
+
+### Family trust-mediated transfers (rule approved 2026-10-31; not yet implemented)
+
+Third Table 2 definition, alongside same-surname and broad. Distinguishes a parent moving a
+home *into* their own trust (self-transfer, not family) from a trust conveying to or from a
+relative. Scope: trust keyword (TRUST, TR, TTEE, REV, LIV) on buyer or seller, interfamily
+flag = 1, priced arm's-length trustee sales excluded (stay market sales).
+
+**Name parsing.** Person names are `LAST FIRST MIDDLE`. In trust names drop generic words
+(TRUST, LIVING, REVOCABLE, FAMILY, FAM, REV, LIV, TTEE, SETTLEMENT, PRESERVATION, SEPARATE,
+PROPERTY) and numbers; split hyphenated surnames. Remaining non-surname tokens = the trust's
+named individuals. Tests per person on the deed: *surname link* (surname appears in trust
+name); *given-name match* (given name matches a named individual; an initial matches, a
+prefix of 3+ letters matches).
+
+**Classes, in order.**
+1. *Self-transfer (excluded from family)*: person→trust or trust→person with surname link
+   AND given-name match; also person→trust with surname link and a trust name with no named
+   individuals.
+2. *Clear family trust transfer (lower bound)*: surname link, trust names an individual, NO
+   given-name match; trust→person (buyer is relative/heir) or person→trust (into a
+   relative's trust).
+3. *Ambiguous (upper bound only)*: trust→person, surname link, trust name has no given
+   names (`SMITH FAMILY TRUST` → `SMITH JOHN`), not class 1.
+4. *Prior-deed override*: if the parcel's earlier deed moved it into this trust from person
+   P, trust→buyer matching P is class 1; a different buyer sharing P's surname is class 2.
+   Overrides name-based result.
+5. *Not family*: no surname link or unrelated trust (trustee sales; ~74% of trust→person).
+6. *Trust→trust*: matching individuals = 1; disjoint individuals, shared surname = 2; no
+   named individuals = 3.
+
+**Table 2 column.** Family, trust-mediated: lower = class 2, upper = classes 2+3. Class 1
+reported as a memo line and excluded from every family column.
+
+**Sample-based size** (8 states x 4 years): clear ~10.6% of flagged trust deeds, ambiguous
+~7%; nationally a 5-15% addition to same-surname family count. Known limits: includes
+spouse-to-spouse; no settlor death date; nicknames/maiden names misclassified. Validate by
+reading ~100 deeds per class before use. Implementation needs new name-relation flag columns
+in `01_build_panel.R` (events.parquet stores no names).
 
 ## Empirical design
 

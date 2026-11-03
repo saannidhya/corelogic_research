@@ -31,10 +31,15 @@ other arm---expanded portability of assessments for movers aged 55 and over,
 effective April 1, 2021---affects market sales rather than family transfers;
 market sales therefore need not be an untreated comparison group. The triple difference below uses them as the comparison deed group; the synthetic control does not use them.
 
-Throughout this section, ``family transfers'' means the broad class
-(same-surname, cross-surname, and estate/executor deeds), measured monthly by
-state from the event panel; results including trust self-transfers are
-reported as robustness.
+Throughout this section, ``family transfers'' means the main definition
+(same-surname interfamily deeds plus estate/executor deeds), measured monthly by
+state from the event panel. Interfamily deeds without a surname match and
+trust deeds are excluded. Appendix~\ref{app:robustness} adds trust deeds to the
+family count: adding trust distributions gives a similar decline, while adding
+all trust deeds erases it. The count includes transfers between spouses, which
+are family transfers but not the parent-child transfers Proposition~19
+targets.
+% TODO(appendix): wide-definition (incl. family_other) results pending
 
 % \subsection{Retiming: the rush to beat the deadline}
 
@@ -43,13 +48,15 @@ transparent counterfactual: California's 2019 volume in the same calendar
 month, scaled by contemporaneous family-transfer growth in the other 49 states and DC. The counterfactual thus inherits both California's seasonality
 and national shocks---COVID disruption, the 2020--2021 housing boom, the
 estate-planning surge---while excluding California from the donor pool. Before
-the measure reached the ballot, it fits tightly: over 2018m1--2020m5, the mean
-absolute monthly error is 3.2 percent and the RMSPE is 5.0 percent.
+the measure reached the ballot, the fit is only moderate: over 2018m1--2020m5,
+the mean absolute monthly error is 7.8 percent and the RMSPE is 11.4 percent,
+close to the median state's fit.
 
 \begin{figure}[!t]
   \centering
   \includegraphics[width=0.92\linewidth]{figures/F4_prop19_bunching.png}
-  \caption{California monthly family transfers (broad class) versus
+  \caption{California monthly family transfers (main definition: same-surname
+  plus estate/executor deeds) versus
   counterfactual (CA 2019 same-calendar-month volume $\times$ donor-state
   growth). Dashed lines: June 24, 2020 (placed on the ballot) and February 16,
   2021 (parent-child provisions effective); dotted line: November 3, 2020
@@ -57,16 +64,25 @@ absolute monthly error is 3.2 percent and the RMSPE is 5.0 percent.
   \label{fig:bunching}
 \end{figure}
 
-California tracks the counterfactual closely until the June 2020 ballot
-placement, then pulls away. From June 2020 through February 2021, actual
-family transfers total 267,107 against a counterfactual of 227,576---an
-excess of 39,531 deeds, 17.4 percent above counterfactual over the whole
-anticipation period. February 2021, ordinarily the
-year's quietest month, became the busiest family-transfer month in the
-2018--2023 California series. This is the anticipatory bunching that notch
-designs recover for taxed market transactions \citep{bestkleven2018notches,
-slemrodwebershan2017dc}, reproduced in transfers with no price: families
-re-timed successions to bequeath a tax basis. The concentration around the deadline supports a tax-timing interpretation, although monthly counts do not identify the exact legal transfer date or rule out every contemporaneous influence.
+California runs above the counterfactual before the measure reached the
+ballot: 18.5 percent above it over January--May 2020, before the June 24, 2020
+ballot placement. The gap does not widen right after the placement: over
+June--December 2020 California runs 14 percent above the counterfactual. It
+widens sharply at the deadline, to 52 percent above the counterfactual in
+January and February 2021. From June 2020 through
+February 2021, actual family transfers total 142,320 against a counterfactual
+of 117,231---an excess of 25,089 deeds, 21.4 percent above counterfactual over
+the whole anticipation period. This figure overstates anticipation.
+California's 2018--2019 base is unusually low relative to the rest of the
+country: the log gap between California and other-state family transfers was
+$-1.30$ to $-1.42$ in 2010--2016 but $-1.76$ and $-1.69$ in 2018 and 2019, so
+part of the excess is a rebound from a depressed base. February 2021,
+ordinarily one of the year's quietest months, ran 57 percent above its
+counterfactual, the largest monthly excess in the 2018--2023 California
+series. The spike at the deadline resembles the anticipatory bunching that
+notch designs recover for taxed market transactions \citep{bestkleven2018notches,
+slemrodwebershan2017dc}, here in transfers with no price, and is consistent with
+families re-timing successions to keep a tax basis. The concentration around the deadline supports a tax-timing interpretation, although monthly counts do not identify the exact legal transfer date, and the rise before the ballot means this counterfactual cannot cleanly separate the rush from other California-specific growth in 2020.
 
 \subsection{Empirical Strategy}
 
@@ -119,7 +135,7 @@ monthly event study over 2018--2023 using the following specification:
 \end{equation}
 where $t$ indexes calendar months, $\mathcal{T}$ is the sample period, and
 $\mathcal{B}$ pools January 2018--December 2019 as the omitted baseline.
-State and calendar-month fixed effects absorb persistent state differences
+State and year-month fixed effects absorb persistent state differences
 and common shocks; $\beta_\tau$ measures California's differential change
 relative to the baseline. 
 % If any state-month count is zero, we use
@@ -131,9 +147,12 @@ We report clustered confidence intervals at the state level.
 \subsection{Results: The Rush and the post-reform decline}
 
 Retiming alone would imply a transitory post-deadline trough followed by
-recovery. Instead, the gap persists and widens: after the deadline,
-California family transfers fall below the counterfactual and stay there
-through 2023, while national volumes returned to trend. A donor-weighted synthetic control sharpens the comparison. Following
+recovery. After the deadline, California family transfers fall below the
+counterfactual by mid-2021 and stay there through 2023, while family transfers
+in the other states fell back to about their 2019 level in 2022. Retiming cannot be ruled out for 2021--2022: the 25,089 excess
+anticipation deeds equal about 72 percent of the 35,045-deed shortfall over
+March 2021--December 2022. The decline that persists through 2022--2023 is the
+robust result. A donor-weighted synthetic control sharpens the comparison. Following
 \citet{abadie2010synthetic}, we build a synthetic California from a convex
 combination of the other 49 states and the District of Columbia, with
 weights chosen to match California's pre-reform family-transfer trajectory.
@@ -141,16 +160,20 @@ Because California is the largest state---an outlier in the \emph{level} of
 transfers, which forces a level-matched synthetic onto a single large donor---we
 match on each state's volume normalized to its own 2018--2019 mean. The
 synthetic reproduces California's pre-reform path to a root mean squared error
-of 4.3 percent over January 2018--May 2020 (Figure~\ref{fig:scm}); after the
-February 2021 deadline, California's family transfers fall below synthetic
-California and remain below it through 2022--2023.
+of 4.2 percent over January 2018--May 2020 (Figure~\ref{fig:scm}); after the
+February 2021 deadline, California's family transfers fall back to synthetic
+California, drop below it from late 2021, and remain below it through
+2022--2023. The 2022--2023 level is 29
+percent below synthetic California; California's post/pre MSPE ratio ranks
+second of 51 units (placebo $p=0.039$).
 
 \begin{figure}[!t]
   \centering
   \includegraphics[width=0.9\linewidth]{figures/F5_scm_california.png}
   \caption{California monthly family transfers against a donor-weighted
   synthetic California \citep[normalized-index match;][]{abadie2010synthetic}.
-  The series track closely before the reform and diverge after the deadline.
+  The series track closely through May 2020; California runs above the
+  synthetic during the anticipation period and below it from late 2021.
   Dashed lines: placement on the ballot (June 24, 2020) and the parent-child
   effective date (February 16, 2021); dotted line: passage (November 3, 2020).
   Weights match January 2018--May 2020.}
@@ -161,18 +184,19 @@ California and remain below it through 2022--2023.
 The triple-difference estimate in Table~\ref{tab:prop19} formalizes this.
 Using state-by-year counts for 2017--2019 versus 2022--2023\footnote{The transition
 years 2020--2021 are excluded as contaminated by anticipation and retiming.},
-family transfers fall by 0.425 log points in California relative to other
-states (column 1), while market sales fall by 0.163 log points over the same
+family transfers fall by 0.430 log points in California relative to other
+states (column 1), while market sales fall by 0.175 log points over the same
 window (column 2), California's general post-rate-shock slump. The triple
-difference in column 3 nets the two: family transfers fall by 0.263 log
-points (s.e.\ 0.032) relative to market sales, a 23 percent decline specific
+difference in column 3 nets the two: family transfers fall by 0.255 log
+points (s.e.\ 0.030) relative to market sales, a \WelfareNetPercent\ percent decline specific
 to family transfers, or roughly \WelfareFlow\ transfers per year against the
-pre-reform baseline. This estimate implies that, relative to the change in market sales, California had about 23 percent fewer family transfers than it would have absent the reform as seen in the other states. 
+pre-reform baseline. California ranks 6th of 51 in the state-placebo
+distribution ($p=0.118$). This estimate implies that, relative to the change in market sales, California had about 22 percent fewer family transfers than it would have absent the reform as seen in the other states.
 
 
-% California ranks 9th of 51 in the state-placebo
-% distribution ($p=0.176$). Including trust self-transfers in the family
-% aggregate shrinks the net decline to 0.078 log points (7.5 percent), so
+% California ranks 6th of 51 in the state-placebo
+% distribution ($p=0.118$). Including trust self-transfers in the family
+% aggregate eliminates the net decline ($+0.010$ log points), so
 % some of the response may have moved into trust vehicles rather than out of
 % the family channel.
 
@@ -185,19 +209,28 @@ pre-reform baseline. This estimate implies that, relative to the change in marke
 % is the second largest of fifty-one units, including DC---a placebo-rank $p=0.039$
 % (Appendix Figure~\ref{fig:scm_mspe})---using a different statistic from the transparent counterfactual's rank-based inference
 % \citep{conley2011inference}. A demographic adjustment changes the estimated magnitude: re-estimating the synthetic control on family
+% STALE: commented block holds pre-refresh (pre-10/31/2026) numbers or claims; re-verify before uncommenting.
 % transfers per resident aged 65 and over (American Community Survey one-year
-% estimates) leaves a 27 percent gap ($p=0.137$). These specifications use different denominators and identifying assumptions. The 27--33 percent range summarizes sensitivity across them; it is neither a confidence interval nor an identified lower and upper bound. For the market-adjusted DiD, the state-placebo $p$-value is 0.176. The SCM Conley--Taber-style interval also includes zero (Appendix~\ref{app:robustness}). The welfare exercise in Section~\ref{sec:welfare} retains this uncertainty rather than treating the response as precisely known.
+% estimates) leaves a 28 percent gap ($p=0.039$). These specifications use different denominators and identifying assumptions. The 27--33 percent range summarizes sensitivity across them; it is neither a confidence interval nor an identified lower and upper bound. For the market-adjusted DiD, the state-placebo $p$-value is 0.118. The SCM Conley--Taber-style interval also includes zero (Appendix~\ref{app:robustness}). The welfare exercise in Section~\ref{sec:welfare} retains this uncertainty rather than treating the response as precisely known.
 
 To distinguish the pre-deadline rush from the subsequent decline, we next turn to monthly event-study evidence.
 Figure~\ref{fig:event_study} shows monthly event-study results. We regress $\log$ family transfers on California-by-month indicators
 with state and year-month fixed effects, the other 49 states and DC as
 controls, and the 2018--2019 months as the pooled baseline group.
- As shown in Figure~\ref{fig:event_study}, California sits near its
-2018--2019 baseline in early 2020, rises through the anticipation period
-as Proposition~19 reaches the ballot and passes, peaks at the February 2021
-deadline, and then settles into a persistent decline through 2022--2023\footnote{The
+ As shown in Figure~\ref{fig:event_study}, California is already above its
+2018--2019 baseline before the ballot: the January--May 2020 coefficients
+average about 0.08 log points, and the February--May coefficients are each
+significantly positive. The coefficients step up by about 0.12 log points once
+Proposition~19 reaches the ballot, averaging about 0.20 over June
+2020--February 2021. The 2019-scaled counterfactual above shows a smaller and
+later step, with no widening until the deadline months; the two measures use
+different baselines (2019 versus pooled 2018--2019), and both put the largest
+excess at the deadline. The largest seasonally adjusted coefficient is February
+2021 (0.33), the deadline month. After the deadline the coefficients fall and
+settle into a persistent decline, averaging about $-0.37$ in 2022--2023 and
+reaching $-0.5$ by late 2023\footnote{The
 event study is not net of market sales, the triple difference above provides
-that comparison.}. Through this event study, we see a clear pattern of anticipation and post-reform decline. Once the proposition is put on the ballot, the salience of the reform rises, and families rush to transfer properties before the new rules take effect. After the deadline, as the reform is implemented, the number of family transfers drops below the baseline and remains low relative to the baseline, indicating a persistent effect of the reform on family transfers.
+that comparison.}. The event study shows a step up in anticipation and a post-reform decline; because California was already rising before the ballot, the anticipation evidence is weaker than the decline. One reading is that once the proposition is put on the ballot, the salience of the reform rises, and families rush to transfer properties before the new rules take effect. After the deadline, as the reform is implemented, the number of family transfers drops below the baseline and remains low relative to the baseline, indicating a persistent effect of the reform on family transfers.
 
 Although these results are informative and present us with a clear picture of the effect of Proposition 19 on family transfers, we note that the inference is limited to the treated state of California. We have only one treated state, and within that state, all family transfers are affected by the reform. Therefore, these estimates do not have a causal interpretation, as for that, we would need to consider a scenario where we randomize the assignment of the proposition 19 across inherited properties in California. This randomization would allow us to identify the causal effect of the inherited-assessments on family transfers. However, we do not have such a random assignment, and therefore, to better understand the effects of Proposition 19, we need to consider other sources of variation. Next, we develop a simple framework to understand the mechanisms through which Proposition 19 affects family transfers and the potential welfare implications of the reform.
 
@@ -245,17 +278,17 @@ Although these results are informative and present us with a clear picture of th
 % The raw numbers tell the story (Appendix Figure~\ref{fig:sold24_cohorts}).
 % Before the reform, California
 % family-transferred homes reached the market \emph{more} often than the
-% national average (16.1 versus 13.1 percent within 24 months)---California's
+% national average (15.0 versus 14.1 percent within 24 months)---California's
 % inherited-basis regime made even hold-motivated transfers cheap to unwind
 % later, and its hot market made selling attractive. After the reform,
-% California converges toward the national rate (12.3 versus 11.1 percent). In
-% the regression, the California post-reform effect is $-1.78$ percentage
-% points; the market-purchase placebo shows $-1.04$ points, and the
-% triple-difference is $-0.74$ points---a decline, as the selection logic
+% California falls below the national rate (11.1 versus 11.9 percent). In
+% the regression, the California post-reform effect is $-1.67$ percentage
+% points; the market-purchase placebo shows $-1.11$ points, and the
+% triple-difference is $-0.56$ points---a decline, as the selection logic
 % predicts, not a rise. But candor about inference is required here: the
 % triple-difference sits well within the placebo-state distribution
-% (permutation $p = 0.67$), and the absentee-recipient share is flat
-% ($-0.2$ percentage points). These imprecise conditional effects do not independently identify selection or rule out a change in settlement deeds. They concern the transfers still observed after the reform, not the missing transfers. The clearest response is in recorded volume.
+% (permutation $p = 0.76$), and the absentee-recipient share is flat
+% ($+0.2$ percentage points). These imprecise conditional effects do not independently identify selection or rule out a change in settlement deeds. They concern the transfers still observed after the reform, not the missing transfers. The clearest response is in recorded volume.
 
 % \subsubsection{Do missing deeds reappear as estate sales?}\label{subsec:directtest}
 
@@ -265,10 +298,10 @@ Although these results are informative and present us with a clear picture of th
 % market sales whose seller carries an estate, executor, or trust designation,
 % while recognizing that heirs' later sales need not retain those keywords.
 % The test does not detect a statistically clear increase. Estate- and trust-seller
-% market sales in California fall 8 percent relative to donor states between
+% market sales in California fall 11 percent relative to donor states between
 % 2017--2019 and 2022--2023 (permutation $p = 0.71$); relative to California's
-% overall market slump they \emph{gain} 8 log points---their share of
+% overall market slump they \emph{gain} 6 log points---their share of
 % California market sales rises from 28.4 to 31.9 percent---but similar share
-% gains occur elsewhere (permutation $p = 0.63$).
+% gains occur elsewhere (permutation $p = 0.73$).
 
 % The absence of a statistically clear increase is consistent with deferred succession, but it does not establish that the missing deeds were predominantly inter-vivos transfers. Limited power, changes in recording or legal vehicles, and later sales by heirs without estate keywords can also weaken this test. The data therefore do not yet identify a realized supply release or guarantee one in the future. Section~\ref{sec:welfare} treats the conversion of missing deeds into allocation changes, and the delay before those changes, as explicit calibration assumptions.

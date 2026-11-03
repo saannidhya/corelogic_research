@@ -38,7 +38,7 @@ events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
 
-fam_classes <- "('family_person','family_other','family_estate')"
+fam_classes <- "('family_person','family_estate')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ---- shared state-year panel (2017-2023, all years for event study) -------

@@ -66,8 +66,12 @@ not restarted by a 2008 deed. Starts must fall in 2008--2018. Subsequent
 family deeds do not restart the clock. A later market sale ends the episode;
 a later family deed can begin a new, non-overlapping episode. Each parcel
 can therefore appear in more than one episode but cannot appear twice in
-the same outstanding stock. Broad-family and same-surname definitions are
-constructed separately. Missing pre-2007 history remains a limitation.
+the same outstanding stock. A qualifying family deed is an interfamily deed
+between parties with the same surname or an estate deed. Broad-family and
+same-surname episodes are constructed separately, but they nearly
+coincide: estate deeds add 57 California episodes. Missing pre-2007 history
+remains a limitation.
+% TODO(appendix): wide-definition (incl. family_other) results pending
 
 We restrict observed endpoints to June 30, 2024, estimate Kaplan--Meier
 survival using exact elapsed days and the associated risk sets, and evaluate
@@ -110,8 +114,8 @@ forward with outside information. The construction is in
 single-family and condominium parcel in California with a positive assessed
 value: \WedgeParcels\ parcels, the same parcels at both lien dates. Homes
 built or subdivided after the roll are absent. Of the California family
-deeds recorded in 2017--2024, \WedgeFamLinkage\ percent fall on a parcel in
-this universe.
+deeds (same-surname interfamily or estate deeds) recorded in 2017--2024,
+\WedgeFamLinkage\ percent fall on a parcel in this universe.
 
 \paragraph{Tax rate.} The rate is the 2008--2009 total tax bill divided by
 assessed value, with the county median imputed when the ratio is missing or
@@ -157,7 +161,8 @@ post-2007 sale price, moved by the repeat-sales index. For the
 closely (correlation \WedgeRSCorValue\ in logs), but the two wedges correlate
 at only \WedgeRSCorWedge, because small differences in value become large
 differences in a narrow gap. Parcel-level wedges should be read as noisy;
-the welfare calculation uses only means over hundreds of thousands of homes.
+the welfare calculation uses only means over the \WedgeInheritedN\ inherited
+homes.
 Table~\ref{tab:wedge_tenure} and Figure~\ref{fig:wedge_tenure} show how the
 wedge varies with ownership history and the homeowner exemption, and
 Figure~\ref{fig:wedge_zero} shows where zero wedges occur.
@@ -177,8 +182,8 @@ Figure~\ref{fig:wedge_zero} shows where zero wedges occur.
   \centering
   \includegraphics[width=0.62\linewidth]{figures/wedge_valuation_comparison_2019.png}
   \caption{Hedonic-based against repeat-sales-based annual wedge, January
-  2019, for parcels with an arm's-length sale since 2007 (random sample of
-  50,000).}
+  2019, for parcels with a priced arm's-length sale (\$30,000--\$20 million)
+  since 2007 (random sample of 50,000).}
   \label{fig:wedge_valuation}
 \end{figure}
 
@@ -211,20 +216,24 @@ dollar year (CPI-U 245.120 in 2017 and 304.702 in 2023;
 count of 60,000--80,000 excluded properties a year reflects administrative
 eligibility and does not validate the deed response.
 
-\paragraph{Wedge used in the welfare calculation.} The calibration uses the
-mean wedge of inherited homes, the \WedgeInheritedN\ parcels whose first
-ownership change after January 2017 was a family transfer recorded in
-2018--2019, measured at the January 2017 lien date and converted to 2023
-dollars: \$\WelfareWedge. The mean is used because the deadweight loss is a
-sum over homes. The median, \$\WelfareWedgeMedian, appears in the
-sensitivity analysis. Neither is the wedge of the marginal heir, which the
-data do not identify.
+\paragraph{Wedge used in the welfare calculation.} The wedges come from the
+\WedgeInheritedN\ inherited homes, the parcels whose first ownership change
+after January 2017 was a same-surname interfamily or estate transfer recorded
+in 2018--2019, measured at the January 2017 lien date and converted to 2023
+dollars. Interfamily deeds without a surname match do not end the spell. The
+main-text illustration assigns each missing deed the median inherited-home
+wedge, \$\WelfareWedgeMedian\ (\$\WelfareDWLCohortMedian\ million a year).
+Because the deadweight loss is a sum over heterogeneous homes, the mean,
+\$\WelfareWedge, is the natural alternative (\$\WelfareDWLCohort\ million); it
+is slightly below the LAO's low endpoint in 2023 dollars, \$\WelfareWedgeLow.
+Neither is the wedge of the marginal heir, which the data do not identify.
 
 \subsection{Sensitivity and statistical uncertainty}
 
 \input{tables/TA_welfare_sensitivity.tex}
 
-The full grid comprises 4,050 combinations: two episode definitions,
+The full grid comprises 4,050 combinations: two episode definitions (which
+nearly coincide),
 five conversion factors, three delays, five wedges, three valuation-gap
 fractions, three hazard scales, and three discount rates. The wedge menu, in 2017 dollars converted to 2023 dollars, contains the
 measured median and mean wedge of inherited homes, the LAO's \$3,000 and
@@ -235,7 +244,7 @@ unpreferred $\alpha=0.5$, five-year-delay case.
 
 These calculations condition on the triple-difference reference flow. They do not
 turn uncertainty about that flow into statistical confidence bands for
-welfare. Its placebo-rank $p=0.176$ and the SCM specifications' different
+welfare. Its placebo-rank $p=0.118$ and the SCM specifications' different
 inference remain material. A nonpositive true allocation response, title-only
 responses, a sufficiently long delay, or no net resource gap can eliminate
 the calculated gains. Correlation between wedges and persistence, changing

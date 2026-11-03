@@ -10,7 +10,7 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 set.seed(20261002)
 con <- open_corelogic_duckdb(memory_limit = "6GB", threads = 2L)
 dbExecute(con, glue("SET temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
-fam_classes <- "('family_person','family_other','family_estate')"
+fam_classes <- "('family_person','family_estate')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
 
@@ -65,7 +65,7 @@ fact_counts <- read_csv(path(tables_out_dir, "fact_national_by_year_class.csv"),
                         show_col_types = FALSE)
 stopifnot(sum(national$n_all) == sum(fact_counts$n),
           sum(national$family) == sum(fact_counts$n[
-            fact_counts$class %in% c("family_person", "family_other", "family_estate")]))
+            fact_counts$class %in% c("family_person", "family_estate")]))
 write_csv_strict(sy, path(tables_out_dir, "property_type_state_year.csv"))
 write_csv_strict(national, path(tables_out_dir, "property_type_national.csv"))
 saveRDS(list(national = national, state_year = sy, code_class = code_class,
@@ -146,15 +146,15 @@ for (st in sort(unique(sy$state))) {
   FROM ev_dated c LEFT JOIN type_market_sales m ON m.clip=c.clip
     AND m.sale_date>c.sale_date
   WHERE c.state='{st}' AND c.sale_year BETWEEN 2008 AND 2018
-    AND c.class IN ('family_person','family_other','family_estate','market_sale')
+    AND c.class IN ('family_person','family_estate','market_sale')
   GROUP BY ALL"))
   resale_cell_list[[st]] <- dbGetQuery(con, glue("SELECT property_type,state,sale_year,
-  CASE WHEN class IN {fam_classes} THEN 'Family broad' ELSE 'Market' END AS comparison,
+  CASE WHEN class IN {fam_classes} THEN 'Family' ELSE 'Market' END AS comparison,
   COUNT(*) AS n,
   AVG(CASE WHEN next_market_date <= sale_date + INTERVAL 60 MONTH THEN 1.0 ELSE 0 END) AS sold_60m
   FROM type_spells GROUP BY ALL"))
   exit_list[[st]] <- dbGetQuery(con, glue("WITH comparison_spells AS (
-    SELECT property_type,'Family broad' AS comparison,sale_date,next_market_date
+    SELECT property_type,'Family' AS comparison,sale_date,next_market_date
     FROM type_spells WHERE class IN {fam_classes}
     UNION ALL SELECT property_type,'Same surname',sale_date,next_market_date
     FROM type_spells WHERE class='family_person'
@@ -174,16 +174,16 @@ resale_cells <- bind_rows(resale_cell_list)
 hazard_counts <- read_csv(path(tables_out_dir, "hazard_sold_within.csv"),
                          show_col_types = FALSE)
 stopifnot(sum(resale_cells$n) == sum(hazard_counts$n[
-  hazard_counts$class %in% c("family_person", "family_other", "family_estate", "market_sale")]))
+  hazard_counts$class %in% c("family_person", "family_estate", "market_sale")]))
 resale <- resale_cells %>% group_by(property_type, comparison) %>%
   summarize(sold_60m = weighted.mean(sold_60m, n), n = sum(n), .groups = "drop")
 # Within-type comparisons use common state/cohort weights from market events.
 resale_std <- resale_cells %>% filter(!state %in% territories) %>%
   pivot_wider(names_from = comparison, values_from = c(n, sold_60m)) %>%
-  filter(`n_Family broad` >= 20, n_Market >= 20) %>%
+  filter(`n_Family` >= 20, n_Market >= 20) %>%
   group_by(property_type) %>%
   summarize(n_common_cells = n(),
-            family_sold_60m = weighted.mean(`sold_60m_Family broad`, n_Market),
+            family_sold_60m = weighted.mean(`sold_60m_Family`, n_Market),
             market_sold_60m = weighted.mean(sold_60m_Market, n_Market),
             family_minus_market_pp = 100 * (family_sold_60m - market_sold_60m), .groups = "drop")
 write_csv_strict(resale_cells, path(tables_out_dir, "property_type_resale_cells.csv"))
@@ -232,7 +232,7 @@ writeLines(c("\\begin{table}[!ht]\\centering\\small",
   "\\label{tab:propertytypes}", "\\begin{tabular}{lrrrr}\\toprule",
   "Recorded type & Family deeds & Market deeds & Family share (\\%) & Family/market \\\\",
   "\\midrule", tex_rows, "\\bottomrule\\end{tabular}",
-  "\\begin{minipage}{.95\\linewidth}\\footnotesize\\textit{Notes:} Family deeds use the broad definition, excluding trust self-transfers. Shares divide family deeds by family plus market deeds. Partial published numeric crosswalk: 163 single-family, 102 townhouse/rowhouse, 112 condominium, 115 duplex, 106 apartment. Other codes remain unverified and are omitted from this exhibit, not the aggregate sample. Types are static recorded characteristics. Apartments are selectively covered: only 13\\% of source apartment rows pass the existing residential flag. Parcel deeds count neither dwelling units nor occupancy changes.\\end{minipage}",
+  "\\begin{minipage}{.95\\linewidth}\\footnotesize\\textit{Notes:} Family deeds are same-surname interfamily and estate/executor deeds (the main definition); trust deeds and interfamily deeds without a surname match are excluded. Market sales carry no price floor. Shares divide family deeds by family plus market deeds. Partial published numeric crosswalk: 163 single-family, 102 townhouse/rowhouse, 112 condominium, 115 duplex, 106 apartment. Other codes remain unverified and are omitted from this exhibit, not the aggregate sample. Types are static recorded characteristics. Apartments are selectively covered: only 13\\% of source apartment rows pass the existing residential flag. Parcel deeds count neither dwelling units nor occupancy changes.\\end{minipage}",
   "\\end{table}"), path(tables_dir, "T7_property_types.tex"))
 ten_year <- km %>% filter(exit_m == 120, comparison %in% c("Same surname", "Market"),
                          property_type != "Other/unverified codes", property_type != "Apartment") %>%

@@ -21,51 +21,74 @@ identifier that follows each house across successive owners.
 \subsection{Classifying transfers}
 
 CoreLogic flags each record with a primary category---arm's length or
-not---and an interfamily indicator constructed from the recorder's
-consideration, deed type, and name fields. We sharpen these flags into a
-taxonomy using the buyer and seller names on the deed:
+not---and an interfamily indicator. CoreLogic does not document how the
+indicator is built. In our audit of the file it behaves like a simple rule:
+it is set on nearly every deed whose buyer and seller share a surname, and
+on family- or death-related deed types that record no consideration. It does
+not verify a relationship. We sharpen these flags into a taxonomy using the
+buyer and seller names on the deed:
 
 \begin{enumerate}
-  \item \textbf{Market sale}: arm's-length category, recorded price of at
-        least \$10,000, not flagged interfamily (71.1 million events,
-        2007--2023).
+  \item \textbf{Market sale}: arm's-length category, not flagged
+        interfamily, with no price floor because non-disclosure states
+        withhold recorded prices on many genuine sales (78.5 million events,
+        2007--2023, of which 8.7 percent record a zero or missing price).
   \item \textbf{Same-person retitle}: the named principal is the same person
         on both sides of the deed---an owner adding or removing a co-owner,
         potentially at marriage, divorce, or refinancing (7.1 million). The
         matched name remains, but ownership shares can change. These deeds
-        are tracked separately from the operational family aggregate.
+        are tracked separately and excluded from the family definition.
   \item \textbf{Family transfer, same surname}: flagged interfamily, buyer
         and seller sharing a surname but not the same person, no trust
-        detected (13.6 million). This is a narrower proxy for inter-person
-        family transfers: it misses unmatched surnames but can also retain
-        same-person events with inconsistent full names. It is not a formal
-        lower bound on true family transfers.
-  \item \textbf{Family transfer, other}: flagged interfamily without a
-        detected surname match after the earlier exclusions, plus the
-        separately coded estate/executor residual (6.1 million). Missing
-        surname fields and transfers involving entities can enter this group;
-        the code does not verify the relationship between the parties.
-  \item \textbf{Trust self-transfer (operational label)}: the interfamily
-        flag is set and a primary party name contains a trust keyword
-        (12.1 million). This can include estate-planning retitling and
-        distributions to different beneficiaries. Unchanged control is not
-        verified; the class is excluded from the family aggregate.
+        detected (13.6 million). Together with a separately coded
+        estate/executor residual (1,905 deeds), this class is our main
+        family definition, used throughout the main analysis.
+  \item \textbf{Interfamily, no surname match}: flagged interfamily
+        without a detected surname match after the earlier exclusions
+        (6.1 million). Missing surname fields and transfers involving
+        entities can enter this group. Because the relationship cannot be
+        verified, it is excluded from the main family definition and enters
+        only the wide definition in Table~\ref{tab:volumes}.
+  \item \textbf{Interfamily trust deed}: the interfamily flag is set and a
+        primary party name contains a trust keyword (12.1 million). We split
+        these by name. A trust that shares a surname with the other party
+        but names a different individual marks a trust-mediated family
+        transfer (1.19 million, a lower bound); adding trust-to-person deeds
+        whose trust name carries no given name gives an upper bound of 1.61
+        million. The other 10.5 million
+        are a person moving property into or out of the person's own trust,
+        or trust deeds with no surname link. Neither group enters the main
+        family definition; Table~\ref{tab:volumes} reports the trust-mediated
+        transfers as a separate range. The split rests on names alone and
+        does not verify control.
   \item \textbf{Other non-arm's-length}: the remainder---divorce divisions
         across surnames, title corrections, nominal-price conveyances, and
-        foreclosure-related instruments (34.0 million).
+        foreclosure-related instruments (26.6 million).
 \end{enumerate}
+
+The main definition is a conservative count and, in practice, a lower bound
+on family transfers. A shared surname can be a coincidence, but at most 6.6
+percent of same-surname deeds are coded arm's length (4.4 percent at prices
+of \$100,000 or more). That error is small next to the 6.1 million flagged
+deeds without a surname match that the definition leaves out, many of which
+are likely relatives with different surnames, such as married daughters. The
+count also includes transfers between spouses, who are family but are not
+the parent-to-child transfers that Proposition~19 targets.
+% TODO(appendix): wide-definition (incl. family_other) results pending
 
 Table~\ref{tab:taxonomy} reports observable differences across the classes.
 Same-surname family deeds differ sharply from the defined market-sales class: 90 percent of same-surname transfers record a zero or missing
-price, against 0 percent of market sales (which require a price by
-construction) and 65 percent of the residual non-arm's-length class; 40
-percent travel by quitclaim deed---the instrument of gift---against 2 percent
-of market sales. Where a price is recorded at all in a same-surname transfer,
-the median is \$97,000, well under half the \$224,000 median market price:
-the comparison is descriptive because the houses and transferred interests can differ. Corporate buyers, who take 10
+price, against 9 percent of market sales (mostly unpriced sales in
+non-disclosure states) and 57 percent of the residual non-arm's-length class.
+A missing price alone therefore does not separate a family transfer from a
+sale. Forty percent of same-surname transfers travel by quitclaim deed---the
+instrument of gift---against 3 percent of market sales. Where a price is
+recorded at all in a same-surname transfer, the median is \$97,000, well
+under half the \$221,000 median market price:
+the comparison is descriptive because the houses and transferred interests can differ. Corporate buyers, who take 12
 percent of market purchases, are essentially absent from same-surname
 transfers. These patterns are consistent with gifts and succession, but do not verify their prevalence or exclude other transactions. One
 note on probate: formal estate keywords (``estate of,'' executor,
-administrator) rarely appear in the recorded name fields, and the earlier trust, same-person, and surname rules also take precedence over the estate rule. The small residual estate class therefore cannot measure all successions.
+administrator) rarely appear in the recorded name fields, and the earlier trust, same-person, and surname rules also take precedence over the estate rule. The small residual estate class (1,905 interfamily deeds) therefore cannot measure all successions; another 56,056 estate-keyword deeds lack the interfamily flag and stay out of the family definition.
 
 \input{tables/T1_taxonomy.tex}

@@ -33,7 +33,8 @@ administrator keywords).
 Name fields are populated for the large majority of records (the seller
 surname is non-missing for 84 percent of interfamily events and the buyer
 surname for 66 percent); missing names can only push true family transfers
-into the ``other interfamily'' class, never into the market class, but imperfect full-name matching can also misclassify retitling. The same-surname series is a narrower proxy, not a formally established lower bound on true inter-person transfers.
+into the excluded class of interfamily-flagged deeds without a surname match, never into the market class, but imperfect full-name matching can also misclassify retitling. Missing names are one more reason to read the main definition (same-surname interfamily plus estate deeds) as a conservative count and, in practice, a lower bound on family transfers (Section~\ref{sec:data}). The 6.1 million excluded deeds enter only the wide definition in Table~\ref{tab:volumes}.
+% TODO(appendix): wide-definition (incl. family_other) results pending
 
 \paragraph{Absentee recipients.} A recipient is absentee when the buyer
 mailing ZIP on the deed differs from the property's situs ZIP, among records
@@ -55,7 +56,9 @@ codes. It therefore cannot distinguish those assets by itself.
 \begin{figure}[!ht]\centering
 \includegraphics[width=.95\linewidth]{figures/F9_property_types.png}
 \caption{Family share of family-plus-market deeds by recorded type,
-2007--2023. The broad family definition excludes trust self-transfers.
+2007--2023. Family deeds use the main definition (same-surname interfamily
+and estate deeds); trust deeds and interfamily deeds without a surname match
+are excluded. Market sales carry no price floor.
 }\label{fig:propertytypes}
 \end{figure}
 
@@ -67,49 +70,58 @@ therefore do not describe the complete multifamily sector. We preserve
 the original residential restriction for this reproduction.
 
 Type-specific five-year resale comparisons also differ. Among 2008--2018
-cohorts, weighting broad-family and market events to the same market
-state/cohort distribution gives sale rates of 32.1 versus 26.4 percent for
-condominiums, 19.6 versus 22.0 percent for duplexes, and 24.0 versus 23.4
-percent for single-family properties. These comparisons pool family
-classes, unlike the main-text same-surname benchmark, and do not identify
-an effect of inheriting an asset. They caution against a uniform
-interpretation of family deeds as lock-in.
+cohorts, weighting family and market events to the same market
+state/cohort distribution gives five-year sale rates of 33.2 versus 27.6
+percent for condominiums, 21.3 versus 25.4 percent for duplexes, and 25.3
+versus 25.8 percent for single-family properties. Condominiums and
+townhouses (30.1 versus 27.4 percent) are the exceptions to slower family
+resale. These comparisons do not identify an effect of inheriting an asset,
+but they caution against a uniform interpretation of family deeds as lock-in.
 
 \input{tables/T8_property_retention.tex}
 
 The same-surname comparison at ten years also differs by recorded type.
-Kaplan--Meier estimates leave 68.4 percent of duplex family properties
-unsold versus 62.8 percent of market purchases, and 61.8 versus 58.4
+Kaplan--Meier estimates leave 66.7 percent of duplex family properties
+unsold versus 58.8 percent of market purchases, and 59.9 versus 55.9
 percent for single-family properties. For condominiums, the ordering
-reverses: 48.9 percent of same-surname family properties remain unsold
-versus 51.7 percent of market purchases. These pooled comparisons do not
-hold state and cohort composition fixed, but the heterogeneity persists
-when the family class is restricted to the same-surname proxy.
+reverses: 47.7 percent of same-surname family properties remain unsold
+versus 50.4 percent of market purchases. These pooled comparisons do not
+hold state and cohort composition fixed.
 
 An exploratory repetition of the transparent 2019-scaled deadline
-counterfactual yields anticipation excesses of 29.8 percent for
-single-family properties, 36.9 percent for condominiums, and 50.5 percent
+counterfactual yields anticipation excesses of 30.8 percent for
+single-family properties, 41.4 percent for condominiums, and 70.8 percent
 for duplexes. These comparisons have neither type-interaction inference
 nor direct measures of statutory eligibility; they are descriptive
-heterogeneity checks. Building type alone does not establish whether
+heterogeneity checks. Like the aggregate figure, they rest on California's
+unusually low 2018--2019 base and overstate anticipation
+(Section~\ref{sec:prop19}). Building type alone does not establish whether
 the property is a qualifying principal residence.
 
 \section{Robustness Checks}\label{app:robustness}
 
 \paragraph{Trust-inclusive triple difference.} Re-estimating the Proposition 19
-volume triple difference with trust self-transfers included in the family
-aggregate gives a CA $\times$ Post coefficient of $-0.241$ (s.e.\ $0.027$) for
-family transfers and, net of the $-0.163$ market-sale coefficient, a triple
-difference of $-0.078$ log points, a 7.5 percent decline. The decline in
-direct family deeds is therefore partly offset by trust self-transfers, so
-some of the response may reflect reclassification between direct family
-deeds and trust vehicles rather than exit from the family channel.
+volume triple difference with all trust deeds added to the family
+aggregate gives a CA $\times$ Post coefficient of $-0.165$ (s.e.\ $0.032$) and,
+net of the $-0.175$ market-sale coefficient, a triple difference of $+0.010$
+log points (state-placebo $p = 0.98$). The decline in direct family deeds
+disappears in this aggregate. The main reason is weighting. In 2017--2019
+California recorded about two trust deeds, three in four of them
+retitlings into the owner's own trust, for every main-definition family
+deed. Trust deeds barely fell and rose relative to market sales: their own
+triple difference is $+0.118$ ($p = 0.67$). Adding only
+trust distributions (trust-to-person deeds), the trust deeds most likely to
+pass a home to heirs, gives a triple difference of $-0.232$ log points
+($-20.7$ percent; rank 9 of 51, $p = 0.176$), close to the headline. The
+all-trust aggregate is therefore a weak test of substitution. It cannot rule
+out that some of the response reflects reclassification into trust vehicles
+rather than exit from the family channel.
 
 % \paragraph{Synthetic-control in-space placebo.} The main-text inference for the
 % steady-state decline assigns the treatment to each donor state in turn and ranks
 % California's post/pre mean squared prediction error ratio in the resulting
-% distribution; California is third of fifty-one (Figure~\ref{fig:scm_mspe},
-% placebo-rank $p = 0.059$). Treatment starts in June 2020, when the measure was
+% distribution; California is second of fifty-one (Figure~\ref{fig:scm_mspe},
+% placebo-rank $p = 0.039$). Treatment starts in June 2020, when the measure was
 % placed on the ballot, and the weights match January 2018--May 2020.
 
 % \begin{figure}[!ht]
@@ -117,17 +129,17 @@ deeds and trust vehicles rather than exit from the family channel.
 %   \includegraphics[width=0.82\linewidth]{figures/F7_scm_mspe_ratio.png}
 %   \caption{Synthetic-control in-space placebo: the post/pre mean squared
 %   prediction error ratio for each state assigned the treatment in turn.
-%   California (red) is third of fifty-one ($p=0.059$).}
+%   California (red) is second of fifty-one ($p=0.039$).}
 %   \label{fig:scm_mspe}
 % \end{figure}
 
-% \paragraph{SCM inference sensitivity.} The saved Conley--Taber-style calculation gives $p=0.146$ and a normalized-index gap interval of $[-0.659,0.226]$, using the 47 donor states whose January 2018--May 2020 pre-fit RMSPE is within five times California's. This interval includes zero and is in index-gap units, not percentage-change units. The population-adjusted calculation below gives $p=0.170$ under the same alternative procedure. These results qualify the sharper MSPE-ratio ranks; different statistics and assumptions need not give the same inference.
+% \paragraph{SCM inference sensitivity.} The saved Conley--Taber-style calculation gives $p=0.167$ and a normalized-index gap interval of $[-0.546,0.103]$, using the 47 donor states whose January 2018--May 2020 pre-fit RMSPE is within five times California's. This interval includes zero and is in index-gap units, not percentage-change units. The population-adjusted calculation below gives $p=0.213$ under the same alternative procedure. These results qualify the sharper MSPE-ratio ranks; different statistics and assumptions need not give the same inference.
 
 % \paragraph{Demographic adjustment.} Re-estimating the synthetic control on
 % family transfers per resident aged 65 and over (American Community Survey
 % one-year estimates, with 2020 interpolated) uses the same June 2020 treatment
-% start and January 2018--May 2020 fitting window. The pre-period RMSPE is 4.2
-% percent, and California's family transfers run 30 percent below the
+% start and January 2018--May 2020 fitting window. The pre-period RMSPE is 4.1
+% percent, and California's family transfers run 28 percent below the
 % synthetic control in 2022--2023. California's post/pre MSPE ratio ranks
 % second of fifty-one ($p=0.039$). The two synthetic-control specifications use
 % different denominators; their similar gaps are not the endpoints of a
@@ -138,18 +150,21 @@ deeds and trust vehicles rather than exit from the family channel.
 % each design is re-estimated, and California's coefficient is ranked in the
 % placebo distribution. For the annual
 % family-only volume DiD (Table~\ref{tab:prop19}, column 1), California ranks
-% 5th of 51 ($p = 0.098$); for the headline triple difference (column 3), 9th
-% ($p = 0.176$). The monthly transparent
+% 3rd of 51 ($p = 0.059$); for the headline triple difference (column 3), 6th
+% ($p = 0.118$). The monthly transparent
 % counterfactual of Section~\ref{sec:prop19} is also re-estimated with each
 % state treated in turn, and each state's policy-window gap is ranked both raw
 % and after scaling by its own 2018m1--2020m5 RMSPE. Under the 2019 same-month
 % baseline, California's June 2020--February 2021 anticipation gap ranks 6th of
-% 51 in raw size ($p = 0.118$); the November 2020--February 2021 rush, February
-% 2021, and 2022--2023 gaps each rank 3rd ($p = 0.059$). After pre-fit scaling,
-% California ranks 1st of 51 in all four windows ($p = 0.020$). Using a
-% 2018--2019 same-month baseline leaves the pre-fit-adjusted ranks unchanged.
-% For the sold-within-24-months triple difference, $p = 0.67$; for the
-% estate/trust-seller market-sale DiD, $p = 0.71$ (levels) and $p = 0.63$ (net
+% 51 in raw size ($p = 0.118$); the November 2020--February 2021 rush ranks 5th
+% STALE: commented block holds pre-refresh (pre-10/31/2026) numbers or claims; re-verify before uncommenting.
+% ($p = 0.098$), February 2021 4th ($p = 0.078$), and 2022--2023 3rd
+% ($p = 0.059$). After pre-fit scaling, California ranks 1st of 51 in the rush
+% and February 2021 ($p = 0.020$) and 3rd in the anticipation and 2022--2023
+% windows ($p = 0.059$). Using a 2018--2019 same-month baseline, California also
+% ranks 1st in the anticipation window after pre-fit scaling.
+% For the sold-within-24-months triple difference, $p = 0.76$; for the
+% estate/trust-seller market-sale DiD, $p = 0.71$ (levels) and $p = 0.73$ (net
 % of overall market).
 
 % \begin{figure}[!ht]
@@ -158,16 +173,17 @@ deeds and trust vehicles rather than exit from the family channel.
 %   \caption{Placebo ranks for the monthly Proposition~19 counterfactual. Red
 %   points mark California; gray points assign the same policy window to each
 %   donor state in turn. The anticipation window runs from June 2020 to February
-%   2021. By raw gap, California ranks sixth in anticipation and third in
-%   February 2021 and 2022--2023; gap divided by the 2018m1--2020m5 RMSPE ranks
-%   California first in each window.}
+%   2021. By raw gap, California ranks sixth in anticipation, fourth in
+%   February 2021, and third in 2022--2023; gap divided by the 2018m1--2020m5
+%   RMSPE ranks California first in February 2021 and third in the other two
+%   windows.}
 %   \label{fig:placebo_ranks}
 % \end{figure}
 
 % \paragraph{Selection: sold within 24 months by cohort.} Figure~\ref{fig:sold24_cohorts}
 % plots the conditional-margin series discussed in Section~\ref{sec:prop19}; it is
 % relegated here because the triple difference is statistically unremarkable
-% ($p = 0.67$) and the identified action is on the volume margin.
+% ($p = 0.76$) and the identified action is on the volume margin.
 
 % \begin{figure}[!ht]
 %   \centering
@@ -182,27 +198,8 @@ deeds and trust vehicles rather than exit from the family channel.
 \paragraph{Raw difference-in-differences means.} Table~\ref{tab:raw22}
 reports the unadjusted means underlying the sold-within-24-months estimates.
 
-\begin{table}[!ht]\centering
-\caption{Sold on open market within 24 months: raw cohort means}
-\label{tab:raw22}
-{\small
-\begin{tabular}{llrrr}
-\toprule
-Cohort group & Region & Pre (2017m1--2018m12) & Post (2021m7--2022m6) & Change \\
-\midrule
-Family transfer & California & 16.1\% \; (n=470{,}163) & 12.3\% \; (n=247{,}417) & $-3.8$pp \\
-Family transfer & Rest of US & 13.1\% \; (n=1{,}793{,}673) & 11.1\% \; (n=1{,}118{,}028) & $-2.0$pp \\
-Market purchase & California & 6.2\% \; (n=788{,}627) & 4.7\% \; (n=421{,}807) & $-1.5$pp \\
-Market purchase & Rest of US & 6.9\% \; (n=7{,}722{,}553) & 6.5\% \; (n=4{,}495{,}875) & $-0.4$pp \\
-\bottomrule
-\end{tabular}}
-\begin{minipage}{0.95\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:}
-Non-corporate recipients only. Family transfer = same-surname,
-cross-surname interfamily, and estate/executor classes (same-person retitles
-excluded). The difference-in-differences for family transfers is $-1.8$pp;
-for market purchases, $-1.1$pp; the triple difference is $-0.74$pp
-(regression counterpart in Table~\ref{tab:prop19}; permutation $p = 0.67$).}\end{minipage}
-\end{table}
+% Generated by 05_tables.R from 04_prop19.R cell means (was hand-typed).
+\input{tables/TA_raw22.tex}
 
 % \subsection{Threats to identification}
 
@@ -233,21 +230,23 @@ for market purchases, $-1.1$pp; the triple difference is $-0.74$pp
 % California's 2022--2023 family transfers relative to donors through channels
 % the market placebo does not absorb. We address this directly: re-estimating
 % the synthetic control on family transfers per resident aged 65 and over
-% (American Community Survey one-year estimates) leaves a 26 percent gap
-% ($p=0.137$). Because the eliminated deeds are predominantly inter-vivos
+% (American Community Survey one-year estimates) leaves a 28 percent gap
+% ($p=0.039$). Because the eliminated deeds are predominantly inter-vivos
+% STALE: commented block holds pre-refresh (pre-10/31/2026) numbers or claims; re-verify before uncommenting.
 % transfers rather than death-driven successions, a denominator in the elderly
-% population over-corrects, so we treat 26 percent as a conservative floor and
-% the unadjusted 33 percent as the central estimate; the deadline bunching is
+% population over-corrects, so we treat 28 percent as a conservative floor and
+% the unadjusted 29 percent as the central estimate; the deadline bunching is
 % immune to this channel by construction.
 % \item \emph{The pulled-forward stock}: some of the post-period
 % shortfall reflects transfers executed early during the rush rather than
 % abandoned. The paper's own numbers bound this: even if every one of the
-% 28,869 excess deeds was borrowed from the March 2021--December 2022 window,
-% retiming would account for at most a third of that window's 85,351-deed
+% 25,089 excess deeds was borrowed from the March 2021--December 2022 window,
+% retiming would account for at most 72 percent of that window's 35,045-deed
 % shortfall---and none of the 2023 decline, which is the largest.
 % \item \emph{Placebo
 % contamination}: two forces push California market sales \emph{up} after 2021
 % ---the portability arm of Proposition~19 itself and the predicted release of
+% STALE: commented block holds pre-refresh (pre-10/31/2026) numbers or claims; re-verify before uncommenting.
 % inherited homes---which makes the market-sale placebo an imperfect cycle
 % control; together with the evident acyclicality of family-transfer volumes
 % (their ratio to market sales was as high in the 2009 bust as the 2021 boom),

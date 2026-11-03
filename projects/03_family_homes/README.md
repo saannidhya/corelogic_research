@@ -25,7 +25,6 @@
 - `scripts/R/04_prop19.R` — RQ3 Prop 19: aggregate retiming, long-held × CA × post DDD, wedge dose-response hazards by 2008 occupancy, competing risks, robustness, headline numbers (legacy volume DiD / sold24 / absentee kept as appendix outputs)
 - `scripts/R/00_inference_helpers.R` — wild cluster bootstrap, county pairs bootstrap, Conley–Taber, relative-magnitudes breakdown
 - `scripts/R/check_prop19_wedge_invariants.R` — synthetic checks of roll-forward, risk-set accounting, offset Poisson, competing-risk decomposition
-- `scripts/R/06b_prop19_scm_figures.R` — SCM figures (F5–F7) + monthly event study (Section 6 rebuild)
 - `scripts/R/08_within_ca.R` — within-CA DiD (built, dropped as causal — wrong sign; descriptive only)
 - `scripts/R/09_scm_inference.R` — donor-weighted synthetic control + MSPE-ratio + Conley–Taber inference
 - `scripts/R/09b_event_study.R` — monthly TWFE event study (2018–19 baseline) + placebo band
@@ -34,7 +33,7 @@
 - `scripts/R/11_welfare.R` — conditional allocation-gain calibration, CA parcel-episode persistence, valuation audit, and generated welfare exhibits
 - `scripts/R/11_welfare_helpers.R` — episode and finite-horizon accounting functions
 - `scripts/R/check_welfare_invariants.R` — synthetic date, episode, survival, timing, and welfare accounting checks
-- `scripts/R/06_figures.R` — manuscript figures (F1–F4 + legacy)
+- `scripts/R/06_figures.R` — manuscript figures (F1–F7, SCM, and monthly event study)
 - `manuscript/paper.tex` — manuscript draft
 - `slides/seminar.tex` — seminar slides (Beamer source of truth)
 

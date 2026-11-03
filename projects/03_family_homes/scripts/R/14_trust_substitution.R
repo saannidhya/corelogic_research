@@ -34,7 +34,7 @@ on.exit(sink(), add = TRUE)
 message("Starting 14_trust_substitution at ", Sys.time())
 
 # Settings ----
-fam_classes <- c("family_person", "family_other", "family_estate")
+fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 pre_years <- 2017:2019
 post_years <- 2022:2023
@@ -93,7 +93,7 @@ stopifnot(direction_share$share[direction_share$direction == "trust_unmatched"] 
 # Family and market counts on the same state-month grid
 base_counts <- dbGetQuery(con, glue("
   SELECT state, ym, sale_year,
-         SUM(CASE WHEN class IN ('family_person','family_other','family_estate')
+         SUM(CASE WHEN class IN ('family_person','family_estate')
                   THEN 1 ELSE 0 END) AS n_fam,
          SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END) AS n_trust,
          SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
@@ -195,7 +195,11 @@ print(did_results, width = Inf)
 write_csv_strict(did_results, path(tables_out_dir, "trust_sub_did.csv"))
 
 # |- Checking the headline reproduces ----
-stopifnot(abs(did_results$ddd[did_results$outcome == "n_fam"] - (-0.2627)) < 1e-3)
+# Compare with 07's saved headline DDD instead of a hard-coded value, so the
+# check survives definition changes (was -0.2627 before 10/31/2026).
+headline_ddd <- read_csv(path(tables_out_dir, "prop19_ddd_volume.csv"),
+                         show_col_types = FALSE)$estimate
+stopifnot(abs(did_results$ddd[did_results$outcome == "n_fam"] - headline_ddd) < 1e-3)
 
 #============================================#
 # Calculating monthly transparent counterfactuals ----

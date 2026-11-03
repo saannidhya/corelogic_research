@@ -43,7 +43,7 @@ dbExecute(con, "
   SELECT clip, state, sale_date, sale_year, class, corp_buyer, absentee_buyer
   FROM ev_dated
   WHERE sale_year BETWEEN 2008 AND 2018
-    AND class IN ('family_person','family_other','family_estate',
+    AND class IN ('family_person','family_estate',
                   'family_trust','family_retitle','market_sale')
 ")
 

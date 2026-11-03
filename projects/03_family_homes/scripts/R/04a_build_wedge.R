@@ -77,9 +77,9 @@ rs_min_pairs <- 500L
 rs_max_abs_dlog <- log(5)
 
 # deed classes
-fam_classes <- c("family_person", "family_other", "family_estate")
+fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
 trust_classes <- c("family_trust", "family_retitle")
-other_classes <- c("other_nonarms", "estate_noninterfam")
+other_classes <- c("other_nonarms", "estate_noninterfam", "family_other")
 
 # small helpers
 to_clip <- function(x) as.numeric(as.character(x))

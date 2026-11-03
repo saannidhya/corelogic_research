@@ -50,11 +50,11 @@ events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 
 # Broad family transfers exclude trust self-transfers.
-fam_classes <- c("family_person", "family_other", "family_estate")
+fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # Load all events into R; subsequent calculations use in-memory data frames.
-ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+ev_data <- read_events_df(events_path)
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # ============================================================

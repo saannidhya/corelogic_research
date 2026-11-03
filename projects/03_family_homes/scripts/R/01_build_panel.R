@@ -8,6 +8,7 @@
 # Outputs: data/derived/03_family_homes/events.parquet
 #          _outputs/logs/01_build_panel.log
 #          _outputs/tables/audit_class_by_year.csv
+#          _outputs/tables/audit_trust_rel_by_year.csv
 #          _outputs/tables/audit_name_population_by_year.csv
 #          _outputs/tables/audit_absentee_coverage_by_year.csv
 # Dev:     FAM_DEV=1 restricts to VT+RI and writes events_dev.parquet
@@ -47,9 +48,10 @@ if (dev_mode) {
 #   family_person  interfam & same surname (true inter-person family transfer)
 #   family_estate  interfam & estate/executor keywords
 #   family_other   remaining interfam (incl. cross-surname relatives)
-#   market_sale    pcat 'A', price >= $10k, not interfam
+#   market_sale    pcat 'A', not interfam (no price floor: non-disclosure states
+#                  report missing/0 prices on genuine sales; discussant, ODU 2026)
 #   estate_noninterfam  estate keywords without interfam flag
-#   other_nonarms  everything else (nominal-price A, B/C admin, etc.)
+#   other_nonarms  everything else (B/C admin, etc.)
 dbExecute(con, glue("
   CREATE OR REPLACE TEMP VIEW ot_slim AS
   SELECT
@@ -100,6 +102,100 @@ dbExecute(con, glue("
     AND CAST(floor(TRY_CAST(sale_derived_date AS BIGINT) / 100) % 100 AS INTEGER) BETWEEN 1 AND 12
 "))
 
+# ---- 1b. Trust-mediated family transfer rule (research_spec.md, 2026-10-31) ----
+# Applies only to family_trust events (interfam = 1 & trust keyword). Output
+# trust_rel in {self, clear, ambiguous, none}:
+#   self      person <-> own trust (surname link + given-name match) -> not family
+#   clear     surname link, trust names a different individual       -> lower bound
+#   ambiguous trust -> person, surname link, trust has no given names -> upper bound
+#   none      no surname link (unrelated trustee sale etc.)
+# Person names are "LAST FIRST MIDDLE". Initials and 3+ letter prefixes match.
+nm_macros <- c(
+  "CREATE OR REPLACE TEMP MACRO nm_gen() AS ['TRUST','TRUSTS','TRUSTEE','TRUSTEES','TR','TRS',
+     'TRST','TTEE','TTEES','TSTEE','LIVING','LIV','LVG','LIVG','REVOCABLE','REVOC','REV',
+     'IRREVOCABLE','IRREV','FAMILY','FAM','SETTLEMENT','PRESERVATION','SEPARATE','PROPERTY',
+     'THE','OF','AND','ET','AL','DATED','DTD','UTD','UDT','DECLARATION','AGREEMENT','SURVIVORS',
+     'SURVIVOR','MARITAL','BYPASS','EXEMPTION','CREDIT','SHELTER','QTIP','TESTAMENTARY','INTER',
+     'VIVOS','JOINT','LIFE','ESTATE','REAL','INVESTMENT','JR','SR','II','III','IV','FBO','UTA',
+     'UAD','TRUSTOR','TRUSTORS','GRANTOR','CHARITABLE','REMAINDER','UNITRUST','ANNUITY']",
+  "CREATE OR REPLACE TEMP MACRO nm_tok(x) AS list_filter(string_split(trim(regexp_replace(
+     upper(coalesce(x, '')), '[^A-Z]+', ' ', 'g')), ' '), z -> length(z) > 0)",
+  "CREATE OR REPLACE TEMP MACRO nm_ttok(x) AS list_filter(nm_tok(x),
+     z -> NOT list_contains(nm_gen(), z))",
+  "CREATE OR REPLACE TEMP MACRO nm_fw(x) AS split_part(trim(coalesce(x, '')), ' ', 1)",
+  "CREATE OR REPLACE TEMP MACRO nm_sur(x) AS list_filter(nm_tok(nm_fw(x)), z -> length(z) >= 2)",
+  "CREATE OR REPLACE TEMP MACRO nm_giv(x) AS
+     nm_tok(substr(trim(coalesce(x, '')), length(nm_fw(x)) + 1))",
+  # first given name (gg[1]) matches a name in nn by exact/initial/prefix rule,
+  # or any given name of 3+ letters equals a name in nn
+  "CREATE OR REPLACE TEMP MACRO nm_gmatch(gg, nn) AS coalesce(len(list_filter(nn, z ->
+     (len(gg) > 0 AND (gg[1] = z
+        OR (length(gg[1]) = 1 AND z[1] = gg[1])
+        OR (length(z) = 1 AND gg[1][1] = z)
+        OR (length(gg[1]) >= 3 AND length(z) >= 3
+            AND (starts_with(z, gg[1]) OR starts_with(gg[1], z)))))
+     OR (length(z) >= 3 AND list_contains(gg, z)))) > 0, FALSE)",
+  "CREATE OR REPLACE TEMP MACRO nm_link(pp, tt) AS
+     len(list_filter(nm_sur(pp), z -> list_contains(nm_ttok(tt), z))) > 0",
+  "CREATE OR REPLACE TEMP MACRO nm_ind(pp, tt) AS
+     list_filter(nm_ttok(tt), z -> NOT list_contains(nm_sur(pp), z))",
+  "CREATE OR REPLACE TEMP MACRO nm_t2p(tr, pe) AS CASE
+     WHEN NOT nm_link(pe, tr) THEN 'none'
+     WHEN nm_gmatch(nm_giv(pe), nm_ind(pe, tr)) THEN 'self'
+     WHEN len(nm_ind(pe, tr)) >= 1 THEN 'clear'
+     ELSE 'ambiguous' END",
+  "CREATE OR REPLACE TEMP MACRO nm_p2t(pe, tr) AS CASE
+     WHEN NOT nm_link(pe, tr) THEN 'none'
+     WHEN len(nm_ind(pe, tr)) >= 1 AND NOT nm_gmatch(nm_giv(pe), nm_ind(pe, tr)) THEN 'clear'
+     ELSE 'self' END",
+  "CREATE OR REPLACE TEMP MACRO nm_common(ts, tb) AS list_filter(nm_ttok(ts),
+     z -> length(z) >= 3 AND list_contains(nm_ttok(tb), z))",
+  "CREATE OR REPLACE TEMP MACRO nm_uniq(ts, tb) AS list_filter(nm_ttok(ts),
+     z -> NOT list_contains(nm_common(ts, tb), z))",
+  "CREATE OR REPLACE TEMP MACRO nm_t2t(ts, tb) AS CASE
+     WHEN len(nm_common(ts, tb)) = 0 THEN 'none'
+     WHEN len(nm_uniq(ts, tb)) = 0 AND len(nm_uniq(tb, ts)) = 0 THEN 'self'
+     WHEN len(nm_uniq(ts, tb)) > 0 AND len(nm_uniq(tb, ts)) > 0
+          AND NOT nm_gmatch(nm_uniq(ts, tb), nm_uniq(tb, ts)) THEN 'clear'
+     WHEN len(nm_uniq(ts, tb)) > 0 AND len(nm_uniq(tb, ts)) > 0 THEN 'self'
+     ELSE 'ambiguous' END",
+  # prior-deed check: buyer vs the person who earlier conveyed the property into the trust
+  "CREATE OR REPLACE TEMP MACRO nm_pp(bu, pr) AS CASE
+     WHEN len(list_filter(nm_sur(bu), z -> list_contains(nm_sur(pr), z))) = 0 THEN NULL
+     WHEN nm_gmatch(nm_giv(bu), nm_giv(pr)) THEN 'self'
+     ELSE 'clear' END",
+  "CREATE OR REPLACE TEMP MACRO nm_best(a, b) AS CASE
+     WHEN a = 'self' OR b = 'self' THEN 'self'
+     WHEN a = 'clear' OR b = 'clear' THEN 'clear'
+     WHEN a = 'ambiguous' OR b = 'ambiguous' THEN 'ambiguous'
+     ELSE 'none' END"
+)
+for (m in nm_macros) dbExecute(con, m)
+
+# Earlier deed that moved the parcel INTO the trust, to identify the settlor.
+# Trust deeds only (small subset); latest prior conveyance per trust->person deed.
+dbExecute(con, "
+  CREATE OR REPLACE TEMP TABLE trust_deeds AS
+  SELECT clip, sale_raw, b1_full, s1_full
+  FROM ot_slim
+  WHERE b1_full LIKE '%TRUST%' OR s1_full LIKE '%TRUST%'
+")
+dbExecute(con, "
+  CREATE OR REPLACE TEMP TABLE prior_settlor AS
+  SELECT clip, sale_raw, trust_name, p_name FROM (
+    SELECT o.clip, o.sale_raw, o.s1_full AS trust_name, p.s1_full AS p_name,
+           ROW_NUMBER() OVER (PARTITION BY o.clip, o.sale_raw, o.s1_full
+                              ORDER BY p.sale_raw DESC, p.s1_full) AS rk
+    FROM (SELECT DISTINCT clip, sale_raw, s1_full FROM trust_deeds
+          WHERE s1_full LIKE '%TRUST%' AND b1_full NOT LIKE '%TRUST%') o
+    JOIN trust_deeds p
+      ON p.clip = o.clip AND p.sale_raw < o.sale_raw AND p.b1_full = o.s1_full
+     AND p.s1_full <> '' AND p.s1_full NOT LIKE '%TRUST%'
+  ) WHERE rk = 1
+")
+message("Prior-settlor rows: ",
+        format(dbGetQuery(con, "SELECT COUNT(*) n FROM prior_settlor")$n, big.mark = ","))
+
 # ---- 2. Classify + dedupe ----------------------------------------------
 # Dedupe: one event per (clip, sale_raw). Multi-parcel sales and re-recorded
 # corrections produce duplicate rows; keep the most informative record
@@ -130,7 +226,7 @@ dbExecute(con, "
       WHEN interfam = 1 AND same_surname             THEN 'family_person'
       WHEN interfam = 1 AND estate_kw                THEN 'family_estate'
       WHEN interfam = 1                              THEN 'family_other'
-      WHEN pcat = 'A' AND amt >= 10000               THEN 'market_sale'
+      WHEN pcat = 'A'                                THEN 'market_sale'
       WHEN estate_kw                                 THEN 'estate_noninterfam'
       ELSE 'other_nonarms'
     END AS class,
@@ -142,13 +238,33 @@ dbExecute(con, "
 
 dbExecute(con, glue("
   COPY (
-    SELECT clip, state, fips5, sale_raw, sale_year, sale_month,
-           sale_year * 100 + sale_month AS ym,
-           land_use_code_static, property_indicator_code_static,
-           pcat, dtype, interfam, amt, class,
-           same_surname, same_person, trust_kw, estate_kw, corp_buyer,
-           new_construction, reo, reo_sale,
-           absentee_buyer, mail_state, mail_zip5, situs_zip5
+    SELECT d.clip, d.state, d.fips5, d.sale_raw, d.sale_year, d.sale_month,
+           d.sale_year * 100 + d.sale_month AS ym,
+           d.land_use_code_static, d.property_indicator_code_static,
+           d.pcat, d.dtype, d.interfam, d.amt, d.class,
+           d.same_surname, d.same_person, d.trust_kw, d.estate_kw, d.corp_buyer,
+           d.new_construction, d.reo, d.reo_sale,
+           d.absentee_buyer, d.mail_state, d.mail_zip5, d.situs_zip5,
+           -- trust rule applies only to family_trust events; NULL elsewhere
+           CASE WHEN d.class <> 'family_trust' THEN NULL
+                WHEN d.s1_full LIKE '%TRUST%' AND d.b1_full LIKE '%TRUST%' THEN 't2t'
+                WHEN d.s1_full LIKE '%TRUST%' THEN 't2p'
+                ELSE 'p2t' END AS trust_dir,
+           CASE WHEN d.class <> 'family_trust' THEN NULL
+                WHEN d.s1_full LIKE '%TRUST%' AND d.b1_full LIKE '%TRUST%'
+                  THEN nm_t2t(d.s1_full, d.b1_full)
+                WHEN d.s1_full LIKE '%TRUST%' THEN
+                  CASE WHEN ps.p_name IS NOT NULL
+                        AND (nm_pp(d.b1_full, ps.p_name) IS NOT NULL
+                             OR nm_pp(d.b2_full, ps.p_name) IS NOT NULL)
+                       THEN nm_best(nm_pp(d.b1_full, ps.p_name), nm_pp(d.b2_full, ps.p_name))
+                       ELSE nm_best(nm_t2p(d.s1_full, d.b1_full),
+                                    CASE WHEN d.b2_full <> '' AND d.b2_full NOT LIKE '%TRUST%'
+                                         THEN nm_t2p(d.s1_full, d.b2_full) ELSE 'none' END)
+                  END
+                ELSE nm_p2t(d.s1_full, d.b1_full) END AS trust_rel,
+           CASE WHEN d.class = 'family_trust' AND ps.p_name IS NOT NULL
+                THEN 1 ELSE 0 END AS trust_prior_found
     FROM (
       -- Tiebreakers beyond (pcat, amt) make the ordering total so tied
       -- same-day records resolve identically across runs/thread counts
@@ -161,8 +277,10 @@ dbExecute(con, glue("
                  b1_full ASC, s1_full ASC
       ) AS rn
       FROM ot_classed
-    )
-    WHERE rn = 1
+    ) d
+    LEFT JOIN prior_settlor ps
+      ON ps.clip = d.clip AND ps.sale_raw = d.sale_raw AND ps.trust_name = d.s1_full
+    WHERE d.rn = 1
   ) TO '{sql_quote_path(out_parquet)}' (FORMAT PARQUET, COMPRESSION ZSTD)
 "))
 message("Wrote ", out_parquet)
@@ -201,6 +319,19 @@ write_csv_strict(audit_class,
                  path(tables_out_dir, ifelse(dev_mode,
                                              "audit_class_by_year_dev.csv",
                                              "audit_class_by_year.csv")))
+
+audit_trust <- dbGetQuery(con, glue("
+  SELECT sale_year, trust_dir, trust_rel, COUNT(*) AS n,
+         SUM(trust_prior_found) AS n_prior_found
+  FROM {ev} WHERE class = 'family_trust'
+  GROUP BY sale_year, trust_dir, trust_rel ORDER BY sale_year, trust_dir, trust_rel
+"))
+assert_rows(audit_trust, 5, "audit_trust_rel_by_year")
+stopifnot(!anyNA(audit_trust$trust_rel))
+write_csv_strict(audit_trust,
+                 path(tables_out_dir, ifelse(dev_mode,
+                                             "audit_trust_rel_by_year_dev.csv",
+                                             "audit_trust_rel_by_year.csv")))
 
 audit_names <- dbGetQuery(con, glue("
   SELECT sale_year,

@@ -7,6 +7,7 @@
 #          manuscript/tables/T2_volumes.tex
 #          manuscript/tables/T3_hazard.tex
 #          manuscript/tables/T4_prop19.tex
+#          manuscript/tables/TA_raw22.tex (appendix tab:raw22)
 # ============================================================
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
@@ -24,10 +25,10 @@ fmt_usd <- function(x) paste0("\\$", format(round(x / 1000), big.mark = ",", tri
 class_labels <- c(
   market_sale        = "Market sale (arm's length)",
   family_person      = "Family transfer: same surname",
-  family_other       = "Family transfer: other interfamily",
+  family_other       = "Interfamily, no surname match",
   family_estate      = "Family transfer: estate/executor",
   family_retitle     = "Same-person retitle (co-owner change)",
-  family_trust       = "Trust self-transfer",
+  family_trust       = "Interfamily trust deed",
   other_nonarms      = "Other non-arm's-length",
   estate_noninterfam = "Estate deed (non-interfamily)"
 )
@@ -58,7 +59,7 @@ t1 <- c(
   t1_rows,
   "\\bottomrule",
   "\\end{tabular}}",
-  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\\end{minipage}",
+  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. Market sales are arm's-length (category A), non-interfamily deeds with no price floor, so they include deeds recorded without a price (common in non-disclosure states). The main family definition is same surname plus estate/executor; interfamily deeds without a surname match enter only the wide definition in Table~\\ref{tab:volumes}. Interfamily trust deeds are mostly self-transfers or trust deeds with no surname link; Table~\\ref{tab:volumes} separates the trust-mediated family transfers. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\\end{minipage}",
   "\\end{table}"
 )
 writeLines(t1, path(tables_dir, "T1_taxonomy.tex"))
@@ -70,24 +71,26 @@ headline <- read_csv(path(tables_out_dir, "fact_headline_ratios.csv"),
 t2_rows <- headline |>
   arrange(sale_year) |>
   mutate(row = glue("{sale_year} & {fmt_n(market)} & {fmt_n(fam_conservative)} & ",
-                    "{fmt_n(fam_broad)} & {fmt_n(trust)} & ",
+                    "{fmt_n(fam_broad)} & {fmt_n(fam_wide)} & ",
+                    "{fmt_n(trust_clear)}--{fmt_n(trust_clear + trust_ambig)} & ",
+                    "{fmt_n(trust_self)} & ",
                     "{sprintf('%.2f', ratio_broad)} \\\\")) |>
   pull(row)
 
 t2 <- c(
   "\\begin{table}[!t]\\centering",
-  "\\caption{The parallel housing market: annual volumes}",
+  "\\caption{The parallel housing market: annual volumes under alternative family definitions}",
   "\\label{tab:volumes}",
-  "{\\small",
-  "\\begin{tabular}{lrrrrr}",
+  "{\\scriptsize\\setlength{\\tabcolsep}{3pt}",
+  "\\begin{tabular}{lrrrrrrr}",
   "\\toprule",
-  " & Market & Family & Family & Trust & Family:market \\\\",
-  "Year & sales & (same surname) & (broad) & self-transfers & ratio (broad) \\\\",
+  " & Market & Same & Same surname & Same surname & Family trust & Trust & Family:market \\\\",
+  "Year & sales & surname & + estate (main) & + estate + other$^{a}$ & transfers$^{b}$ & self or unlinked$^{c}$ & ratio (main) \\\\",
   "\\midrule",
   t2_rows,
   "\\bottomrule",
   "\\end{tabular}}",
-  "\\begin{minipage}{0.9\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Residential deed events. ``Family (broad)'' = same-surname + other-interfamily + estate/executor classes; excludes trust self-transfers. Ratio = family (broad) / market sales.}\\end{minipage}",
+  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Residential deed events. The main family definition (``same surname + estate'') counts interfamily-flagged deeds with a buyer--seller surname match plus estate/executor deeds, and is used in all later analysis. $^{a}$Adds interfamily-flagged deeds without a surname match. $^{b}$Trust-mediated family transfers, lower--upper bound: lower = trust deeds whose trust shares a surname with the counterparty but names a different individual; upper adds trust-to-person deeds whose trust name carries no given name. $^{c}$Interfamily-flagged trust deeds classified as a person moving property to or from the person's own trust, plus those with no surname link; excluded from every family column. Ratio = main family definition / market sales.}\\end{minipage}",
   "\\end{table}"
 )
 writeLines(t2, path(tables_dir, "T2_volumes.tex"))
@@ -96,10 +99,10 @@ message("Wrote T2")
 # ---- T3: post-transfer outcomes -------------------------------------------
 haz <- read_csv(path(tables_out_dir, "hazard_sold_within.csv"),
                 show_col_types = FALSE) |>
-  filter(class %in% c("family_person", "family_other", "family_estate",
+  filter(class %in% c("family_person", "family_estate",
                       "family_trust", "market_sale")) |>
   mutate(lab = class_labels[class]) |>
-  arrange(match(class, c("market_sale", "family_person", "family_other",
+  arrange(match(class, c("market_sale", "family_person",
                          "family_estate", "family_trust")))
 
 t3_rows <- haz |>
@@ -126,6 +129,61 @@ t3 <- c(
 )
 writeLines(t3, path(tables_dir, "T3_hazard.tex"))
 message("Wrote T3")
+
+# ---- TA_raw22: raw sold-within-24-months cohort means (appendix) ----------
+# Generated from 04's cell means (was hand-typed in appendix.tex).
+raw_fam <- read_csv(path(tables_out_dir, "prop19_raw_2x2_fam.csv"), show_col_types = FALSE) |>
+  mutate(group = "Family transfer")
+raw_mkt <- read_csv(path(tables_out_dir, "prop19_raw_2x2_market.csv"), show_col_types = FALSE) |>
+  mutate(group = "Market purchase")
+raw22 <- bind_rows(raw_fam, raw_mkt)
+stopifnot(nrow(raw22) == 8L, all(raw22$n > 0))
+perm_ddd <- read_csv(path(tables_out_dir, "ref_perm_ddd.csv"), show_col_types = FALSE)
+
+raw22_wide <- raw22 |>
+  mutate(period = if_else(post == 1, "post", "pre")) |>
+  pivot_wider(id_cols = c(group, ca), names_from = period, values_from = c(sold24, n)) |>
+  mutate(change = sold24_post - sold24_pre,
+         region = if_else(ca == 1, "California", "Rest of US")) |>
+  arrange(group, desc(ca))
+did_of <- function(g) {
+  d <- filter(raw22_wide, group == g)
+  d$change[d$ca == 1] - d$change[d$ca == 0]
+}
+did_fam <- did_of("Family transfer")
+did_mkt <- did_of("Market purchase")
+fmt_pp <- function(x) sprintf("$%s%.1f$pp", if_else(x < 0, "-", "+"), abs(100 * x))
+fmt_n_tex <- function(x) gsub(",", "{,}", fmt_n(x), fixed = TRUE)
+
+raw22_rows <- raw22_wide |>
+  mutate(row = glue("{group} & {region} & {fmt_pct(sold24_pre)}\\% \\; (n={fmt_n_tex(n_pre)}) & ",
+                    "{fmt_pct(sold24_post)}\\% \\; (n={fmt_n_tex(n_post)}) & {fmt_pp(change)} \\\\")) |>
+  pull(row)
+
+ta_raw22 <- c(
+  "\\begin{table}[!ht]\\centering",
+  "\\caption{Sold on open market within 24 months: raw cohort means}",
+  "\\label{tab:raw22}",
+  "{\\small",
+  "\\begin{tabular}{llrrr}",
+  "\\toprule",
+  "Cohort group & Region & Pre (2017m1--2018m12) & Post (2021m7--2022m6) & Change \\\\",
+  "\\midrule",
+  raw22_rows,
+  "\\bottomrule",
+  "\\end{tabular}}",
+  paste0("\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} ",
+         "Non-corporate recipients only. Family transfer = same-surname interfamily and ",
+         "estate/executor deeds (same-person retitles and trust deeds excluded); market ",
+         "purchases carry no price floor. Raw difference-in-differences: family ",
+         fmt_pp(did_fam), ", market ", fmt_pp(did_mkt), "; raw triple difference ",
+         fmt_pp(did_fam - did_mkt), ". The cell-level regression triple difference is ",
+         fmt_pp(perm_ddd$ca_coef), " (state-placebo $p = ", sprintf("%.2f", perm_ddd$perm_p),
+         "$).}\\end{minipage}"),
+  "\\end{table}"
+)
+writeLines(ta_raw22, path(tables_dir, "TA_raw22.tex"))
+message("Wrote TA_raw22")
 
 # ---- T4: Prop 19 regressions ----------------------------------------------
 vol <- readRDS(path(out_dir, "prop19_did_volume.rds"))

@@ -69,16 +69,25 @@ because the buyer would be taxed at market value. The older homes that families 
 would otherwise filter down to new and often poorer buyers
 \citep{rosenthal2014filtering}. In this paper, we study one of the largest non-market channels of housing turnover: within-family transfers. We document their scale and persistence, and we study how they respond to property-tax incentives.
 We find that this channel is not small. From 2007 through 2023, county recorders logged
-about 28 family-transfer deeds for every 100 market sales, and the ratio
-stayed between 0.25 and 0.34 in every year, through the bust, the recovery,
-and the pandemic boom.
+13.6 million family-transfer deeds, about 17 for every 100 market sales.
+The annual ratio was 0.20 to 0.22 through 2012 and fell to 0.14 by
+2022--2023. Much of that fall reflects how we count. Our main definition
+requires the buyer and seller of an interfamily deed to share a surname, and
+the share of interfamily deeds without a surname match rose from 17 to 38
+percent. Adding those deeds gives about 25 transfers per 100 market sales
+(Table~\ref{tab:volumes}), and that wider ratio is roughly flat. The main
+count is therefore conservative and, in practice, a lower bound: at most 6.6
+percent of same-surname deeds are coded arm's-length, while the 6.1 million
+excluded deeds without a surname match likely include many kin with different
+surnames, such as married daughters.
 Understanding this channel requires
 measuring both its scale and the institutions that shape it.
 
 This paper has three parts. First, it establishes national facts about
 within-family transfers using 144 million residential deed transfer events.
-We document that family deeds represent a substantial and persistent flow alongside market
-sales. Their ratio to market sales is highest in California, where the tax
+We document that family deeds represent a substantial flow alongside market
+sales in every year. Their ratio to market sales is highest in California
+(36 per 100, about twice the national ratio), where the tax
 code historically allowed heirs to inherit a property's assessment as well
 as the property. Their share rises across middle-aged housing vintages,
 although it is not monotone over all ages. Many properties remain unsold
@@ -96,17 +105,21 @@ for family farms while removing it for other qualifying transfers
 % annually had received inheritance exclusions under the earlier regime
 % \citep{lao2017inheritance}. That is an administrative property count, not a
 % tax-revenue estimate or a count of inefficiently allocated homes.
-We find that California family deeds rose 17.4 percent above the
-counterfactual over the whole anticipation period, from the June 2020 ballot
-placement to the February 2021 deadline. They then fell to a persistently
+We find that California family deeds ran 21.4 percent above a simple
+counterfactual from the June 2020 ballot placement to the February 2021
+deadline, and a monthly event study shows the largest seasonally adjusted
+spike in the deadline month. That 21.4 percent overstates anticipation.
+California deeds were already above the counterfactual in early 2020, before
+the ballot placement, partly a rebound from an unusually low 2018--2019 base.
+Family deeds then fell to a persistently
 lower level. A triple difference that compares family deeds with market
 sales, in California and in other states, before and after the reform, shows
-family transfers 23 percent lower in 2022--2023 net of California's
+family transfers \WelfareNetPercent\ percent lower in 2022--2023 net of California's
 market-sale decline, roughly \WelfareFlow\ missing deeds annually when
 scaled by the 2018--2019 baseline. A synthetic control and a monthly event
 study trace the same persistent post-reform gap. 
 
-Third, we develop a simple framework that quantifies the potential allocation gains from removing the inherited-assessment advantage. The framework follows a marginal heir's decision to keep a home or sell it, and the components involved in that decision: the value of the home to the heir, the market value of the home, and the inherited property-tax assessment. The framework shows that the tax advantage tips only those heirs who value the home less than the market does, and we measure the distortion using the tax wedge for each parcel. We estimate each component of the tax wedge using the 2018--2019 cohort of California family transfers, and we combine the estimated tax wedge with our framework's predictions to quantify the potential deadweight loss from the misallocation. The homes that California families passed down in 2018--2019 carried a median wedge of \$\WelfareWedgeMedian\ a year in 2023 dollars, including homes with zero wedges. Their total inherited tax savings were about \$544 million a year, a transfer from other taxpayers to heirs rather than a loss to the economy. The deadweight loss is the much smaller triangle beneath that transfer: if each of the \WelfareFlow\ missing deeds a year sent a home to a higher-value user, assigning each home the median wedge and a distortion equal to half that wedge would yield about \$\WelfareDWLCohortMedian\ million a year of avoided deadweight loss per annual cohort.
+Third, we develop a simple framework that quantifies the potential allocation gains from removing the inherited-assessment advantage. The framework follows a marginal heir's decision to keep a home or sell it, and the components involved in that decision: the value of the home to the heir, the market value of the home, and the inherited property-tax assessment. The framework shows that the tax advantage tips only those heirs who value the home less than the market does, and we measure the distortion using the tax wedge for each parcel. We estimate each component of the tax wedge using the 2018--2019 cohort of California family transfers, and we combine the estimated tax wedge with our framework's predictions to quantify the potential deadweight loss from the misallocation. The homes that California families passed down in 2018--2019 carried a median wedge of \$\WelfareWedgeMedian\ a year in 2023 dollars, including homes with zero wedges. Their total inherited tax savings were about \$\WedgeInheritedFlowM\ million a year, a transfer from other taxpayers to heirs rather than a loss to the economy. The deadweight loss is the much smaller triangle beneath that transfer: if each of the \WelfareFlow\ missing deeds a year sent a home to a higher-value user, assigning each home the median wedge and a distortion equal to half that wedge would yield about \$\WelfareDWLCohortMedian\ million a year of avoided deadweight loss per annual cohort.
 
 
 The paper connects the economics of bequests and inter-vivos transfers
@@ -123,8 +136,10 @@ housing holdings. Closely related work by
 \citet{bakerkimbiswas2026inherited} uses parent-child exclusion claims in
 Los Angeles and San Francisco to study Proposition~19 retiming and
 subsequent sales. The present national measurement and California-wide
-comparisons complement that evidence; our recorder-based family proxy
-covers a broader population than confirmed parent-child exclusion claims.
+comparisons complement that evidence. Our recorder-based family proxy is not
+the population of confirmed parent-child exclusion claims: it includes
+spouses, who are family but not the transfers Proposition~19 targets, and it
+misses heirs with a different surname.
 The nearest descriptive antecedents also include industry tabulations
 \citep{delventhal2026inherited} and the LAO's assessment-roll accounting.
 
