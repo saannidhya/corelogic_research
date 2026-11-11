@@ -1,85 +1,11 @@
 \section{Conclusion}\label{sec:conclusion}
 
-A large part of American housing turnover never touches a market. From 2007
-through 2023, we document that county recorders logged 13.6 million family-transfer deeds,
-17 for every 100 market sales. This is a conservative count: it requires a
-shared surname, so it misses many relatives with different surnames.
-% TODO(appendix): wide-definition (incl. family_other) results pending
-The ratio ranged between 0.14 and 0.22 across years, near
-0.20 to 0.22 through 2012 and falling to 0.14 by 2022--2023. Much of that
-fall is definitional: the share of interfamily deeds without a surname
-match, which our count excludes, rose from 17 to 38 percent. We show that this channel is not a recession artifact as it persists through the 2008--2009 recession and beyond, and it is
-not evenly spread across states. California records 36 family transfers per 100 market
-sales, about twice the national ratio, and it accounts for 39 percent of
-the nation's interfamily deeds into or out of trusts.
-We hypothesize that the tax advantage of inheriting a below-market property-tax assessment along with the house is a key driver of this concentration. We also show that family transfers are more common for middle-aged homes than for new ones, and less common for the most expensive homes. Once a home passes between
-relatives, it tends to stay put. Family homes sell slightly faster than
-market purchases in the first two years, then return to the market more
-slowly, and three in five homes transferred within families in
-2008--2018 had not sold on the open market a decade later. Transaction data
-built from prices miss this channel entirely. 
-% These facts establish its scale
-% and persistence. They do not show that family ownership is inefficient.
+Recorded residential deeds reveal a substantial channel beyond market sales. Our main family-transfer proxy combines same-surname interfamily, estate/executor, and other interfamily conveyances. It contains \DeedFamilyMillion\ million events in 2007--2023, \DeedNationalShare\ per 100 deed transfers nationally. California leads at \DeedCAShare\ per 100, compared with \DeedUTShare\ in Utah. The same-surname-plus-estate component and the residual interfamily component are reported separately because the vendor flag does not independently verify kinship or inheritance. These shares describe recorded deeds, not changes in occupants or distinct homes.
 
-California's Proposition~19 provides a natural experiment to test whether the channel responds to tax incentives. 
-From June 2020 through the February 2021 deadline, California family deeds
-ran 21.4 percent above counterfactual, about 25,100 extra transfers, and
-the deadline month shows the largest seasonally adjusted spike in the
-series. The 21.4 percent overstates anticipation. California's 2018--2019
-base was unusually low, and family deeds were already above counterfactual
-in early 2020, before the measure reached the ballot. After
-the deadline, the channel shrank. Net of California's own market-sale slump,
-a triple difference shows family transfers \WelfareNetPercent\ percent
-lower in 2022--2023 than in 2017--2019, roughly \WelfareFlow\ fewer deeds a
-year. A synthetic control and a monthly event study trace the same persistent
-gap. The early excess deeds equal about 72 percent of the 2021--2022
-shortfall, so retiming may explain the first post-deadline years; the
-2022--2023 decline is the robust result. Because our count includes spouses,
-it is broader than the parent-child transfers Proposition~19 targets.
+Many properties remain unsold long after such a deed: \FamilyRetainedTen\ percent of main-definition family events in 2008--2018 are not followed by a market sale within ten years. Differences across components and property types caution against interpreting every family conveyance as long-term retention. Attachment, rental provision, title constraints, recording practices, and tax incentives can all contribute.
 
-% The evidence has clear limits. California is a single treated unit, and
-% it ranks 6th of 51 in the state-placebo distribution ($p=0.118$). When trust
-% self-transfers are counted as family transfers, the net decline disappears
-% (+1.0 percent), so part of the response may have moved into trusts rather than
-% out of the family. Later outcomes are less decisive still. Estate and
-% trust-seller market sales show no clear increase through 2023, and the
-% selection effect on resale has the predicted sign but is imprecise.
+California's Proposition~19 provides policy variation in the tax advantage of retaining an inherited assessment. In the maintained June 2020--February 2021 window, family deeds exceed the transparent counterfactual by \PolicyAnticPercent\ percent, approximately \PolicyAnticDeeds\ deeds. In 2022--2023, the triple difference implies \WelfareNetPercent\ percent fewer family deeds relative to market sales, approximately \WelfareFlow\ annually. Conventional state-clustered uncertainty is difficult to assess with one treated state. Retiming, earlier information, pandemic shocks, the portability provisions, and substitution into trusts limit the interpretation of the decline as an allocation response.
 
-We develop a framework that separates efficient family retention from retention bought by
-a tax advantage. An heir keeps a home when its value to the family exceeds
-the market's valuation net of the inherited tax saving, so the saving tips
-only those heirs whose margin is smaller than the wedge. We measure that
-wedge parcel by parcel. Homes passed down in California in 2018--2019 carried
-a median wedge of \$\WedgeInheritedMedian\ a year in 2023 dollars, including
-homes with zero wedges. Their total tax savings were about
-\$\WedgeInheritedFlowM\ million a year. That sum is a transfer from
-other taxpayers to heirs, not a loss to the economy. The deadweight loss is
-the smaller triangle under it. If every missing deed were a home now going to
-a higher-value user, assigning each home the median wedge and a distortion
-equal to half that wedge would yield about \$\WelfareDWLCohortMedian\ million
-a year of avoided deadweight loss per annual cohort. This illustration
-assumes every missing deed reallocates a home. A missing deed may be a postponed succession, a
-title held through a trust, or a change in legal ownership with no change in
-who lives in the house. 
-% An inherited rental can keep serving its tenant
-% efficiently. Tax revenue and housing surplus are separate accounts.
+Our framework separates efficient family retention from retention induced by a tax advantage. Homes with a qualifying family-proxy exit in 2018--2019 carried a median annual wedge of \$\WedgeInheritedMedian\ in 2023 dollars, including zeros, and approximately \$\WedgeInheritedFlowM\ million of potential annual tax savings per pre-reform year's parcel cohort. Those savings are transfers rather than resource losses. If every missing deed instead reallocates a home to a higher-value user, assigning the inherited-home median wedge and a distortion equal to half that wedge yields \$\WelfareDWLCohortMedian\ million in annual gains per cohort; using the mean wedge yields \$\WelfareDWLCohort\ million. These are conditional illustrations. The reallocation share is unidentified, and missing deeds can reflect postponed succession or changes in legal vehicles without a change in housing use.
 
-% The framework also makes a sharper prediction that the data do not yet
-% support: homes with larger wedges should respond more. They do not, at least
-% not cleanly. Older owners, pandemic mortality, the surviving exclusion for
-% occupant heirs, and error in the measured wedge could each flatten or
-% reverse the gradient, and we cannot yet tell them apart. The aggregate
-% decline fits the framework. Whether it is concentrated where the tax wedge
-% is largest remains open.
-
-Three kinds of data would sharpen the answer: longer follow-up on what
-happens to homes that did not change hands within families, transaction-time
-records of exclusion claims and assessments, and occupancy and rental status
-for inherited homes. Together they would show which missing deeds are
-reallocations and which are delays or relabelings. The policy question is
-not whether families should keep homes. Many heirs value the family house
-more than any buyer would, and the tax code should leave that choice alone.
-The question is whether inheritance rules in property taxation pay families a premium
-to keep homes that someone else would value more, and how often that margin
-binds. Proposition~19 suggests the margin binds often enough to change tens of
-thousands of recorded family transfers a year in California; how many of those homes would otherwise go to other families remains open. Nevertheless, more evidence is needed to assess how the property tax lock-in prevents the efficient allocation of scarce housing in the United States.
+Longer follow-up, transaction-time exclusion claims and assessments, verified relationships, and occupancy histories would distinguish reallocations from timing and relabeling. The policy question is how often inherited tax advantages change housing use, beyond their effect on recorded conveyances. Our evidence measures the deed channel and its response; the magnitude of realized allocation gains remains open.

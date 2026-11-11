@@ -12,7 +12,7 @@
 # Name    : Saani Rawat
 # Created : 10/22/2026
 # Log     : 10/22/2026: created (trust direction split, DiD/DDD with state
-#           placebos, monthly counterfactual, family + distribution composite).
+#           monthly counterfactual, family + distribution composite).
 # Inputs  : data/derived/03_family_homes/events.parquet
 #           CoreLogic OT buyer/seller names via register_corelogic_parquet()
 # Outputs : _outputs/tables/trust_sub_state_year.csv
@@ -22,6 +22,8 @@
 #           _outputs/trust_substitution.rds
 #======================================================================#
 
+# 11/04/2026: retained CA contrasts; removed state-placebo inference.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -34,7 +36,7 @@ on.exit(sink(), add = TRUE)
 message("Starting 14_trust_substitution at ", Sys.time())
 
 # Settings ----
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+fam_classes <- family_classes
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 pre_years <- 2017:2019
 post_years <- 2022:2023
@@ -93,7 +95,7 @@ stopifnot(direction_share$share[direction_share$direction == "trust_unmatched"] 
 # Family and market counts on the same state-month grid
 base_counts <- dbGetQuery(con, glue("
   SELECT state, ym, sale_year,
-         SUM(CASE WHEN class IN ('family_person','family_estate')
+         SUM(CASE WHEN class IN ('family_person','family_estate','family_other')
                   THEN 1 ELSE 0 END) AS n_fam,
          SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END) AS n_trust,
          SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
@@ -128,8 +130,8 @@ panel_month <- base_counts %>%
 stopifnot(n_distinct(panel_month$state) == 51)
 
 outcomes <- c(n_fam = "Family deeds (headline)",
-              n_trust = "Trust self-transfers, all",
-              n_trust_in = "Into trust (retitle to own trust)",
+              n_trust = "Interfamily trust deeds, all",
+              n_trust_in = "Into trust (person-to-trust)",
               n_trust_out = "Out of trust (distribution)",
               n_trust_both = "Trust to trust",
               n_fam_plus_out = "Family deeds + trust distributions",
@@ -170,24 +172,15 @@ fit_did <- function(panel, treated_state, outcome) {
 }
 
 states <- sort(unique(panel_year$state))
-did_market <- map_dbl(set_names(states), ~ fit_did(panel_year, .x, "n_market"))
-
+did_market <- fit_did(panel_year, "CA", "n_market")
 did_results <- map_dfr(names(outcomes), function(y) {
-  did_all <- map_dbl(set_names(states), ~ fit_did(panel_year, .x, y))
-  ddd_all <- did_all - did_market
-  ca_did <- did_all[["CA"]]
-  ca_ddd <- ddd_all[["CA"]]
+  ca_did <- fit_did(panel_year, "CA", y)
+  ca_ddd <- ca_did - did_market
   tibble(
-    outcome = y,
-    label = outcomes[[y]],
-    did = ca_did,
-    did_pct = 100 * (exp(ca_did) - 1),
-    did_perm_p = mean(abs(did_all) >= abs(ca_did), na.rm = TRUE),
-    ddd = ca_ddd,
-    ddd_pct = 100 * (exp(ca_ddd) - 1),
-    ddd_rank = sum(abs(ddd_all) >= abs(ca_ddd), na.rm = TRUE),
-    ddd_perm_p = mean(abs(ddd_all) >= abs(ca_ddd), na.rm = TRUE),
-    n_states = sum(!is.na(ddd_all))
+    outcome = y, label = outcomes[[y]],
+    did = ca_did, did_pct = 100 * (exp(ca_did) - 1),
+    ddd = ca_ddd, ddd_pct = 100 * (exp(ca_ddd) - 1),
+    n_states = length(states)
   )
 })
 message("CA x Post DiD and net-of-market triple difference, 2017-19 vs 2022-23:")

@@ -5,10 +5,10 @@
 #          owning the home, or only the timing and legal form of transfer?
 #          (1) Aggregate retiming: CA family-transfer bunching before the
 #              Feb 16, 2021 deadline and the permanent post-deadline gap
-#              (2019-scaled counterfactual + leave-one-out placebos), with
-#              the retiming ratio and SCM inference from 09.
+#              (2019-scaled counterfactual and baseline sensitivity), with
+#              the retiming ratio and appendix SCM gap summary from 09.
 #          (2) Cross-state triple difference: long-held x CA x post family
-#              transfers, with permutation and Conley-Taber inference.
+#              transfers, with conventional state-clustered standard errors.
 #          (3) Appendix (legacy): state-year volume DiD, conditional sold24
 #              cohort DDD, deed-time absentee DiD.
 #          (4)-(5) Core design: fixed pre-policy CA parcel risk set with a
@@ -21,10 +21,10 @@
 #          (7) Placebos and robustness.
 # Inputs:  data/derived/03_family_homes/events.parquet
 #          data/derived/03_family_homes/ca_parcel_wedge.parquet (04a)
-#          _outputs/tables/prop19_scm_inference.csv (09; optional)
+#          _outputs/tables/prop19_scm_summary.csv (09; optional)
 #          scripts/R/inputs/welfare_cpi.csv
 # Outputs: _outputs/tables/prop19_monthly_series.csv, prop19_bunching_summary.csv,
-#          prop19_cf_placebo_*.csv, prop19_window_sensitivity.csv (unchanged)
+#          prop19_cf_diagnostic_*.csv, prop19_window_sensitivity.csv (CA diagnostics only)
 #          _outputs/tables/prop19_retiming_summary.csv
 #          _outputs/tables/prop19_ddd_longheld_*.csv
 #          _outputs/tables/prop19_did_volume.csv, prop19_cohort_cells.csv,
@@ -42,6 +42,8 @@
 #          Nov 2020-Feb 2021 rush kept as a sensitivity window.
 # ============================================================
 
+# 11/04/2026: removed state-placebo ranks and retained CA baseline diagnostics.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 source(path(r_dir, "00_inference_helpers.R"))
 
@@ -93,12 +95,15 @@ pv_horizon <- 30L
 
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
-ev_data <- read_events_df(events_path)
+ev_data <- read_events_df(events_path, columns = c(
+  "clip", "state", "sale_raw", "sale_year", "sale_month", "ym", "class",
+  "corp_buyer", "absentee_buyer"
+))
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
-# Family transfers = same surname + estate/executor; family_other (interfamily flag,
-# no surname match) is excluded (decided 10/31/2026).
-fam_classes <- c("family_person", "family_estate")
+# Main family proxy includes same surname, estate/executor, and other interfamily.
+# The flag does not independently establish kinship or inheritance.
+fam_classes <- family_classes
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ============================================================
@@ -159,7 +164,7 @@ write_csv_strict(bunch, path(tables_out_dir, "prop19_bunching_summary.csv"))
 saveRDS(bunch, path(out_dir, "prop19_bunching_summary.rds"))
 
 # ============================================================
-# 1b. Leave-one-out counterfactuals and pre-fit placebo inference ----
+# 1b. California counterfactual baseline and pre-fit diagnostics ----
 # ============================================================
 cf_base_windows <- list("2019" = 2019L, "2018_2019" = 2018:2019)
 
@@ -203,31 +208,23 @@ build_cf_for_state <- function(treated_state, base_label, base_years) {
     arrange(treated_state, ym)
 }
 
-cf_placebo_monthly <- imap_dfr(
+cf_diagnostic_monthly <- imap_dfr(
   cf_base_windows,
-  ~ map_dfr(states, build_cf_for_state, base_label = .y, base_years = .x)
+  ~ build_cf_for_state("CA", base_label = .y, base_years = .x)
 )
 
 stopifnot(
-  all(cf_placebo_monthly$donor_count == length(states) - 1),
-  all(cf_placebo_monthly$treated_in_donor == 0),
-  all(is.finite(cf_placebo_monthly$cf_fam)),
-  all(cf_placebo_monthly$cf_fam > 0),
-  all(cf_placebo_monthly$base_donor_fam > 0)
+  all(cf_diagnostic_monthly$donor_count == length(states) - 1),
+  all(cf_diagnostic_monthly$treated_in_donor == 0),
+  all(is.finite(cf_diagnostic_monthly$cf_fam)),
+  all(cf_diagnostic_monthly$cf_fam > 0),
+  all(cf_diagnostic_monthly$base_donor_fam > 0)
 )
 
-write_csv_strict(cf_placebo_monthly,
-                 path(tables_out_dir, "prop19_cf_placebo_monthly.csv"))
+write_csv_strict(cf_diagnostic_monthly,
+                 path(tables_out_dir, "prop19_cf_diagnostic_monthly.csv"))
 
-rank_ge <- function(x) {
-  vapply(x, function(z) sum(x >= z), integer(1))
-}
-
-rank_le <- function(x) {
-  vapply(x, function(z) sum(x <= z), integer(1))
-}
-
-cf_placebo_summary <- cf_placebo_monthly %>%
+cf_diagnostic_summary <- cf_diagnostic_monthly %>%
   group_by(base_window, treated_state) %>%
   summarise(
     donor_count = first(donor_count),
@@ -247,29 +244,13 @@ cf_placebo_summary <- cf_placebo_monthly %>%
     post2223_ratio = -post2223_gap / pre_rmspe,
     .groups = "drop"
   ) %>%
-  group_by(base_window) %>%
-  mutate(
-    n_states = n(),
-    antic_rank_raw = rank_ge(antic_gap),
-    feb_rank_raw = rank_ge(feb_gap),
-    post2223_rank_raw = rank_le(post2223_gap),
-    antic_rank_ratio = rank_ge(antic_ratio),
-    feb_rank_ratio = rank_ge(feb_ratio),
-    post2223_rank_ratio = rank_ge(post2223_ratio),
-    antic_p_raw = antic_rank_raw / n_states,
-    feb_p_raw = feb_rank_raw / n_states,
-    post2223_p_raw = post2223_rank_raw / n_states,
-    antic_p_ratio = antic_rank_ratio / n_states,
-    feb_p_ratio = feb_rank_ratio / n_states,
-    post2223_p_ratio = post2223_rank_ratio / n_states
-  ) %>%
-  ungroup() %>%
+  mutate(n_states = length(states)) %>%
   relocate(n_states, .after = treated_state)
 
-write_csv_strict(cf_placebo_summary,
-                 path(tables_out_dir, "prop19_cf_placebo_summary.csv"))
-saveRDS(list(monthly = cf_placebo_monthly, summary = cf_placebo_summary),
-        path(out_dir, "prop19_cf_placebo.rds"))
+write_csv_strict(cf_diagnostic_summary,
+                 path(tables_out_dir, "prop19_cf_diagnostic_summary.csv"))
+saveRDS(list(monthly = cf_diagnostic_monthly, summary = cf_diagnostic_summary),
+        path(out_dir, "prop19_cf_diagnostic.rds"))
 
 sensitivity_windows <- tribble(
   ~window, ~start_ym, ~end_ym, ~direction,
@@ -281,7 +262,7 @@ sensitivity_windows <- tribble(
 )
 
 window_stats <- pmap_dfr(sensitivity_windows, function(window, start_ym, end_ym, direction) {
-  cf_placebo_monthly %>%
+  cf_diagnostic_monthly %>%
     filter(ym >= start_ym, ym <= end_ym) %>%
     group_by(base_window, treated_state) %>%
     summarise(
@@ -296,27 +277,16 @@ window_stats <- pmap_dfr(sensitivity_windows, function(window, start_ym, end_ym,
 
 prop19_window_sensitivity <- window_stats %>%
   left_join(
-    cf_placebo_summary %>% select(base_window, treated_state, n_states, pre_rmspe),
+    cf_diagnostic_summary %>% select(base_window, treated_state, n_states, pre_rmspe),
     by = c("base_window", "treated_state")
   ) %>%
   mutate(
     directional_gap = if_else(direction == "positive", gap, -gap),
     ratio = directional_gap / pre_rmspe
   ) %>%
-  group_by(base_window, window) %>%
-  mutate(
-    raw_rank = rank_ge(directional_gap),
-    raw_p = raw_rank / n_states,
-    ratio_rank = rank_ge(ratio),
-    ratio_p = ratio_rank / n_states
-  ) %>%
-  ungroup() %>%
-  filter(treated_state == "CA") %>%
   transmute(
     base_window, window, start_ym, end_ym, direction,
-    ca_gap = gap,
-    ca_ratio = ratio,
-    raw_rank, raw_p, ratio_rank, ratio_p, n_states
+    ca_gap = gap, ca_ratio = ratio, n_states
   )
 
 write_csv_strict(prop19_window_sensitivity,
@@ -325,14 +295,13 @@ saveRDS(prop19_window_sensitivity,
         path(out_dir, "prop19_window_sensitivity.rds"))
 
 # |- retiming ratio and SCM reference ----
-# The deadline rush is a pull-forward; the post-deadline shortfall it could
-# have offset is the missing flow. A ratio well below one means most of the
-# shortfall is a permanent drop, not retiming.
-scm_path <- path(tables_out_dir, "prop19_scm_inference.csv")
-scm_inference <- if (file_exists(scm_path)) {
+# Compare window-specific excess and missing deeds descriptively. Their ratio
+# does not establish permanent behavioral change or identify retimed deeds.
+scm_path <- path(tables_out_dir, "prop19_scm_summary.csv")
+scm_summary <- if (file_exists(scm_path)) {
   read_csv(scm_path, show_col_types = FALSE)
 } else {
-  tibble(gap_ss_pct = NA_real_, scm_mspe_p = NA_real_, ct_p = NA_real_)
+  tibble(gap_ss_pct = NA_real_)
 }
 
 prop19_retiming_summary <- bunch %>%
@@ -342,9 +311,7 @@ prop19_retiming_summary <- bunch %>%
     missing_post_deeds = missing_post_window,
     missing_post_pct = missing_pct,
     retiming_ratio = excess_antic_window / missing_post_window,
-    scm_gap_2022_2023_pct = scm_inference$gap_ss_pct,
-    scm_mspe_p = scm_inference$scm_mspe_p,
-    scm_conley_taber_p = scm_inference$ct_p
+    scm_gap_2022_2023_pct = scm_summary$gap_ss_pct
   )
 print(prop19_retiming_summary, width = Inf)
 write_csv_strict(prop19_retiming_summary, path(tables_out_dir, "prop19_retiming_summary.csv"))
@@ -354,8 +321,8 @@ write_csv_strict(prop19_retiming_summary, path(tables_out_dir, "prop19_retiming_
 # ============================================================
 # Kept under their original filenames because 05_tables.R, 06_figures.R,
 # 07_referee_checks.R and 11_welfare.R read them. Caveats:
-#   - volume DiD: one treated state, so the state-clustered SE is not
-#     interpretable; use the 07 permutation p-value.
+#   - volume DiD: one treated state, so conventional state-clustered SEs
+#     have limited reliability; no state-reassignment inference is reported.
 #   - sold24 DDD: conditions on a post-reform transfer cohort that the policy
 #     itself selects; superseded by the fixed pre-policy risk set (sections 4-6).
 #   - absentee DiD: mailing ZIP at deed time misclassifies post-reform occupant
@@ -511,7 +478,8 @@ write_csv_strict(
   path(tables_out_dir, "prop19_absentee_did.csv")
 )
 
-rm(ev_data); gc(verbose = FALSE)
+rm(ev_data, ev_date_audit, ev_dated, market_sales, cohort19, spells, spell_outcomes)
+gc(verbose = FALSE)
 
 #============================================#
 # 4. Parcel risk-set cells (fixed pre-policy cohort) ----
@@ -601,12 +569,12 @@ build_wedge_cells <- function(parcels, bin_var = "wedge_bin", intensity_var = "w
                   ~ as.numeric(coalesce(as.numeric(.x), 0)))) %>%
     arrange(cell_id, ym) %>%
     group_by(cell_id) %>%
-    mutate(own_exits = family_person + family_estate +
+    mutate(own_exits = family_person + family_estate + family_other +
              market_estate_trust + market_other,
            at_risk = n0 - lag(cumsum(own_exits), default = 0)) %>%
     ungroup() %>%
     mutate(
-      fam = family_person + family_estate,
+      fam = family_person + family_estate + family_other,
       market = market_estate_trust + market_other,
       hox = as.integer(group != "nonhox"),
       qtr = paste0(ym %/% 100, "Q", ((ym %% 100) - 1) %/% 3 + 1),

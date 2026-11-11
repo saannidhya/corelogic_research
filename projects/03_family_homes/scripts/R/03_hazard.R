@@ -11,6 +11,7 @@
 #          _outputs/hazard_summary.rds
 # ============================================================
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 set.seed(20260609)
@@ -43,7 +44,7 @@ dbExecute(con, "
   SELECT clip, state, sale_date, sale_year, class, corp_buyer, absentee_buyer
   FROM ev_dated
   WHERE sale_year BETWEEN 2008 AND 2018
-    AND class IN ('family_person','family_estate',
+    AND class IN ('family_person','family_estate','family_other',
                   'family_trust','family_retitle','market_sale')
 ")
 
@@ -86,6 +87,11 @@ sold_within <- dbGetQuery(con, glue("
   GROUP BY class ORDER BY n DESC
 "))
 assert_rows(sold_within, 4, "hazard_sold_within")
+family_sold <- sold_within %>%
+  filter(class %in% family_classes) %>%
+  summarise(across(starts_with("sold_"), ~ weighted.mean(.x, n)), n = sum(n)) %>%
+  mutate(class = "family_all")
+sold_within <- bind_rows(sold_within, family_sold)
 write_csv_strict(sold_within, path(tables_out_dir, "hazard_sold_within.csv"))
 
 # By-cohort-year version for robustness (compositional stability)
@@ -97,6 +103,12 @@ sold_within_yr <- dbGetQuery(con, glue("
   FROM spells
   GROUP BY class, sale_year ORDER BY class, sale_year
 "))
+family_sold_yr <- sold_within_yr %>%
+  filter(class %in% family_classes) %>%
+  group_by(sale_year) %>%
+  summarise(sold_60m = weighted.mean(sold_60m, n), n = sum(n), .groups = "drop") %>%
+  mutate(class = "family_all")
+sold_within_yr <- bind_rows(sold_within_yr, family_sold_yr)
 write_csv_strict(sold_within_yr, path(tables_out_dir, "hazard_sold_within_by_year.csv"))
 
 # ---- 4. KM survival curves (monthly grid to 120m) ------------------------
@@ -124,6 +136,12 @@ exits <- dbGetQuery(con, glue("
   FROM typed GROUP BY class, exit_type, exit_m
 "))
 assert_rows(exits, 400, "hazard_exit_table")
+family_exits <- exits %>%
+  filter(class %in% family_classes) %>%
+  group_by(exit_type, exit_m) %>%
+  summarise(n = sum(n), .groups = "drop") %>%
+  mutate(class = "family_all")
+exits <- bind_rows(exits, family_exits)
 
 km_curves <- exits |>
   pivot_wider(names_from = exit_type, values_from = n, values_fill = 0) |>

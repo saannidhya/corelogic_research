@@ -33,6 +33,7 @@
 #          (defaults reproduce this script's bootstrap exactly).
 # ============================================================
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 source(path(r_dir, "00_inference_helpers.R"))
 
@@ -54,7 +55,7 @@ on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
-fam_classes <- "('family_person','family_estate')"
+fam_classes <- family_classes_sql
 
 # Event-study reference = 2020 Q3, the last clean quarter before the Nov-2020
 # anticipation window. yq index = sale_year*4 + quarter (consecutive integers).

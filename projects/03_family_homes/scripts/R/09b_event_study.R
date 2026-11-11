@@ -11,9 +11,7 @@
 #          Spec: log(family transfers) ~ i(ym, CA, ref = 2018-2019) | state + ym,
 #          with log1p used if any state-month count is zero.
 #          California treated, the other 49 states + DC as controls. Clustered
-#          (state) CIs for the plot; because California is a single treated
-#          unit, we also compute a placebo band (each donor assigned treatment
-#          in turn) as the honest single-unit inference.
+#          (state) CIs for scale; reliability is limited with one treated state.
 # Inputs:  data/derived/03_family_homes/events.parquet
 # Outputs: _outputs/tables/prop19_event_study_monthly.csv
 #          _outputs/tables/prop19_event_study_phases.csv
@@ -23,6 +21,8 @@
 #          phase-average table added; event-date labels fixed.
 # ============================================================
 
+# 11/04/2026: removed donor-state placebo bands and reassignment fits.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 suppressPackageStartupMessages({
   library(fixest)
@@ -41,12 +41,14 @@ message("Starting 09b_event_study at ", Sys.time())
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 
-# Trust self-transfers are not counted as family transfers.
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+# Trust deeds and same-person retitles are not counted as family transfers.
+fam_classes <- family_classes
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # Load events into R; aggregation and estimation use in-memory data frames.
-ev_data <- read_events_df(events_path)
+ev_data <- read_events_df(events_path, columns = c(
+  "state", "ym", "sale_year", "sale_month", "class"
+))
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # ============================================================
@@ -102,32 +104,9 @@ es_ca <- parse_es(m_ca, "CA") %>%
   mutate(date = as.Date(sprintf("%d-%02d-01", ym %/% 100, ym %% 100)))
 
 # ============================================================
-# Estimating donor placebo bands ----
+# Exporting California estimates ----
 # ============================================================
-es_one <- function(st) {
-  message("Estimating placebo: ", st)
-  d <- panel %>% mutate(trt = as.integer(state == st))
-  m <- feols(f_es("trt"), data = d)
-  broom::tidy(m) %>%
-    filter(str_detect(term, "^ym::")) %>%
-    transmute(state = st,
-              ym = as.integer(str_extract(term, "(?<=ym::)[0-9]+")),
-              estimate)
-}
-placebo <- map_dfr(states[states != "CA"], es_one)
-placebo_band <- placebo %>%
-  group_by(ym) %>%
-  summarise(pl_lo = quantile(estimate, 0.025),
-            pl_hi = quantile(estimate, 0.975),
-            pl_sd = sd(estimate), .groups = "drop")
-
-# ============================================================
-# Exporting results ----
-# ============================================================
-
-# Combining the California event study results with the placebo band ----
-es <- es_ca %>% left_join(placebo_band, by = "ym")
-
+es <- es_ca
 
 # Plotting the event study results ----
 # Shading starts at ballot placement (June 2020), the first anticipation month.
@@ -189,11 +168,10 @@ es_phases <- phase_windows %>%
 print(es_phases, width = Inf)
 write_csv_strict(es_phases, path(tables_out_dir, "prop19_event_study_phases.csv"))
 
-# Sanity: anticipation months positive, 2022-2023 negative & outside placebo band
+# Summarize the estimated timing without sign restrictions.
 antic <- es %>% filter(ym >= prop19_antic_start_ym, ym <= prop19_antic_end_ym)
 post  <- es %>% filter(ym >= 202201)
 message(sprintf("Anticipation mean coef: %+.3f (max %+.3f at %d)",
                 mean(antic$estimate), max(antic$estimate), antic$ym[which.max(antic$estimate)]))
-message(sprintf("2022-2023 mean coef: %+.3f; %d of %d months below placebo 2.5%%",
-                mean(post$estimate), sum(post$estimate < post$pl_lo), nrow(post)))
+message(sprintf("2022-2023 mean coef: %+.3f", mean(post$estimate)))
 message("Finished 09b_event_study at ", Sys.time())

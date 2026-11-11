@@ -1,8 +1,8 @@
+# 11/04/2026: removed state-placebo inference and synchronized current outputs.
 #======================================================================#
 # Purpose : Shared inference helpers for the Prop 19 analyses: wild
 #           cluster bootstrap, county pairs bootstrap for count models,
-#           permutation and Conley-Taber inference for a single treated
-#           state, and a relative-magnitudes pre-trend breakdown value.
+#           and a relative-magnitudes pre-trend breakdown value.
 # Name    : Saani Rawat
 # Created : 10/02/2026
 # Log     : 10/02/2026: created. wild_cluster_boot() moved here from
@@ -99,31 +99,6 @@ cluster_pairs_boot <- function(data, cluster, stat_fun, B = 199L) {
   failed <- sum(vapply(draws, is.null, logical(1)))
   if (failed > 0) message("NOTE: ", failed, " of ", B, " bootstrap draws failed and were dropped")
   dplyr::bind_rows(purrr::compact(draws))
-}
-
-#============================================#
-# Single-treated-state inference ----
-#============================================#
-
-#' Two-sided rank p-value of the treated statistic among all units.
-#' The treated unit is included in the reference set (Fisher exact form).
-rank_p_value <- function(estimates, treated_unit, unit_col = "state", est_col = "estimate") {
-  est <- estimates[[est_col]]
-  treated_est <- est[estimates[[unit_col]] == treated_unit]
-  stopifnot(length(treated_est) == 1L)
-  mean(abs(est) >= abs(treated_est))
-}
-
-#' Conley-Taber p-value and CI from the control units' placebo estimates.
-#' Placebo estimates approximate the sampling distribution under no effect.
-conley_taber <- function(treated_est, placebo_est, level = 0.95) {
-  placebo_est <- placebo_est[is.finite(placebo_est)]
-  alpha <- 1 - level
-  ct_p <- (1 + sum(abs(placebo_est) >= abs(treated_est))) / (1 + length(placebo_est))
-  ct_ci <- treated_est - quantile(placebo_est, c(1 - alpha / 2, alpha / 2), names = FALSE)
-  tibble::tibble(estimate = treated_est, ct_p = ct_p,
-                 ct_ci_lo = ct_ci[1], ct_ci_hi = ct_ci[2],
-                 n_placebo = length(placebo_est))
 }
 
 #============================================#

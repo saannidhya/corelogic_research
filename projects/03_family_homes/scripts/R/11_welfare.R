@@ -6,33 +6,33 @@
 # Log: 10/22/2026: main wedge is the measured mean wedge of inherited homes
 #      (04c_wedge_tables.R); LAO range kept as validation/sensitivity.
 # ============================================================
+# 11/04/2026: restored other interfamily to the main family proxy.
+# 11/04/2026: removed state-placebo inference and synchronized current outputs.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 source(path(r_dir, "11_welfare_helpers.R"))
 set.seed(20260921)
 con <- open_corelogic_duckdb(threads = 4L)
 dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
 ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+fam_classes <- family_classes
 save_csv <- function(x, name) write_csv_strict(x, path(tables_out_dir, paste0("welfare_", name, ".csv")))
 read_result <- function(name) read_csv(path(tables_out_dir, name), show_col_types = FALSE)
 fmt <- function(x, digits = 0) formatC(x, digits = digits, format = "f", big.mark = ",")
 
 # ---- 1. Reference flow: baseline-scaled triple difference (net DiD) -----
 did <- read_result("prop19_did_volume.csv")
-perm <- read_result("ref_perm_volume.csv")
-scm <- read_result("prop19_scm_inference.csv")
-scm_pc <- read_result("prop19_scm_pc_inference.csv")
+scm <- read_result("prop19_scm_summary.csv")
+scm_pc <- read_result("prop19_scm_pc_summary.csv")
 baseline <- dbGetQuery(con, glue("SELECT sale_year, COUNT(*) AS n FROM {ev}
   WHERE state='CA' AND sale_year IN (2018,2019)
-  AND class IN ('family_person','family_estate') GROUP BY sale_year"))
+  AND class IN ('family_person','family_estate','family_other') GROUP BY sale_year"))
 stopifnot(nrow(baseline) == 2)
 base_flow <- mean(baseline$n)
 beta_net <- did$coef[did$model == "fam"] - did$coef[did$model == "market_placebo"]
 flow <- base_flow * (1 - exp(beta_net))
 save_csv(tibble(specification = c("net_DiD_baseline_scaled", "SCM_raw", "SCM_per_65plus"),
   decline_pct = c(100 * (1 - exp(beta_net)), -scm$gap_ss_pct, -scm_pc$gap_ss_pct),
-  baseline = c(base_flow, NA, NA), annual_deeds = c(flow, NA, NA),
-  placebo_p = c(perm$perm_p[perm$outcome == "net"], scm$scm_mspe_p, scm_pc$scm_mspe_p)), "effect_inputs")
+  baseline = c(base_flow, NA, NA), annual_deeds = c(flow, NA, NA)), "effect_inputs")
 
 # ---- 2. California calendar dates and non-overlapping family episodes --
 create_dated_events(con, ev)
@@ -47,11 +47,11 @@ dbExecute(con, "CREATE TEMP TABLE ca_events AS
     SELECT clip, class, sale_date, ROW_NUMBER() OVER (PARTITION BY clip, sale_date
       ORDER BY CASE WHEN class='market_sale' THEN 0 ELSE 1 END, sale_raw, class) AS rn
     FROM ev_dated WHERE state='CA' AND sale_date <= DATE '2024-06-30'
-      AND class IN ('market_sale','family_person','family_estate')
+      AND class IN ('market_sale','family_person','family_estate','family_other')
   ) WHERE rn=1")
 collisions <- dbGetQuery(con, "SELECT COUNT(*) AS n FROM (
   SELECT clip,sale_date FROM ev_dated WHERE state='CA' AND sale_date <= DATE '2024-06-30'
-    AND class IN ('market_sale','family_person','family_estate')
+    AND class IN ('market_sale','family_person','family_estate','family_other')
   GROUP BY clip,sale_date HAVING COUNT(*)>1)")
 save_csv(collisions, "parsed_date_collisions")
 all_surv <- list(); episode_stats <- list()
@@ -208,7 +208,6 @@ make_table("T5_welfare.tex","Potential allocation gains: conditional calibration
   "All dollars are 2023 dollars. The annual wedge is the measured mean wedge of inherited homes (2018--2019 family transfers, January 2017 baseline), CPI-adjusted; $\\lambda=1/2$, the real discount rate is 3\\%, and persistence uses California broad-family parcel episodes. Cohorts enter annually in 2022--2031. No value of $\\alpha$ is empirically preferred. Rows are scenarios, not confidence intervals; zero response and ten-year delay give zero gains within the horizon.")
 inputs <- c(
   paste0("Recorded-deed flow & ",fmt(flow)," per year & Triple difference scaled by 2018--2019 CA baseline \\\\"),
-  paste0("Triple-difference inference & $p=",fmt(perm$perm_p[perm$outcome=="net"],3),"$ & State placebo rank; not a welfare test \\\\"),
   paste0("Annual tax wedge (main) & \\$",fmt(wedge_mid)," & Measured mean, inherited homes 2018--2019 \\\\"),
   paste0("Annual tax wedge (median) & \\$",fmt(wedge_median)," & Measured median; sensitivity \\\\"),
   paste0("LAO benchmark & \\$",fmt(3000*inflator),"--\\$",fmt(4000*inflator)," & Long-held Los Angeles home; validation and sensitivity \\\\"),
@@ -241,14 +240,14 @@ hkm <- read_result("hazard_km_curves.csv")
 hv <- function(cl,key) haz[[key]][haz$class==cl]
 ks <- function(cl,t) hkm$surv[hkm$class==cl & hkm$t==t]
 writeLines(c(
- macro("FamilySoldTwo",fmt(100*hv("family_person","sold_24m"),1)),
+ macro("FamilySoldTwo",fmt(100*hv("family_all","sold_24m"),1)),
  macro("MarketSoldTwo",fmt(100*hv("market_sale","sold_24m"),1)),
- macro("FamilySoldFive",fmt(100*hv("family_person","sold_60m"),1)),
+ macro("FamilySoldFive",fmt(100*hv("family_all","sold_60m"),1)),
  macro("MarketSoldFive",fmt(100*hv("market_sale","sold_60m"),1)),
- macro("FamilyRetainedTen",fmt(100*ks("family_person",120))),
- macro("FamilySoldTen",fmt(100*(1-ks("family_person",120)))),
+ macro("FamilyRetainedTen",fmt(100*ks("family_all",120))),
+ macro("FamilySoldTen",fmt(100*(1-ks("family_all",120)))),
  macro("MarketSoldTen",fmt(100*(1-ks("market_sale",120)))),
- macro("FamilyConditionalSold",fmt(100*(1-ks("family_person",120)/ks("family_person",24)))),
+ macro("FamilyConditionalSold",fmt(100*(1-ks("family_all",120)/ks("family_all",24)))),
  macro("MarketConditionalSold",fmt(100*(1-ks("market_sale",120)/ks("market_sale",24))))),
  path(tables_dir,"hazard_numbers.tex"))
 fig_ids <- main |> filter(alpha %in% c(0,.25,.5,1)) |> select(scenario_id,alpha,delay)

@@ -31,14 +31,18 @@ create_dated_events <- function(con, ev) {
 parse_event_dates <- function(sale_raw) {
   # YYYYMMDD fits exactly in a double, including when Arrow returns integer64.
   raw_date <- as.numeric(sale_raw)
-  normalized <- raw_date - raw_date %% 100 + ifelse(raw_date %% 100 == 0, 1, raw_date %% 100)
+  # 11/04/2026: parse each distinct code once, preserving repeated-event order.
+  # Millions of deeds share a date; parsing their strings repeatedly is costly.
+  date_codes <- unique(raw_date)
+  normalized <- date_codes - date_codes %% 100 +
+    ifelse(date_codes %% 100 == 0, 1, date_codes %% 100)
   date_text <- sprintf("%08.0f", normalized)
   sale_date <- as.Date(date_text, format = "%Y%m%d")
 
   # Reject impossible dates even if the platform parser rolls them forward.
-  valid <- !is.na(raw_date) & !is.na(sale_date) & format(sale_date, "%Y%m%d") == date_text
+  valid <- !is.na(date_codes) & !is.na(sale_date) & format(sale_date, "%Y%m%d") == date_text
   sale_date[!valid] <- as.Date(NA)
-  sale_date
+  sale_date[match(raw_date, date_codes)]
 }
 
 add_calendar_months <- function(date, months) {

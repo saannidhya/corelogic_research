@@ -20,13 +20,7 @@ identifier that follows each house across successive owners.
 
 \subsection{Classifying transfers}
 
-CoreLogic flags each record with a primary category---arm's length or
-not---and an interfamily indicator. CoreLogic does not document how the
-indicator is built. In our audit of the file it behaves like a simple rule:
-it is set on nearly every deed whose buyer and seller share a surname, and
-on family- or death-related deed types that record no consideration. It does
-not verify a relationship. We sharpen these flags into a taxonomy using the
-buyer and seller names on the deed:
+CoreLogic supplies an arm's-length category and an indicator of a potential relationship between the parties. We combine these fields with party names to construct mutually exclusive operational classes. The indicator does not independently verify kinship, and the available extract-specific documentation does not establish its generation algorithm. In particular, flagged deeds can involve companies, trusts, retained owners, or incomplete names. Our main family-transfer proxy combines the same-surname, estate/executor, and other interfamily classes below; trusts and same-person retitles remain separate.
 
 \begin{enumerate}
   \item \textbf{Market sale}: arm's-length category, not flagged
@@ -40,21 +34,20 @@ buyer and seller names on the deed:
         are tracked separately and excluded from the family definition.
   \item \textbf{Family transfer, same surname}: flagged interfamily, buyer
         and seller sharing a surname but not the same person, no trust
-        detected (13.6 million). Together with a separately coded
-        estate/executor residual (1,905 deeds), this class is our main
-        family definition, used throughout the main analysis.
+        detected (13.6 million). This class and a separately coded estate/executor residual
+        (1,905 deeds) form the narrower component of our main proxy.
   \item \textbf{Interfamily, no surname match}: flagged interfamily
         without a detected surname match after the earlier exclusions
         (6.1 million). Missing surname fields and transfers involving
-        entities can enter this group. Because the relationship cannot be
-        verified, it is excluded from the main family definition and enters
-        only the wide definition in Table~\ref{tab:volumes}.
+        entities can enter this group. This residual enters the main family proxy. It captures possible
+        family conveyances missed by a surname match, but a flagged relationship
+        need not be kinship or an ownership replacement.
   \item \textbf{Interfamily trust deed}: the interfamily flag is set and a
         primary party name contains a trust keyword (12.1 million). We split
         these by name. A trust that shares a surname with the other party
         but names a different individual marks a trust-mediated family
-        transfer (1.19 million, a lower bound); adding trust-to-person deeds
-        whose trust name carries no given name gives an upper bound of 1.61
+        candidate (1.19 million under the stricter name rule); adding trust-to-person deeds
+        whose trust name carries no given name gives an expanded count of 1.61
         million. The other 10.5 million
         are a person moving property into or out of the person's own trust,
         or trust deeds with no surname link. Neither group enters the main
@@ -66,15 +59,7 @@ buyer and seller names on the deed:
         foreclosure-related instruments (26.6 million).
 \end{enumerate}
 
-The main definition is a conservative count and, in practice, a lower bound
-on family transfers. A shared surname can be a coincidence, but at most 6.6
-percent of same-surname deeds are coded arm's length (4.4 percent at prices
-of \$100,000 or more). That error is small next to the 6.1 million flagged
-deeds without a surname match that the definition leaves out, many of which
-are likely relatives with different surnames, such as married daughters. The
-count also includes transfers between spouses, who are family but are not
-the parent-to-child transfers that Proposition~19 targets.
-% TODO(appendix): wide-definition (incl. family_other) results pending
+The main definition is deliberately broader than the surname-linked component, but neither measure is a verified inheritance count or a formal lower bound on family transfers. A surname match can be coincidental, while spouses and retained ownership interests may be economically different from parent-to-child successions. Other interfamily deeds can capture heirs with different surnames and transactions involving entities or incomplete names. We therefore show this component separately in Figure~\ref{fig:volumes} and Table~\ref{tab:volumes}. Trust distributions can carry genuine inheritances but remain outside the main proxy. These measurement limits matter for interpreting both California's concentration and the response to Proposition~19.
 
 Table~\ref{tab:taxonomy} reports observable differences across the classes.
 Same-surname family deeds differ sharply from the defined market-sales class: 90 percent of same-surname transfers record a zero or missing

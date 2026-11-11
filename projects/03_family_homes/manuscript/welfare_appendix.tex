@@ -67,11 +67,11 @@ family deeds do not restart the clock. A later market sale ends the episode;
 a later family deed can begin a new, non-overlapping episode. Each parcel
 can therefore appear in more than one episode but cannot appear twice in
 the same outstanding stock. A qualifying family deed is an interfamily deed
-between parties with the same surname or an estate deed. Broad-family and
-same-surname episodes are constructed separately, but they nearly
-coincide: estate deeds add 57 California episodes. Missing pre-2007 history
+between parties with the same surname, an estate/executor deed, or another
+interfamily-flagged deed without a surname match. Main-definition and
+same-surname episodes are constructed separately. The relationship flag
+does not independently verify kinship or inheritance. Missing pre-2007 history
 remains a limitation.
-% TODO(appendix): wide-definition (incl. family_other) results pending
 
 We restrict observed endpoints to June 30, 2024, estimate Kaplan--Meier
 survival using exact elapsed days and the associated risk sets, and evaluate
@@ -114,7 +114,7 @@ forward with outside information. The construction is in
 single-family and condominium parcel in California with a positive assessed
 value: \WedgeParcels\ parcels, the same parcels at both lien dates. Homes
 built or subdivided after the roll are absent. Of the California family
-deeds (same-surname interfamily or estate deeds) recorded in 2017--2024,
+deeds (same-surname, estate/executor, or other interfamily deeds) recorded in 2017--2024,
 \WedgeFamLinkage\ percent fall on a parcel in this universe.
 
 \paragraph{Tax rate.} The rate is the 2008--2009 total tax bill divided by
@@ -218,14 +218,14 @@ eligibility and does not validate the deed response.
 
 \paragraph{Wedge used in the welfare calculation.} The wedges come from the
 \WedgeInheritedN\ inherited homes, the parcels whose first ownership change
-after January 2017 was a same-surname interfamily or estate transfer recorded
+after January 2017 was a same-surname, estate/executor, or other interfamily transfer recorded
 in 2018--2019, measured at the January 2017 lien date and converted to 2023
-dollars. Interfamily deeds without a surname match do not end the spell. The
+dollars. All three main family classes end the ownership spell. The
 main-text illustration assigns each missing deed the median inherited-home
 wedge, \$\WelfareWedgeMedian\ (\$\WelfareDWLCohortMedian\ million a year).
 Because the deadweight loss is a sum over heterogeneous homes, the mean,
-\$\WelfareWedge, is the natural alternative (\$\WelfareDWLCohort\ million); it
-is slightly below the LAO's low endpoint in 2023 dollars, \$\WelfareWedgeLow.
+\$\WelfareWedge, is the natural alternative (\$\WelfareDWLCohort\ million).
+The LAO's low endpoint in 2023 dollars, \$\WelfareWedgeLow, is a separate benchmark.
 Neither is the wedge of the marginal heir, which the data do not identify.
 
 \subsection{Sensitivity and statistical uncertainty}
@@ -244,8 +244,8 @@ unpreferred $\alpha=0.5$, five-year-delay case.
 
 These calculations condition on the triple-difference reference flow. They do not
 turn uncertainty about that flow into statistical confidence bands for
-welfare. Its placebo-rank $p=0.118$ and the SCM specifications' different
-inference remain material. A nonpositive true allocation response, title-only
+welfare. Uncertainty about the reference flow remains material, including
+the limitations of conventional clustered inference with one treated state. A nonpositive true allocation response, title-only
 responses, a sufficiently long delay, or no net resource gap can eliminate
 the calculated gains. Correlation between wedges and persistence, changing
 future tax liabilities, endogenous rents and prices, heterogeneous financing

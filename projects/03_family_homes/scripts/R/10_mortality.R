@@ -12,12 +12,14 @@
 # Inputs:  data/derived/03_family_homes/events.parquet
 #          Census ACS 1-year via tidycensus (key in .env, gitignored)
 # Outputs: data/external/state_pop65_acs.parquet
-#          _outputs/tables/prop19_scm_pc_inference.csv
+#          _outputs/tables/prop19_scm_pc_summary.csv
 #          _outputs/prop19_scm_pc.rds
 # Log:     10/22/2026: treatment starts June 2020 (ballot placement) and the
-#          pre-fit runs through May 2020, matching 09_scm_inference.R.
+#          pre-fit runs through May 2020, matching 09_synthetic_control.R.
 # ============================================================
 
+# 11/04/2026: appendix SCM comparison without state-placebo inference.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -73,7 +75,7 @@ message("65+ population pulled: ", nrow(pop65), " state-years, CA 2023 = ",
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- "('family_person','family_estate')"
+fam_classes <- family_classes_sql
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 ms <- dbGetQuery(con, glue("
@@ -104,7 +106,7 @@ pre_t   <- tmap$t[tmap$ym <= prop19_pre_end_ym]       # January 2018 - May 2020
 # ---- SCM on the per-65+-resident index ------------------------------------
 scm <- panel |>
   synthetic_control(outcome = rel_pc, unit = state, time = t,
-                    i_unit = "CA", i_time = t_treat, generate_placebos = TRUE) |>
+                    i_unit = "CA", i_time = t_treat, generate_placebos = FALSE) |>
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2018],
                      rel_2018 = mean(rel_pc, na.rm = TRUE)) |>
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2019],
@@ -122,29 +124,16 @@ pre_rmspe_ca <- sqrt(mean(series$gap[series$ym <= prop19_pre_end_ym]^2))
 gap_ss_ca    <- mean(series$gap[series$ym >= 202201])
 gap_ss_pct   <- 100 * mean(series$gap_rel[series$ym >= 202201])
 
-sig <- scm |> grab_significance()
-ca_sig <- sig |> filter(unit_name == "CA")
-
-gaps_all <- scm |> grab_synthetic_control(placebo = TRUE) |>
-  rename(unit = .id, is_placebo = .placebo, t = time_unit) |>
-  left_join(tmap, by = "t") |> mutate(gap = real_y - synth_y)
-unit_summ <- gaps_all |> group_by(unit, is_placebo) |>
-  summarise(pre_rmspe = sqrt(mean(gap[ym <= prop19_pre_end_ym]^2, na.rm = TRUE)),
-            gap_ss = mean(gap[ym >= 202201], na.rm = TRUE), .groups = "drop")
-placebo_gaps <- unit_summ |> filter(is_placebo == 1, pre_rmspe <= 5 * pre_rmspe_ca) |> pull(gap_ss)
-ct_p <- (1 + sum(abs(placebo_gaps) >= abs(gap_ss_ca))) / (1 + length(placebo_gaps))
-
 inf_out <- tibble(
   outcome = "family transfers per 65+ resident",
-  ca_pre_rmspe = pre_rmspe_ca, gap_ss_rel = gap_ss_ca, gap_ss_pct = gap_ss_pct,
-  scm_mspe_rank = ca_sig$rank, scm_mspe_p = ca_sig$fishers_exact_pvalue, ct_p = ct_p)
+  ca_pre_rmspe = pre_rmspe_ca, gap_ss_rel = gap_ss_ca, gap_ss_pct = gap_ss_pct)
 print(inf_out)
-write_csv_strict(inf_out, path(tables_out_dir, "prop19_scm_pc_inference.csv"))
-saveRDS(list(scm = scm, series = series, inference = inf_out, pop65 = pop65),
+write_csv_strict(inf_out, path(tables_out_dir, "prop19_scm_pc_summary.csv"))
+saveRDS(list(scm = scm, series = series, summary = inf_out, pop65 = pop65),
         path(out_dir, "prop19_scm_pc.rds"))
 
 # ---- raw vs demographic-adjusted comparison -------------------------------
-raw <- read_csv(path(tables_out_dir, "prop19_scm_inference.csv"), show_col_types = FALSE)
-message(sprintf("RAW SCM:        gap %.1f%%  MSPE-p %.3f", raw$gap_ss_pct, raw$scm_mspe_p))
-message(sprintf("PER-65+ SCM:    gap %.1f%%  MSPE-p %.3f", gap_ss_pct, ca_sig$fishers_exact_pvalue))
+raw <- read_csv(path(tables_out_dir, "prop19_scm_summary.csv"), show_col_types = FALSE)
+message(sprintf("RAW SCM: gap %.1f%%", raw$gap_ss_pct))
+message(sprintf("PER-65+ SCM: gap %.1f%%", gap_ss_pct))
 message("Finished 10_mortality at ", Sys.time())

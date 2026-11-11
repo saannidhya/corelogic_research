@@ -30,6 +30,7 @@
 #           index, wedge distribution, LAO benchmark, spell audit)
 #======================================================================#
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -77,9 +78,9 @@ rs_min_pairs <- 500L
 rs_max_abs_dlog <- log(5)
 
 # deed classes
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+fam_classes <- family_classes
 trust_classes <- c("family_trust", "family_retitle")
-other_classes <- c("other_nonarms", "estate_noninterfam", "family_other")
+other_classes <- c("other_nonarms", "estate_noninterfam")
 
 # small helpers
 to_clip <- function(x) as.numeric(as.character(x))

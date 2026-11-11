@@ -22,10 +22,11 @@
 #           _outputs/tables/wedge_inherited_homes.csv
 #======================================================================#
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 # Settings ----
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+fam_classes <- family_classes
 population_cohort <- "d2019"   # matches the distribution figure (04b)
 inherited_cohort <- "d2017"    # baseline before the 2018-2019 transfers
 inherited_window <- as.Date(c("2018-01-01", "2019-12-31"))
@@ -53,8 +54,8 @@ inherited <- parcels %>%
   filter(cohort == inherited_cohort, end_type %in% fam_classes,
          between(spell_end, inherited_window[1], inherited_window[2]))
 rm(parcels); gc(verbose = FALSE)
-# Inherited floor lowered from 2e5 when family_other left the family definition
-# (10/31/2026): ~139k same-surname + estate transfers vs ~269k before.
+# Require a substantial inherited-proxy sample after restoring other interfamily.
+# This is a degeneracy guard, not a claim that the deeds verify inheritance.
 stopifnot(nrow(population) > 7e6, nrow(inherited) > 1e5)
 message("NOTE: ", fmt(nrow(population)), " parcels (2019); ",
         fmt(nrow(inherited)), " inherited homes (2018-2019 family transfers)")
@@ -132,7 +133,7 @@ t9 <- c(
   "\\caption{Components of the estimated annual tax wedge}\\label{tab:wedge_components}",
   "\\begin{adjustbox}{max width=\\textwidth}{\\small\\setlength{\\tabcolsep}{5pt}",
   "\\begin{tabular}{lrrrrrr}\\toprule",
-  " & \\multicolumn{2}{c}{All parcels} & \\multicolumn{2}{c}{Positive wedge} & \\multicolumn{2}{c}{Inherited homes} \\\\",
+  " & \\multicolumn{2}{c}{All parcels} & \\multicolumn{2}{c}{Positive wedge} & \\multicolumn{2}{c}{Family-proxy homes} \\\\",
   " & \\multicolumn{2}{c}{(January 2019)} & \\multicolumn{2}{c}{(January 2019)} & \\multicolumn{2}{c}{(2018--2019 transfers)} \\\\",
   "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}",
   " & Median & Mean & Median & Mean & Median & Mean \\\\\\midrule",
@@ -152,8 +153,8 @@ t9 <- c(
   paste0("\\begin{minipage}{0.96\\textwidth}\\vspace{3pt}{\\scriptsize\\textit{Notes:} ",
          "California single-family and condominium parcels on the 2008--2009 roll. ",
          "$\\hat w=\\hat t\\max(\\hat p-\\hat A,0)$ in nominal dollars of the baseline year. ",
-         "All-parcel and positive-wedge columns use the January 2019 lien date. Inherited homes ",
-         "are parcels whose first ownership change after January 2017 was a family transfer (a same-surname interfamily or estate deed) ",
+         "All-parcel and positive-wedge columns use the January 2019 lien date. Family-proxy homes ",
+         "are parcels whose first family-proxy deed or market sale after January 2017 was a family transfer (a same-surname, estate/executor, or other interfamily deed) ",
          "recorded in 2018--2019; their terms are measured at the January 2017 lien date, before ",
          "Proposition~19 reached the ballot. Medians are taken term by term, so the median wedge ",
          "is not the product of the median rate and median gap. Allowance share: 2021 gap ",
@@ -265,6 +266,8 @@ writeLines(c(
   macro("WedgeMedianAll", fmt(all19$wedge_median)),
   macro("WedgeMeanAll", fmt(all19$wedge_mean)),
   macro("WedgeMedianRate", fmt(100 * all19$rate_median, 2)),
+  macro("WedgeMedianAssessed", fmt(all19$assessed_median)),
+  macro("WedgeMedianMarket", fmt(all19$market_median)),
   macro("WedgeMedianGapPos", fmt(pos$gap_median)),
   macro("WedgeRateLowerShare", fmt(100 * audit$share_rate_lower_bound, 1)),
   macro("WedgeRateUpperShare", fmt(100 * audit$share_rate_upper_bound, 1)),

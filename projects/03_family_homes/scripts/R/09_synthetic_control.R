@@ -1,25 +1,13 @@
 # ============================================================
-# 09: RQ3 — Cross-state synthetic control + defensible inference
+# 09: Appendix synthetic-control comparison
 # Author: Saani Rawat
-# Purpose: Replace the naive 2019-scaling counterfactual + placebo-RANK
-#          inference with a proper SYNTHETIC CONTROL for California
-#          (donor-weighted, Abadie-Diamond-Hainmueller) and inference that
-#          yields a real p-value / CI rather than a bare rank:
-#            (i)  SCM in-space placebo: post/pre MSPE-ratio rank (Fisher p);
-#            (ii) Conley-Taber CI from the donor-state placebo gap distribution.
-#
-#          California is the largest state, an OUTLIER in the LEVEL of family
-#          transfers, so a level-matched SCM degenerates (puts ~all weight on
-#          the single largest donor and fits terribly). We therefore match on a
-#          SCALE-FREE normalized index: rel_fam = n_fam / (state's own 2018-2019
-#          monthly mean). Every state sits near 1.0 pre-period, so SCM matches
-#          the TRAJECTORY shape (seasonality, COVID dip, 2020-21 boom). This is
-#          the donor-weighted analogue of the paper's own growth counterfactual,
-#          and the post-period gap in rel units is the proportional effect.
+# Purpose: Fit donor-weighted synthetic California using each state's
+#          family counts normalized by its 2018-2019 monthly mean.
+#          Match January 2018-May 2020 and summarize the 2022-2023 gap.
+#          This is a comparison of trajectories, without state-placebo inference.
 # Inputs:  data/derived/03_family_homes/events.parquet
 # Outputs: _outputs/tables/prop19_scm_series.csv      (CA vs synthetic)
-#          _outputs/tables/prop19_scm_placebos.csv    (all-unit gap series)
-#          _outputs/tables/prop19_scm_inference.csv   (MSPE rank, CT p/CI)
+#          _outputs/tables/prop19_scm_summary.csv   (pre-fit RMSPE and post-period gap)
 #          _outputs/tables/prop19_scm_weights.csv     (donor weights)
 #          _outputs/prop19_scm.rds
 #          manuscript/figures/F_scm_california.png
@@ -29,6 +17,8 @@
 #          start); donor pre-fit filter aligned to May 2020; event labels fixed.
 # ============================================================
 
+# 11/04/2026: moved SCM to appendix; removed all state-placebo inference.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -37,10 +27,10 @@ suppressPackageStartupMessages({
 
 set.seed(20260625)
 
-log_file <- path(logs_dir, "09_scm_inference.log")
+log_file <- path(logs_dir, "09_synthetic_control.log")
 sink(log_file, split = TRUE)
 on.exit(sink(), add = TRUE)
-message("Starting 09_scm_inference at ", Sys.time())
+message("Starting 09_synthetic_control at ", Sys.time())
 
 # ============================================================
 # Importing event data ----
@@ -50,11 +40,13 @@ events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 
 # Broad family transfers exclude trust self-transfers.
-fam_classes <- c("family_person", "family_estate")  # family_other excluded 10/31/2026
+fam_classes <- family_classes
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # Load all events into R; subsequent calculations use in-memory data frames.
-ev_data <- read_events_df(events_path)
+ev_data <- read_events_df(events_path, columns = c(
+  "state", "ym", "sale_year", "sale_month", "class"
+))
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # ============================================================
@@ -100,12 +92,12 @@ t_treat <- tmap$t[tmap$ym == prop19_antic_start_ym]   # June 2020 ballot placeme
 pre_t   <- tmap$t[tmap$ym <= prop19_pre_end_ym]       # January 2018 - May 2020
 
 # ============================================================
-# Estimating synthetic control and state placebos ----
+# Estimating synthetic California ----
 # ============================================================
 scm <- panel %>%
   synthetic_control(outcome = rel_fam, unit = state, time = t,
                     i_unit = "CA", i_time = t_treat,
-                    generate_placebos = TRUE) %>%
+                    generate_placebos = FALSE) %>%
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2018],
                      rel_2018 = mean(rel_fam, na.rm = TRUE)) %>%
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2019],
@@ -194,62 +186,16 @@ message("Top donor weights: ",
         paste(sprintf("%s=%.2f", head(wts$unit, 6), head(wts$weight, 6)), collapse = ", "))
 
 # ============================================================
-# Calculating SCM MSPE-ratio inference ----
+# Exporting fit and gap summaries ----
 # ============================================================
-sig <- scm %>%
-  grab_significance()
-ca_sig <- sig %>%
-  filter(unit_name == "CA")
-message(sprintf("SCM MSPE-ratio: CA rank %d/%d, Fisher p = %.4f",
-                ca_sig$rank, nrow(sig), ca_sig$fishers_exact_pvalue))
-
-# ============================================================
-# Calculating Conley-Taber inference ----
-# ============================================================
-# Placebo (donor) post-period gaps form the no-effect sampling distribution.
-# Guard against poorly-fit donors by keeping those with pre-RMSPE <= 5x CA's.
-gaps_all <- scm %>%
-  grab_synthetic_control(placebo = TRUE) %>%
-  rename(unit = .id, is_placebo = .placebo, t = time_unit) %>%
-  left_join(tmap, by = "t") %>%
-  mutate(gap = real_y - synth_y,
-         gap_rel = (real_y - synth_y) / synth_y)
-write_csv_strict(
-  gaps_all %>% select(unit, is_placebo, ym, sale_year, sale_month, gap, gap_rel),
-  path(tables_out_dir, "prop19_scm_placebos.csv"))
-
-# Donor pre-fit uses the same January 2018 - May 2020 window as California,
-# so the 5x RMSPE filter compares like with like.
-unit_summ <- gaps_all %>%
-  group_by(unit, is_placebo) %>%
-  summarise(pre_rmspe = sqrt(mean(gap[ym <= prop19_pre_end_ym]^2, na.rm = TRUE)),
-            gap_ss    = mean(gap[ym >= 202201], na.rm = TRUE),
-            .groups = "drop")
-keep <- unit_summ %>%
-  filter(is_placebo == 1, pre_rmspe <= 5 * pre_rmspe_ca)
-placebo_gaps <- keep$gap_ss
-ct_p  <- (1 + sum(abs(placebo_gaps) >= abs(gap_ss_ca))) / (1 + length(placebo_gaps))
-ct_ci <- gap_ss_ca - quantile(placebo_gaps, c(0.975, 0.025), names = FALSE)
-message(sprintf("Conley-Taber: p = %.4f, 95%% CI (rel) = [%.3f, %.3f] over %d donors (pre-fit filtered)",
-                ct_p, ct_ci[1], ct_ci[2], length(placebo_gaps)))
-
-# ============================================================
-# Exporting inference and model objects ----
-# ============================================================
-
-inf_out <- tibble(
+summary_out <- tibble(
   ca_pre_rmspe = pre_rmspe_ca,
-  gap_ss_rel   = gap_ss_ca,
-  gap_ss_pct   = gap_ss_pct,
-  scm_mspe_rank = ca_sig$rank,
-  scm_mspe_p    = ca_sig$fishers_exact_pvalue,
-  ct_p = ct_p, ct_ci_lo = ct_ci[1], ct_ci_hi = ct_ci[2],
-  n_donors_kept = length(placebo_gaps)
+  gap_ss_rel = gap_ss_ca,
+  gap_ss_pct = gap_ss_pct
 )
-print(inf_out)
-write_csv_strict(inf_out, path(tables_out_dir, "prop19_scm_inference.csv"))
-
-saveRDS(list(scm = scm, series = sc_series, weights = wts, significance = sig,
-             gaps_all = gaps_all, inference = inf_out, base_ca = base_ca),
+print(summary_out)
+write_csv_strict(summary_out, path(tables_out_dir, "prop19_scm_summary.csv"))
+saveRDS(list(scm = scm, series = sc_series, weights = wts,
+             summary = summary_out, base_ca = base_ca),
         path(out_dir, "prop19_scm.rds"))
-message("Finished 09_scm_inference at ", Sys.time())
+message("Finished 09_synthetic_control at ", Sys.time())

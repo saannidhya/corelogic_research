@@ -10,6 +10,8 @@
 #          manuscript/tables/TA_raw22.tex (appendix tab:raw22)
 # ============================================================
 
+# 11/04/2026: restored other interfamily to the main family proxy.
+# 11/04/2026: removed state-placebo inference and synchronized current outputs.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -23,6 +25,7 @@ fmt_pct <- function(x, d = 1) sprintf(paste0("%.", d, "f"), 100 * x)
 fmt_usd <- function(x) paste0("\\$", format(round(x / 1000), big.mark = ",", trim = TRUE), "k")
 
 class_labels <- c(
+  family_all         = "Family transfers (main definition)",
   market_sale        = "Market sale (arm's length)",
   family_person      = "Family transfer: same surname",
   family_other       = "Interfamily, no surname match",
@@ -59,51 +62,75 @@ t1 <- c(
   t1_rows,
   "\\bottomrule",
   "\\end{tabular}}",
-  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. Market sales are arm's-length (category A), non-interfamily deeds with no price floor, so they include deeds recorded without a price (common in non-disclosure states). The main family definition is same surname plus estate/executor; interfamily deeds without a surname match enter only the wide definition in Table~\\ref{tab:volumes}. Interfamily trust deeds are mostly self-transfers or trust deeds with no surname link; Table~\\ref{tab:volumes} separates the trust-mediated family transfers. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\\end{minipage}",
+  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. Market sales are arm's-length (category A), non-interfamily deeds with no price floor, so they include deeds recorded without a price (common in non-disclosure states). The main family proxy includes same surname, estate/executor, and other interfamily deeds without a surname match. The vendor flag does not independently verify kinship or inheritance. Alternative component counts appear in Table~\\ref{tab:volumes}. Interfamily trust deeds are mostly self-transfers or trust deeds with no surname link; Table~\\ref{tab:volumes} separates the trust-mediated family transfers. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\\end{minipage}",
   "\\end{table}"
 )
 writeLines(t1, path(tables_dir, "T1_taxonomy.tex"))
 message("Wrote T1")
 
-# ---- T2: volumes by year ---------------------------------------------------
+# ---- T2: annual volumes and family share of all deeds --------------------
 headline <- read_csv(path(tables_out_dir, "fact_headline_ratios.csv"),
                      show_col_types = FALSE)
-t2_rows <- headline |>
-  arrange(sale_year) |>
-  mutate(row = glue("{sale_year} & {fmt_n(market)} & {fmt_n(fam_conservative)} & ",
-                    "{fmt_n(fam_broad)} & {fmt_n(fam_wide)} & ",
+t2_rows <- headline %>%
+  arrange(sale_year) %>%
+  mutate(row = glue("{sale_year} & {fmt_n(n_all)} & {fmt_n(market)} & ",
+                    "{fmt_n(fam_narrow)} & {fmt_n(fam_broad)} & ",
                     "{fmt_n(trust_clear)}--{fmt_n(trust_clear + trust_ambig)} & ",
-                    "{fmt_n(trust_self)} & ",
-                    "{sprintf('%.2f', ratio_broad)} \\\\")) |>
+                    "{fmt_n(trust_self)} & {sprintf('%.1f', 100 * share_family_all)} \\\\")) %>%
   pull(row)
-
 t2 <- c(
   "\\begin{table}[!t]\\centering",
-  "\\caption{The parallel housing market: annual volumes under alternative family definitions}",
+  "\\caption{Annual deed volumes and the family share of all deed transfers}",
   "\\label{tab:volumes}",
   "{\\scriptsize\\setlength{\\tabcolsep}{3pt}",
-  "\\begin{tabular}{lrrrrrrr}",
-  "\\toprule",
-  " & Market & Same & Same surname & Same surname & Family trust & Trust & Family:market \\\\",
-  "Year & sales & surname & + estate (main) & + estate + other$^{a}$ & transfers$^{b}$ & self or unlinked$^{c}$ & ratio (main) \\\\",
-  "\\midrule",
-  t2_rows,
-  "\\bottomrule",
-  "\\end{tabular}}",
-  "\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Residential deed events. The main family definition (``same surname + estate'') counts interfamily-flagged deeds with a buyer--seller surname match plus estate/executor deeds, and is used in all later analysis. $^{a}$Adds interfamily-flagged deeds without a surname match. $^{b}$Trust-mediated family transfers, lower--upper bound: lower = trust deeds whose trust shares a surname with the counterparty but names a different individual; upper adds trust-to-person deeds whose trust name carries no given name. $^{c}$Interfamily-flagged trust deeds classified as a person moving property to or from the person's own trust, plus those with no surname link; excluded from every family column. Ratio = main family definition / market sales.}\\end{minipage}",
+  "\\begin{tabular}{lrrrrrrr}\\toprule",
+  " & All & Market & Same surname & All family & Family trust & Trust self & Family per \\\\",
+  "Year & deeds & sales & + estate & (main)$^{a}$ & transfers$^{b}$ & or unlinked$^{c}$ & 100 deeds \\\\",
+  "\\midrule", t2_rows, "\\bottomrule\\end{tabular}}",
+  paste0("\\begin{minipage}{0.98\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} ",
+         "Residential deed events, pooled within each calendar year. $^{a}$The main family proxy ",
+         "adds other interfamily deeds without a surname match to same-surname and estate/executor deeds. ",
+         "The vendor relationship flag does not independently verify kinship or inheritance. ",
+         "Family per 100 deeds divides the main family count by all deed events, including market sales, ",
+         "family deeds, trusts, retitles, and other conveyances. $^{b}$Trust-mediated transfers with ",
+         "a surname link under the separate trust-name rule; the upper count adds ambiguous ",
+         "trust-to-person matches. These counts are operational classifications, not verified relationships. ",
+         "$^{c}$Own-trust or unlinked trust deeds. Trust deeds and same-person retitles ",
+         "are excluded from both family columns. Market sales carry no price floor.}\\end{minipage}"),
   "\\end{table}"
 )
 writeLines(t2, path(tables_dir, "T2_volumes.tex"))
 message("Wrote T2")
 
+# Generated descriptive macros keep the manuscript tied to this run.
+state_counts <- read_csv(path(tables_out_dir, "fact_state_class_2007_2023.csv"),
+                         show_col_types = FALSE) %>%
+  filter(state %in% c(state.abb, "DC"))
+national_share <- sum(state_counts$fam_broad) / sum(state_counts$n_all)
+ca_counts <- state_counts %>% filter(state == "CA")
+ut_counts <- state_counts %>% filter(state == "UT")
+descriptive_numbers <- c(
+  DeedFamilyMillion = sprintf("%.1f", sum(headline$fam_broad) / 1e6),
+  DeedNationalShare = sprintf("%.1f", 100 * national_share),
+  DeedNarrowShare = sprintf("%.1f", 100 * sum(headline$fam_narrow) / sum(headline$n_all)),
+  DeedShareMin = sprintf("%.1f", 100 * min(headline$share_family_all)),
+  DeedShareMax = sprintf("%.1f", 100 * max(headline$share_family_all)),
+  DeedCAShare = sprintf("%.1f", 100 * ca_counts$fam_broad / ca_counts$n_all),
+  DeedUTShare = sprintf("%.1f", 100 * ut_counts$fam_broad / ut_counts$n_all),
+  DeedCARelative = sprintf("%.1f", (ca_counts$fam_broad / ca_counts$n_all) / national_share)
+)
+writeLines(paste0("\\newcommand{\\", names(descriptive_numbers), "}{",
+                  descriptive_numbers, "}"), path(tables_dir, "descriptive_numbers.tex"))
+
+
 # ---- T3: post-transfer outcomes -------------------------------------------
 haz <- read_csv(path(tables_out_dir, "hazard_sold_within.csv"),
                 show_col_types = FALSE) |>
-  filter(class %in% c("family_person", "family_estate",
+  filter(class %in% c("family_all", "family_person", "family_estate", "family_other",
                       "family_trust", "market_sale")) |>
   mutate(lab = class_labels[class]) |>
-  arrange(match(class, c("market_sale", "family_person",
-                         "family_estate", "family_trust")))
+  arrange(match(class, c("market_sale", "family_all", "family_person",
+                         "family_other", "family_estate", "family_trust")))
 
 t3_rows <- haz |>
   mutate(row = glue("{lab} & {fmt_n(n)} & {fmt_pct(sold_12m)} & {fmt_pct(sold_24m)} & ",
@@ -124,7 +151,7 @@ t3 <- c(
   t3_rows,
   "\\bottomrule",
   "\\end{tabular}}",
-  "\\begin{minipage}{0.9\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Share of events followed by an arm's-length market sale of the same parcel within the stated horizon. All cohorts observed at least 66 months before the June 2024 censoring date.}\\end{minipage}",
+  "\\begin{minipage}{0.9\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} Share of events followed by an arm's-length market sale of the same parcel within the stated horizon. The main family row pools the same-surname, estate/executor, and other interfamily component rows; these displayed rows overlap and must not be added. All cohorts observed at least 66 months before the June 2024 censoring date.}\\end{minipage}",
   "\\end{table}"
 )
 writeLines(t3, path(tables_dir, "T3_hazard.tex"))
@@ -138,7 +165,6 @@ raw_mkt <- read_csv(path(tables_out_dir, "prop19_raw_2x2_market.csv"), show_col_
   mutate(group = "Market purchase")
 raw22 <- bind_rows(raw_fam, raw_mkt)
 stopifnot(nrow(raw22) == 8L, all(raw22$n > 0))
-perm_ddd <- read_csv(path(tables_out_dir, "ref_perm_ddd.csv"), show_col_types = FALSE)
 
 raw22_wide <- raw22 |>
   mutate(period = if_else(post == 1, "post", "pre")) |>
@@ -173,13 +199,13 @@ ta_raw22 <- c(
   "\\bottomrule",
   "\\end{tabular}}",
   paste0("\\begin{minipage}{0.95\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} ",
-         "Non-corporate recipients only. Family transfer = same-surname interfamily and ",
+         "Non-corporate recipients only. Family transfer = same-surname and other interfamily plus ",
          "estate/executor deeds (same-person retitles and trust deeds excluded); market ",
          "purchases carry no price floor. Raw difference-in-differences: family ",
          fmt_pp(did_fam), ", market ", fmt_pp(did_mkt), "; raw triple difference ",
          fmt_pp(did_fam - did_mkt), ". The cell-level regression triple difference is ",
-         fmt_pp(perm_ddd$ca_coef), " (state-placebo $p = ", sprintf("%.2f", perm_ddd$perm_p),
-         "$).}\\end{minipage}"),
+         fmt_pp(unname(coef(readRDS(path(out_dir, "prop19_ddd_hazard.rds"))$ddd)["ca:post:fam"])),
+         ".}\\end{minipage}"),
   "\\end{table}"
 )
 writeLines(ta_raw22, path(tables_dir, "TA_raw22.tex"))
@@ -190,9 +216,6 @@ vol <- readRDS(path(out_dir, "prop19_did_volume.rds"))
 ddd_vol <- readRDS(path(out_dir, "prop19_ddd_volume.rds"))   # headline DDD (07)
 haz19 <- readRDS(path(out_dir, "prop19_ddd_hazard.rds"))
 abs19 <- readRDS(path(out_dir, "prop19_absentee_did.rds"))
-
-# State-placebo rank p-value for the headline triple difference
-ddd_perm_p <- sprintf("%.3f", ddd_vol$summary$perm_p)
 
 etable(
   vol$fam, vol$market_placebo, ddd_vol$model, haz19$fam, haz19$market_placebo, abs19,
@@ -208,7 +231,6 @@ etable(
     c("Family transfers", "Market sales", "Family vs. market", "Family transfers",
       "Market purchases", "Family transfers")
   ),
-  extralines = list("State-placebo $p$ (DDD)" = c("", "", ddd_perm_p, "", "", "")),
   signif.code = NA,
   fitstat = ~ n + r2,
   fontsize = "scriptsize",
@@ -228,8 +250,8 @@ t4_notes <- paste0("Columns (1)-(3): state-year counts, 2017-2019 versus 2022-20
                    "coefficient is the triple difference, equal to column (1) minus column (2). ",
                    "Columns (4)-(6): transfer-cohort cells, January 2017-December 2018 ",
                    "versus July 2021-June 2022, weighted by cell size. Standard errors are ",
-                   "clustered by state and shown for scale; inference with one treated ",
-                   "state uses state placebos.")
+                   "clustered by state and shown for scale; their reliability is limited ",
+                   "with one treated state.")
 t4_path <- path(tables_dir, "T4_prop19.tex")
 t4_lines <- readLines(t4_path)
 end_table <- max(grep("\\end{table}", t4_lines, fixed = TRUE))
@@ -238,7 +260,7 @@ t4_lines <- append(t4_lines,
                      paste0("   \\textit{Notes:} ", t4_notes),
                      "   \\end{minipage}"),
                    after = end_table - 1)
-writeLines(t4_lines, t4_path)
+writeLines(sub("[[:blank:]]+$", "", t4_lines), t4_path)
 message("Wrote T4")
 
 message("Finished 05_tables at ", Sys.time())

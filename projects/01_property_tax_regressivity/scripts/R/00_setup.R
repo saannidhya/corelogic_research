@@ -28,7 +28,9 @@ figures_dir  <- path(manuscript_dir, "figures")
 
 # Project-specific derived data lives here (gitignored)
 data_dir     <- here("data", "derived", "01_property_tax_regressivity")
+external_data_dir <- here("data", "external", "01_property_tax_regressivity")
 dir_create(data_dir)
+dir_create(external_data_dir)
 dir_create(out_dir)
 
 # ---- project-specific packages ----

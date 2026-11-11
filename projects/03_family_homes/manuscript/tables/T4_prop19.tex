@@ -6,33 +6,32 @@
    \begin{adjustbox}{max width = \textwidth}
       \begin{tabular}{lcccccc}
          \tabularnewline \midrule \midrule
-          & \multicolumn{3}{c}{Log volume} & \multicolumn{2}{c}{Sold within 24 months} & Absentee recipient \\ 
-                                            & Family transfers & Market sales & Family vs. market & Family transfers & Market purchases & Family transfers \\   
-         Model:                             & (1)              & (2)          & (3)               & (4)              & (5)              & (6)\\  
+          & \multicolumn{3}{c}{Log volume} & \multicolumn{2}{c}{Sold within 24 months} & Absentee recipient \\
+                                            & Family transfers & Market sales & Family vs. market & Family transfers & Market purchases & Family transfers \\
+         Model:                             & (1)              & (2)          & (3)               & (4)              & (5)              & (6)\\
          \midrule
          \emph{Variables}\\
-         CA $\times$ Post $\times$ Family   &                  &              & -0.2551           &                  &                  &   \\   
-                                            &                  &              & (0.0300)          &                  &                  &   \\   
-         CA $\times$ Post                   & -0.4300          & -0.1749      & -0.1749           & -0.0167          & -0.0111          & 0.0023\\   
-                                            & (0.0335)         & (0.0282)     & (0.0282)          & (0.0037)         & (0.0017)         & (0.0029)\\   
-         State-placebo $p$ (DDD)            &                  &              & 0.118             &                  &                  & \\  
+         CA $\times$ Post $\times$ Family   &                  &              & -0.2504           &                  &                  &   \\
+                                            &                  &              & (0.0332)          &                  &                  &   \\
+         CA $\times$ Post                   & -0.4253          & -0.1749      & -0.1749           & -0.0164          & -0.0111          & -0.0017\\
+                                            & (0.0352)         & (0.0282)     & (0.0282)          & (0.0040)         & (0.0017)         & (0.0032)\\
          \midrule
          \emph{Fixed-effects}\\
-         State                              & Yes              & Yes          &                   & Yes              & Yes              & Yes\\  
-         Year                               & Yes              & Yes          &                   &                  &                  & \\  
-         State-deed group                   &                  &              & Yes               &                  &                  & \\  
-         Year-deed group                    &                  &              & Yes               &                  &                  & \\  
-         Cohort month                       &                  &              &                   & Yes              & Yes              & Yes\\  
+         State                              & Yes              & Yes          &                   & Yes              & Yes              & Yes\\
+         Year                               & Yes              & Yes          &                   &                  &                  & \\
+         State-deed group                   &                  &              & Yes               &                  &                  & \\
+         Year-deed group                    &                  &              & Yes               &                  &                  & \\
+         Cohort month                       &                  &              &                   & Yes              & Yes              & Yes\\
          \midrule
          \emph{Fit statistics}\\
-         Observations                       & 255              & 255          & 510               & 1,836            & 1,836            & 1,836\\  
-         R$^2$                              & 0.98662          & 0.98926      & 0.99303           & 0.86777          & 0.94301          & 0.89863\\  
+         Observations                       & 255              & 255          & 510               & 1,836            & 1,836            & 1,836\\
+         R$^2$                              & 0.98575          & 0.98926      & 0.99129           & 0.87566          & 0.94301          & 0.90766\\
          \midrule \midrule
          \multicolumn{7}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
       \end{tabular}
    \end{adjustbox}
    \par\vspace{2pt}\begin{minipage}{0.95\textwidth}\scriptsize
-   \textit{Notes:} Columns (1)-(3): state-year counts, 2017-2019 versus 2022-2023. Column (3) stacks family and market counts with state and year effects that vary by deed group; its CA $\times$ Post $\times$ Family coefficient is the triple difference, equal to column (1) minus column (2). Columns (4)-(6): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; inference with one treated state uses state placebos.
+   \textit{Notes:} Columns (1)-(3): state-year counts, 2017-2019 versus 2022-2023. Column (3) stacks family and market counts with state and year effects that vary by deed group; its CA $\times$ Post $\times$ Family coefficient is the triple difference, equal to column (1) minus column (2). Columns (4)-(6): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; their reliability is limited with one treated state.
    \end{minipage}
 \end{table}
 

@@ -18,6 +18,7 @@
 #          10/07/2026: added full-period state counts by family subclass.
 # ============================================================
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 set.seed(20260609)
@@ -35,9 +36,9 @@ message("Starting 02_facts at ", Sys.time())
 events_path <- path(data_dir, "events.parquet")
 stopifnot(file_exists(events_path))
 
-# Trust self-transfers and family_other (flagged interfamily, no surname match)
-# are not counted as family transfers (decided 10/31/2026).
-fam_classes <- c("family_person", "family_estate")
+# Family transfers include the flagged residual without a surname match.
+# Trust deeds and same-person retitles remain separate.
+fam_classes <- family_classes
 
 # Trust-rule tallies by year come straight from the parquet (trust_rel is NULL
 # outside family_trust), so the string column never enters R memory.
@@ -52,7 +53,9 @@ trust_by_year <- arrow::open_dataset(events_path) %>%
   ) %>%
   collect()
 # Load all events into R (without the trust audit columns; see read_events_df)
-ev_data <- read_events_df(events_path)
+ev_data <- read_events_df(events_path, columns = c(
+  "clip", "state", "sale_year", "class", "amt", "dtype", "absentee_buyer", "corp_buyer"
+))
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # Keep complete calendar years for national facts and validation moments.
@@ -100,7 +103,7 @@ ca_plot <- ca %>%
       family_other = "Family transfer: other interfamily",
       family_estate = "Family transfer: estate/executor",
       family_retitle = "Same-person retitle",
-      family_trust = "Trust self-transfer",
+      family_trust = "Interfamily trust deed",
       other_nonarms = "Other non-arm's-length",
       estate_noninterfam = "Estate deed: non-interfamily",
       .default = class
@@ -137,14 +140,18 @@ headline <- ev_window %>%
   summarize(
     fam_conservative = sum(class == "family_person", na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
+    fam_narrow = sum(class %in% family_narrow_classes),
+    n_all = n(),
     trust = sum(class == "family_trust", na.rm = TRUE),
-    # Alternative definitions for Table 2 (main definition stays fam_broad)
+    # Retain the wide alias for downstream compatibility; main = wide.
     fam_wide = sum(class %in% c(fam_classes, "family_other")),
     market = sum(class == "market_sale", na.rm = TRUE),
     .groups = "drop"
   ) %>%
   left_join(trust_by_year, by = "sale_year") %>%
   mutate(
+    share_family_all = fam_broad / n_all,
+    share_narrow_all = fam_narrow / n_all,
     ratio_conservative = fam_conservative / market,
     ratio_broad = fam_broad / market,
     ratio_wide = fam_wide / market,
@@ -195,7 +202,7 @@ st_full <- ev_window %>%
 
 assert_rows(st_full, 45, "fact_state_class_2007_2023")
 stopifnot(all(st_full$fam_broad ==
-                st_full$family_person + st_full$family_estate))
+                st_full$family_person + st_full$family_estate + st_full$family_other))
 write_csv_strict(st_full, path(tables_out_dir, "fact_state_class_2007_2023.csv"))
 
 # |- 4. Validation moments by class ----

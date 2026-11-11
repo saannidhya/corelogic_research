@@ -96,10 +96,14 @@ assert_rows <- function(df, min_rows, label) {
 #' Query trust_rel through duckdb/arrow instead.
 #' @param events_path Path to events.parquet.
 #' @param drop Columns to skip.
+#' @param columns Optional required column names; select before reading into R.
 #' @return Tibble of events.
 read_events_df <- function(events_path,
-                           drop = c("trust_dir", "trust_rel", "trust_prior_found")) {
-  keep <- setdiff(names(arrow::open_dataset(events_path)$schema), drop)
+                           drop = c("trust_dir", "trust_rel", "trust_prior_found"),
+                           columns = NULL) {
+  available <- names(arrow::open_dataset(events_path)$schema)
+  if (!is.null(columns)) stopifnot(all(columns %in% available))
+  keep <- setdiff(if (is.null(columns)) available else columns, drop)
   arrow::read_parquet(events_path, col_select = all_of(keep), as_data_frame = TRUE)
 }
 
@@ -108,6 +112,12 @@ write_csv_strict <- function(x, file) {
   readr::write_csv(x, file, na = "")
   message("Wrote: ", file)
 }
+
+# ---- family definitions (11/04/2026) ----
+# Operational proxies: the interfamily flag does not independently verify kinship.
+family_narrow_classes <- c("family_person", "family_estate")
+family_classes <- c(family_narrow_classes, "family_other")
+family_classes_sql <- paste0("('", paste(family_classes, collapse = "','"), "')")
 
 # ---- analysis window constants ----
 window_start_year <- 2007L   # OT density begins 2007 (probe 2026-06-09)

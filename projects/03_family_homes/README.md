@@ -26,7 +26,7 @@
 - `scripts/R/00_inference_helpers.R` — wild cluster bootstrap, county pairs bootstrap, Conley–Taber, relative-magnitudes breakdown
 - `scripts/R/check_prop19_wedge_invariants.R` — synthetic checks of roll-forward, risk-set accounting, offset Poisson, competing-risk decomposition
 - `scripts/R/08_within_ca.R` — within-CA DiD (built, dropped as causal — wrong sign; descriptive only)
-- `scripts/R/09_scm_inference.R` — donor-weighted synthetic control + MSPE-ratio + Conley–Taber inference
+- `scripts/R/09_synthetic_control.R` — appendix donor-weighted synthetic control; fit/gap summaries only
 - `scripts/R/09b_event_study.R` — monthly TWFE event study (2018–19 baseline) + placebo band
 - `scripts/R/10_mortality.R` — tidycensus 65+ pull + per-65+ demographic-adjusted SCM
 - `scripts/R/05_tables.R` — manuscript tables
@@ -76,11 +76,37 @@ logs, and visual checks are under
 `projects/03_family_homes/quality_reports/family_welfare_2026-09-21/`.
 Historical status entries below refer to the earlier section numbering.
 
+## Current family definition and descriptive denominator (2026-11-04)
+
+The main operational family-transfer proxy includes `family_person`,
+`family_estate`, and `family_other`. These classes are centralized as
+`family_classes` in `scripts/R/00_setup.R`. Trust deeds and same-person
+retitles remain separate. The vendor relationship flag does not independently
+verify kinship, inheritance, occupancy, or a change in beneficial ownership.
+
+Figures 1 and 2 divide family deeds by **all residential deed events**.
+Figure 1A stacks same-surname-plus-estate and other interfamily components;
+Figure 1B uses the complete main proxy over time. Table 2 reports annual
+all-deed counts and shares. The existing policy designs, treatment windows,
+market-sale comparison, and inference procedures are retained. Explicitly
+labeled family-plus-market denominators remain in the property-correlates
+and property-type comparisons.
+
+`06d_manuscript_numbers.R` exports policy and profile macros with a numerical
+source CSV; `05_tables.R` exports the descriptive macros. Both must be rerun
+after their analysis inputs change. `06c_family_per_deed.R` retains the
+separate, labeled state-share figure requested during the definition discussion.
+
+The dependency-ordered refresh and verification logs live under
+`quality_reports/wide_refresh_2026-11-04/`; its plan is
+`quality_reports/plans/2026-11-04_restore-wide-family.md`.
+
 ## Next Steps
 
+- [x] November 4 refresh: restore other interfamily deeds, use all-deed shares in Figures 1–2 and Table 2, rerun affected analyses, update Section 5 and manuscript, and verify the PDF.
 - [x] Pipeline (01), national facts (02), hazard (03), Prop 19 core (04), first full draft
 - [x] Section 6 rebuild (June 2026) — synthetic control + monthly event study + 65+ demographic bracket; figures swapped
-- [ ] Table 4: add SCM / event-study / demographic-adjusted rows (currently shows only the legacy DiD)
+- [ ] Consider a compact table combining the triple difference, SCM, and demographic-adjusted SCM results, which currently appear in separate tables/figures and text.
 - [ ] Within-CA descriptive paragraph (Prop 19 concentrated in the primary-residence channel) + update the mortality "planned refinement" threats bullet
 - [ ] Tier-2 robustness: bunching excess-mass + bootstrap, HonestDiD sensitivity, trust/LLC substitution bounds
 - [ ] Re-run `/review-paper --peer` on the rebuilt Section 6; `renv::snapshot()` for the new packages (tidysynth, tidycensus)
@@ -94,3 +120,12 @@ Project status is maintained manually in this README.
 ## Figures and quality reports
 
 Figure exporters write PNG only; manuscript figure references use PNG. Project-specific plans, reviews, audit artifacts and session logs live in `projects/03_family_homes/quality_reports/`. Root `quality_reports/` is for shared or repository-wide work.
+
+### Current inference and presentation (2026-11-04)
+
+The main policy designs are the annual triple difference and monthly event study.
+SCM and the per-65+ demographic sensitivity are in the appendix. State-placebo
+rank p-values, donor-gap intervals, and donor placebo bands have been removed
+from active scripts and outputs. Conventional state-clustered standard errors
+remain qualified because California is the only treated state. Historical
+session entries below/above describe prior versions, not the current workflow.
