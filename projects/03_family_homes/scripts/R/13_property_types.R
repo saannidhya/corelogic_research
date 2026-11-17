@@ -10,10 +10,12 @@
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 set.seed(20261002)
 con <- open_corelogic_duckdb(memory_limit = "6GB", threads = 2L)
-dbExecute(con, glue("SET temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
+dbExecute(con, glue("SET temp_directory='{sql_quote_path(duckdb_temp_dir)}'"))
 fam_classes <- family_classes_sql
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
-ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
+# Family measure of 2026-11-12 (00_setup.R): same-person and entity deeds relabelled out of the
+# family classes; see quality_reports/2026-11-12_same_person_retitles.md.
+ev <- events_main_from(events_panel_path)
 
 # ============================================================
 # Importing a partial, documented crosswalk ----
@@ -233,7 +235,7 @@ writeLines(c("\\begin{table}[!ht]\\centering\\small",
   "\\label{tab:propertytypes}", "\\begin{tabular}{lrrrr}\\toprule",
   "Recorded type & Family deeds & Market deeds & Family share (\\%) & Family/market \\\\",
   "\\midrule", tex_rows, "\\bottomrule\\end{tabular}",
-  "\\begin{minipage}{.95\\linewidth}\\footnotesize\\textit{Notes:} Family deeds are same-surname interfamily, estate/executor, and other interfamily deeds (the main definition); trust deeds and same-person retitles are excluded. The relationship flag does not independently verify kinship. Market sales carry no price floor. Shares divide family deeds by family plus market deeds. Partial published numeric crosswalk: 163 single-family, 102 townhouse/rowhouse, 112 condominium, 115 duplex, 106 apartment. Other codes remain unverified and are omitted from this exhibit, not the aggregate sample. Types are static recorded characteristics. Apartments are selectively covered: only 13\\% of source apartment rows pass the existing residential flag. Parcel deeds count neither dwelling units nor occupancy changes.\\end{minipage}",
+  "\\begin{minipage}{.95\\linewidth}\\footnotesize\\textit{Notes:} Family deeds are same-surname interfamily, estate/executor, and other interfamily deeds (the main family measure); trust deeds and same-person retitles are excluded. The relationship flag does not independently verify kinship. Market sales carry no price floor. Shares divide family deeds by family plus market deeds. Partial published numeric crosswalk: 163 single-family, 102 townhouse/rowhouse, 112 condominium, 115 duplex, 106 apartment. Other codes remain unverified and are omitted from this exhibit, not the aggregate sample. Types are static recorded characteristics. Apartments are selectively covered: only 13\\% of source apartment rows pass the existing residential flag. Parcel deeds count neither dwelling units nor occupancy changes.\\end{minipage}",
   "\\end{table}"), path(tables_dir, "T7_property_types.tex"))
 ten_year <- km %>% filter(exit_m == 120, comparison %in% c("Family", "Same surname", "Market"),
                          property_type != "Other/unverified codes", property_type != "Apartment") %>%

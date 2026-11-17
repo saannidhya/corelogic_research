@@ -1,137 +1,26 @@
-\section{Family Channel: A Simple Framework}\label{sec:framework}\label{sec:welfare}
+\section{Welfare: The Tax Wedge and a Conditional Loss}\label{sec:framework}\label{sec:welfare}
 
-The policy analysis estimates a response of recorded deeds. Translating
-that response into welfare requires two further steps: determining which
-properties change allocation, and valuing those changes. This section makes
-those steps explicit. Its quantitative results are conditional calibrations
-of potential gains from the inheritance provisions, not estimates of
-realized gains or the total welfare effect of Proposition~19.
-
-% \subsection{Efficient family retention and the tax wedge}
-
-% A family allocation can be efficient. An heir may have a strong attachment
-% to a home, provide housing to relatives, or rent it to a tenant who values
-% its services highly. None of these uses requires a market sale. Legal title,
-% occupancy, rental provision, and allocation are therefore distinct objects.
-
-\subsection{Framework}
-
-% Consider a price-taking household under quasi-linear preferences, with
-% fixed housing services and no externalities. 
-
-Consider a price-taking marginal market buyer and a marginal heir. 
-Let $u_m$ be the flow per-period value
-of the house to the marginal market buyer and $u_h$ be the value of the house to the heir, 
-including attachment and the net value of rental
-use. 
-% These are values of housing services, not recorded deed prices. 
-
-Suppose the property-tax rate is $t$, assessments reset to the sale price when a property is sold, and the discount rate is $r$. Capitalizing the perpetual tax burden, the marginal market price is
-
-\begin{equation}
-  p=\frac{u_m}{r+t}.
-\end{equation}
-
-
-Now consider an heir at the moment of succession who values
-living in the house, or renting it out, at flow $u_h$. If the family keeps the house, the heir
-pays taxes on assessed value $A$. If the family sells, the heir receives $\$p$ and the house exits the family channel. Since the heir's inherited assessment is $A$, keeping the house is optimal when
-
-
-\begin{equation}
-  \frac{u_h-tA}{r}\geq p
-  \quad\Longleftrightarrow\quad
-  u_h\geq u_m-t(p-A).
-  \label{eq:succession_keep}
-\end{equation}
-
-Equation~\eqref{eq:succession_keep} contains the framework's key trade-off. If
-succession triggers reassessment ($A=p$), the condition collapses to
-$u_h\geq u_m$: the house stays in the family only when the heir genuinely
-values it more than the market does, and the family channel is allocatively
-harmless. But if the heir inherits the parent's assessment
-($A=A_0<p$), the family keeps the house whenever
-$u_h\geq u_m-t(p-A_0)$. Every heir with
-$u_h\in[u_m-t(p-A_0),u_m)$ retains a house that the market values more than
-she does. Figure~\ref{fig:retention_wedge} illustrates this interval.
-The wedge $t(p-A_0)$, the annual tax saving from dynastic
-holding, is the extra benefit the tax policy pays families to keep the houses in the family channel that would otherwise be sold in the housing market. 
-% In California, where acquisition-value assessment dates to 1978 and house prices have multiplied since, the wedge on a long-held home is measured in thousands of dollars per year.
-
-\begin{figure}[!htbp]
-  \centering
-  \resizebox{\linewidth}{!}{%
-    \begin{tikzpicture}[font=\small]
-      \filldraw[fill=highlight-yellow!25, draw=highlight-yellow, line width=0.6pt]
-        (4.4,-0.33) rectangle (8.8,0.33);
-      \draw[gray, thin, -{Latex[length=2mm]}] (0,0) -- (13.2,0);
-      \draw[gray, thin] (4.4,-0.33) -- (4.4,0.44);
-      \draw[gray, thin] (8.8,-0.33) -- (8.8,0.44);
-      \node at (2.2,0.78) {Sells either way};
-      \node[text=primary-blue] at (6.6,0.78) {Keeps for the tax advantage};
-      \node at (11,0.78) {Keeps either way};
-      \node[below] at (4.4,-0.46) {$u_m-t(p-A_0)$};
-      \node[below] at (8.8,-0.46) {$u_m$};
-      \node[below] at (13.2,-0.13) {$u_h$};
-    \end{tikzpicture}%
-  }
-  \caption{Tax-induced retention. With inherited assessment $A_0<p$, heirs
-  in the shaded interval $[u_m-t(p-A_0),u_m)$ keep the house despite valuing
-  it less than the market buyer.}
-  \label{fig:retention_wedge}
-\end{figure}
-
-In our setup, the succession is a joint decision of the parent and the heir, and the recorded family transfer is the outcome of the keep-or-sell choice. When the family keeps, the
-county records a family deed; when it cashes out, the family sells directly
-to a market buyer and no family transfer ever appears\footnote{This simple framework abstracts from intermediary ownership structures and multiple deeds for the same property. An extension could allow a family to transfer the property to a trust before it reaches the market, or could model successive recorded deeds within a single allocation change.}. This one-deed mapping is a modeling assumption: the broader empirical proxy can record settlement or legal-form changes without a change in housing use. The calibration below therefore leaves the conversion of missing deeds into reallocations unidentified. The heir's decision is therefore a function of the tax wedge, the market price, and her own valuation. Thus, making the deed transfer decision
-endogenous to the tax regime. Introducing a policy reform that removes the inherited assessment ($A_0\to p$), the following three predictions follow from the framework.
-First, retiming: because a family transfer must be completed before the deadline to preserve the tax advantage, the families rush to
-lock
-in $A_0$. Families with latent transfer plans and valuation within $[u_m-t(p-A_0),u_m)$ rush to record deeds before
-the effective date, and recorded transfers collapse afterward
-\citep[cf. the transaction-tax notch literature:][]{bestkleven2018notches,
-kopczukmunroe2015mansion,slemrodwebershan2017dc}.
-Second, the extensive margin: with the wedge removed, every heir still facing the succession decision and with valuations in
-$[u_m-t(p-A_0),u_m)$ switches out of the recorded family-transfer channel.
-The steady-state volume of
-family transfers falls by the mass of heirs remaining in the wedge, and the reform potentially releases the homes to the market.
-Third, selection: the family transfers that survive are those with
-$u_h\geq u_m$---heirs who genuinely want the house, disproportionately
-owner-occupants, whom the surviving exclusion 
-still favors. The framework therefore predicts that post-reform family
-transfers should show a lower subsequent market-sale hazard and a lower
-absentee-recipient share---not because the reform failed, but because the
-marginal would-have-been-landlord heirs no longer take the title.
-Table~\ref{tab:prop19} reports the corresponding conditional outcomes.
-The estimated change in the absentee-recipient share is \SelectionAbsenteePP\
-percentage points. The 24-month resale changes are \SelectionFamilyPP\
-percentage points for family transfers and \SelectionMarketPP\ for market
-purchases. These comparisons concern the deeds still observed after the reform;
-they do not identify the outcomes of the missing transfers or establish an
-allocation response.
-
-% Wedge and welfare numbers are generated by 04c and 11 (loaded in paper.tex).
+Section~\ref{sec:prop19} is about deeds. A deed is not a house, and a missing deed is not a loss. Turning the response of deeds into a welfare number takes two steps. The first is to measure what an inherited assessment is worth to an heir each year, the wedge of Section~\ref{subsec:framework_v2}. The second is to decide how many of the missing transfers were homes that would otherwise have gone to someone who valued them more. This section takes the first step with data and the second with stated assumptions. Its results are conditional calibrations, not estimates of the effect of Proposition~19.
 
 \subsection{Estimating the tax wedge}\label{subsec:wedge}
 
-In this section, we estimate the tax wedge $w=t(p-A_0)$ for California's homes that inherit the parent's assessment explained in Section~\ref{sec:framework}. Since the wedge is not recorded in any deed, we build it parcel by parcel from three components: the tax rate $t$, the inherited assessment $A_0$, and the market value $p$. Each term is measured at a January~1 lien date, the date on which California fixes assessments. 
-A deed transfer associated with market sale records a price, and family deeds usually record none. CoreLogic's assessment roll also stops in 2008--2009. We therefore build each of the
-three terms parcel by parcel and estimate
+In this section, we estimate the tax wedge $w=t(p-A_0)$ for California's homes that inherit the parent's assessment, the wedge of the framework in Section~\ref{subsec:framework_v2}. Since the wedge is not recorded in any deed, we build it parcel by parcel from three components: the tax rate $t$, the inherited assessment $A_0$, and the market value $p$. Each term is measured at a January~1 lien date, the date on which California fixes assessments. 
+Market sales record a price, and family deeds usually record none. CoreLogic's assessment roll also stops in 2008--2009. We therefore estimate each term and compute
 \begin{equation}
   \hat w_i=\hat t_i\,\max\bigl(\hat p_i-\hat A_i,\,0\bigr)
   \label{eq:wedge_hat}
 \end{equation}
 for the \WedgeParcels\ single-family and condominium parcels on the
 2008--2009 California roll. The main lien date is
-January 2019, the year before Proposition~19 is introduced on the ballot. Further, January 2017 is used for homes inherited in 2018--2019, so that
+January 2019, the year before Proposition~19 reached the ballot. For homes inherited in 2018--2019, January 2017 is used instead, so that
 their wedge is measured before Proposition~19 reached the ballot.\footnote{
 The wedge is truncated at zero because a home whose market value has fallen
 below its factored base is assessed at market value, and inheriting its
 assessment saves nothing.} Next, we describe the three components of the wedge and their construction.
 
 \paragraph{The tax rate, $\hat t$.} Proposition~13 caps the general levy at
-one percent of assessed value, and voter-approved levy adds to this one-percent base. We divide
-each parcel's total tax bill on the 2008--2009 roll by its assessed value\footnote{Our data provides the tax bill and the assessed value for 2008-2009 years. We use the latest year available for each parcel. A parcel with a missing or unusable ratio receives its county's median.}  We bound rates between 0.8 and 2.0 percent, which binds for
+one percent of assessed value, and voter-approved levies add to this base. We divide
+each parcel's total tax bill on the 2008--2009 roll by its assessed value\footnote{Our data provides the tax bill and the assessed value for the 2008--2009 roll years. We use the latest year available for each parcel. A parcel with a missing or unusable ratio receives its county's median.}  We bound rates between 0.8 and 2.0 percent, which binds for
 \WedgeRateLowerShare\ percent of parcels at the bottom and
 \WedgeRateUpperShare\ percent at the top. The median rate is
 \WedgeMedianRate\ percent. Because the bill can include fixed charges that do
@@ -153,7 +42,7 @@ At the
 roll value and \WedgeShareSaleReset\ percent a base reset by a later sale.
 % One caution applies to the roll path. Assessments enrolled in the 2008--2009 downturn may be temporary Proposition~8 reductions rather than the protected base; rolling such a value forward at two percent understates $A$ and overstates the wedge.
 
-\paragraph{The market value, $\hat p$.} Since unsold houses have no price for the year 2019, we estimate a hedonic model to impute the predicted market value for each parcel. 
+\paragraph{The market value, $\hat p$.} Since most homes have no sale in 2019, we estimate a hedonic model to impute the predicted market value for each parcel. 
 Our hedonic model is estimated on arm's-length, non-distressed
 California sales from 2016--2017. It regresses the log price on the log of
 floor area, lot size, bedroom and bathroom counts, and age, with ZIP-code by
@@ -193,11 +82,11 @@ exclusion protects gaps up to \$1 million.
 
 \subsection{Estimation results}
 
-\subsubsection{Tax wedge distribution and deadweight loss}
+\subsubsection{Tax wedge distribution}
 
 Figure~\ref{fig:wedge_distribution} shows the distribution of the
 estimated wedge across California single-family and condominium parcels in 2019.
-Most homes carry a positive wedge as only \WedgeShareZero\ percent have a zero wedge, mainly
+Most homes carry a positive wedge, and only \WedgeShareZero\ percent have a zero wedge, mainly
 homes bought after the 2012 trough whose base is still close to market
 value. Among homes with a positive wedge, the median annual saving is
 \$\WedgeMedianPos\ in 2019 dollars, as marked by the figure's reference line.
@@ -228,151 +117,21 @@ Los Angeles County homes with no market sale since 2007, our median wedge in
 2017 is \$\WedgeLAOMedian. The two populations differ, since our definition
 of long-held is coarser, but the estimates are of the same size.
 
-The calibration uses homes with a recorded exit under the main
-family-transfer proxy; these need not all be inheritances. In 2018--2019, before the reform reached the ballot,
-\WedgeInheritedPerYear\ parcels a year in our universe record a qualifying exit
-through a family-proxy deed (same-surname interfamily, estate/executor,
-or other interfamily without a surname match).\footnote{This count includes transfers between
-spouses, which keep their base under a separate exclusion that
-Proposition~19 did not change. It includes flagged deeds without a surname match, which can involve
-relatives, entities, or incompletely identified parties, while excluding
-distributions from trusts. It does not establish death, kinship, or eligibility. The Legislative Analyst's Office estimated that 60,000 to
-80,000 properties a year received the inheritance exclusion
-\citep{lao2017inheritance}. The administrative exclusion count and our broader deed-based proxy
-measure different populations and units; their comparison does not validate
-the proxy or the allocation response.} Measured at the January 2017 lien date, their
-median wedge is \$\WedgeInheritedMedianNominal, or
-\$\WedgeInheritedMedian\ in 2023 dollars, including homes with zero wedges.\footnote{
-The inherited-home mean is \$\WedgeInheritedMeanNominal\ in 2017 dollars,
-or \$\WedgeInheritedMean\ in 2023 dollars. It includes zero wedges and
-refers to the 2018--2019 family-transfer sample. The \$\WedgeMeanPos\ mean
-in Table~\ref{tab:wedge_components} instead conditions on positive wedges
-across the January 2019 parcel stock and is expressed in 2019 dollars.}
-Together these parcels imply about \$\WedgeInheritedFlowM\ million in potential
-annual inherited-assessment savings per year's cohort, conditional on eligibility.
-Such savings are transfers from taxpayers to heirs, not resource losses.
-Most of it goes to heirs who would have kept the home anyway.
+\subsection{The loss from misallocation}\label{subsec:loss}
 
-The deadweight loss comes only from the heirs the subsidy changes. In the
-framework, an heir with valuation $u_h\in[u_m-w,u_m)$ keeps a home the market
-values more. Each such home loses $g=u_m-u_h$ per year, somewhere between zero
-and $w$. If we make a simplifying assumption that valuations are spread evenly across that interval, the average loss
-is the Harberger triangle
+The wedge is a transfer before it is a loss. An heir who keeps the home saves $w$ a year at other taxpayers' expense, and the heir who would have kept it anyway changes nothing but who pays. The loss comes only from heirs the tax tips: those with a valuation $u_h\in[u_m-w,u_m)$ keep a home the market values more, and each such home loses $\ell=u_m-u_h$ a year, somewhere between zero and $w$. This is the misallocation the old exclusion created; a reform that ends the exclusion removes it. If valuations are spread evenly across that interval, the average loss is the Harberger triangle
 \begin{equation}
- E[g\mid\text{allocation switcher},w]
-   =\frac{1}{w}\int_0^w g\,dg=\frac{w}{2}.
+ E[\ell\mid\text{allocation switcher},w]
+   =\frac{1}{w}\int_0^w \ell\,d\ell=\frac{w}{2}.
  \label{eq:triangle}
 \end{equation}
-More generally, write the average loss as $\lambda w$ with
-$0\leq\lambda\leq1$; we report $\lambda=0.25,0.5,0.75$. Uniformity is an
-assumption about a finite reform, not something deadline bunching reveals
-\citep{chetty2009sufficient}.
+We set $\kappa=\WViHarberger$, the value implied by equation~(\ref{eq:triangle}) under uniform valuations, so that the average loss is $\kappa w$. Uniformity is an assumption about a finite reform, not something the deadline rush reveals \citep{chetty2009sufficient}.
 
-For a median-based illustration, suppose every one of the \WelfareFlow\ deeds a year
-that the triple difference finds missing is a home that now goes to a
-higher-value user. Assigning each home the inherited-home median wedge
-of \$\WelfareWedgeMedian\ and setting $\lambda=1/2$ gives
-\$\WelfareDWLCohortMedian\ million a year of avoided deadweight loss for
-each annual cohort, in 2023 dollars. This is a representative-home
-calibration; aggregating heterogeneous wedges instead requires their mean.
-Using the inherited-home mean gives \$\WelfareDWLCohort\ million.
-Both calculations assume every missing deed reallocates a home. The reallocation share
-of missing deeds, $\alpha$, is not identified: a missing deed may be a
-postponed succession, a title held by a different vehicle, or a family that
-kept the home for reasons the tax never touched.
+The loss in a year is then the number of homes the reform moved, times the share of those that switched to a higher-value user, times $\kappa$, times the wedge the heir loses. We take each piece from the deed evidence. The calibration uses the \WViParcels\ California homes whose first exit in 2018--2019, before the reform reached the ballot, was a deed in the Section~\ref{sec:prop19} measure, about \WViParcelsPerYear\ a year. Their mean wedge, zeros included, is \$\WViWedgeMean\ in 2023 dollars (the January 2017 wedge, converted with the CPI-U), and we aggregate with the mean because totals need means. \WViSharePositive\ percent have a positive wedge. The number of homes comes from the shortfall of Section~\ref{subsec:decline}. It is measured against the monthly counterfactual of Section~\ref{subsec:design}, California's count in the same month of 2019 scaled by the change in the other states, with the counterfactual also scaled by California's own change in market sales, so that it nets out market sales as the triple difference does. Against it, California's Section~\ref{sec:prop19} measure falls \WViShortfallDeeds\ deeds short over the \WViHoleMonths\ months from March 2021 to June 2024, or \WViShortfallDeedsYear\ a year, which at \WViDeedsPerParcel\ deeds per parcel is \WViShortfallParcelsYear\ parcels a year. Without the market-sale adjustment the shortfall is \WViShortfallDeedsCF\ deeds; the grid reports it as a sensitivity. The share of missing parcels that were reallocated, $\rho$, is not identified: a missing deed may be a postponed succession, a title held in another vehicle, or a family that kept the home for reasons the tax never touched. Our central case sets $\rho=\WViAlpha$.
 
-% \input{tables/T6_welfare_inputs.tex}
+An heir who moves in is protected. As Section~\ref{subsec:framework_v2} shows, an heir who makes the home a principal residence keeps the old assessment up to the value cap, so such an heir loses the wedge only above the \$\WViValueCap\ allowance, which is \WViShareAboveCap\ percent of the wedge. We treat the heir as an occupant when the buyer's mailing address matches the property, which holds for \WViOccupancyShare\ percent of exits and is an upper bound on occupancy. Occupants therefore lose little, and the rest lose all of it.
 
-% \subsubsection{Discussion: Framework results versus reduced-form estimates}
+The central case is \$\WViLossCentral\ million a year, with $\rho=\WViAlpha$, the shortfall net of market sales, the occupancy proxy and $\kappa=\WViHarberger$. The range runs from \$\WViLossLow\ million, when only the homes beyond the path of California's spouse deeds count (the spouse comparison of Section~\ref{subsec:decline}) and $\rho=\WViAlpha$, to \$\WViLossHigh\ million, when every parcel in the central shortfall is reallocated ($\rho=\WViAlphaHigh$). Appendix Table~\ref{tab:welfare_grid} reports the whole grid of occupancy assumptions, missing-parcel counts and reallocation shares. These rows are scenarios, not confidence intervals.
 
-% The framework made three predictions, and the reduced-form estimates of
-% Section~\ref{sec:prop19} speak to each. First, retiming: families with
-% latent plans should rush to lock in $A_0$. Family deeds ran 21.4 percent
-% above counterfactual from the June 2020 ballot placement to the February
-% 2021 deadline. Second, the extensive margin: once the wedge is gone, heirs
-% inside the interval $[u_m-w,u_m)$ leave the family channel. Net of
-% California's market-sale decline, family transfers fell about 22 percent in
-% 2022--2023. Third, selection: surviving transfers should go to heirs who
-% value the house more, so their resale hazard should fall. The
-% sold-within-24-months triple difference is $-0.56$ percentage points, the
-% predicted sign, but it is not distinguishable from zero ($p=0.76$).
+The loss rests entirely on attributing the hedged decline to the reform. If the fall in family deeds after 2021 reflects the rise in rates, refinancing, or a California-wide shift in how homes pass between people, as the caveats of Section~\ref{subsec:decline} allow, then the number of homes the reform moved is zero and so is the loss. If one accepts the attribution, the misallocation that the old exclusion created and the reform removes is about \$\WViLossCentral\ million a year in a state with \WedgeParcels\ single-family and condominium parcels on the roll. It is a gain from the reform, not a cost of it. Three things hold the figure down: the wedge is modest for most homes, heirs who move in lose only the part above the cap, and only some missing transfers are homes that changed hands. The larger numbers on the grid need every heir to be a non-occupant, every missing deed to be a reallocated home, or the shortfall without the market-sale adjustment. Our data cannot show any of these. The figure is also a flow for one year of missing transfers. A tipped heir loses $\ell$ in every year the home is held, so the present value of the misallocation exceeds the annual figure by an amount that depends on how long heirs hold the homes, which we do not estimate.
 
-% The size of the response is also plausible. The \WelfareFlow\ missing deeds
-% a year compare with roughly 60,000 to 80,000 properties a year that received
-% the inheritance exclusion under the old rules \citep{lao2017inheritance}, and
-% with the \WedgeInheritedPerYear\ inherited homes a year in our parcel
-% universe. A reform that removes the wedge for non-occupant heirs and leaves it
-% for occupants should not end most family transfers, and it did not.
-
-% \subsubsection{From a flow of deeds to potential property-years of gain}
-
-% A single cohort is not the whole story, because a reallocated home keeps
-% yielding a gain for as long as the better allocation persists. Let $S(a)$
-% describe how long the counterfactual allocation loss persists after
-% succession, and let $L$ be the delay between a missing deed and that
-% succession. For a cohort $c$, use $F_c=F$ as an explicit constant-flow
-% extrapolation. The potential stock of avoided misallocation at year $T$ is
-% \begin{equation}
-%  N_T(\alpha,L)=\sum_{c=2022}^{T}\alpha F_c
-%    \mathbf1\{T-c\geq L\}S(T-c-L),\qquad
-%  G_T=\lambda wN_T.\label{eq:stock}
-% \end{equation}
-% The illustration runs from 2022 through 2031. It starts with no inherited
-% stock of reform gains: transfers already protected under Proposition~58
-% were not retroactively reassessed \citep{boe2025prop19}. Anticipatory deeds
-% completed under the old rules are not newly treated cohorts. Continuing
-% the 2022--2023 response for a decade is a policy scenario, not a forecast.
-
-% For persistence we construct California parcel episodes beginning in
-% 2008--2018. An episode begins at the first qualifying family deed since the
-% previous market sale and ends at the next market sale or the June 30, 2024
-% censor. Further family deeds within the episode do not create additional
-% houses. Ten-year survival is \WelfareCABroadSurvival\ percent for family
-% episodes (same surname, estate, or other interfamily). These are descriptive proxies for persistence, not survival
-% estimates for the unobserved marginal homes. A home can remain unsold while
-% its use improves; conversely, an allocation loss need not end exactly at
-% sale. Appendix sensitivities multiply
-% cumulative hazards by one-half and two.
-
-% \input{tables/T5_welfare.tex}
-
-% Table~\ref{tab:welfare} displays how strongly the answer depends on the
-% unidentified conversion and delay. For illustration, $\alpha=0.5$ and a
-% five-year delay imply \WelfareExampleStock\ potentially affected properties
-% in 2031, an annual gain of \$\WelfareExampleAnnual\ million in that year,
-% and a discounted ten-year gain of \$\WelfareExamplePV\ million. These
-% numbers use the measured mean wedge of inherited homes, $\lambda=1/2$, and a
-% 3 percent real discount rate. They are not preferred estimates. With
-% $\alpha=0$, every missing deed is consistent with zero allocation gain; with
-% a ten-year delay, no gains occur inside the reporting horizon. No positive
-% welfare lower bound follows from the reduced-form estimates.
-
-% \begin{figure}[!ht]\centering
-% \includegraphics[width=0.98\linewidth]{figures/F8_welfare_stock.png}
-% \caption{Potential stock of avoided misallocation under alternative conversion
-% rates and succession delays. All paths assume a constant annual reference
-% flow and California family episode persistence. These are conditional
-% scenarios, not observed stocks or forecasts.}
-% \label{fig:welfare_stock}
-% \end{figure}
-
-% \subsubsection{Incidence and the limits of the policy calculation}
-
-% Removing an inheritance exclusion raises an heir's taxes and government
-% receipts even when housing use does not change. The \$\WedgeInheritedFlowM\
-% million a year that inherited homes carried before the reform is mostly
-% this kind of money. With equal welfare weights and a dollar-for-dollar budget
-% offset, these payments cancel in aggregate; they are not resource gains.
-% Inframarginal heirs can bear substantial tax increases while contributing
-% zero to $G_T$. Buyers and tenants gain only to the extent that housing is
-% allocated to a more valuable use after accounting for attachment,
-% displacement, and real switching costs.
-
-% The ledger in Appendix~\ref{app:welfare} separates these components. We do
-% not estimate public-spending benefits, marginal costs of public funds,
-% distributional welfare weights, general-equilibrium prices or rents, or
-% gains from expanded assessment portability. Accordingly, this exercise
-% quantifies a potential allocation component of the inheritance reform,
-% conditional on the reduced-form interpretation and additional assumptions.
-% It neither measures total Proposition~19 welfare nor extrapolates
-% California's tax wedge to the national family-transfer channel.

@@ -23,7 +23,7 @@
 #           with reference statistics conditional on positive wedges.
 # Inputs  : CA PropertyCharacteristics via load_corelogic_prop()
 #           CA OwnerTransfer seller names via load_corelogic_ot()
-#           data/derived/03_family_homes/events.parquet
+#           data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #           scripts/R/inputs/ca_boe_inflation_factors.csv
 # Outputs : data/derived/03_family_homes/ca_parcel_wedge.parquet
 #           _outputs/tables/wedge_*.csv (linkage, AVM fit, repeat-sales
@@ -32,6 +32,21 @@
 
 # 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
+
+# 11/11/2026: FAM_WEDGE_OUT_DIR (env) sends every write of 04a-04c (tables, logs, the parcel
+# parquet) to a scratch folder, so determinism checks never touch the live outputs. Unset = live.
+# 04b_wedge_figures.R sources 00_setup.R again, which resets these paths, so the redirect is a
+# function and is applied again right after 04b is sourced.
+apply_wedge_out_redirect <- function() {
+  root <- Sys.getenv("FAM_WEDGE_OUT_DIR", "")
+  if (!nzchar(root)) return(invisible(FALSE))
+  tables_out_dir <<- path(root, "tables")
+  logs_dir       <<- path(root, "logs")
+  data_dir       <<- path(root, "data")
+  walk(c(tables_out_dir, logs_dir, data_dir), dir_create)
+  invisible(TRUE)
+}
+apply_wedge_out_redirect()
 
 suppressPackageStartupMessages({
   library(fixest)
@@ -144,7 +159,11 @@ ca_parcels_2008 <- ca_prop_raw %>%
     tax_2008 = as.numeric(total_tax_amount)
   ) %>%
   filter(type %in% c("10", "11"), !is.na(clip), str_starts(fips5, "06")) %>%
-  arrange(clip, desc(tax_year), desc(assessed_2008)) %>%
+  # 11/11/2026: total order (every column of the extract) so the kept duplicate row is fixed
+  arrange(clip, desc(tax_year), desc(assessed_2008), desc(tax_2008), type, fips5, zip5,
+          assessed_year, homestead_exempt_indicator, owner_occupancy_code, owner_1_last_name,
+          universal_building_square_feet, total_number_of_bedrooms_all_buildings,
+          total_number_of_bathrooms, total_land_square_footage, year_built) %>%
   distinct(clip, .keep_all = TRUE)
 # rm(ca_prop_raw); gc(verbose = FALSE)
 
@@ -187,23 +206,31 @@ message("NOTE: HOX share = ", round(mean(ca_parcels_2008$hox), 3),
 # Importing CA deed events ----
 #============================================#
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 
 ca_events <- arrow::open_dataset(events_path) %>%
   filter(state == "CA") %>%
-  select(clip, sale_raw, class, amt, estate_kw, trust_kw, reo, reo_sale) %>%
+  select(clip, sale_raw, class, fam_relation_nm, amt, estate_kw, trust_kw, reo, reo_sale) %>%
   collect() %>%
+  # family measure of 2026-11-12 (00_setup.R): same-person and entity deeds leave the family classes
+  recode_family_main() %>%
+  select(-fam_relation_nm) %>%
   mutate(clip = to_clip(clip),
          sale_raw = as.numeric(sale_raw),
          sale_date = parse_event_dates(sale_raw)) %>%
-  filter(!is.na(sale_date))
+  filter(!is.na(sale_date)) %>%
+  # 11/11/2026: arrow returns row groups in a thread-dependent order; fix the order here
+  arrange(clip, sale_raw, class, amt, estate_kw, trust_kw, reo, reo_sale)
 message("NOTE: ", format(nrow(ca_events), big.mark = ","), " dated CA deed events")
 
 # market sales drive base resets, tenure, the AVM, and the repeat-sales index
 ca_market_sales <- ca_events %>%
   filter(class == "market_sale") %>%
   select(clip, sale_raw, sale_date, amt, reo, reo_sale) %>%
+  # 11/11/2026: several market deeds on one parcel-date: keep the earliest raw date string, then
+  # the highest price, then the remaining columns (total order)
+  arrange(clip, sale_date, sale_raw, desc(amt), reo, reo_sale) %>%
   distinct(clip, sale_date, .keep_all = TRUE)
 
 # |- linkage audit ----
@@ -308,6 +335,7 @@ avm_sales <- ca_market_sales %>%
          between(amt, price_bounds[1], price_bounds[2]),
          coalesce(reo_sale, 0L) == 0L, coalesce(reo, 0L) == 0L) %>%
   inner_join(ca_parcels_2008, by = "clip") %>%
+  arrange(clip, sale_date) %>%   # the seeded holdout draw below depends on row order
   add_avm_features() %>%
   mutate(log_price = log(amt),
          ym = as.integer(format(sale_date, "%Y%m")),
@@ -414,9 +442,8 @@ build_baseline_wedge <- function(cohort_name) {
     filter(sale_date < d0, between(amt, price_bounds[1], price_bounds[2])) %>%
     inner_join(ca_parcels_2008 %>% select(clip, roll_date), by = "clip") %>%
     filter(sale_date >= roll_date) %>%
-    group_by(clip) %>%
-    slice_max(sale_date, n = 1, with_ties = FALSE) %>%
-    ungroup() %>%
+    arrange(clip, desc(sale_date), desc(sale_raw), desc(amt)) %>%
+    distinct(clip, .keep_all = TRUE) %>%
     select(clip, reset_date = sale_date, reset_price = amt)
 
   # tenure: last observed market sale since OT coverage begins (2007)
@@ -482,7 +509,7 @@ build_first_exits <- function(cohort_name) {
   first_ownership_exit <- window_events %>%
     filter(class %in% c(fam_classes, "market_sale")) %>%
     mutate(priority = if_else(class == "market_sale", 0L, 1L)) %>%
-    arrange(clip, sale_date, priority) %>%
+    arrange(clip, sale_date, priority, sale_raw, class, desc(amt), estate_kw, trust_kw, reo, reo_sale) %>%
     distinct(clip, .keep_all = TRUE) %>%
     transmute(
       clip, end_date = sale_date, end_sale_raw = sale_raw,
@@ -518,6 +545,7 @@ ot_sellers <- load_corelogic_ot(states = "CA", years = 2017:2024,
             end_sale_raw = as.numeric(sale_derived_date),
             seller_last = toupper(str_trim(coalesce(seller_1_last_name, "")))) %>%
   filter(seller_last != "") %>%
+  arrange(clip, end_sale_raw, seller_last) %>%
   distinct(clip, end_sale_raw, .keep_all = TRUE)
 message("NOTE: ", format(nrow(ot_sellers), big.mark = ","), " CA 2017-2024 deeds with a seller surname")
 
@@ -594,6 +622,7 @@ write_csv_strict(wedge_distribution, path(tables_out_dir, "wedge_distribution_te
 
 # Main and appendix figures use the 2019 baseline; reference statistics exclude zeros.
 source(path(r_dir, '04b_wedge_figures.R'))
+apply_wedge_out_redirect()   # 04b re-sourced 00_setup.R
 build_wedge_figures(parcel_wedge)
 
 # LAO (2017) put the annual saving for a long-held Los Angeles home at $3k-$4k

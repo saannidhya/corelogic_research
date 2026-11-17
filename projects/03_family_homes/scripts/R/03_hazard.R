@@ -5,7 +5,7 @@
 #          property's NEXT arm's-length market sale. Kaplan-Meier survival
 #          by event class with right-censoring at 2024-06-30 (last full
 #          month of data). Descriptive: selection is the object of interest.
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 # Outputs: _outputs/tables/hazard_sold_within.csv
 #          _outputs/tables/hazard_km_curves.csv
 #          _outputs/hazard_summary.rds
@@ -24,11 +24,11 @@ message("Starting 03_hazard at ", Sys.time())
 
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
-dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
+dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(duckdb_temp_dir)}'"))
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
-ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
+ev <- events_main_from(events_path)   # family measure of 2026-11-12 (00_setup.R)
 
 censor_date <- as.Date("2024-06-30")  # data truncate ~Aug 2024; stay conservative
 

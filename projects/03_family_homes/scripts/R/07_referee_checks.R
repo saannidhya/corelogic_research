@@ -1,14 +1,15 @@
 # ============================================================
-# 07: Referee checks — inference + direct supply test + leads
+# 07: Referee checks — headline triple difference + leads
 # Author: Saani Rawat
-# Purpose: Estimate the headline volume DDD, direct supply comparison,
-#          annual event study, and deed-count reconciliation.
-# Inputs:  data/derived/03_family_homes/events.parquet
-# Outputs: prop19_ddd_volume.csv/rds, ref_estate_seller_did.csv/rds,
-#          ref_event_study.csv/rds, ref_reconciliation.csv,
+# Purpose: Estimate the headline volume DDD, annual event study,
+#          and deed-count reconciliation.
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
+# Outputs: prop19_ddd_volume.csv/rds, ref_event_study.csv/rds,
+#          ref_reconciliation.csv,
 #          ref_state_year_panel.csv
 # Log:     10/22/2026: added the pooled family-vs-market triple difference
 #          for volumes, the paper's headline post-reform estimate.
+#          11/11/2026: removed the estate/trust-seller market-sale test.
 # ============================================================
 
 # 11/04/2026: removed state-reassignment inference; retained model specifications.
@@ -30,21 +31,21 @@ message("Starting 07_referee_checks at ", Sys.time())
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
-ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
-
-fam_classes <- family_classes_sql
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
+ev <- events_s4_from(events_path)
+fam_classes <- "('family_main')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ---- shared state-year panel (2017-2023, all years for event study) -------
 sy_all <- dbGetQuery(con, glue("
   SELECT state, sale_year,
          SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END) AS n_fam,
-         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market,
-         SUM(CASE WHEN class = 'market_sale'
-                   AND (estate_kw OR trust_kw) THEN 1 ELSE 0 END) AS n_mkt_estate_trust,
-         SUM(CASE WHEN class = 'market_sale' AND estate_kw THEN 1 ELSE 0 END) AS n_mkt_estate
+         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
   FROM {ev}
   WHERE sale_year BETWEEN 2017 AND 2023
   GROUP BY state, sale_year
@@ -93,31 +94,6 @@ print(ddd_vol_summary, width = Inf)
 write_csv_strict(ddd_vol_summary, path(tables_out_dir, "prop19_ddd_volume.csv"))
 saveRDS(list(model = m_ddd_vol, summary = ddd_vol_summary),
         path(out_dir, "prop19_ddd_volume.rds"))
-
-# ---- (b) Direct supply test: estate/trust-seller market sales -------------
-m_est <- feols(log(n_mkt_estate_trust) ~ tr:post | state + sale_year,
-               data = sy_did |> mutate(tr = as.integer(state == "CA")),
-               cluster = ~state)
-m_market <- feols(log(n_market) ~ tr:post | state + sale_year,
-                  data = sy_did |> mutate(tr = as.integer(state == "CA")),
-                  cluster = ~state)
-est_summary <- tibble(
-  ca_coef = unname(coef(m_est)["tr:post"]),
-  ca_se_clustered = unname(se(m_est)["tr:post"]),
-  ca_coef_share = unname(coef(m_est)["tr:post"] - coef(m_market)["tr:post"]),
-  n_states = length(states)
-)
-message("Estate/trust-seller market-sale DiD (CA x Post; levels and net-of-market):")
-print(est_summary)
-
-ca_est_counts <- sy_all |>
-  filter(state == "CA") |>
-  select(sale_year, n_mkt_estate_trust, n_mkt_estate, n_market)
-print(ca_est_counts)
-write_csv_strict(est_summary, path(tables_out_dir, "ref_estate_seller_did.csv"))
-write_csv_strict(ca_est_counts, path(tables_out_dir, "ref_ca_estate_seller_counts.csv"))
-saveRDS(list(model = m_est, summary = est_summary),
-        path(out_dir, "ref_estate_seller.rds"))
 
 # ---- (c) Event-study leads/lags (volume) ----------------------------------
 es_dat <- sy_all |> mutate(ca = as.integer(state == "CA"))

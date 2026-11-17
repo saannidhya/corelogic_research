@@ -9,7 +9,7 @@
 #          artifact. (The 65+ stock is the tidycensus-supported channel; the
 #          residual death-TIMING channel is bounded by magnitude — single-digit
 #          mortality differentials cannot explain a ~33% transfer decline.)
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #          Census ACS 1-year via tidycensus (key in .env, gitignored)
 # Outputs: data/external/state_pop65_acs.parquet
 #          _outputs/tables/prop19_scm_pc_summary.csv
@@ -74,8 +74,10 @@ message("65+ population pulled: ", nrow(pop65), " state-years, CA 2023 = ",
 # ---- state x month family transfers, joined to 65+ population --------------
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
-ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- family_classes_sql
+# Section 4 measure (author's decision 2026-11-12): the per-65+ synthetic control is an appendix
+# sensitivity of the same synthetic control as 09, so it uses the Section 4 family measure.
+ev <- events_s4_from(events_panel_path)
+fam_classes <- "('family_main')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 ms <- dbGetQuery(con, glue("

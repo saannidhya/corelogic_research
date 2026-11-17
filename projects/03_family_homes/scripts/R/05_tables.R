@@ -31,6 +31,7 @@ class_labels <- c(
   family_other       = "Interfamily, no surname match",
   family_estate      = "Family transfer: estate/executor",
   family_retitle     = "Same-person retitle (co-owner change)",
+  family_samep_entity = "Same-person or entity deed (not in main family)",
   family_trust       = "Interfamily trust deed",
   other_nonarms      = "Other non-arm's-length",
   estate_noninterfam = "Estate deed (non-interfamily)"
@@ -74,7 +75,7 @@ headline <- read_csv(path(tables_out_dir, "fact_headline_ratios.csv"),
 t2_rows <- headline %>%
   arrange(sale_year) %>%
   mutate(row = glue("{sale_year} & {fmt_n(n_all)} & {fmt_n(market)} & ",
-                    "{fmt_n(fam_narrow)} & {fmt_n(fam_broad)} & ",
+                    "{fmt_n(fam_narrow)} & {fmt_n(fam_broad)} & {fmt_n(fam_incl_samep)} & ",
                     "{fmt_n(trust_clear)}--{fmt_n(trust_clear + trust_ambig)} & ",
                     "{fmt_n(trust_self)} & {sprintf('%.1f', 100 * share_family_all)} \\\\")) %>%
   pull(row)
@@ -83,9 +84,9 @@ t2 <- c(
   "\\caption{Annual deed volumes and the family share of all deed transfers}",
   "\\label{tab:volumes}",
   "{\\scriptsize\\setlength{\\tabcolsep}{3pt}",
-  "\\begin{tabular}{lrrrrrrr}\\toprule",
-  " & All & Market & Same surname & All family & Family trust & Trust self & Family per \\\\",
-  "Year & deeds & sales & + estate & (main)$^{a}$ & transfers$^{b}$ & or unlinked$^{c}$ & 100 deeds \\\\",
+  "\\begin{tabular}{lrrrrrrrr}\\toprule",
+  " & All & Market & Same surname & All family & Incl. same-person & Family trust & Trust self & Family per \\\\",
+  "Year & deeds & sales & + estate & (main)$^{a}$ & and entity$^{d}$ & transfers$^{b}$ & or unlinked$^{c}$ & 100 deeds \\\\",
   "\\midrule", t2_rows, "\\bottomrule\\end{tabular}}",
   paste0("\\begin{minipage}{0.98\\textwidth}\\vspace{2pt}{\\scriptsize \\textit{Notes:} ",
          "Residential deed events, pooled within each calendar year. $^{a}$The main family proxy ",
@@ -95,8 +96,12 @@ t2 <- c(
          "family deeds, trusts, retitles, and other conveyances. $^{b}$Trust-mediated transfers with ",
          "a surname link under the separate trust-name rule; the upper count adds ambiguous ",
          "trust-to-person matches. These counts are operational classifications, not verified relationships. ",
-         "$^{c}$Own-trust or unlinked trust deeds. Trust deeds and same-person retitles ",
-         "are excluded from both family columns. Market sales carry no price floor.}\\end{minipage}"),
+         "$^{c}$Own-trust or unlinked trust deeds. Trust deeds and exact same-person retitles ",
+         "are excluded from the family columns. Market sales carry no price floor. ",
+         "The main family count also excludes deeds in which the buyer is also the seller by name ",
+         "(a middle initial added or dropped, a partner added to or removed from a joint name, a spelling or ",
+         "surname variant) and deeds with a company, bank or government party. $^{d}$Upper bound: the earlier ",
+         "class-based proxy, which includes those same-person and entity deeds.}\\end{minipage}"),
   "\\end{table}"
 )
 writeLines(t2, path(tables_dir, "T2_volumes.tex"))
@@ -117,7 +122,10 @@ descriptive_numbers <- c(
   DeedShareMax = sprintf("%.1f", 100 * max(headline$share_family_all)),
   DeedCAShare = sprintf("%.1f", 100 * ca_counts$fam_broad / ca_counts$n_all),
   DeedUTShare = sprintf("%.1f", 100 * ut_counts$fam_broad / ut_counts$n_all),
-  DeedCARelative = sprintf("%.1f", (ca_counts$fam_broad / ca_counts$n_all) / national_share)
+  DeedCARelative = sprintf("%.1f", (ca_counts$fam_broad / ca_counts$n_all) / national_share),
+  # upper bound including same-person and entity deeds (earlier class-based proxy)
+  DeedInclNationalShare = sprintf("%.1f", 100 * sum(state_counts$fam_incl_samep) / sum(state_counts$n_all)),
+  DeedInclCAShare = sprintf("%.1f", 100 * ca_counts$fam_incl_samep / ca_counts$n_all)
 )
 writeLines(paste0("\\newcommand{\\", names(descriptive_numbers), "}{",
                   descriptive_numbers, "}"), path(tables_dir, "descriptive_numbers.tex"))

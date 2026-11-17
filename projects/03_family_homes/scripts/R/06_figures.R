@@ -191,7 +191,7 @@ save_fig(f2d, "F2d_state_trust_ratio_2007_2023", width = 7, height = 8)
 # ---- F3: KM survival curves ----------------------------------------------
 km <- readRDS(path(out_dir, "hazard_km_curves.rds"))
 label_map <- c(
-  family_all = "Family transfers (main definition)",
+  family_all = "Family transfers (main family measure)",   # 11/12/2026: approved proofreading CO-1
   family_person = "Family transfer (same surname)",
   family_trust  = "Interfamily trust deeds",
   market_sale   = "Market purchase"
@@ -205,7 +205,7 @@ f3_dat <- km |>
 f3 <- ggplot(f3_dat, aes(t / 12, surv, color = lab)) +
   geom_line(linewidth = 0.9) +
   scale_color_manual(values = c(
-    `Family transfers (main definition)` = palette_paper()[1],
+    `Family transfers (main family measure)` = palette_paper()[1],
     `Family transfer (same surname)` = "#6986A7",
     `Market purchase` = palette_paper()[2],
     `Interfamily trust deeds` = palette_paper()[3]

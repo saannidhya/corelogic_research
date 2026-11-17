@@ -11,7 +11,7 @@
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 audit_dir <- path(tables_out_dir, "interfamily_audit_2026-10-31")
 con <- open_corelogic_duckdb(memory_limit="1GB",threads=1)
-panel_file <- sql_quote_path(path(data_dir,"events.parquet"))
+panel_file <- sql_quote_path(events_panel_path)
 expected <- dbGetQuery(con,glue("SELECT state,count(*) AS n FROM read_parquet('{panel_file}')
   WHERE sale_year BETWEEN 2007 AND 2023 GROUP BY state"))
 dbDisconnect(con,shutdown=TRUE)

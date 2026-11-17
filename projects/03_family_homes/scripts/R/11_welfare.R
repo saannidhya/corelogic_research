@@ -12,8 +12,10 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 source(path(r_dir, "11_welfare_helpers.R"))
 set.seed(20260921)
 con <- open_corelogic_duckdb(threads = 4L)
-dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
-ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
+dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(duckdb_temp_dir)}'"))
+# Family measure of 2026-11-12 (00_setup.R): same-person and entity deeds relabelled out of the
+# family classes; see quality_reports/2026-11-12_same_person_retitles.md.
+ev <- events_main_from(events_panel_path)
 fam_classes <- family_classes
 save_csv <- function(x, name) write_csv_strict(x, path(tables_out_dir, paste0("welfare_", name, ".csv")))
 read_result <- function(name) read_csv(path(tables_out_dir, name), show_col_types = FALSE)

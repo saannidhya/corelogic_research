@@ -10,7 +10,7 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 audit_dir <- path(tables_out_dir,"interfamily_audit_2026-10-31")
 con <- open_corelogic_duckdb(memory_limit="2GB",threads=1)
 dbExecute(con,"SET preserve_insertion_order=false")
-panel_file <- sql_quote_path(path(data_dir,"events.parquet"))
+panel_file <- sql_quote_path(events_panel_path)
 states <- dbGetQuery(con,glue("SELECT DISTINCT state FROM read_parquet('{panel_file}')
  WHERE sale_year BETWEEN 2007 AND 2023 AND class='family_other'"))$state
 results <- list()

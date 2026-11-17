@@ -4,7 +4,7 @@
 # Purpose: National/California/state volumes by taxonomy class; family:market ratios;
 #          validation moments (zero-price, absentee); property correlates
 #          (structure age, value tier, senior exemption) via prop join.
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #          data/corelogic_extracts/by_state/prop/ (correlates join only)
 # Outputs: _outputs/tables/fact_national_by_year_class.csv
 #          _outputs/tables/fact_california_by_year_class.csv
@@ -33,11 +33,15 @@ message("Starting 02_facts at ", Sys.time())
 # Importing event data ----
 # ============================================================
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 
-# Family transfers include the flagged residual without a surname match.
-# Trust deeds and same-person retitles remain separate.
+# Family measure (author's decision 2026-11-12): the class-based proxy minus same-person
+# (owner_retained) and entity (unrelated_entity) deeds. read_events_df() relabels those rows
+# 'family_samep_entity', so `class %in% fam_classes` below IS the new measure and the old
+# measure ("including same-person and entity deeds") is that plus 'family_samep_entity'.
+# Trust deeds and exact same-person retitles (class family_retitle) remain separate.
+# See quality_reports/2026-11-12_same_person_retitles.md.
 fam_classes <- family_classes
 
 # Trust-rule tallies by year come straight from the parquet (trust_rel is NULL
@@ -145,12 +149,16 @@ headline <- ev_window %>%
     trust = sum(class == "family_trust", na.rm = TRUE),
     # Retain the wide alias for downstream compatibility; main = wide.
     fam_wide = sum(class %in% c(fam_classes, "family_other")),
+    # upper bound: the old class-based proxy, including same-person and entity deeds
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
     market = sum(class == "market_sale", na.rm = TRUE),
     .groups = "drop"
   ) %>%
   left_join(trust_by_year, by = "sale_year") %>%
   mutate(
     share_family_all = fam_broad / n_all,
+    share_family_incl_samep_all = fam_incl_samep / n_all,
+    ratio_incl_samep = fam_incl_samep / market,
     share_narrow_all = fam_narrow / n_all,
     ratio_conservative = fam_conservative / market,
     ratio_broad = fam_broad / market,
@@ -174,6 +182,7 @@ st <- ev_pooled %>%
   group_by(state) %>%
   summarize(
     fam_broad = sum(class %in% fam_classes),
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
     trust = sum(class == "family_trust", na.rm = TRUE),
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),
@@ -192,7 +201,9 @@ st_full <- ev_window %>%
     family_person = sum(class == "family_person", na.rm = TRUE),
     family_other = sum(class == "family_other", na.rm = TRUE),
     family_estate = sum(class == "family_estate", na.rm = TRUE),
+    family_samep_entity = sum(class == family_samep_label, na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
     trust = sum(class == "family_trust", na.rm = TRUE),
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),

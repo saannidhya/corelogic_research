@@ -1,55 +1,61 @@
 \section{Tax Incentives \& Family Transfers: Proposition 19}\label{sec:prop19}
 
-\subsection{Institutional background}
+California gave families a deadline. A deed made by February 16, 2021, could pass a parent's home to a child together with the parent's decades-old property-tax assessment. After that day, a child who did not move in lost the assessment. What did families do in the weeks before the deadline, and what did they do after it? This section shows that the answer to the first question is clear and the answer to the second is not.
 
-Proposition~13 (1978) fixed each California parcel's assessed value at its
-acquisition price, with growth capped at two percent per year; reassessment
-to market value occurs only at a change in ownership. Proposition~58 (1986)
-exempted parent-to-child transfers from this reassessment---for a principal
-residence of unlimited value plus up to \$1 million of assessed value of
-other property---and Proposition~193 (1996) extended the exemption to
-grandparent-grandchild transfers. A child could therefore inherit not just a
-house but its decades-old tax bill, and keep that tax bill while renting the
-house out. The Legislative Analyst's Office estimated that 60,000 to 80,000
-inherited properties escaped reassessment each year under this regime
-\citep{lao2017inheritance}.
+\subsection{Institutional background}\label{subsec:institutions}
 
-Proposition~19, passed by voters on November 3, 2020, narrowed the exclusion
-sharply, effective February 16, 2021: it now applies only when the home was
-the parent's principal residence \emph{and} the child makes it their own
-principal residence within a year, and only up to the inherited taxable value
-plus \$1 million (inflation-adjusted); the exclusion for rentals, vacation
-homes, and other non-primary-residence property was eliminated, with a
-carve-out for family farms \citep{boe2025prop19, lao2020prop19}. For an otherwise eligible non-occupant heir, the reform removes the inherited-assessment advantage. This raises the tax cost of retention relative to sale, although the family may respond by changing paperwork, timing, occupancy, or ownership rather than by listing the home.
-County assessors reported a flood of parent-child filings ahead of the
-deadline.\footnote{Sonoma County, for example, received roughly five times
-its typical volume of parent-child exclusion filings in the weeks before the
-February 15, 2021 deadline (North Bay Business Journal, February 2021); the
-Los Angeles County assessor accumulated a multi-year backlog of roughly
-20,000 claims (Los Angeles County Auditor-Controller, 2025).} The reform's
-other arm---expanded portability of assessments for movers aged 55 and over,
-effective April 1, 2021---affects market sales rather than family transfers;
-market sales therefore need not be an untreated comparison group. The triple difference below uses them as the comparison deed group.
+Proposition~13 (1978) fixed each California parcel's assessed value at its acquisition price, with growth capped at two percent a year. A parcel is reassessed to market value only when ownership changes. Proposition~58 (1986) excluded parent-to-child transfers from reassessment. The exclusion covered a principal residence of any value, plus up to \$1 million of assessed value of other property. Proposition~193 (1996) extended it to grandparent-to-grandchild transfers \citep{boe2025prop19}. A child could therefore inherit a house and its old tax bill together, whether or not the child lived in it. The Legislative Analyst's Office estimated that 60,000 to 80,000 inherited properties a year escaped reassessment under this regime \citep{lao2017inheritance}. Transfers between spouses were excluded from reassessment as well, and remain so.
 
-Throughout this section, family transfers use the main proxy: same-surname interfamily, estate/executor, and other interfamily deeds without a surname match. Trust deeds and same-person retitles remain excluded. The proxy includes spouses and potentially other related-party conveyances beyond the parent-child transfers targeted by Proposition~19. Appendix~\ref{app:robustness} examines trust-inclusive definitions. We retain the existing policy windows and state comparisons; widening the measured deed group does not change the identifying assumptions.
+Voters approved Proposition~19 on November 3, 2020. The Board of Equalization gives December 16, 2020, as its effective date and February 16, 2021, as the date its parent-child and grandparent-grandchild provisions became operative \citep{boe2025prop19}. The date needs care. The constitutional text keeps the old rule for transfers on or before February 15. But February 15, 2021, was a state holiday, and California's statutes extend by one day a deadline that falls on a state holiday. The Board therefore accepts deeds made by February 16 under the old rule. It presumes that a deed's recording date is its transfer date, though an earlier notarized date is accepted if shown. An inheritance must occur by February 15, because the date of death is the date of transfer. We treat February 16 as the last day of the old regime in the signing-date ratios below, and we show recording dates as well.
 
-Figure~\ref{fig:bunching} compares California's monthly family counts with California's 2019 count in the same calendar month scaled by contemporaneous family-transfer growth in the other states and DC. Over January 2018--May 2020, its mean absolute percentage error is \PolicyCFMAE\ percent and RMSPE is \PolicyCFRMSPE\ percent. California is \PolicyEarlyExcess\ percent above this counterfactual in January--May 2020. June 2020--February 2021 contains \PolicyAnticDeeds\ excess deeds, \PolicyAnticPercent\ percent above counterfactual. We interpret this as a window-specific descriptive excess: earlier policy information, California-specific shocks, and the choice of baseline can also contribute.
+After the deadline, the exclusion applies only to a home that was the parent's principal residence and becomes the child's principal residence within a year, or to a family farm \citep{boe2025prop19, lao2020prop19}. The child must claim the homeowners' or disabled veterans' exemption within that year. Rentals and second homes lose the exclusion. Relief for an occupant heir is also capped. The heir keeps the home's old taxable value plus \$1 million, and any market value above that sum is added to the tax base. The \$1 million is adjusted every two years: it was \$1,000,000 for transfers from February 16, 2021, to February 15, 2023, and \$1,022,600 for transfers through February 15, 2025. A non-occupant heir is reassessed to market value. A grandchild qualifies only if the grandchild's parent who is the grandparent's child has died. A transfer through a trust, or by operation of law, counts as a transfer.
 
-\begin{figure}[!t]\centering
-\includegraphics[width=0.92\linewidth]{figures/F4_prop19_bunching.png}
-\caption{Monthly California family-proxy deeds and the 2019-scaled donor-growth counterfactual. The family proxy includes other interfamily deeds. Policy windows and event lines follow the existing design.}\label{fig:bunching}
-\end{figure}
+The reform has a second arm that does not touch family deeds. From April~1, 2021, owners aged 55 or over, severely disabled owners, and victims of a disaster can carry their taxable value to a replacement home anywhere in California, up to three times for the first two groups \citep{boe2025prop19}. That arm affects market sales, not the transfer of a home from parent to child, and so market sales are not a clean comparison group. We return to this below.
 
-\subsection{Empirical Strategy}
+\subsection{Why would a parent deed a house to a child early?}\label{subsec:framework_v2}
 
-We compare California with the other 49 states and the District of Columbia.
-Identification requires that, absent the reform, California's family-transfer
-trajectory would have followed the relevant control trajectory.
+Before 2021, California gave a parent no property-tax reason to deed a home to a child while alive. In early 2021 it gave one, for a few weeks. The reason is a simple trade, and it fits on one line.
 
-\subsubsection{Triple difference}
+\paragraph{The old rule.}
+A home is worth $p$. The parent bought it for $b$ and carries an assessed value $A_0<p$. Under the old rule, a child who received the parent's principal residence kept $A_0$ whatever the home was worth, and whether the parent gave it or left it at death. The tax code then favored waiting. A deed passes the parent's tax basis $b$, so a child who sells pays capital gains tax at rate $\tau$ on $p-b$. A bequest passes a basis equal to the home's value at death. The assessment survived either way, and only waiting wiped out the capital gains. Early deeds had other reasons, such as probate or care planning.
 
-We stack family transfers and market sales and estimate
-the following triple-difference specification using annual data:
+\paragraph{The deadline.}
+Proposition~19 changed the comparison. A transfer after the deadline keeps the parent's assessment only if the child moves in, and then only up to the cap. Think of the parent at the deadline. Let $m=1$ if the child will move in and $m=0$ if not. Let $t$ be the tax rate, $r$ the discount rate, $L$ the value-cap allowance, and $\sigma$ the chance that the child sells. The parent should deed before the deadline if
+\begin{equation}
+  (1-\sigma)\,\frac{t\left[(p-A_0)-m\min(p-A_0,\,L)\right]}{r}
+  \;\geq\; \sigma\,\tau\,(p-b).
+  \label{eq:deadline}
+\end{equation}
+The left side is the capitalized property-tax saving from beating the deadline, earned only if the child keeps the home. The right side is the capital gains tax from carryover basis, paid only if the child sells. Both sides fall at the parent's death, so discounting cancels. The annual saving from an inherited assessment $A$, the wedge $t(p-A)$, is the object of Section~\ref{subsec:wedge}. It is the full $t(p-A_0)$ only for a child who does not move in.
+
+\paragraph{After the deadline.}
+The saving is gone, and a deed now costs something. For a child who does not move in, an early deed brings reassessment forward by the parent's remaining years, while a bequest defers it. An early deed after the deadline needs a non-tax reason strong enough to cover that cost and the lost step-up in basis.
+
+\paragraph{Predictions.}
+The model has five predictions. The evidence below speaks to each, except the dependence on holding length in the first, which we do not test.
+\begin{enumerate}
+  \item The rush sits in deeds a family can time. It is largest for long-held homes, where $p-A_0$ is big, and smaller for heavily appreciated homes, where the gain $p-b$ is big. It is absent from spouse deeds, which the rule does not touch.
+  \item Families who rush plan to keep, because a child likely to sell makes carryover basis expensive. Rushed deeds should be resold less (Section~\ref{subsec:resale}).
+  \item The rush leaves only a small hole. The parents who beat the deadline are mostly parents who would have held the home until death, and the bequests they gave up would have come decades later. Moved forward, they leave a shortfall spread thin over those decades, not a pit in 2021 and 2022. Only near-term transfers pulled forward by months leave a visible dip right afterward.
+  \item After the deadline, lifetime deeds to children fall, since waiting now costs nothing in property tax and saves the step-up. Spouse deeds should not fall (Section~\ref{subsec:decline}).
+  \item Transfers triggered by a death should not fall for tax reasons, because the death that triggers them cannot be chosen, although the date of the deed can. We expected chain-verified trust-to-heir deeds to be mostly such distributions, but they rush hardest at the deadline, so many of them are lifetime transfers. The data cannot show whether the parent was alive at the deed, and this prediction has no clean test (Section~\ref{subsec:decline}).
+\end{enumerate}
+Two further predictions we do not test. Heirs who do not move in should sell more often, which needs occupancy data at the parcel level. And the fall should be larger for younger parents, which needs a proxy for the parent's age. We state both as predictions, not as findings.
+
+\paragraph{Other tax margins.}
+Other margins matter, none of them central. The step-up in basis erases an heir's accrued gain, so the capital gains tax bears on the living. An owner has a reason to hold an appreciated home until death and pass it on with a stepped-up basis \citep{autenjoulfaian2001bequest}. A child who receives the home as a gift carries the parent's basis and owes tax on the parent's gain at a sale. A tax on the gain from selling a home does keep owners in place \citep{shan2011capital}, and this lock-in is separate from the property tax.
+The portability arm described above touches market sales. The federal gift and estate tax enters as one lifetime exemption, set in the millions of dollars, which covers gifts and bequests alike. It favors neither route and binds only for the largest homes. Transfer taxes fall on sales rather than on gifts.\footnote{California Revenue and Taxation Code, sections 11911 and 11930 (the Documentary Transfer Tax Act). Section 11911 lets a county tax each deed that conveys realty sold for more than \$100. Section 11930 exempts a deed made as a lifetime gift or by reason of a death.}
+Finally, the reform is expected to raise property-tax revenue for local governments and schools, because heirs who do not qualify are reassessed \citep{lao2020prop19}. Whether the homes themselves change hands is what our data cannot say.
+
+\subsection{Measure and design}\label{subsec:design}
+
+Our family measure for this section is the main family measure without death affidavits, plus chain-verified trust-to-heir deeds. The main family measure is the set of same-surname interfamily deeds, estate and executor deeds, and other interfamily deeds between two distinct people, described in Section~\ref{sec:data}; same-person and entity deeds are out. We drop affidavits of death from it, because in 2018 a change in how the vendor codes them with a trust party moved their count sharply upward, from \SIIIAfTrustCATwentySeventeen\ deeds in 2017 to \SIIIAfTrustCATwentyEighteen\ in 2018. That break falls inside the 2017--19 base period and spoils any comparison between 2017--19 and 2022--23. A chain-verified trust-to-heir deed is one where an earlier deed moved the home from a person into a trust with no market sale in between, and the trust later deeded it to a different person with the same surname. The chain is traced over the preceding ten years, which is complete only from 2017, so we use these deeds from 2017 on. We call the sum the Section~\ref{sec:prop19} measure. A broader measure, which adds every other trust-to-person deed, bounds the trust link from above; we call it the trust-inclusive measure. The upper bound of Section~\ref{sec:data} is a different object: it adds back same-person and entity deeds. Spouse deeds are part of the Section~\ref{sec:prop19} measure, since they are transfers within the family, although they are not intergenerational.\footnote{In California, spouse deeds are \SIVSpouseShareMainPre\ percent of the Section~\ref{sec:prop19} measure in 2017--19 and \SIVSpouseShareMainPost\ percent in 2022--23. They are identified only in California and Arizona, by document type, so no other state can separate them. They stay in the measure because they are transfers within the family. They are also the one deed type other states cannot split from the rest, so dropping them only in California would break the comparison with the other states. Section~\ref{subsec:bytype} reports them separately as a comparison series.} Appendix Table~\ref{tab:s4classes} shows how every California deed class moved.
+
+A deed is not a house. The unit of the data is the deed, and a home can be deeded more than once. For the Section~\ref{sec:prop19} measure the number of deeds per parcel within a year runs from \SIVDeedsPerParcelYearMin\ to \SIVDeedsPerParcelYearMax, and is \SIVDeedsPerParcelRush\ in the rush window, so counts of deeds and counts of homes tell nearly the same story within a year. Across all years the national figure for the earlier proxy is \SIVDeedsPerParcelNational\ deeds per parcel.
+
+We compare California with the other 49 states and the District of Columbia. To measure the rush, we compare California's monthly count with its count in the same calendar month of 2019, scaled by the contemporaneous change in the other states. A ratio above one means California ran above that counterfactual. This is descriptive: the counterfactual can fail for any reason that moved California differently from other states in 2020 and 2021.
+
+To measure the decline we stack family transfers and market sales and estimate a triple difference with annual data:
 \begin{equation}
  \begin{aligned}
   \log N_{gsy}&=\alpha_{gs}+\lambda_{gy}+
@@ -59,53 +65,102 @@ the following triple-difference specification using annual data:
   +\varepsilon_{gsy},
  \end{aligned}
 \end{equation}
-where $N_{gsy}$ counts deeds of group $g\in\{F,M\}$ (family transfers or
-market sales) in state $s$ and year $y$, with state and year fixed effects that vary by group. The coefficient $\gamma$ is California's post-reform change in market
-sales, and $\delta$ is the triple difference: the change in California family
-transfers net of the change in California market sales, each relative to
-other states. Netting market sales matters because California's market sales
-also fell after 2021, and the reform's portability provisions may affect
-them. With group-specific effects, $\delta$ equals the difference between
-separate family and market difference-in-differences coefficients. The sample
-includes 2017--2019 and 2022--2023, excluding the anticipation and transition
-years 2020--2021. We report conventional state-clustered standard errors
-for scale. Their reliability is limited with California as the only treated
-state; the number of control states does not by itself resolve this limitation.
-
-\subsubsection{Event-study design}
-
-To separate anticipation from the post-deadline response, we estimate a
-monthly event study over 2018--2023 using the following specification:
+where $N_{gsy}$ counts deeds of group $g\in\{F,M\}$ (a family group or market sales) in state $s$ and year $y$, with state and year fixed effects that vary by group. The coefficient $\gamma$ is California's post-reform change in market sales, and $\delta$ is the triple difference: the change in California family transfers net of the change in California market sales, each relative to other states. The sample is 2017--2019 and 2022--2023. We exclude 2020 and 2021 as the anticipation and transition years. We also estimate a monthly event study over 2018--2023,
 \begin{equation}
-  \log F_{st}=\alpha_s+\lambda_t+
-  \sum_{\tau\in\mathcal{T}\setminus\mathcal{B}}
-  \beta_\tau\,\mathbf{1}\{s=\mathrm{CA}\}\mathbf{1}\{t=\tau\}
-  +\varepsilon_{st},
+  \log N_{sk}=\alpha_s+\lambda_k+
+  \sum_{j\in\mathcal{K}\setminus\mathcal{B}}
+  \beta_j\,\mathbf{1}\{s=\mathrm{CA}\}\mathbf{1}\{k=j\}
+  +\varepsilon_{sk},
 \end{equation}
-where $t$ indexes calendar months, $\mathcal{T}$ is the sample period, and
-$\mathcal{B}$ pools January 2018--December 2019 as the omitted baseline.
-State and year-month fixed effects absorb persistent state differences
-and common shocks; $\beta_\tau$ measures California's differential change
-relative to the baseline. 
-% If any state-month count is zero, we use
-% $\log(1+F_{st})$ throughout. 
-We report clustered confidence intervals at the state level.
+where $N_{sk}$ counts family deeds in state $s$ and month $k$, $\mathcal{K}$ is the set of sample months, and $\mathcal{B}$ pools January 2018--December 2019 as the omitted baseline. Standard errors are clustered by state. With California the only treated state they are a scale, not a guarantee, and we do not report permutation or placebo-rank inference.
 
-\subsection{Results: deadline activity and the subsequent decline}
+\subsection{The deadline rush}\label{subsec:rush}
 
-Table~\ref{tab:prop19} retains the annual comparison of 2017--2019 with 2022--2023, excluding 2020--2021. The family-only coefficient is \PolicyFamilyLog\ log points and the market-sale coefficient is \PolicyMarketLog{}. Their difference is \PolicyNetLog\ log points, a \WelfareNetPercent\ percent reduction relative to market sales, or approximately \WelfareFlow\ deeds annually when scaled by the 2018--2019 California baseline. Market sales can themselves respond to the reform's portability provisions; the triple difference estimates a relative deed response, not an isolated effect on parent-child successions.
-
-\input{tables/T4_prop19.tex}
-
-Figure~\ref{fig:event_study} retains the monthly fixed-effects specification and pooled 2018--2019 baseline. January--May 2020 coefficients average \PolicyESEarly\ log points; February 2021 is \PolicyESDeadline\ and the 2022--2023 average is \PolicyESPost{}. The graph describes timing relative to that baseline rather than establishing the absence of earlier anticipation. The displayed state-clustered intervals should be interpreted cautiously with one treated state.
+Figure~\ref{fig:s4daily} shows what families did in the six weeks before the deadline. It plots deeds per signing day, as a multiple of the January 2021 daily mean, for three groups. Chain-verified trust-to-heir deeds climb to more than twice their January pace by the second week of February, and then collapse. Parent-child lifetime deeds follow the same shape at a smaller scale. Spouse deeds do nothing of the kind.
 
 \begin{figure}[!t]\centering
-\includegraphics[width=0.95\linewidth]{figures/F_event_study_monthly.png}
-\caption{Monthly event-study coefficients for California family-proxy deeds relative to the other states and DC, with pooled 2018--2019 as the reference. The main proxy includes other interfamily deeds. Intervals are state-clustered and have limited reliability with one treated state.}\label{fig:event_study}
+\includegraphics[width=0.95\linewidth]{figures/F_s4_daily_rush.png}
+\caption{California deeds per signing day, January--April 2021, as a multiple of the January 2021 daily mean. Thick lines are seven-day moving averages; thin lines are daily counts. The dashed line marks February 16, 2021, the last day on which a deed could be made under the old rule. Spouse deeds are identified by document type in California only.}\label{fig:s4daily}
 \end{figure}
 
-The \PolicyAnticDeeds\ excess deeds in the maintained anticipation window equal \PolicyRetimingPercent\ percent of the \PolicyPostMissing\ shortfall during March 2021--December 2022. This accounting comparison does not identify how many later deeds were moved forward. Its interpretation depends on the counterfactual, the window, and the assumption that the deed groups measure comparable transfers over time.
+The break is sharp in the raw counts. Chain-verified trust-to-heir deeds signed on Friday, February 12, number \SIVHeirSignFridayTwelve. Those signed on Tuesday, February 16, the last day the old rule allowed, number \SIVHeirSignTuesdaySixteen. Recorded deeds tell the same story: per business day, the Section~\ref{sec:prop19} measure averages \SIVMainRecBeforeMean\ recorded deeds on February 10--12 and \SIVMainRecAfterMean\ on February 17--19, and chain-verified trust-to-heir deeds go from \SIVHeirRecBeforeMean\ to \SIVHeirRecAfterMean.
 
-The causal interpretation requires California's untreated trajectory to follow its comparison trajectory. A single treated state, pandemic-related planning and mortality, possible earlier anticipation, the portability arm affecting market sales, and changes in legal vehicles remain threats. Lack of random assignment alone does not invalidate an observational design, but the deed response cannot by itself identify a release of homes to the market. Section~\ref{sec:welfare} makes the additional allocation assumptions explicit.
+Table~\ref{tab:s4rush} puts numbers on it. In January and February 2021 the Section~\ref{sec:prop19} measure ran \SIVMainJanFeb\ times the counterfactual, and it ran \SIVMainMarApr\ times in March and April. Over the nine months from June 2020 to February 2021 it ran \SIVMainNine\ times. The deadline ratio compares the mean deeds per signing day for February 17--28 with February 1--16. For the Section~\ref{sec:prop19} measure it is \SIVMainDeadlineSign\ in California in 2021, against \SIVMainDeadlineSignPrior\ for the same calendar days in California in 2019 and \SIVMainDeadlineSignOther\ in other states in 2021. A ratio below one means the pace fell after the deadline. After all, a deed that a family can sign tomorrow or in a month is one a family can bring forward.
 
-Appendix~\ref{app:scm} reports a donor-weighted synthetic-control comparison as a sensitivity analysis.
+\input{tables/T_s4_rush.tex}
+
+\subsection{Who rushes and who does not}\label{subsec:bytype}
+
+The rush is concentrated in the deeds a family can time. Chain-verified trust-to-heir deeds are the sharpest case: they ran \SIVHeirJanFeb\ times the counterfactual in January and February, and their deadline ratio is \SIVHeirDeadlineSign. The chain does not show whether the parent was alive at the deed. A distribution after a death had no reason to beat the deadline, since the date of death is the date of transfer, so a rush this large suggests that many of these deeds were lifetime transfers out of a living parent's trust. Direct parent-child lifetime deeds ran \SIVPcJanFeb\ times, with a deadline ratio of \SIVPcDeadlineSign. The trust-inclusive measure, which adds every other trust-to-person deed, looks like the Section~\ref{sec:prop19} measure (\SIVUpperJanFeb\ in January and February, \SIVUpperDeadlineSign\ at the deadline).
+
+Spouse deeds, which the law does not affect, are the comparison, and they are only partly clean. Their deadline ratio is \SIVSpouseDeadlineSign, so they show no break at the deadline. But their January and February count, \SIVSpouseJanFeb\ times 2019 in California, is well above normal, and it stays high through March and April (Table~\ref{tab:s4rush}). That is what one expects if some spouse deeds are recorded with refinances and purchases, which were themselves unusually active in 2020 and 2021. Spouse deeds therefore control for the boom in the sense that they show no deadline break, but they do not show a level that is flat.
+
+Two further series should be flat at the deadline and are not. Trust-to-settlor deeds, in which a trust returns a home to the person who funded it, have a large January and February excess (\SIVSettlorJanFeb) and only a mild break (\SIVSettlorDeadlineSign). That pattern looks more like refinancing than like family timing. Same-person retitles, now outside the measure, break by less (\SIVRetitleDeadlineSign). And affidavits of death show a deadline ratio of \SIVAffidavitDeadlineSign, with a January and February excess of their own (Table~\ref{tab:s4rush}). The death cannot be chosen, but the date of the affidavit can, and the dip is a reason to be modest about how specific the break is. The deadline break is concentrated in deeds a family can time, but it is not confined to them: the deeds that rush hardest also break hardest, but not only they break.
+
+\subsection{The rush by the size of the tax saving}\label{subsec:gradient}
+
+The first prediction says the rush should be largest where beating the deadline saved the most, where $p-A_0$ is big, and California's own parcels can check this without other states. We sort the \RTWOParcels\ single-family and condominium parcels on the 2008--2009 roll by their annual wedge $\hat w$ (Section~\ref{subsec:wedge}) at the January 1, 2019 lien date, before Proposition~19 reached the ballot, into a zero-wedge bin (\RTWOZeroShare\ percent) and ten deciles of the positive wedge. The \RTWOAtRiskJFTwentyOne\ parcels with no arm's-length sale between January 2019 and January 2021 are at risk in 2021. The rush is the share of parcels at risk with a deed of the Section~\ref{sec:prop19} measure signed in January or February 2021, over the same share in 2019. The deadline ratio is as in Table~\ref{tab:s4rush}.
+
+\input{tables/T_s4_gradient.tex}
+
+\begin{figure}[!t]\centering
+\includegraphics[width=0.95\linewidth]{figures/F_s4_gradient.png}
+\caption{The deadline rush by the parcel's tax wedge, California. Left: parcels at risk with a deed of the series signed in January--February 2021, relative to the same rate in January--February 2019. Right: deeds per signing day on 17--28 February 2021 over 1--16 February 2021. Bins are the zero wedge and the ten deciles of the positive wedge at the January 2019 lien date (Table~\ref{tab:s4gradient}).}\label{fig:s4gradient}
+\end{figure}
+
+The rush and the deadline break are present at every level of the wedge and far stronger in the top three tenths (Table~\ref{tab:s4gradient}, Figure~\ref{fig:s4gradient}). In deciles one to seven the rush runs from \RTWORushMainDOneSevenLow\ to \RTWORushMainDOneSevenHigh\ and the deadline ratio from \RTWODeadlineMainDOneSevenLow\ to \RTWODeadlineMainDOneSevenHigh. Above \$\RTWOWedgeDEightMin\ a year, the eighth decile, both steepen. In the top decile, above \$\RTWOWedgeDTenMin, the rush is \RTWORushMainDTen\ and the deadline ratio \RTWODeadlineMainDTen. In a Poisson regression of county-by-bin counts with county fixed effects, the rush rises \RTWORushSlopeMain\ log points per decile (standard error \RTWORushSlopeMainSE), about \RTWORushSlopeMainPct\ percent, and the deadline ratio changes by $\RTWODeadlineSlopeMain$ log points per decile (\RTWODeadlineSlopeMainSE) against the same days of 2019. Standard errors are clustered by county, a comparison within California, not the state-rank inference that one treated state rules out.
+
+Spouse deeds and affidavits of death do not share the rush gradient (slopes $\RTWORushSlopeSpouse$ and $\RTWORushSlopeAffidavit$). At the deadline spouse deeds show none ($\RTWODeadlineSlopeSpouse$), but affidavits show a smaller gradient of their own ($\RTWODeadlineSlopeAffidavit$, standard error \RTWODeadlineSlopeAffidavitSE), so they are a weaker comparison there.
+
+Parcels with no wedge rush too: their rush is \RTWORushMainZero\ and their deadline ratio \RTWODeadlineMainZero, against a rush of \RTWORushSpouseZero\ for spouse deeds and \RTWORushAffidavitZero\ for affidavits in the same bin. A zero wedge built from a predicted value is measured with error, and part of the rush may have nothing to do with the property tax. The gradient speaks to the intensive margin: where the deadline was worth more, many more families deeded the home before it.
+
+\subsection{Rushed transfers are resold less}\label{subsec:resale}
+
+The model says families who beat the deadline plan to keep the home. Panel B of Table~\ref{tab:s4prop19} tests this with the share of homes resold within 24 months. We compare California deeds recorded between June 2020 and February 2021 with deeds recorded in the same months of 2018 and 2019, and subtract the same change in the other states. Rushed deeds are resold less. The difference in differences is $\SIVMainResaleDD$ percentage points for the Section~\ref{sec:prop19} measure and $\SIVHeirResaleDD$ for chain-verified trust-to-heir deeds. For deeds recorded in January and February 2021 alone it is $\SIVMainResaleJanFebDD$ and $\SIVHeirResaleJanFebDD$.
+
+\input{tables/T_s4_prop19.tex}
+
+But the result is not specific to the rush. For spouse deeds, which the rule does not touch, the share resold changes by $\SIVSpouseResaleChange$ percentage points in California between the same cohorts, and for market sales the difference in differences is $\SIVMarketResaleDD$. Trust-to-settlor deeds show almost no change ($\SIVSettlorResaleDD$). Part of the fall in resales may therefore be a California-wide shift in 2020 and 2021, when low rates and a pandemic changed who sold homes. The resale evidence is consistent with the keep-it prediction. It does not by itself identify it. These are differences in means with no standard errors.
+
+\subsection{The decline after the reform: hedged supporting evidence}\label{subsec:decline}
+
+The reform should also have reduced lifetime transfers afterwards. Panel A of Table~\ref{tab:s4prop19} reports the triple difference. For the Section~\ref{sec:prop19} measure it is $\SIVMainDDD$ log points (standard error \SIVMainDDDSE), a change of $\SIVMainDDDPct$ percent relative to the change in California market sales. The coefficient is consistent with the reform. We do not read it as the reform's effect, for four reasons that sit beside it.
+
+\begin{figure}[!t]\centering
+\includegraphics[width=0.95\linewidth]{figures/F_s4_event_study.png}
+\caption{Monthly event-study coefficients, California relative to the other states and DC, log points, with pooled 2018--2019 as the reference (shaded). The dotted line marks the start of the June 2020--February 2021 window and the dashed line February 2021. Intervals are state-clustered and have limited reliability with one treated state. Chain-verified trust-to-heir deeds are used from 2017 on.}\label{fig:event_study}
+\end{figure}
+
+First, the decline is shared by deed types the law does not touch. Same-person retitles, where an owner moves a home between the owner's own names, have a triple difference of $\SIVRetitleDDD$ (\SIVRetitleDDDSE). Trust-to-settlor deeds have $\SIVSettlorDDD$ (\SIVSettlorDDDSE). Both fall more than the Section~\ref{sec:prop19} measure, and neither is a transfer to a child. Parent-child lifetime deeds, the deeds the reform targets most directly, fall by $\SIVPcDDD$ (\SIVPcDDDSE), more than the Section~\ref{sec:prop19} measure but of the same order.
+
+Second, the timing is wrong for a deadline effect. Figure~\ref{fig:event_study} shows the Section~\ref{sec:prop19} measure falling back to its baseline within weeks of the deadline, and the event-study mean for March through December 2021 is $\SIVMainESTwentyOne$ log points, close to zero. The decline builds through 2022 (mean $\SIVMainESTwentyTwo$) and 2023 ($\SIVMainESTwentyThree$). That path matches the rise in mortgage rates that began in 2022, which reduces refinancing and the retitling deeds that come with it. It fits a reform that became operative in February 2021 about as well.
+
+Third, against California's own spouse deeds the fall is about zero. The change in log annual deeds in California from 2017--19 to 2022--23 is $\SIVMainLogChange$ for the Section~\ref{sec:prop19} measure, $\SIVSpouseLogChange$ for spouse deeds and $\SIVMarketLogChange$ for market sales. Subtract the spouse change from the Section~\ref{sec:prop19} measure's and the difference is $\SIVMainLessSpouse$. If spouse deeds are the right control for refinancing and California-specific forces, then there is little left for the reform. If they are not, because the law excludes spouses and the reform may have shifted other deeds toward spouse deeds, there is more. We cannot tell which. Appendix Table~\ref{tab:s4classes} reports this change for every California deed class.
+
+Fourth, the shortfall is larger than retiming alone would produce, but it rests on an extrapolation. The counterfactual is the monthly one of Section~\ref{subsec:design}: California's count in the same month of 2019, scaled by the change in the other states. Through June 2024, California's Section~\ref{sec:prop19} measure ran \SIVMainRush\ deeds above that counterfactual during the rush and \SIVMainShortfall\ below it afterwards, so the rush is \SIVMainRushShortfall\ of the shortfall, or about a quarter, and the shortfall is about four times the rush. Appendix Table~\ref{tab:s4hole} reports the comparison for each group, net of market sales, and for the sensitivities ending in December 2023 and May 2024. The model predicts a small hole, since the rushed deeds come mostly from parents who would have held the home for decades. Measured against this counterfactual, a hole four times the rush is more than retiming. But the counterfactual extends one base year across 40 months of pandemic, refinancing and rising rates, and series the reform cannot deter, such as all affidavits of death, fall short of it by amounts of the same order (Table~\ref{tab:s4hole}). The shortfall may be deterrence, as the reform predicts, or a counterfactual that drifts.
+
+Chain-verified trust-to-heir deeds rush hardest at the deadline, and net of market sales they do not fall afterwards. Their triple difference is $\SIVHeirDDD$ (\SIVHeirDDDSE), indistinguishable from zero, and their event-study mean for March through December 2021 is $\SIVHeirESTwentyOne$. Without the market-sale adjustment their difference in differences is $\SIVHeirDiD$, and their event-study means for 2022 and 2023 are $\SIVHeirESTwentyTwo$ and $\SIVHeirESTwentyThree$. Against the monthly counterfactual, their shortfall through June 2024 (\SIVHeirShortfall\ deeds) is smaller than their rush (\SIVHeirRush), which is what retiming alone would produce. Because the same deeds spike at the deadline, many of them are lifetime transfers, so the group does not test the model's fifth prediction. It shows only that the fall in the Section~\ref{sec:prop19} measure, net of market sales, is not a fall in every transfer that involves a trust.
+
+One more prediction fails. The model says occupant heirs are favored by the surviving exclusion, so the occupant share of recipients should rise in California after the reform. It did not. The share of non-corporate recipients whose mailing address equals the property address changed by $\SIVMainOccupDD$ percentage points for the Section~\ref{sec:prop19} measure relative to other states, and by $\SIVMainOccupNet$ percentage points net of market sales (Appendix Table~\ref{tab:s4occupancy}). We make no claim about who lives in the homes that families keep.
+
+Taken together, the decline is hedged evidence. The triple difference is large, it is consistent with the reform, and parent-child lifetime deeds fall by somewhat more. But deeds the law does not touch fall as much or more, the fall begins with the rise in rates, California's spouse deeds fall as much as the Section~\ref{sec:prop19} measure does, and the shortfall exceeds retiming only against a counterfactual that untargeted series also fall short of. We do not use it to estimate how many homes the reform moved.
+
+\subsection{Threats and endogeneity}\label{subsec:threats}
+
+The rush and the decline face different threats, and the rush is better protected.
+
+\paragraph{Refinancing and spouse deeds.} Many deeds of a family kind are recorded with a purchase or a refinance, not with an inheritance. Two series speak to this. Spouse deeds are identified by document type and, as Table~\ref{tab:s4rush} shows, they show no break at the deadline and a high level in the winter of 2021. Trust-to-settlor deeds and same-person retitles, the other series that look like refinancing, break by less than the Section~\ref{sec:prop19} measure. A refinancing boom can therefore lift the level of the Section~\ref{sec:prop19} measure in early 2021, but it cannot easily produce a drop on the day of the deadline. The rush at the deadline is the strongest evidence that the reform matters, though it is descriptive (Section~\ref{subsec:design}). The decline is exposed to refinancing, and retitles and trust-to-settlor deeds show that it is shared.
+
+\paragraph{The rise in rates.} A rate rise in 2022 lowers refinancing, home sales and the deeds that come with both. It lowers market sales too, which is why the triple difference nets them out ($\SIVMarketDiD$ log points for California market sales). But a rate rise need not hit every deed type in California alike. It cannot be separated from the reform in these data, because the reform and the rise happen within a year of each other and only California is treated.
+
+\paragraph{Pandemic mortality.} Deaths in 2020 and 2021 raise the number of post-death distributions and affidavits at once. Affidavits of death would let us measure that, but the 2018 coding break straddles the 2017--19 base period, which is why we exclude them from the Section~\ref{sec:prop19} measure and do not use them as a before-and-after comparison. Chain-verified trust-to-heir deeds show no decline net of market sales, and a mortality shock would raise any post-death distributions among them in 2021 and 2022, not lower them.
+
+\paragraph{Portability.} The portability arm became operative on April~1, 2021, and it lets owners over 55 sell and take their old assessment along. It acts on market sales, the third difference. If it raised California market sales, the triple difference overstates the family decline. If it lowered them, the triple difference understates it. Panel A of Table~\ref{tab:s4prop19} reports both the difference in differences without the market-sale adjustment ($\SIVMainDiD$ for the Section~\ref{sec:prop19} measure) and the triple difference ($\SIVMainDDD$), so the reader has the range.
+
+\paragraph{When anticipation began.} The event study shows the Section~\ref{sec:prop19} measure above its baseline in early 2020, before the June 2020 start of the window we use for the rush. We do not know when families began to act. The pandemic also changed who was selling and signing in 2020. The rush window is therefore a maintained assumption. The deadline break itself, which is a day-level discontinuity, does not depend on it.
+
+\paragraph{Inference and units.} California is the only treated state. State-clustered standard errors are a scale, not a guarantee. The resale comparison has no standard errors. And a deed is not a house. None of these results shows that the homes themselves were released to the market.
+
+\subsection{What the section shows}
+
+Families beat the deadline, and the deeds they could time rushed hardest. Those who rushed resold less, as parents who intend to keep a home would, although California deeds the reform does not touch were resold less as well. After the deadline the Section~\ref{sec:prop19} measure fell, but so did deeds the reform does not touch, the fall began with the rise in rates, and the shortfall exceeds retiming only against an extrapolated counterfactual. Chain-verified trust-to-heir deeds rushed hardest and, net of market sales, did not fall. The paper can say that the reform changed the timing of family deeds. It cannot yet say by how much the reform lowered the number of transfers.

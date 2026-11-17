@@ -19,18 +19,16 @@
 #          (6) Competing risks: where deterred family transfers went
 #              (market sale / trust-retitle / other deed / no recorded deed).
 #          (7) Placebos and robustness.
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #          data/derived/03_family_homes/ca_parcel_wedge.parquet (04a)
 #          _outputs/tables/prop19_scm_summary.csv (09; optional)
 #          scripts/R/inputs/welfare_cpi.csv
 # Outputs: _outputs/tables/prop19_monthly_series.csv, prop19_bunching_summary.csv,
 #          prop19_cf_diagnostic_*.csv, prop19_window_sensitivity.csv (CA diagnostics only)
 #          _outputs/tables/prop19_retiming_summary.csv
-#          _outputs/tables/prop19_ddd_longheld_*.csv
 #          _outputs/tables/prop19_did_volume.csv, prop19_cohort_cells.csv,
 #          prop19_raw_2x2_*.csv, prop19_absentee_did.csv (appendix; unchanged)
 #          _outputs/tables/prop19_wedge_cells_*.csv
-#          _outputs/tables/prop19_robustness_*.csv
 # Log:     10/22/2026: export figures as PNG only.
 #          10/02/2026: moved event aggregation and spells into R memory.
 #          10/02/2026: rebuilt around parcel wedge dose-response, competing
@@ -44,8 +42,8 @@
 
 # 11/04/2026: removed state-placebo ranks and retained CA baseline diagnostics.
 # 11/04/2026: restored other interfamily to the main family proxy.
+# 11/11/2026: removed an unused helper source() and stale output headers.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
-source(path(r_dir, "00_inference_helpers.R"))
 
 suppressPackageStartupMessages({
   library(fixest)
@@ -93,17 +91,20 @@ B_boot <- as.integer(Sys.getenv("PROP19_BOOT", "199"))
 pv_rate <- 0.03
 pv_horizon <- 30L
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 ev_data <- read_events_df(events_path, columns = c(
   "clip", "state", "sale_raw", "sale_year", "sale_month", "ym", "class",
   "corp_buyer", "absentee_buyer"
-))
+), measure = "s4")
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
-# Main family proxy includes same surname, estate/executor, and other interfamily.
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
 # The flag does not independently establish kinship or inheritance.
-fam_classes <- family_classes
+fam_classes <- "family_main"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ============================================================
@@ -514,7 +515,8 @@ ym_sequence <- function(start_ym, end_ym) {
   to_ym(dates)
 }
 
-exit_types <- c(fam_classes, "market_estate_trust", "market_other")
+# exit types come from 04a (wedge spells), which uses the main class-based measure of 00_setup.R
+exit_types <- c(family_classes, "market_estate_trust", "market_other")
 groups_all <- c("nonhox", "hox_under_cap", "hox_over_cap")
 
 #' Collapse parcel spells to cell x month counts with at-risk denominators.

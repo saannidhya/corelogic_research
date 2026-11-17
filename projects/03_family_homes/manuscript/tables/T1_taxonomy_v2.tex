@@ -1,0 +1,36 @@
+\begin{table}[!t]\centering
+\caption{The taxonomy of family-type deeds: relation, trigger and vehicle, average annual deeds 2017--2023}
+\label{tab:taxonomy}
+{\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\textwidth}\begin{tabular}{lrrrrr}
+\toprule
+ & \multicolumn{2}{c}{United States} & \multicolumn{2}{c}{California} & Read \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Cell & Deeds per year & Share (\%) & Deeds per year & Share (\%) & correct$^{a}$ \\
+\midrule
+\multicolumn{6}{l}{\emph{A. Relation: main family measure}} \\
+\quad Spouse (document type; California and Arizona only) & 60,960 & 8.4 & 51,805 & 35.3 & 94\% \\
+\quad Parent-child candidate & 536,776 & 73.5 & 55,801 & 38.1 & 94\% \\
+\quad Cross-surname & 131,352 & 18.0 & 39,025 & 26.6 & 73\% \\
+\quad Unknown & 901 & 0.1 & 15 & 0.0 & -- \\
+Total, main family measure & 729,989 & 100.0 & 146,646 & 100.0 & \\
+\quad Memo: same-person or entity deeds, outside the main family measure$^{d}$ & 580,028 & -- & 102,302 & -- & 86\% \\
+\addlinespace\multicolumn{6}{l}{\emph{B. Trigger: main family measure}} \\
+\quad Death (death document or estate keyword) & 133,969 & 18.4 & 31,482 & 21.5 & -- \\
+\quad Lifetime & 582,863 & 79.8 & 113,995 & 77.7 & -- \\
+\quad Unknown & 13,158 & 1.8 & 1,169 & 0.8 & -- \\
+\addlinespace\multicolumn{6}{l}{\emph{C. Vehicle: interfamily trust deeds, outside the main family measure}} \\
+\quad Into own trust & 524,184 & 62.9 & 169,950 & 53.6 & -- \\
+\quad Trust to a different person (name rule) & 37,893 & 4.5 & 12,428 & 3.9 & 84\% \\
+\quad \quad of which chain-verified heir$^{b}$ & 11,124 & 1.3 & 4,623 & 1.5 & 89\% \\
+\quad Into a trust for others & 49,410 & 5.9 & 19,648 & 6.2 & 39\% \\
+\quad Trust to settlor & 49,625 & 6.0 & 21,712 & 6.8 & 91--96\% \\
+\quad Trust to trust & 53,897 & 6.5 & 25,538 & 8.1 & -- \\
+\quad Trust, no surname link & 81,463 & 9.8 & 34,413 & 10.9 & 73\% \\
+\quad Affidavit of death with a trust party$^{c}$ & 37,385 & 4.5 & 33,434 & 10.5 & 100\% \\
+Total, trust deeds & 833,858 & 100.0 & 317,124 & 100.0 & \\
+\addlinespace\multicolumn{6}{l}{\emph{D. Same-person retitles, outside the main family measure}} \\
+\quad Same-person retitle (co-owner change) & 482,673 & -- & 67,955 & -- & -- \\
+\bottomrule\end{tabular}\end{adjustbox}}
+\begin{minipage}{0.97\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} Residential deed events, deduplicated to one per parcel-date, average of 2017--2023. The main family measure is the same-surname, estate/executor and other interfamily deeds of Section~\ref{sec:data}, without the deeds in which the same person or an entity is on both sides; shares in Panels A and B are of that measure, shares in Panel C of interfamily trust deeds. Relation, trigger and vehicle follow document types and name rules; the vendor flag does not verify kinship. Spouse deeds are identified only by document type in California and Arizona, so spouse deeds elsewhere sit in the other cells. $^{a}$Share of a seeded read of about 100 deeds per cell (50 for trust to settlor) that the names settle as correct, scored against each cell's own label (Appendix Table~\ref{tab:readprec} gives the criterion). Spouse: two natural persons with a shared surname. Parent-child candidate: two different natural persons sharing a surname. Cross-surname: two natural persons with genuinely different surnames, read on the deeds still labelled cross-surname after the same-person rule (\SIIIReadCrossSurnameCorrect\ of \SIIIReadCrossSurnameN). Same-person or entity: the seller is still on title in the buyer names. Trust cells: the trust route named in the row (chain-verified: the chain holds and the buyer is a different natural person with the settlor's surname). The into-a-trust-for-others cell reads weakly and carries no headline. $^{b}$An earlier deed moved the home from a person into a trust with no market sale in between, and the trust later deeded it to a different person with the same surname; ten-year look-back, complete from 2017. $^{c}$A change in how the vendor codes affidavits of death with a trust party in 2018 moves these deeds into the trust class (Table~\ref{tab:volumes}). $^{d}$In the earlier proxy and the upper bound, outside the main family measure; shares are of the main family measure's total and are not shown.}\end{minipage}
+\end{table}

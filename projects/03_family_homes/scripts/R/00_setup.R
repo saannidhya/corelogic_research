@@ -1,8 +1,20 @@
-#' Project setup — sourced at the top of every analysis script.
-#'
-#' This is the ONLY file in this project that touches paths.
-#' All other scripts begin with:
-#'   source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
+#======================================================================#
+# Purpose : Project setup, sourced at the top of every analysis script:
+#             source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
+#           The only file in this project that touches paths. It also holds
+#           the events-panel reader, the family measures and the Prop 19 dates.
+# Name    : Saani Rawat
+# Created : 06/09/2026
+# Log     : 11/04/2026: family definitions; exhibit redirect (FAM_EXHIBIT_DIR).
+#           11/12/2026: main family measure without same-person and entity
+#                       deeds; Section 4 measure; read_events_df(measure = ).
+#           11/16/2026: panel file is events.parquet (no _v2 suffix); tidied.
+#                       Family measure locked on deed_cat = 'family_transfer'
+#                       (direct deeds, three trust tiers, every affidavit of death).
+# Settings: FAM_EXHIBIT_DIR  write manuscript tables/figures somewhere else
+#           FAM_DUCKDB_TEMP  duckdb spill directory
+#           FAM_DUCKDB_MEM   default duckdb memory cap (default 12GB)
+#======================================================================#
 
 suppressPackageStartupMessages({
   library(here)
@@ -15,45 +27,53 @@ suppressPackageStartupMessages({
   library(scales)
 })
 
-# ---- shared utilities ----
+#============================================#
+# Shared utilities ----
+#============================================#
+
 source(here("shared_utils", "R", "corelogic_loader.R"))
 source(here("shared_utils", "R", "data_dictionary.R"))
 source(here("shared_utils", "R", "filters.R"))
 source(here("shared_utils", "R", "theme_paper.R"))
 theme_set(theme_paper())
 
-# ---- project-scoped paths ----
-project_dir    <- here("projects", "03_family_homes")
-scripts_dir    <- path(project_dir, "scripts")
-r_dir          <- path(scripts_dir, "R")
-source(path(r_dir, "00_date_helpers.R"))
-out_dir        <- path(r_dir, "_outputs")
-tables_out_dir <- path(out_dir, "tables")
+#============================================#
+# Paths ----
+#============================================#
+
+# |- scripts and their outputs ----
+project_dir     <- here("projects", "03_family_homes")
+scripts_dir     <- path(project_dir, "scripts")
+r_dir           <- path(scripts_dir, "R")
+out_dir         <- path(r_dir, "_outputs")
+tables_out_dir  <- path(out_dir, "tables")
 figures_out_dir <- path(out_dir, "figures")
-logs_dir       <- path(out_dir, "logs")
+logs_dir        <- path(out_dir, "logs")
+source(path(r_dir, "00_date_helpers.R"))
+
+# |- manuscript exhibits ----
+# FAM_EXHIBIT_DIR redirects manuscript tables/figures (refresh runs compared
+# against the draft before it is updated); unset = write into the manuscript.
 manuscript_dir <- path(project_dir, "manuscript")
 tables_dir     <- path(manuscript_dir, "tables")
 figures_dir    <- path(manuscript_dir, "figures")
-# FAM_EXHIBIT_DIR redirects manuscript tables/figures (refresh runs compared
-# against the draft before it is updated); unset = write into the manuscript.
-exhibit_root <- Sys.getenv("FAM_EXHIBIT_DIR", "")
+exhibit_root   <- Sys.getenv("FAM_EXHIBIT_DIR", "")
 if (nzchar(exhibit_root)) {
   tables_dir  <- path(exhibit_root, "tables")
   figures_dir <- path(exhibit_root, "figures")
 }
 
-# Project-specific derived data lives here (gitignored)
+# |- derived data (gitignored) ----
 data_dir <- here("data", "derived", "03_family_homes")
 
-dir_create(data_dir)
-dir_create(out_dir)
-dir_create(tables_out_dir)
-dir_create(figures_out_dir)
-dir_create(logs_dir)
-dir_create(tables_dir)
-dir_create(figures_dir)
+dir_create(c(data_dir, out_dir, tables_out_dir, figures_out_dir, logs_dir,
+             tables_dir, figures_dir))
 
-# ---- duckdb-over-parquet helpers (pattern established in project 02) ----
+#============================================#
+# DuckDB and small helpers ----
+#============================================#
+
+# |- CoreLogic parquet store ----
 ot_parquet_glob <- function() {
   root <- normalizePath(here("data", "corelogic_extracts", "by_state", "ot"),
                         winslash = "/", mustWork = TRUE)
@@ -70,17 +90,24 @@ sql_quote_path <- function(x) {
   gsub("'", "''", x, fixed = TRUE)
 }
 
-open_corelogic_duckdb <- function(memory_limit = "12GB",
+# |- connection ----
+# FAM_DUCKDB_TEMP moves the spill directory to a local disk outside OneDrive;
+# FAM_DUCKDB_MEM sets the default memory cap. Neither changes a result.
+duckdb_temp_dir <- Sys.getenv("FAM_DUCKDB_TEMP", unset = as.character(path(data_dir, "duckdb_tmp")))
+open_corelogic_duckdb <- function(memory_limit = Sys.getenv("FAM_DUCKDB_MEM", unset = "12GB"),
                                   threads = max(1L, parallel::detectCores() - 1L)) {
   con <- dbConnect(duckdb::duckdb(), dbdir = ":memory:")
   dbExecute(con, glue("PRAGMA memory_limit='{memory_limit}'"))
+  dir_create(duckdb_temp_dir)
+  dbExecute(con, glue("PRAGMA temp_directory='{sql_quote_path(duckdb_temp_dir)}'"))
   dbExecute(con, glue("PRAGMA threads={threads}"))
   con
 }
 
+# |- guards and writers ----
 #' Assert a query result is non-degenerate before it is used downstream.
-#' (MEMORY.md [LEARN:data]: a script that exits 0 is not proof the result is
-#' real — guard against silent zero-row joins / empty subsamples.)
+#' A script that exits 0 is not proof the result is real: this guards against
+#' silent zero-row joins and empty subsamples.
 assert_rows <- function(df, min_rows, label) {
   if (!is.data.frame(df) || nrow(df) < min_rows) {
     stop("Degenerate result for ", label, ": ",
@@ -89,49 +116,164 @@ assert_rows <- function(df, min_rows, label) {
   invisible(df)
 }
 
-#' Read events.parquet into R without the trust-rule audit columns
-#'
-#' The string columns trust_dir/trust_rel (01, 2026-10-31) add ~1 GB per copy
-#' and exhausted R memory in scripts that hold the full panel in memory.
-#' Query trust_rel through duckdb/arrow instead.
-#' @param events_path Path to events.parquet.
-#' @param drop Columns to skip.
-#' @param columns Optional required column names; select before reading into R.
-#' @return Tibble of events.
-read_events_df <- function(events_path,
-                           drop = c("trust_dir", "trust_rel", "trust_prior_found"),
-                           columns = NULL) {
-  available <- names(arrow::open_dataset(events_path)$schema)
-  if (!is.null(columns)) stopifnot(all(columns %in% available))
-  keep <- setdiff(if (is.null(columns)) available else columns, drop)
-  arrow::read_parquet(events_path, col_select = all_of(keep), as_data_frame = TRUE)
-}
-
 write_csv_strict <- function(x, file) {
   dir_create(path_dir(file))
   readr::write_csv(x, file, na = "")
   message("Wrote: ", file)
 }
 
-# ---- family definitions (11/04/2026) ----
-# Operational proxies: the interfamily flag does not independently verify kinship.
-family_narrow_classes <- c("family_person", "family_estate")
-family_classes <- c(family_narrow_classes, "family_other")
-family_classes_sql <- paste0("('", paste(family_classes, collapse = "','"), "')")
+#============================================#
+# Events panel ----
+#============================================#
 
-# ---- analysis window constants ----
-window_start_year <- 2007L   # OT density begins 2007 (probe 2026-06-09)
-window_end_year   <- 2024L   # data truncate ~Aug 2024; treat 2024 as partial
+# The deed-event panel written by 01_build_panel.R. Every script reads it through
+# events_panel_path (or the helpers below), never by file name.
+events_panel_file <- "events.parquet"
+events_panel_path <- path(data_dir, events_panel_file)
+
+#' Read the events panel into R without the audit / taxonomy string columns
+#'
+#' The string columns (trust_dir, trust_rel, doc_type, doc_grp, rel_code, own_code,
+#' occ_code, fam_relation, fam_relation_nm, fam_trigger, fam_vehicle) add about
+#' 1 GB per copy and exhausted R memory in scripts that hold the full panel, so
+#' they are dropped by default. Query them through duckdb/arrow, or request them
+#' with `columns =`: an explicit `columns` overrides `drop`.
+#' @param events_path Path to the events panel (default: events_panel_path).
+#' @param drop Columns to skip when `columns` is NULL.
+#' @param columns Optional required column names; select before reading into R.
+#' @param measure Which family measure the returned `class` column carries.
+#'   "main" (default): same-person and entity deeds of the class-based measure are
+#'   relabelled 'family_samep_entity', so `class %in% family_classes` is the DIRECT
+#'   component of the family measure and its upper bound is that plus
+#'   'family_samep_entity'. For the full measure filter on deed_cat instead.
+#'   "s4": rows in the Section 4 measure are 'family_main', other rows of the
+#'   class-based measure are 'family_samep_entity' (legacy Prop 19 scripts).
+#'   "old": panel `class` untouched.
+#' @return Tibble of events.
+read_events_df <- function(events_path = events_panel_path,
+                           drop = c("trust_dir", "trust_rel", "trust_prior_found",
+                                    "doc_type", "doc_grp", "rel_code", "own_code",
+                                    "occ_code", "fam_relation", "fam_relation_nm",
+                                    "fam_trigger", "fam_vehicle"),
+                           columns = NULL,
+                           measure = c("main", "s4", "old")) {
+  measure <- match.arg(measure)
+  available <- names(arrow::open_dataset(events_path)$schema)
+  if (!is.null(columns)) stopifnot(all(columns %in% available))
+  keep <- if (is.null(columns)) setdiff(available, drop) else columns
+  if (measure == "old" || !"class" %in% keep) {
+    return(arrow::read_parquet(events_path, col_select = all_of(keep), as_data_frame = TRUE))
+  }
+  cls <- if (measure == "main") family_class_main_sql else family_class_s4_sql()
+  sel <- paste(ifelse(keep == "class", paste0(cls, " AS class"), paste0('"', keep, '"')),
+               collapse = ", ")
+  con <- open_corelogic_duckdb()
+  on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
+  # arrow = TRUE keeps the column types of arrow::read_parquet (int64 clip as integer64)
+  out <- dbGetQuery(con, glue("SELECT {sel} FROM read_parquet('{sql_quote_path(events_path)}')"),
+                    arrow = TRUE)
+  tibble::as_tibble(out)
+}
+
+#============================================#
+# Family measures ----
+#============================================#
+# All are operational proxies: the vendor's interfamily flag does not verify kinship.
+
+# |- the family measure (locked 11/16/2026) ----
+# A family transfer is a recorded deed that moves a home, with no sale, from one person (or
+# that person's trust) to a different person, during life or at death. The panel carries it
+# as deed_cat = 'family_transfer'; 01_build_panel.R (section 6) holds the rules.
+#   fam_route  lifetime | death_affidavit | probate | unknown   direct deeds
+#              trust                                             title leaves a trust for
+#                                                                someone other than its settlor
+# Affidavits of death with a trust party (deed_subcat = 'affidavit_trust_party') are in the
+# measure with fam_route = 'death_affidavit'; they are neither direct deeds nor the trust route.
+family_main_sql      <- "(deed_cat = 'family_transfer')"
+family_direct_sql    <- paste0("(deed_cat = 'family_transfer' AND fam_route <> 'trust' ",
+                               "AND deed_subcat <> 'affidavit_trust_party')")
+family_trust_sql     <- "(deed_cat = 'family_transfer' AND fam_route = 'trust')"
+family_affidavit_sql <- "(deed_cat = 'family_transfer' AND fam_route = 'death_affidavit')"
+
+# |- upper bounds ----
+# Direct deeds: add back the flagged deeds with the same owner or an entity on both sides,
+# which is the class-based measure below. Trust deeds: add the two cells the names cannot
+# settle (a surname-only trust; an unpriced deed to a person with another surname).
+family_narrow_classes <- c("family_person", "family_estate")
+family_classes        <- c(family_narrow_classes, "family_other")
+family_classes_sql    <- paste0("('", paste(family_classes, collapse = "','"), "')")
+family_trust_upper_subcats <- c("trust_surname_only", "trust_to_unlinked_unpriced")
+family_trust_upper_sql <- paste0("(deed_subcat IN ('",
+                                 paste(family_trust_upper_subcats, collapse = "','"), "'))")
+
+# |- direct component through `class` (analysis scripts written before deed_cat) ----
+# These helpers give the DIRECT component only: the class-based measure without the deeds
+# whose names show the same owner (fam_relation_nm = 'owner_retained') or an entity
+# ('unrelated_entity'). They equal family_direct_sql (asserted in the build's audit) and
+# do not include trust deeds; scripts move to deed_cat as each is revisited.
+family_excluded_relations <- c("owner_retained", "unrelated_entity")
+family_excluded_sql <- paste0("('", paste(family_excluded_relations, collapse = "','"), "')")
+
+# Relabel for scripts that count `class %in% family_classes`: rows of the class-based
+# measure outside the direct component become 'family_samep_entity'; other classes are untouched.
+family_samep_label <- "family_samep_entity"
+family_class_main_sql <- paste0("CASE WHEN class IN ", family_classes_sql,
+  " AND COALESCE(fam_relation_nm, '') IN ", family_excluded_sql,
+  " THEN '", family_samep_label, "' ELSE class END")
+
+#' Same relabel on an in-memory data frame that carries `class` and `fam_relation_nm`.
+recode_family_main <- function(df) {
+  df$class <- ifelse(df$class %in% family_classes &
+                       coalesce(df$fam_relation_nm, "") %in% family_excluded_relations,
+                     family_samep_label, df$class)
+  df
+}
+
+#' SQL FROM-subquery over the events panel with the relabelled `class` (direct component).
+events_main_from <- function(events_path = events_panel_path) {
+  paste0("(SELECT * REPLACE (", family_class_main_sql, " AS class) FROM read_parquet('",
+         sql_quote_path(events_path), "'))")
+}
+
+# |- Section 4 measure (bygroup_main, defined in 00_groups.R) ----
+# The legacy Prop 19 scripts use it so the appendix synthetic control and event study
+# match Section 4.
+family_s4_sql <- function() {
+  if (!exists("bygroup_filter", mode = "function")) source(path(r_dir, "00_group_helpers.R"))
+  bygroup_filter(bygroup_main, bygroup_defs)
+}
+
+family_class_s4_sql <- function() {
+  paste0("CASE WHEN coalesce(", family_s4_sql(), ", FALSE) THEN 'family_main' WHEN class IN ",
+         family_classes_sql, " THEN '", family_samep_label, "' ELSE class END")
+}
+
+events_s4_from <- function(events_path = events_panel_path) {
+  paste0("(SELECT * REPLACE (", family_class_s4_sql(), " AS class) FROM read_parquet('",
+         sql_quote_path(events_path), "'))")
+}
+
+# |- deed groups ----
+source(path(r_dir, "00_groups.R"))
+
+#============================================#
+# Analysis window and Prop 19 dates ----
+#============================================#
+
+window_start_year <- 2007L   # Owner Transfer coverage is dense from 2007
+window_end_year   <- 2024L   # data stop around August 2024; 2024 is a partial year
 full_year_end     <- 2023L   # last complete calendar year
-prop19_ballot_date    <- 20200624L  # Legislature placed Prop 19 on the ballot
-prop19_pass_date      <- 20201103L  # Prop 19 passed (election day)
-prop19_pc_effective   <- 20210216L  # parent-child exclusion changes effective
+
+prop19_ballot_date  <- 20200624L  # Legislature placed Prop 19 on the ballot
+prop19_pass_date    <- 20201103L  # Prop 19 passed (election day)
+prop19_pc_effective <- 20210216L  # parent-child exclusion changes effective
 
 # Anticipation starts at ballot placement (decided 10/22/2026); every Prop 19
 # design fits its pre-period through May 2020 and treats June 2020 onward.
 prop19_antic_start_ym <- 202006L    # first anticipation month (ballot placement)
 prop19_antic_end_ym   <- 202102L    # deadline month
 prop19_pre_end_ym     <- 202005L    # last clean pre-period month
+
 prop19_event_dates <- as.Date(c(ballot    = "2020-06-24",
                                 passage   = "2020-11-03",
                                 effective = "2021-02-16"))
@@ -175,4 +317,3 @@ prop19_event_layers <- function(label_y, label_step = 0, show_labels = TRUE,
   }
   layers
 }
-

@@ -1,0 +1,22 @@
+\begin{table}[!t]\centering
+\caption{Residential deed events by class: observable moments, 2007--2023}
+\label{tab:classmoments}
+{\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\textwidth}\begin{tabular}{lrrrrr}
+\toprule
+ & N & Zero/no & Median & Quitclaim & Absentee \\
+Event class & (2007--2023) & price (\%) & price$^{a}$ & share (\%) & recipient (\%)$^{b}$ \\
+\midrule
+Market sale (arm's length) & 78,470,563 & 8.7 & \$221k & 2.9 & 28.5 \\
+Other non-arm's-length & 26,588,068 & 57.1 & \$64k & 19.4 & 58.1 \\
+Interfamily trust deed & 12,074,757 & 96.1 & \$130k & 30.0 & 25.6 \\
+Same-person or entity deed (not in main family) & 8,202,078 & 92.3 & \$100k & 38.7 & 23.6 \\
+Family transfer: same surname & 8,037,723 & 87.9 & \$105k & 38.0 & 21.1 \\
+Same-person retitle (co-owner change) & 7,123,579 & 92.3 & \$63k & 40.3 & 16.9 \\
+Interfamily, no surname match & 3,445,091 & 87.5 & \$153k & 22.4 & 26.7 \\
+Estate deed (non-interfamily) & 56,056 & 7.2 & \$167k & 1.9 & 91.0 \\
+Family transfer: estate/executor & 1,335 & 90.4 & \$132k & 5.1 & 32.9 \\
+\bottomrule
+\end{tabular}\end{adjustbox}}
+\begin{minipage}{0.95\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. Market sales are arm's-length (category A), non-interfamily deeds with no price floor, so they include deeds recorded without a price (common in non-disclosure states). The main family proxy includes same surname, estate/executor, and other interfamily deeds without a surname match. The vendor flag does not independently verify kinship or inheritance. Alternative component counts appear in Table~\ref{tab:volumes}. Interfamily trust deeds are mostly self-transfers or trust deeds with no surname link; Table~\ref{tab:volumes} separates the trust-mediated family transfers. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\end{minipage}
+\end{table}

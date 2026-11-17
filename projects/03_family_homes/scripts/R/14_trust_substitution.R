@@ -13,7 +13,7 @@
 # Created : 10/22/2026
 # Log     : 10/22/2026: created (trust direction split, DiD/DDD with state
 #           monthly counterfactual, family + distribution composite).
-# Inputs  : data/derived/03_family_homes/events.parquet
+# Inputs  : data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #           CoreLogic OT buyer/seller names via register_corelogic_parquet()
 # Outputs : _outputs/tables/trust_sub_state_year.csv
 #           _outputs/tables/trust_sub_did.csv
@@ -36,6 +36,12 @@ on.exit(sink(), add = TRUE)
 message("Starting 14_trust_substitution at ", Sys.time())
 
 # Settings ----
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
+# Trust counts below still use the panel class family_trust; chain-verified heirs are inside the
+# Section 4 family measure AND the trust class, so n_fam and n_trust overlap on those deeds.
 fam_classes <- family_classes
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 pre_years <- 2017:2019
@@ -49,7 +55,7 @@ con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 register_corelogic_parquet(con, "ot", view_name = "ot_source")
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 ev_sql <- glue("read_parquet('{sql_quote_path(events_path)}')")
 
@@ -95,8 +101,7 @@ stopifnot(direction_share$share[direction_share$direction == "trust_unmatched"] 
 # Family and market counts on the same state-month grid
 base_counts <- dbGetQuery(con, glue("
   SELECT state, ym, sale_year,
-         SUM(CASE WHEN class IN ('family_person','family_estate','family_other')
-                  THEN 1 ELSE 0 END) AS n_fam,
+         SUM(CASE WHEN coalesce({family_s4_sql()}, FALSE) THEN 1 ELSE 0 END) AS n_fam,
          SUM(CASE WHEN class = 'family_trust' THEN 1 ELSE 0 END) AS n_trust,
          SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
   FROM {ev_sql}

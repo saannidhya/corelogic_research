@@ -16,7 +16,7 @@ dir_create(audit_dir)
 con <- open_corelogic_duckdb(memory_limit = "3GB", threads = 2)
 dbExecute(con, "SET preserve_insertion_order=false")
 dbExecute(con, glue("SET temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
-existing_path <- sql_quote_path(path(data_dir, "events.parquet"))
+existing_path <- sql_quote_path(events_panel_path)
 state_names <- sort(dbGetQuery(con,glue("SELECT DISTINCT state FROM read_parquet('{existing_path}')
   WHERE sale_year BETWEEN 2007 AND 2023"))$state)
 requested_states <- Sys.getenv("FAM_AUDIT_STATES", "")
@@ -74,7 +74,7 @@ for (st in state_names) {
   register_corelogic_parquet(con, states = st, view_name = "source_ot")
   # Global deduplication can assign a parcel-date seen in multiple source
   # states to only one state. Anchor this diagnostic to that selected sample.
-  existing_path <- sql_quote_path(path(data_dir, "events.parquet"))
+  existing_path <- sql_quote_path(events_panel_path)
   dbExecute(con, glue("CREATE OR REPLACE TEMP TABLE panel_state AS
     SELECT clip,sale_raw,class,interfam,amt FROM read_parquet('{existing_path}')
     WHERE state='{st}' AND sale_year BETWEEN 2007 AND 2023"))

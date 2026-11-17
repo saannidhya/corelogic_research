@@ -24,7 +24,10 @@ state_counts <- read_csv(
   mutate(
     family_old = family_person + family_estate + family_other,
     family_per_100_deeds = 100 * family_old / n_all,
-    family_per_100_market_sales = 100 * family_old / market
+    family_per_100_market_sales = 100 * family_old / market,
+    # upper bound: the earlier class-based proxy, including same-person and entity deeds
+    family_incl_samep_per_100_deeds = 100 * fam_incl_samep / n_all,
+    family_incl_samep_per_100_market_sales = 100 * fam_incl_samep / market
   ) %>%
   arrange(desc(family_per_100_deeds)) %>%
   mutate(rank = row_number())
@@ -85,7 +88,7 @@ family_per_deed_plot <- ggplot(
     ),
     x = "Family transfers per 100 deed transfers", y = NULL,
     caption = paste0(
-      "Old family definition: same surname + estate/executor + other interfamily.\n",
+      "Family measure (2026-11-12): same surname + estate/executor + other interfamily, excluding same-person and entity deeds.\n",
       "Denominator: all residential deed events in the sample, including market sales,\n",
       "family deeds, trusts, retitles, and other deeds. 50 states + DC; events, not unique homes."
     )

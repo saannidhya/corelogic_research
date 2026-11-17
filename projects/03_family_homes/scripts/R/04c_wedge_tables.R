@@ -25,6 +25,16 @@
 # 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
+# 11/11/2026: FAM_WEDGE_OUT_DIR (env) redirects reads/writes of the 04a outputs to a scratch folder
+# (determinism checks). Unset = live outputs.
+wedge_out_root <- Sys.getenv("FAM_WEDGE_OUT_DIR", "")
+if (nzchar(wedge_out_root)) {
+  tables_out_dir <- path(wedge_out_root, "tables")
+  logs_dir       <- path(wedge_out_root, "logs")
+  data_dir       <- path(wedge_out_root, "data")
+  walk(c(tables_out_dir, logs_dir, data_dir), dir_create)
+}
+
 # Settings ----
 fam_classes <- family_classes
 population_cohort <- "d2019"   # matches the distribution figure (04b)

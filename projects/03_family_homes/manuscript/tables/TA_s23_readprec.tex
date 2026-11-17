@@ -1,0 +1,25 @@
+\begin{table}[!ht]\centering
+\caption{Read precision of the taxonomy cells, and what each read scored}
+\label{tab:readprec}
+{\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabular}{p{4.3cm}p{6.4cm}rrr}\toprule
+Cell & Criterion scored & Read & Uncertain & Correct (\%) \\
+\midrule
+Spouse deed, California (document type) & Two natural persons with a shared surname & 100 & 32 & 94 \\
+Parent-child candidate, direct & Two different natural persons sharing a surname & 100 & 6 & 94 \\
+Same person (name rule), in the earlier proxy & The seller is still on title in the buyer names & 100 & 0 & 86 \\
+Cross-surname, before the same-person rule & Two natural persons with genuinely different surnames (earlier label) & 100 & 0 & 33 \\
+Cross-surname, after the rule (main family measure) & Two natural persons with genuinely different surnames; the same reads, deeds still cross-surname & 41 & 0 & 73 \\
+Deeds the rule moved to same person & Same person: the two names are one individual or one household retitling & 43 & 0 & 100 \\
+Deeds that stay cross-surname (prototype read) & A transfer between distinct people; not the same test as the label & 60 & 4 & 95 \\
+Affidavit of death with a trust party & Document type AF with a trust as the buyer & 100 & 0 & 100 \\
+Trust to a different person (name rule) & Trust to a surname-linked natural person & 100 & 44 & 84 \\
+Trust, no surname link & No family link between the parties & 100 & 0 & 73 \\
+Into a trust for others & Trust named for a different individual or for children & 100 & 59 & 39 \\
+Into a trust, keyword-promoted deeds & As above, promoted by a trust-name keyword & 100 & 58 & 31 \\
+Trust to settlor, 2019 & The buyer is the trust's named settlor & 50 & 15 & 91 \\
+Trust to settlor, January--February 2021 & The buyer is the trust's named settlor & 50 & 23 & 96 \\
+Chain-verified trust to heir (10-year look-back) & The chain holds and the buyer is a different natural person with the earlier owner's surname & 100 & 1 & 89 \\
+Name-rule trust to other person, not chain-verified & The name rule holds on the names & 50 & 18 & 69 \\
+\bottomrule\end{tabular}}
+\begin{minipage}{0.95\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} A seeded sample of deeds was read by hand from the recorded party names and document types. Correct is the share of reads the names settle as meeting the criterion, excluding uncertain reads. The cross-surname cell of the main family measure scores the label itself on the deeds that remain cross-surname after the same-person rule; the deeds the rule moved to same person were read separately and are the same person in every read. Samples are stored outside the repository and no names enter the paper.}\end{minipage}
+\end{table}

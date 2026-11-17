@@ -12,7 +12,7 @@
 #          with log1p used if any state-month count is zero.
 #          California treated, the other 49 states + DC as controls. Clustered
 #          (state) CIs for scale; reliability is limited with one treated state.
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 # Outputs: _outputs/tables/prop19_event_study_monthly.csv
 #          _outputs/tables/prop19_event_study_phases.csv
 #          _outputs/prop19_event_study.rds
@@ -38,17 +38,20 @@ message("Starting 09b_event_study at ", Sys.time())
 # Importing event data ----
 # ============================================================
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 
-# Trust deeds and same-person retitles are not counted as family transfers.
-fam_classes <- family_classes
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
+fam_classes <- "family_main"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # Load events into R; aggregation and estimation use in-memory data frames.
 ev_data <- read_events_df(events_path, columns = c(
   "state", "ym", "sale_year", "sale_month", "class"
-))
+), measure = "s4")
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # ============================================================

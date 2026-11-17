@@ -26,9 +26,12 @@ All errors are our own.}}
 
 \input{tables/descriptive_numbers.tex}
 \input{tables/refresh_numbers.tex}
-\input{tables/welfare_numbers.tex}
+\input{tables/welfare_v2_numbers.tex}
 \input{tables/hazard_numbers.tex}
 \input{tables/wedge_numbers.tex}
+\input{tables/s4_numbers.tex}
+\input{tables/s23_numbers.tex}
+\input{tables/r2_numbers.tex}
 
 \begin{document}
 \maketitle
@@ -37,14 +40,11 @@ All errors are our own.}}
 \singlespacing
 \vspace{-2em}
 \begin{abstract}
-\noindent A large share of American homes change hands without a market sale. Using 144 million residential deed events from 2007 to 2023, this paper provides national micro-level evidence on the prevalence and size of intra-family housing transfers. Family transfers account for \DeedNationalShare\ per 100 recorded deed transfers nationally and this family channel appears to increase with tax advantages offered by the state. 
-California’s Proposition 19 provides a policy setting to study how inherited property-tax assessments shape this channel: transfers surged 17.4\% above counterfactual after the proposal was placed on the ballot
-%, precipitated by the rush to inherit before the law took effect, 
-and then declined once it was implemented. Net of California’s market-sales, a triple difference estimate shows family transfers declined by 22\% in the post-reform period, roughly 55,661 missing deeds annually. A simple framework shows that when heirs inherit a below market property-tax assessment along with the house, as permitted by California’s Propositions 13, 58, and 193, families keep homes that the market values more. Using the framework, we estimate the tax wedge and quantify the deadweight loss from the misallocation. Our results suggest that family transfers are not outside the housing market but are one of its allocation mechanisms and property-tax rules can shift scarce homes from price-based matching to lineage-based retention.
+\noindent How many homes change hands without a sale, and what do families do when the tax code gives them a deadline? Using the CoreLogic extract of recorded residential deeds in the United States, 2007 to 2023, we find that deeds between two distinct people are \DeedNationalShare\ per 100 residential deed events nationally and \DeedCAShare\ in California. California's Proposition~19 ended the inherited property-tax assessment for most heirs who do not move in; to keep it, a deed had to be made by February 16, 2021. In the weeks before that date, California's family deeds ran \SIVMainJanFeb\ times a counterfactual, and deeds from a trust to an heir ran \SIVHeirJanFeb\ times. Spouse deeds, which the law does not touch, did not break at the deadline, although affidavits of death also dipped. Rushed deeds were resold less, but California's spouse deeds changed about as much, so that comparison does not isolate the reform. Afterwards, family deeds changed by $\SIVMainDDD$ log points relative to market sales, which is consistent with the reform but is shared by deeds the law does not touch and begins with the rise in mortgage rates in 2022. Attributing that fall to the reform puts the misallocation that the old exclusion created, and the reform removes, at about \$\WViLossCentral\ million a year, with a scenario range of \$\WViLossLow\ to \$\WViLossHigh\ million; without that attribution it is zero.
 
 \par\smallskip
-\textbf{JEL classification:} R21, R31, H22, D64 \\
-\textbf{Keywords:} housing supply, intergenerational transfers, bequests, property taxes, Proposition 19
+\textbf{JEL classification:} R21, R31, H24, H71, D64 \\
+\textbf{Keywords:} housing turnover, intergenerational transfers, inheritance, property taxes, Proposition 19
 \end{abstract}
 \endgroup
 
