@@ -9,13 +9,17 @@
 #          artifact. (The 65+ stock is the tidycensus-supported channel; the
 #          residual death-TIMING channel is bounded by magnitude — single-digit
 #          mortality differentials cannot explain a ~33% transfer decline.)
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #          Census ACS 1-year via tidycensus (key in .env, gitignored)
 # Outputs: data/external/state_pop65_acs.parquet
-#          _outputs/tables/prop19_scm_pc_inference.csv
+#          _outputs/tables/prop19_scm_pc_summary.csv
 #          _outputs/prop19_scm_pc.rds
+# Log:     10/22/2026: treatment starts June 2020 (ballot placement) and the
+#          pre-fit runs through May 2020, matching 09_synthetic_control.R.
 # ============================================================
 
+# 11/04/2026: appendix SCM comparison without state-placebo inference.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -70,8 +74,10 @@ message("65+ population pulled: ", nrow(pop65), " state-years, CA 2023 = ",
 # ---- state x month family transfers, joined to 65+ population --------------
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
-ev <- glue("read_parquet('{sql_quote_path(path(data_dir, 'events.parquet'))}')")
-fam_classes <- "('family_person','family_other','family_estate')"
+# Section 4 measure (author's decision 2026-11-12): the per-65+ synthetic control is an appendix
+# sensitivity of the same synthetic control as 09, so it uses the Section 4 family measure.
+ev <- events_s4_from(events_panel_path)
+fam_classes <- "('family_main')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 ms <- dbGetQuery(con, glue("
@@ -96,18 +102,18 @@ base_pc <- panel |> filter(sale_year %in% 2018:2019) |>
 panel <- panel |> left_join(base_pc, by = "state") |>
   mutate(rel_pc = fam_pc / base)
 
-t_treat <- tmap$t[tmap$ym == 202011]
-pre_t   <- tmap$t[tmap$ym <= 202010]
+t_treat <- tmap$t[tmap$ym == prop19_antic_start_ym]   # June 2020 ballot placement
+pre_t   <- tmap$t[tmap$ym <= prop19_pre_end_ym]       # January 2018 - May 2020
 
 # ---- SCM on the per-65+-resident index ------------------------------------
 scm <- panel |>
   synthetic_control(outcome = rel_pc, unit = state, time = t,
-                    i_unit = "CA", i_time = t_treat, generate_placebos = TRUE) |>
+                    i_unit = "CA", i_time = t_treat, generate_placebos = FALSE) |>
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2018],
                      rel_2018 = mean(rel_pc, na.rm = TRUE)) |>
   generate_predictor(time_window = tmap$t[tmap$sale_year == 2019],
                      rel_2019 = mean(rel_pc, na.rm = TRUE)) |>
-  generate_predictor(time_window = tmap$t[tmap$sale_year == 2020 & tmap$sale_month <= 10],
+  generate_predictor(time_window = tmap$t[tmap$sale_year == 2020 & tmap$sale_month <= 5],
                      rel_2020 = mean(rel_pc, na.rm = TRUE)) |>
   generate_weights(optimization_window = pre_t) |>
   generate_control()
@@ -116,33 +122,20 @@ series <- scm |> grab_synthetic_control(placebo = FALSE) |>
   rename(t = time_unit, ca_rel = real_y, synth_rel = synth_y) |>
   left_join(tmap, by = "t") |>
   mutate(gap = ca_rel - synth_rel, gap_rel = (ca_rel - synth_rel) / synth_rel)
-pre_rmspe_ca <- sqrt(mean(series$gap[series$ym <= 202010]^2))
+pre_rmspe_ca <- sqrt(mean(series$gap[series$ym <= prop19_pre_end_ym]^2))
 gap_ss_ca    <- mean(series$gap[series$ym >= 202201])
 gap_ss_pct   <- 100 * mean(series$gap_rel[series$ym >= 202201])
 
-sig <- scm |> grab_significance()
-ca_sig <- sig |> filter(unit_name == "CA")
-
-gaps_all <- scm |> grab_synthetic_control(placebo = TRUE) |>
-  rename(unit = .id, is_placebo = .placebo, t = time_unit) |>
-  left_join(tmap, by = "t") |> mutate(gap = real_y - synth_y)
-unit_summ <- gaps_all |> group_by(unit, is_placebo) |>
-  summarise(pre_rmspe = sqrt(mean(gap[ym <= 202010]^2, na.rm = TRUE)),
-            gap_ss = mean(gap[ym >= 202201], na.rm = TRUE), .groups = "drop")
-placebo_gaps <- unit_summ |> filter(is_placebo == 1, pre_rmspe <= 5 * pre_rmspe_ca) |> pull(gap_ss)
-ct_p <- (1 + sum(abs(placebo_gaps) >= abs(gap_ss_ca))) / (1 + length(placebo_gaps))
-
 inf_out <- tibble(
   outcome = "family transfers per 65+ resident",
-  ca_pre_rmspe = pre_rmspe_ca, gap_ss_rel = gap_ss_ca, gap_ss_pct = gap_ss_pct,
-  scm_mspe_rank = ca_sig$rank, scm_mspe_p = ca_sig$fishers_exact_pvalue, ct_p = ct_p)
+  ca_pre_rmspe = pre_rmspe_ca, gap_ss_rel = gap_ss_ca, gap_ss_pct = gap_ss_pct)
 print(inf_out)
-write_csv_strict(inf_out, path(tables_out_dir, "prop19_scm_pc_inference.csv"))
-saveRDS(list(scm = scm, series = series, inference = inf_out, pop65 = pop65),
+write_csv_strict(inf_out, path(tables_out_dir, "prop19_scm_pc_summary.csv"))
+saveRDS(list(scm = scm, series = series, summary = inf_out, pop65 = pop65),
         path(out_dir, "prop19_scm_pc.rds"))
 
 # ---- raw vs demographic-adjusted comparison -------------------------------
-raw <- read_csv(path(tables_out_dir, "prop19_scm_inference.csv"), show_col_types = FALSE)
-message(sprintf("RAW SCM:        gap %.1f%%  MSPE-p %.3f", raw$gap_ss_pct, raw$scm_mspe_p))
-message(sprintf("PER-65+ SCM:    gap %.1f%%  MSPE-p %.3f", gap_ss_pct, ca_sig$fishers_exact_pvalue))
+raw <- read_csv(path(tables_out_dir, "prop19_scm_summary.csv"), show_col_types = FALSE)
+message(sprintf("RAW SCM: gap %.1f%%", raw$gap_ss_pct))
+message(sprintf("PER-65+ SCM: gap %.1f%%", gap_ss_pct))
 message("Finished 10_mortality at ", Sys.time())

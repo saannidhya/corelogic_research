@@ -1,0 +1,4131 @@
+[
+  {
+    "id": "reher2024",
+    "title": "The Mortgage‐Cash Premium Puzzle",
+    "doi": "10.1111/jofi.13373",
+    "priority": "P0",
+    "theme": "Cash financing",
+    "relevance": "Closest pricing benchmark; reproduce its institutional and flip exclusions before claiming composition resolves its puzzle.",
+    "status": "Full text skimmed; introduction, identification and Table IV examined closely in local published PDF.",
+    "verified_metadata": {
+      "DOI": "10.1111/jofi.13373",
+      "title": "The Mortgage‐Cash Premium Puzzle",
+      "author": [
+        {
+          "given": "MICHAEL",
+          "family": "REHER",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "ROSSEN",
+          "family": "VALKANOV",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024,
+            7,
+            23
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2024,
+            10
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            7,
+            23
+          ]
+        ]
+      },
+      "container-title": "The Journal of Finance",
+      "volume": "79",
+      "issue": "5",
+      "page": "3149-3201",
+      "URL": "http://dx.doi.org/10.1111/jofi.13373",
+      "type": "journal-article",
+      "abstract": "<jats:title>ABSTRACT</jats:title><jats:p>All‐cash homebuyers account for one‐third of U.S. home purchases between 1980 and 2017. We use multiple data sets and research designs to robustly estimate that mortgaged buyers pay an 11% premium over all‐cash buyers to compensate home sellers for mortgage transaction frictions. A dynamic, representative‐seller model implies only a 3% premium, which would suggest an 8% puzzle. Accounting for heterogeneity in selling conditions explains half of this difference, but a puzzle holds in conditions with high transaction risk. An experimental survey of U.S. homeowners replicates these patterns and suggests that belief distortions can explain the puzzle in these high‐risk states.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/jofi.13373",
+    "zotero_key": "YBZ9CFFQ",
+    "zotero_link": "zotero://select/library/items/YBZ9CFFQ"
+  },
+  {
+    "id": "han2024",
+    "title": "Cash is king? Understanding financing risk in housing markets",
+    "doi": "10.1093/rof/rfae025",
+    "priority": "P0",
+    "theme": "Cash financing",
+    "relevance": "Main sample already excludes institutional buyers and foreclosures; distinguish closing time from time on market.",
+    "status": "Full text skimmed; sample restrictions, financing-risk mechanism, Tables 2/6/7 and section 5.5 examined closely in local published PDF.",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1093/rof/rfae025",
+        "title": [
+          "Cash is king? Understanding financing risk in housing markets"
+        ],
+        "author": [
+          {
+            "given": "Lu",
+            "family": "Han",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "name": "Wisconsin School of Business, University of Wisconsin - Madison"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Seung-Hyun",
+            "family": "Hong",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Department of Economics, University of Illinois"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2024,
+              8,
+              10
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2024,
+              11,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2024,
+              8,
+              10
+            ]
+          ]
+        },
+        "container-title": [
+          "Review of Finance"
+        ],
+        "volume": "28",
+        "issue": "6",
+        "page": "2083-2118",
+        "URL": "https://doi.org/10.1093/rof/rfae025",
+        "type": "journal-article",
+        "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>In Los Angeles, all-cash home purchases quintupled during the last decade. Compared with an else-equal mortgage offer, a cash offer is associated with 29 percent shorter time-to-close and a 2–3.9 percent price discount, indicating a substantial amount of financing risk—the risk to a seller that a transaction may not close on time and may fail to occur again because a mortgage contingency fails. The estimated cash discount aligns well with a canonical model calibrated to the sample market. Our findings reveal that closing risk alone is insufficient to explain the cash discount. Rather, it turns on the possibility that a property back on the market may fail to sell, requiring a substantial risk compensation. The estimated cash discount is smaller during booms and in larger markets, highlighting the inseparability of financial frictions in the mortgage market and search frictions in the housing market.</jats:p>"
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1093/rof/rfae025",
+      "title": "Cash is king? Understanding financing risk in housing markets",
+      "author": [
+        {
+          "given": "Lu",
+          "family": "Han",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Wisconsin School of Business, University of Wisconsin - Madison"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Seung-Hyun",
+          "family": "Hong",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Economics, University of Illinois"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024,
+            8,
+            10
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2024,
+            11,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            8,
+            10
+          ]
+        ]
+      },
+      "container-title": "Review of Finance",
+      "volume": "28",
+      "issue": "6",
+      "page": "2083-2118",
+      "URL": "http://dx.doi.org/10.1093/rof/rfae025",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>In Los Angeles, all-cash home purchases quintupled during the last decade. Compared with an else-equal mortgage offer, a cash offer is associated with 29 percent shorter time-to-close and a 2–3.9 percent price discount, indicating a substantial amount of financing risk—the risk to a seller that a transaction may not close on time and may fail to occur again because a mortgage contingency fails. The estimated cash discount aligns well with a canonical model calibrated to the sample market. Our findings reveal that closing risk alone is insufficient to explain the cash discount. Rather, it turns on the possibility that a property back on the market may fail to sell, requiring a substantial risk compensation. The estimated cash discount is smaller during booms and in larger markets, highlighting the inseparability of financial frictions in the mortgage market and search frictions in the housing market.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1093/rof/rfae025",
+    "zotero_key": "JXBPUAZS",
+    "zotero_link": "zotero://select/library/items/JXBPUAZS"
+  },
+  {
+    "id": "bayer2020",
+    "title": "Speculators and Middlemen: The Strategy and Performance of Investors in the Housing Market",
+    "doi": "10.1093/rfs/hhaa042",
+    "priority": "P0",
+    "theme": "Intermediation",
+    "relevance": "Closest competitor to buy-low/resell-high interpretation; separate trading skill, improvements, and market timing.",
+    "status": "Published abstract and metadata reviewed; older 2015 NBER full text selectively skimmed, not final published full text.",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1093/rfs/hhaa042",
+        "title": [
+          "Speculators and Middlemen: The Strategy and Performance of Investors in the Housing Market"
+        ],
+        "author": [
+          {
+            "given": "Patrick",
+            "family": "Bayer",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "name": "Duke University and NBER"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Christopher",
+            "family": "Geissler",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "ISO New England"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Kyle",
+            "family": "Mangum",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Federal Reserve Bank of Philadelphia"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "James W",
+            "family": "Roberts",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Duke University and NBER"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2020,
+              4,
+              6
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2020,
+              11,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2020,
+              4,
+              6
+            ]
+          ]
+        },
+        "container-title": [
+          "The Review of Financial Studies"
+        ],
+        "volume": "33",
+        "issue": "11",
+        "page": "5212-5247",
+        "URL": "https://doi.org/10.1093/rfs/hhaa042",
+        "type": "journal-article",
+        "abstract": "<jats:title>Abstract</jats:title><jats:p>Using data from the Los Angeles area from 1988 to 2012, we study the behavior and sources of returns of individual investors in the housing market. We document the existence of two distinct investor types. The first act as middlemen, purchasing substantially below and reselling above market prices throughout the cycle, improving liquidity and the existing capital stock in the process. The second act as speculators, who primarily enter during the boom, buying and selling at essentially market prices. Neither type anticipated the housing bust. We document similar behavior by speculators and middlemen in 96 other U.S. metro areas.</jats:p>"
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1093/rfs/hhaa042",
+      "title": "Speculators and Middlemen: The Strategy and Performance of Investors in the Housing Market",
+      "author": [
+        {
+          "given": "Patrick",
+          "family": "Bayer",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Duke University and NBER"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Christopher",
+          "family": "Geissler",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "ISO New England"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kyle",
+          "family": "Mangum",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Federal Reserve Bank of Philadelphia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "James W",
+          "family": "Roberts",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Duke University and NBER"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2020,
+            4,
+            6
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2020,
+            11,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2020,
+            4,
+            6
+          ]
+        ]
+      },
+      "container-title": "The Review of Financial Studies",
+      "volume": "33",
+      "issue": "11",
+      "page": "5212-5247",
+      "URL": "http://dx.doi.org/10.1093/rfs/hhaa042",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title><jats:p>Using data from the Los Angeles area from 1988 to 2012, we study the behavior and sources of returns of individual investors in the housing market. We document the existence of two distinct investor types. The first act as middlemen, purchasing substantially below and reselling above market prices throughout the cycle, improving liquidity and the existing capital stock in the process. The second act as speculators, who primarily enter during the boom, buying and selling at essentially market prices. Neither type anticipated the housing bust. We document similar behavior by speculators and middlemen in 96 other U.S. metro areas.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1093/rfs/hhaa042",
+    "zotero_key": "CUF4R7GN",
+    "zotero_link": "zotero://select/library/items/CUF4R7GN"
+  },
+  {
+    "id": "campbell2011",
+    "title": "Forced Sales and House Prices",
+    "doi": "10.1257/aer.101.5.2108",
+    "priority": "P0",
+    "theme": "Distress",
+    "relevance": "Canonical forced-sale benchmark; distress belongs on both sides of the transaction.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1257/aer.101.5.2108",
+      "title": "Forced Sales and House Prices",
+      "author": [
+        {
+          "given": "John Y",
+          "family": "Campbell",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Department of Economics, Littauer Center, Harvard University, Cambridge, MA 02138, and NBER."
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Stefano",
+          "family": "Giglio",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Finance, University of Chicago Booth School of Business, 5807 South Woodlawn Ave., Chicago IL 60637, and visiting scholar, Federal Reserve Bank of Boston."
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Parag",
+          "family": "Pathak",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Economics, MIT, 50 Memorial Drive, E52, Cambridge, MA 02142."
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2011,
+            8,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2011,
+            8,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "American Economic Review",
+      "volume": "101",
+      "issue": "5",
+      "page": "2108-2131",
+      "URL": "http://dx.doi.org/10.1257/aer.101.5.2108",
+      "type": "journal-article",
+      "abstract": "<jats:p>This paper uses data on all house transactions in Massachusetts over the last 20 years to show that houses sold after foreclosure, or close in time to the death or bankruptcy of a seller, are sold at lower prices than other houses. Foreclosure discounts are on average at 27 percent of the value of a house. Moreover, foreclosures that take place within small local geographies of a house lower the price at which it is sold. Our preferred estimate is that a foreclosure at a distance of 0.05 miles lowers the price of a house by about 1 percent. JEL: D14, R31</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1257/aer.101.5.2108",
+    "zotero_key": "DNE3TGDN",
+    "zotero_link": "zotero://select/library/items/DNE3TGDN"
+  },
+  {
+    "id": "lambie2022",
+    "title": "Real estate investors and the U.S. housing recovery",
+    "doi": "10.1111/1540-6229.12396",
+    "priority": "P0",
+    "theme": "Intermediation",
+    "relevance": "Prior investor access design and recovery/vacancy evidence; cash absorption is not automatically harmful.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1111/1540-6229.12396",
+      "title": "Real estate investors and the U.S. housing recovery",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6398-5976",
+          "authenticated-orcid": false,
+          "given": "Lauren",
+          "family": "Lambie‐Hanson",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Consumer Finance Institute Federal Reserve Bank of Philadelphia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0001-5911-2072",
+          "authenticated-orcid": false,
+          "given": "Wenli",
+          "family": "Li",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Research Department Federal Reserve Bank of Philadelphia  Philadelphia PA United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Michael",
+          "family": "Slonkosky",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Supervision and Regulation Board of Governors of the Federal Reserve System  Washington, DC United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2022,
+            7,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            11
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2022,
+            7,
+            3
+          ]
+        ]
+      },
+      "container-title": "Real Estate Economics",
+      "volume": "50",
+      "issue": "6",
+      "page": "1425-1461",
+      "URL": "http://dx.doi.org/10.1111/1540-6229.12396",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title><jats:p>U.S. house prices fell nearly 30% between 2006 and 2012. Meanwhile, homeownership rates declined as mortgage credit supply tightened and investors bought up properties. Although nationally house prices recovered to prebust levels by 2016, homeownership rates declined through mid‐2016, as investors, particularly those purchasing through corporations, gained market share. By exploiting heterogeneity in zip codes' exposure to Fannie Mae and Freddie Mac programs that affected investors' access to foreclosed properties, we find that increased presence of investors explains a significant fraction of the house price recovery. Investors reduced vacancies and shortened the time foreclosed properties spent in bank ownership.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/1540-6229.12396",
+    "zotero_key": "Q2PVYHS2",
+    "zotero_link": "zotero://select/library/items/Q2PVYHS2"
+  },
+  {
+    "id": "adelino2025",
+    "title": "Credit supply and house prices: Evidence from mortgage market segmentation",
+    "doi": "10.1016/j.jfineco.2024.103958",
+    "priority": "P0",
+    "theme": "Credit design",
+    "relevance": "Essential predecessor for conforming-limit changes; separates loan limit from sale price.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1016/j.jfineco.2024.103958",
+        "title": [
+          "Credit supply and house prices: Evidence from mortgage market segmentation"
+        ],
+        "author": [
+          {
+            "given": "Manuel",
+            "family": "Adelino",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Antoinette",
+            "family": "Schoar",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Felipe",
+            "family": "Severino",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              1
+            ]
+          ]
+        },
+        "published-online": null,
+        "container-title": [
+          "Journal of Financial Economics"
+        ],
+        "volume": "163",
+        "issue": null,
+        "page": "103958",
+        "URL": "https://doi.org/10.1016/j.jfineco.2024.103958",
+        "type": "journal-article",
+        "abstract": null
+      },
+      {
+        "DOI": "10.2139/ssrn.1787252",
+        "title": [
+          "Credit Supply and House Prices: Evidence from Mortgage Market Segmentation"
+        ],
+        "author": [
+          {
+            "given": "Manuel",
+            "family": "Adelino",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Antoinette",
+            "family": "Schoar",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0009-0006-4925-1486",
+            "authenticated-orcid": true,
+            "given": "Felipe",
+            "family": "Severino",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2011
+            ]
+          ]
+        },
+        "published-print": null,
+        "published-online": null,
+        "container-title": null,
+        "volume": null,
+        "issue": null,
+        "page": null,
+        "URL": "https://doi.org/10.2139/ssrn.1787252",
+        "type": "posted-content",
+        "abstract": "<jats:p>We develop a new instrument to analyze how exogenous changes in mortgage rates affect house values. Our instrument combines annual changes in the conforming loan limit (CLL) with the 80% loan-to-value threshold, which is commonly used in the approval of conforming loans. Houses that become eligible for cheaper funding through the CLL increase in value by about $1/sq ft. This estimate implies a local elasticity of house prices to interest rates below 6, a value significantly lower than earlier studies have proposed.</jats:p>"
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1016/j.jfineco.2024.103958",
+      "title": "Credit supply and house prices: Evidence from mortgage market segmentation",
+      "author": [
+        {
+          "given": "Manuel",
+          "family": "Adelino",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Antoinette",
+          "family": "Schoar",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Felipe",
+          "family": "Severino",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Financial Economics",
+      "volume": "163",
+      "issue": null,
+      "page": "103958",
+      "URL": "http://dx.doi.org/10.1016/j.jfineco.2024.103958",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jfineco.2024.103958",
+    "zotero_key": "D435ENFD",
+    "zotero_link": "zotero://select/library/items/D435ENFD"
+  },
+  {
+    "id": "defusco2017",
+    "title": "The Interest Rate Elasticity of Mortgage Demand: Evidence from Bunching at the Conforming Loan Limit",
+    "doi": "10.1257/pol.20140108",
+    "priority": "P0",
+    "theme": "Credit design",
+    "relevance": "Borrower sorting, down-payment adjustment and second liens undermine a naive sale-price RD.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1257/pol.20140108",
+        "title": [
+          "The Interest Rate Elasticity of Mortgage Demand: Evidence from Bunching at the Conforming Loan Limit"
+        ],
+        "author": [
+          {
+            "given": "Anthony A.",
+            "family": "DeFusco",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "name": "Kellogg School of Management, Northwestern University, 2001 Sheridan Road, 4215 Donald P. Jacobs Center, Evanston, IL 60208 (e-mail: )"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Andrew",
+            "family": "Paciorek",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "name": "Board of Governors of the Federal Reserve System, Mailstop 80, 20th Street NW and Constitution Avenue NW, Washington, DC 20551 (e-mail: )"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2017,
+              2,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2017,
+              2,
+              1
+            ]
+          ]
+        },
+        "published-online": null,
+        "container-title": [
+          "American Economic Journal: Economic Policy"
+        ],
+        "volume": "9",
+        "issue": "1",
+        "page": "210-240",
+        "URL": "https://doi.org/10.1257/pol.20140108",
+        "type": "journal-article",
+        "abstract": "<jats:p> This paper provides novel estimates of the interest rate elasticity of mortgage demand by measuring the degree of bunching in response to a discrete jump in interest rates at the conforming loan limit—the maximum loan size eligible for purchase by Fannie Mae and Freddie Mac. The estimates indicate that a 1 percentage point increase in the rate on a 30-year fixed-rate mortgage reduces first mortgage demand by between 2 and 3 percent. One-third of this response is driven by borrowers who take out second mortgages, which implies that total mortgage debt only declines by 1.5 to 2 percent. (JEL D14, G21, R21, R31) </jats:p>"
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1257/pol.20140108",
+      "title": "The Interest Rate Elasticity of Mortgage Demand: Evidence from Bunching at the Conforming Loan Limit",
+      "author": [
+        {
+          "given": "Anthony A.",
+          "family": "DeFusco",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Kellogg School of Management, Northwestern University, 2001 Sheridan Road, 4215 Donald P. Jacobs Center, Evanston, IL 60208 (e-mail: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andrew",
+          "family": "Paciorek",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Board of Governors of the Federal Reserve System, Mailstop 80, 20th Street NW and Constitution Avenue NW, Washington, DC 20551 (e-mail: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2017,
+            2,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2017,
+            2,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "American Economic Journal: Economic Policy",
+      "volume": "9",
+      "issue": "1",
+      "page": "210-240",
+      "URL": "http://dx.doi.org/10.1257/pol.20140108",
+      "type": "journal-article",
+      "abstract": "<jats:p> This paper provides novel estimates of the interest rate elasticity of mortgage demand by measuring the degree of bunching in response to a discrete jump in interest rates at the conforming loan limit—the maximum loan size eligible for purchase by Fannie Mae and Freddie Mac. The estimates indicate that a 1 percentage point increase in the rate on a 30-year fixed-rate mortgage reduces first mortgage demand by between 2 and 3 percent. One-third of this response is driven by borrowers who take out second mortgages, which implies that total mortgage debt only declines by 1.5 to 2 percent. (JEL D14, G21, R21, R31) </jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1257/pol.20140108",
+    "zotero_key": "5GFK862V",
+    "zotero_link": "zotero://select/library/items/5GFK862V"
+  },
+  {
+    "id": "bhutta2021",
+    "title": "The effect of interest rates on home buying: Evidence from a shock to mortgage insurance premiums",
+    "doi": "10.1016/j.jmoneco.2020.10.001",
+    "priority": "P0",
+    "theme": "Credit design",
+    "relevance": "Concrete FHA premium episode and extensive-margin first stage.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1016/j.jmoneco.2020.10.001",
+        "title": [
+          "The effect of interest rates on home buying: Evidence from a shock to mortgage insurance premiums"
+        ],
+        "author": [
+          {
+            "given": "Neil",
+            "family": "Bhutta",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Daniel",
+            "family": "Ringo",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2021,
+              3
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2021,
+              3
+            ]
+          ]
+        },
+        "published-online": null,
+        "container-title": [
+          "Journal of Monetary Economics"
+        ],
+        "volume": "118",
+        "issue": null,
+        "page": "195-211",
+        "URL": "https://doi.org/10.1016/j.jmoneco.2020.10.001",
+        "type": "journal-article",
+        "abstract": null
+      },
+      {
+        "DOI": "10.17016/feds.2017.086",
+        "title": [
+          "The Effect of Interest Rates on Home Buying: Evidence from a Discontinuity in Mortgage Insurance Premiums"
+        ],
+        "author": [
+          {
+            "given": "Neil",
+            "family": "Bhutta",
+            "sequence": "first",
+            "affiliation": [
+              {
+                "id": [
+                  {
+                    "id": "https://ror.org/00v448643",
+                    "id-type": "ROR",
+                    "asserted-by": "publisher"
+                  }
+                ],
+                "name": "Board of Governors of the Federal Reserve System (U.S.)"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Daniel",
+            "family": "Ringo",
+            "sequence": "additional",
+            "affiliation": [
+              {
+                "id": [
+                  {
+                    "id": "https://ror.org/00v448643",
+                    "id-type": "ROR",
+                    "asserted-by": "publisher"
+                  }
+                ],
+                "name": "Board of Governors of the Federal Reserve System (U.S.)"
+              }
+            ],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2017,
+              8
+            ]
+          ]
+        },
+        "published-print": null,
+        "published-online": {
+          "date-parts": [
+            [
+              2017,
+              8
+            ]
+          ]
+        },
+        "container-title": [
+          "Finance and Economics Discussion Series"
+        ],
+        "volume": "2017.0",
+        "issue": "86",
+        "page": null,
+        "URL": "https://doi.org/10.17016/feds.2017.086",
+        "type": "journal-article",
+        "abstract": "<jats:p>We study the effect of interest rates on the housing market by taking advantage of a sudden and unexpected price change in a large government mortgage program. The Federal Housing Administration (FHA) insures most mortgages to lower-downpayment, lower credit score borrowers, including a majority of first-time homebuyers. The FHA charges borrowers an annual mortgage insurance premium (MIP), and in January, 2015 the FHA abruptly reduced the MIP, and thus FHA borrowers’ effective interest rate, by 50 basis points. Using a regression discontinuity design, we find that the MIP reduction increased the number of home purchase originations among the FHA-reliant population by nearly 14 percent. The response to the premium cut was negatively correlated with borrower income, with no observable response among relatively high income borrowers. We trace part of the jump in home buying to the MIP reduction helping ease binding debt payment-to-income ratio limits thus allowing more applications to be approved. Finally, we find no evidence that the MIP reduction increased house prices.</jats:p>"
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1016/j.jmoneco.2020.10.001",
+      "title": "The effect of interest rates on home buying: Evidence from a shock to mortgage insurance premiums",
+      "author": [
+        {
+          "given": "Neil",
+          "family": "Bhutta",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Daniel",
+          "family": "Ringo",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2021,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            3
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Monetary Economics",
+      "volume": "118",
+      "issue": null,
+      "page": "195-211",
+      "URL": "http://dx.doi.org/10.1016/j.jmoneco.2020.10.001",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jmoneco.2020.10.001",
+    "zotero_key": "RMDGRNHA",
+    "zotero_link": "zotero://select/library/items/RMDGRNHA"
+  },
+  {
+    "id": "fonseca2024",
+    "title": "Mortgage Lock‐In, Mobility, and Labor Reallocation",
+    "doi": "10.1111/jofi.13398",
+    "priority": "P0",
+    "theme": "Rates and mobility",
+    "relevance": "Mandatory competing explanation for post-2022 transaction and buyer composition.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1111/jofi.13398",
+      "title": "Mortgage Lock‐In, Mobility, and Labor Reallocation",
+      "author": [
+        {
+          "given": "JULIA",
+          "family": "FONSECA",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "LU",
+          "family": "LIU",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024,
+            10,
+            20
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2024,
+            12
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            10,
+            20
+          ]
+        ]
+      },
+      "container-title": "The Journal of Finance",
+      "volume": "79",
+      "issue": "6",
+      "page": "3729-3772",
+      "URL": "http://dx.doi.org/10.1111/jofi.13398",
+      "type": "journal-article",
+      "abstract": "<jats:title>ABSTRACT</jats:title><jats:p>We study the impact of rising mortgage rates on mobility and labor reallocation. Using individual‐level credit record data and variation in the timing of mortgage origination, we show that a 1 percentage point decline in the difference between mortgage rates locked in at origination and current rates reduces moving by 9% overall and 16% between 2022 and 2024, and this relationship is asymmetric. Mortgage lock‐in also dampens flows in and out of self‐employment and the responsiveness to shocks to nearby employment opportunities that require moving, measured as wage growth within a 50‐ to 150‐mile ring and instrumented with a shift‐share instrument.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/jofi.13398",
+    "zotero_key": "Z2RM7QXY",
+    "zotero_link": "zotero://select/library/items/Z2RM7QXY"
+  },
+  {
+    "id": "anenberg2022",
+    "title": "The Propagation of Demand Shocks through Housing Markets",
+    "doi": "10.1257/mac.20200037",
+    "priority": "P1",
+    "theme": "Rates and mobility",
+    "relevance": "Purchase chains and seller-buyer joint decisions; policy responses propagate beyond directly exposed borrowers.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1257/mac.20200037",
+      "title": "The Propagation of Demand Shocks through Housing Markets",
+      "author": [
+        {
+          "given": "Elliot",
+          "family": "Anenberg",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Board of Governors of the Federal Reserve System (email: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Daniel",
+          "family": "Ringo",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Board of Governors of the Federal Reserve System (email: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2022,
+            7,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            7,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "American Economic Journal: Macroeconomics",
+      "volume": "14",
+      "issue": "3",
+      "page": "481-507",
+      "URL": "http://dx.doi.org/10.1257/mac.20200037",
+      "type": "journal-article",
+      "abstract": "<jats:p> Housing demand stimulus produces a multiplier effect by freeing up owners attempting to sell their current home, allowing them to reenter the market as buyers. Exploiting a shock to first-time home buyer demand caused by a cut in mortgage insurance premiums, we find that homeowners buy their next home sooner when the probability of their current home selling increases. We build and calibrate a search model that explains these findings as a result of homeowners avoiding the cost of owning two homes simultaneously. Simulations demonstrate that stimulus to home buying generates a substantial multiplier effect, particularly in cold markets. (JEL R21, R31, R38) </jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1257/mac.20200037",
+    "zotero_key": "2LBE7YRN",
+    "zotero_link": "zotero://select/library/items/2LBE7YRN"
+  },
+  {
+    "id": "garriga2023",
+    "title": "The economic effects of real estate investors",
+    "doi": "10.1111/1540-6229.12427",
+    "priority": "P1",
+    "theme": "Ownership",
+    "relevance": "Published version supersedes Investors and Housing Affordability; small and medium legal-entity investors matter.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1111/1540-6229.12427",
+      "title": "The economic effects of real estate investors",
+      "author": [
+        {
+          "given": "Carlos",
+          "family": "Garriga",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Federal Reserve Bank of St. Louis Research Division St. Louis Missouri USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-6450-7965",
+          "authenticated-orcid": false,
+          "given": "Pedro",
+          "family": "Gete",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "IE Business School IE University  Madrid Spain"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-5342-2982",
+          "authenticated-orcid": false,
+          "given": "Athena",
+          "family": "Tsouderou",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Miami Herbert Business School, University of Miami, Finance Department  Coral Gables Florida USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2023,
+            2,
+            7
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2023,
+            5
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2023,
+            2,
+            7
+          ]
+        ]
+      },
+      "container-title": "Real Estate Economics",
+      "volume": "51",
+      "issue": "3",
+      "page": "655-685",
+      "URL": "http://dx.doi.org/10.1111/1540-6229.12427",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>We show five new results about small‐ and medium‐sized real estate investors (SMREI) who participate through legal entities in US housing markets. First, SMREI have the largest growth across all cities post Great Recession, in contrast to Wall Street Landlords who concentrate in superstar cities. Second, SMREI increase house price growth and price‐to‐income ratio, especially in the bottom price tier. Third, this effect is reversed as investors trigger a medium‐run supply response. Fourth, in areas with a high supply elasticity, SMREI affect rents more than prices. Finally, SMREI change the composition of the housing stock in favor of multifamily units.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/1540-6229.12427",
+    "zotero_key": "VQS5FNYA",
+    "zotero_link": "zotero://select/library/items/VQS5FNYA"
+  },
+  {
+    "id": "lee2024",
+    "title": "Institutional Investors, Rents, and Neighborhood Change in the Single Family Residential Market",
+    "doi": "10.21799/frbp.wp.2024.13",
+    "priority": "P1",
+    "theme": "Ownership",
+    "relevance": "Rent and neighborhood outcomes are complementary; corporate flag alone does not identify institutional scale.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.21799/frbp.wp.2024.13",
+      "title": "Institutional Investors, Rents, and Neighborhood Change in the Single Family Residential Market",
+      "author": [
+        {
+          "given": "Keyoung",
+          "family": "Lee",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "David",
+          "family": "Wylie",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024,
+            6
+          ]
+        ]
+      },
+      "published-print": null,
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            6
+          ]
+        ]
+      },
+      "container-title": "Working paper (Federal Reserve Bank of Philadelphia)",
+      "volume": null,
+      "issue": null,
+      "page": null,
+      "URL": "http://dx.doi.org/10.21799/frbp.wp.2024.13",
+      "type": "report",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.21799/frbp.wp.2024.13",
+    "zotero_key": "2DWXEJVZ",
+    "zotero_link": "zotero://select/library/items/2DWXEJVZ",
+    "full_text_or_version_link": "https://www.philadelphiafed.org/-/media/FRBP/Assets/working-papers/2024/wp24-13.pdf"
+  },
+  {
+    "id": "leung2017",
+    "title": "Flipping in the housing market",
+    "doi": "10.1016/j.jedc.2017.01.003",
+    "priority": "P1",
+    "theme": "Intermediation",
+    "relevance": "Liquidity provision and welfare need not move together.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1016/j.jedc.2017.01.003",
+        "title": [
+          "Flipping in the housing market"
+        ],
+        "author": [
+          {
+            "given": "Charles Ka Yui",
+            "family": "Leung",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Chung-Yi",
+            "family": "Tse",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2017,
+              3
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2017,
+              3
+            ]
+          ]
+        },
+        "published-online": null,
+        "container-title": [
+          "Journal of Economic Dynamics and Control"
+        ],
+        "volume": "76",
+        "issue": null,
+        "page": "232-263",
+        "URL": "https://doi.org/10.1016/j.jedc.2017.01.003",
+        "type": "journal-article",
+        "abstract": null
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1016/j.jedc.2017.01.003",
+      "title": "Flipping in the housing market",
+      "author": [
+        {
+          "given": "Charles Ka Yui",
+          "family": "Leung",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Chung-Yi",
+          "family": "Tse",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2017,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2017,
+            3
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Economic Dynamics and Control",
+      "volume": "76",
+      "issue": null,
+      "page": "232-263",
+      "URL": "http://dx.doi.org/10.1016/j.jedc.2017.01.003",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jedc.2017.01.003",
+    "zotero_key": "NHFN8ABF",
+    "zotero_link": "zotero://select/library/items/NHFN8ABF"
+  },
+  {
+    "id": "hanstrange2015",
+    "title": "The Microstructure of Housing Markets",
+    "doi": "10.1016/B978-0-444-59531-7.00013-2",
+    "priority": "P1",
+    "theme": "Foundations",
+    "relevance": "Core survey for price, delay, search, bargaining and brokerage.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1016/b978-0-444-59531-7.00013-2",
+      "title": "The Microstructure of Housing Markets",
+      "author": [
+        {
+          "given": "Lu",
+          "family": "Han"
+        },
+        {
+          "given": "William C.",
+          "family": "Strange"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2015
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2015
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Handbook of Regional and Urban Economics",
+      "volume": null,
+      "issue": null,
+      "page": "813-886",
+      "URL": "http://dx.doi.org/10.1016/B978-0-444-59531-7.00013-2",
+      "type": "book-chapter",
+      "abstract": null
+    },
+    "additional_source": "https://www-2.rotman.utoronto.ca/facbios/file/HS_Handbook_Microstructure_8-29-2014.pdf",
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/B978-0-444-59531-7.00013-2",
+    "zotero_key": "GWGAHKSN",
+    "zotero_link": "zotero://select/library/items/GWGAHKSN",
+    "full_text_or_version_link": "https://www-2.rotman.utoronto.ca/facbios/file/HS_Handbook_Microstructure_8-29-2014.pdf"
+  },
+  {
+    "id": "stein1995",
+    "title": "Prices and Trading Volume in the Housing Market: A Model with Down-Payment Effects",
+    "doi": "10.2307/2118444",
+    "priority": "P1",
+    "theme": "Foundations",
+    "relevance": "Canonical collateral and transaction-volume mechanism.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.2307/2118444",
+      "title": "Prices and Trading Volume in the Housing Market: A Model with Down-Payment Effects",
+      "author": [
+        {
+          "given": "J. C.",
+          "family": "Stein",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            1995,
+            5,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            1995,
+            5,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "The Quarterly Journal of Economics",
+      "volume": "110",
+      "issue": "2",
+      "page": "379-406",
+      "URL": "http://dx.doi.org/10.2307/2118444",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.2307/2118444",
+    "zotero_key": "J58MRJBN",
+    "zotero_link": "zotero://select/library/items/J58MRJBN"
+  },
+  {
+    "id": "genesove1997",
+    "title": "Equity and Time to Sale in the Real Estate Market",
+    "doi": "",
+    "priority": "P1",
+    "theme": "Search and bargaining",
+    "relevance": "Seller equity constrains reservation prices and sale timing; crucial competing mechanism in rate-shock designs.",
+    "status": "Official author-institution abstract and bibliographic record reviewed; full text not read.",
+    "metadata_source": "https://business.columbia.edu/faculty/research/equity-and-time-sale-real-estate-market",
+    "verified_metadata": {
+      "title": "Equity and Time to Sale in the Real Estate Market",
+      "author": [
+        {
+          "given": "David",
+          "family": "Genesove"
+        },
+        {
+          "given": "Christopher",
+          "family": "Mayer"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            1997
+          ]
+        ]
+      },
+      "container-title": "American Economic Review",
+      "URL": "https://business.columbia.edu/faculty/research/equity-and-time-sale-real-estate-market",
+      "type": "journal-article",
+      "DOI": "",
+      "volume": "87",
+      "issue": "3",
+      "page": "255-269"
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "WI3FYMYE",
+    "zotero_link": "zotero://select/library/items/WI3FYMYE"
+  },
+  {
+    "id": "genesove2001",
+    "title": "Loss Aversion and Seller Behavior: Evidence from the Housing Market",
+    "doi": "10.1162/003355301753265561",
+    "priority": "P1",
+    "theme": "Foundations",
+    "relevance": "Seller behavior can generate price differences unrelated to buyer financing.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1162/003355301753265561",
+      "title": "Loss Aversion and Seller Behavior: Evidence from the Housing Market",
+      "author": [
+        {
+          "given": "D.",
+          "family": "Genesove",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "C.",
+          "family": "Mayer",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2001,
+            11,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2001,
+            11,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "The Quarterly Journal of Economics",
+      "volume": "116",
+      "issue": "4",
+      "page": "1233-1260",
+      "URL": "http://dx.doi.org/10.1162/003355301753265561",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1162/003355301753265561",
+    "zotero_key": "9IMXVRTL",
+    "zotero_link": "zotero://select/library/items/9IMXVRTL"
+  },
+  {
+    "id": "wheaton1990",
+    "title": "Vacancy, Search, and Prices in a Housing Market Matching Model",
+    "doi": "10.1086/261734",
+    "priority": "P1",
+    "theme": "Foundations",
+    "relevance": "Canonical search model for joint price, turnover and vacancy outcomes.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1086/261734",
+        "title": [
+          "Vacancy, Search, and Prices in a Housing Market Matching Model"
+        ],
+        "author": [
+          {
+            "given": "William C.",
+            "family": "Wheaton",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              1990,
+              12
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              1990,
+              12
+            ]
+          ]
+        },
+        "published-online": null,
+        "container-title": [
+          "Journal of Political Economy"
+        ],
+        "volume": "98",
+        "issue": "6",
+        "page": "1270-1292",
+        "URL": "https://doi.org/10.1086/261734",
+        "type": "journal-article",
+        "abstract": null
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1086/261734",
+      "title": "Vacancy, Search, and Prices in a Housing Market Matching Model",
+      "author": [
+        {
+          "given": "William C.",
+          "family": "Wheaton",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            1990,
+            12
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            1990,
+            12
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Political Economy",
+      "volume": "98",
+      "issue": "6",
+      "page": "1270-1292",
+      "URL": "http://dx.doi.org/10.1086/261734",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1086/261734",
+    "zotero_key": "TLMYHRXM",
+    "zotero_link": "zotero://select/library/items/TLMYHRXM"
+  },
+  {
+    "id": "krainer2001",
+    "title": "A Theory of Liquidity in Residential Real Estate Markets",
+    "doi": "10.1006/juec.2000.2180",
+    "priority": "P1",
+    "theme": "Foundations",
+    "relevance": "Connect liquidity and reservation prices before making welfare claims.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1006/juec.2000.2180",
+      "title": "A Theory of Liquidity in Residential Real Estate Markets",
+      "author": [
+        {
+          "given": "John",
+          "family": "Krainer",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2001,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2001,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Urban Economics",
+      "volume": "49",
+      "issue": "1",
+      "page": "32-53",
+      "URL": "http://dx.doi.org/10.1006/juec.2000.2180",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1006/juec.2000.2180",
+    "zotero_key": "QR3BZXX6",
+    "zotero_link": "zotero://select/library/items/QR3BZXX6"
+  },
+  {
+    "id": "kurlat2015",
+    "title": "Testing for Information Asymmetries in Real Estate Markets",
+    "doi": "10.1093/rfs/hhv028",
+    "priority": "P1",
+    "theme": "Information and returns",
+    "relevance": "Investor information advantage is an alternative to financing certainty.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1093/rfs/hhv028",
+      "title": "Testing for Information Asymmetries in Real Estate Markets",
+      "author": [
+        {
+          "given": "Pablo",
+          "family": "Kurlat",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Johannes",
+          "family": "Stroebel",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2015,
+            5,
+            4
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2015,
+            8
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            5,
+            4
+          ]
+        ]
+      },
+      "container-title": "Review of Financial Studies",
+      "volume": "28",
+      "issue": "8",
+      "page": "2429-2461",
+      "URL": "http://dx.doi.org/10.1093/rfs/hhv028",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1093/rfs/hhv028",
+    "zotero_key": "NNRRGZIX",
+    "zotero_link": "zotero://select/library/items/NNRRGZIX"
+  },
+  {
+    "id": "chinco2016",
+    "title": "Misinformed Speculators and Mispricing in the Housing Market",
+    "doi": "10.1093/rfs/hhv061",
+    "priority": "P1",
+    "theme": "Information and returns",
+    "relevance": "Counterweight to the claim that all investors are skilled liquidity providers.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "metadata_candidates": [
+      {
+        "DOI": "10.1093/rfs/hhv061",
+        "title": [
+          "Misinformed Speculators and Mispricing in the Housing Market"
+        ],
+        "author": [
+          {
+            "given": "Alex",
+            "family": "Chinco",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Christopher",
+            "family": "Mayer",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2015,
+              10,
+              26
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2016,
+              2
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2015,
+              10,
+              26
+            ]
+          ]
+        },
+        "container-title": [
+          "Review of Financial Studies"
+        ],
+        "volume": "29",
+        "issue": "2",
+        "page": "486-522",
+        "URL": "https://doi.org/10.1093/rfs/hhv061",
+        "type": "journal-article",
+        "abstract": null
+      },
+      {
+        "DOI": "10.3386/w19817",
+        "title": [
+          "Misinformed Speculators and Mispricing in the Housing Market"
+        ],
+        "author": [
+          {
+            "given": "Alex",
+            "family": "Chinco",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Christopher",
+            "family": "Mayer",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "published": {
+          "date-parts": [
+            [
+              2014,
+              1
+            ]
+          ]
+        },
+        "published-print": null,
+        "published-online": {
+          "date-parts": [
+            [
+              2014,
+              1
+            ]
+          ]
+        },
+        "container-title": null,
+        "volume": null,
+        "issue": null,
+        "page": null,
+        "URL": "https://doi.org/10.3386/w19817",
+        "type": "report",
+        "abstract": null
+      }
+    ],
+    "verified_metadata": {
+      "DOI": "10.1093/rfs/hhv061",
+      "title": "Misinformed Speculators and Mispricing in the Housing Market",
+      "author": [
+        {
+          "given": "Alex",
+          "family": "Chinco",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Christopher",
+          "family": "Mayer",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2015,
+            10,
+            26
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2016,
+            2
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            10,
+            26
+          ]
+        ]
+      },
+      "container-title": "Review of Financial Studies",
+      "volume": "29",
+      "issue": "2",
+      "page": "486-522",
+      "URL": "http://dx.doi.org/10.1093/rfs/hhv061",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1093/rfs/hhv061",
+    "zotero_key": "ZEYWS9SM",
+    "zotero_link": "zotero://select/library/items/ZEYWS9SM"
+  },
+  {
+    "id": "giacoletti2021",
+    "title": "Idiosyncratic Risk in Housing Markets",
+    "doi": "10.1093/rfs/hhab033",
+    "priority": "P1",
+    "theme": "Information and returns",
+    "relevance": "Holding-period-dependent risk and improvements matter for interpreting resale returns.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1093/rfs/hhab033",
+      "title": "Idiosyncratic Risk in Housing Markets",
+      "author": [
+        {
+          "given": "Marco",
+          "family": "Giacoletti",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Southern California"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2021,
+            3,
+            25
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            7,
+            16
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2021,
+            3,
+            25
+          ]
+        ]
+      },
+      "container-title": "The Review of Financial Studies",
+      "volume": "34",
+      "issue": "8",
+      "page": "3695-3741",
+      "URL": "http://dx.doi.org/10.1093/rfs/hhab033",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title><jats:p>This paper studies the idiosyncratic risk component of individual house capital gains using data on resales and intermediate capital investments. The idiosyncratic component is large; its dynamics do not follow a random walk; and its magnitude is associated with proxies of information quality and market liquidity at the level of individual properties. Accounting for idiosyncratic risk substantially changes the assessment of the risk-return trade-off for housing: it reduces Sharpe ratios and makes them holding period dependent. I use a simple quantitative portfolio model to show that homeowners may be willing to make significant payments to insure against idiosyncratic housing risk.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1093/rfs/hhab033",
+    "zotero_key": "RTYXKQTP",
+    "zotero_link": "zotero://select/library/items/RTYXKQTP"
+  },
+  {
+    "id": "harding2012",
+    "title": "The foreclosure discount: Myth or reality?",
+    "doi": "10.1016/j.jue.2011.09.005",
+    "priority": "P1",
+    "theme": "Distress",
+    "relevance": "Essential contrary evidence on discounts and buyer returns after property-quality controls.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1016/j.jue.2011.09.005",
+      "title": "The foreclosure discount: Myth or reality?",
+      "author": [
+        {
+          "given": "John P.",
+          "family": "Harding",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Eric",
+          "family": "Rosenblatt",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Vincent W.",
+          "family": "Yao",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2012,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2012,
+            3
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Urban Economics",
+      "volume": "71",
+      "issue": "2",
+      "page": "204-218",
+      "URL": "http://dx.doi.org/10.1016/j.jue.2011.09.005",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jue.2011.09.005",
+    "zotero_key": "LTBEHZIY",
+    "zotero_link": "zotero://select/library/items/LTBEHZIY"
+  },
+  {
+    "id": "conklin2023",
+    "title": "An Alternative Approach to Estimating Foreclosure and Short Sale Discounts",
+    "doi": "10.1016/j.jue.2023.103546",
+    "priority": "P1",
+    "theme": "Distress",
+    "relevance": "Modern appraisal-based challenge to large hedonic distress discounts.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1016/j.jue.2023.103546",
+      "title": "An Alternative Approach to Estimating Foreclosure and Short Sale Discounts",
+      "author": [
+        {
+          "given": "James N.",
+          "family": "Conklin",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "N. Edward",
+          "family": "Coulson",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Moussa",
+          "family": "Diop",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nuno",
+          "family": "Mota",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2023,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2023,
+            3
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Urban Economics",
+      "volume": "134",
+      "issue": null,
+      "page": "103546",
+      "URL": "http://dx.doi.org/10.1016/j.jue.2023.103546",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "metadata_note": "Corrected Crossref given/family split of N. Edward Coulson using publisher authorship.",
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jue.2023.103546",
+    "zotero_key": "EU2EXA6F",
+    "zotero_link": "zotero://select/library/items/EU2EXA6F"
+  },
+  {
+    "id": "ortega2018",
+    "title": "Rising sea levels and sinking property values: Hurricane Sandy and New York’s housing market",
+    "doi": "10.1016/j.jue.2018.06.005",
+    "priority": "P2",
+    "theme": "Disaster option",
+    "relevance": "Damage and changed risk beliefs confound a financing-only disaster design.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1016/j.jue.2018.06.005",
+      "title": "Rising sea levels and sinking property values: Hurricane Sandy and New York’s housing market",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-5779-5711",
+          "authenticated-orcid": false,
+          "given": "Francesc",
+          "family": "Ortega",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Süleyman",
+          "family": "Taṣpınar",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2018,
+            7
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2018,
+            7
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "Journal of Urban Economics",
+      "volume": "106",
+      "issue": null,
+      "page": "81-100",
+      "URL": "http://dx.doi.org/10.1016/j.jue.2018.06.005",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1016/j.jue.2018.06.005",
+    "zotero_key": "KFMVR44S",
+    "zotero_link": "zotero://select/library/items/KFMVR44S"
+  },
+  {
+    "id": "hino2021",
+    "title": "The effect of information about climate risk on property values",
+    "doi": "10.1073/pnas.2003374118",
+    "priority": "P2",
+    "theme": "Disaster option",
+    "relevance": "Flood-map changes carry information and insurance effects together.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1073/pnas.2003374118",
+      "title": "The effect of information about climate risk on property values",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-9369-5769",
+          "authenticated-orcid": false,
+          "given": "Miyuki",
+          "family": "Hino",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Emmett Interdisciplinary Program in Environment and Resources, Stanford University, Stanford, CA 94305;"
+            },
+            {
+              "name": "Woods Institute for the Environment, Stanford University, Stanford, CA 94305;"
+            },
+            {
+              "name": "Department of City and Regional Planning, University of North Carolina, Chapel Hill, NC 27599;"
+            },
+            {
+              "name": "Environment, Ecology, and Energy Program, University of North Carolina, Chapel Hill, NC 27599;"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-4288-5858",
+          "authenticated-orcid": false,
+          "given": "Marshall",
+          "family": "Burke",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Earth System Science, Stanford University, Stanford, CA 94305;"
+            },
+            {
+              "name": "Center on Food Security and the Environment, Stanford University, Stanford, CA 94305;"
+            },
+            {
+              "name": "National Bureau of Economic Research, Cambridge MA 02138"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2021,
+            4,
+            20
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            4,
+            27
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2021,
+            4,
+            20
+          ]
+        ]
+      },
+      "container-title": "Proceedings of the National Academy of Sciences",
+      "volume": "118",
+      "issue": "17",
+      "page": null,
+      "URL": "http://dx.doi.org/10.1073/pnas.2003374118",
+      "type": "journal-article",
+      "abstract": "<jats:title>Significance</jats:title>\n                  <jats:p>Understanding whether markets efficiently price environmental risk is critical to policy design, particularly as key climate risks change rapidly. We conduct a nationwide analysis of the extent to which the US housing market prices information about flood risk contained in publicly available flood maps. Using data on millions of home sales, we find that information in these maps is not fully capitalized in property values. Lack of information appears to contribute to underpricing: More sophisticated commercial buyers and more risk-aware buyers respond more to floodplain information. This underpricing increases incentives to develop in hazardous places. Enhanced communication of flood risk could help ensure such risk is appropriately reflected in market outcomes.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1073/pnas.2003374118",
+    "zotero_key": "QAJEAA29",
+    "zotero_link": "zotero://select/library/items/QAJEAA29"
+  },
+  {
+    "id": "aroul2023",
+    "title": "The impact of cash financing on housing prices: a theoretical framework and empirical evidence from a volatile United States market cycle",
+    "doi": "10.1080/09599916.2022.2119878",
+    "priority": "P1",
+    "theme": "Cash financing",
+    "relevance": "Field-journal cash-price evidence across a market cycle.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1080/09599916.2022.2119878",
+      "title": "The impact of cash financing on housing prices: a theoretical framework and empirical evidence from a volatile United States market cycle",
+      "author": [
+        {
+          "given": "Ramya R.",
+          "family": "Aroul",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Department of Finance and Real Estate, The University of Texas at Arlington, Arlington, TX"
+            }
+          ],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "J. Andrew",
+          "family": "Hansz",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2022,
+            9,
+            13
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2023,
+            1,
+            2
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2022,
+            9,
+            13
+          ]
+        ]
+      },
+      "container-title": "Journal of Property Research",
+      "volume": "40",
+      "issue": "1",
+      "page": "25-52",
+      "URL": "http://dx.doi.org/10.1080/09599916.2022.2119878",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1080/09599916.2022.2119878",
+    "zotero_key": "8L4FR6UH",
+    "zotero_link": "zotero://select/library/items/8L4FR6UH"
+  },
+  {
+    "id": "lusht1994",
+    "title": "Some Further Evidence on the Price of Mortgage Contingency Clauses",
+    "doi": "10.1080/10835547.1994.12090745",
+    "priority": "P1",
+    "theme": "Cash financing",
+    "relevance": "Historical contract-contingency predecessor.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1080/10835547.1994.12090745",
+      "title": "Some Further Evidence on the Price of Mortgage Contingency Clauses",
+      "author": [
+        {
+          "given": "Kenneth",
+          "family": "Lusht",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Smeal College, College of Business Administration, The Pennsylvania State University, University Park, Pennsylvania"
+            }
+          ],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Andrew",
+          "family": "Hansz",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Real Estate Appraisers and Consultants, Ltd."
+            }
+          ],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            1994,
+            1,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            1994,
+            1,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2020,
+            6,
+            17
+          ]
+        ]
+      },
+      "container-title": "Journal of Real Estate Research",
+      "volume": "9",
+      "issue": "2",
+      "page": "213-217",
+      "URL": "http://dx.doi.org/10.1080/10835547.1994.12090745",
+      "type": "journal-article",
+      "abstract": null
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1080/10835547.1994.12090745",
+    "zotero_key": "G22RZ5JQ",
+    "zotero_link": "zotero://select/library/items/G22RZ5JQ"
+  },
+  {
+    "id": "asabere1992",
+    "title": "The Price Effects of Cash versus Mortgage Transactions",
+    "doi": "10.1111/1540-6229.00576",
+    "priority": "P1",
+    "theme": "Cash financing",
+    "relevance": "Early direct cash-versus-mortgage price study; cash pricing did not start in 2024.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1111/1540-6229.00576",
+      "title": "The Price Effects of Cash versus Mortgage Transactions",
+      "author": [
+        {
+          "given": "Paul K.",
+          "family": "Asabere",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Forrest E.",
+          "family": "Huffman",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Seyed",
+          "family": "Mehdiany",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            1992,
+            3
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            1992,
+            3
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2003,
+            9,
+            26
+          ]
+        ]
+      },
+      "container-title": "Real Estate Economics",
+      "volume": "20",
+      "issue": "1",
+      "page": "141-154",
+      "URL": "http://dx.doi.org/10.1111/1540-6229.00576",
+      "type": "journal-article",
+      "abstract": "<jats:p>This paper investigates the price effects of cash versus mortgage transactions. Our hypothesis that home sales involving all‐cash transactions will sell at discount is borne out by the results of this study. Analyzing a sample of comparable row home dwelling units, we find that all‐cash transactions are associated with roughly a 13% price discount relative to transactions involving financing terms that are typical of the market. Cash is King. The findings are consistent with theories regarding buyer—seller behavior.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/1540-6229.00576",
+    "zotero_key": "MYILS5B4",
+    "zotero_link": "zotero://select/library/items/MYILS5B4"
+  },
+  {
+    "id": "fuster2021",
+    "title": "The Sensitivity of Housing Demand to Financing Conditions: Evidence from a Survey",
+    "doi": "10.1257/pol.20150337",
+    "priority": "P1",
+    "theme": "Credit design",
+    "relevance": "Separate liquidity/down-payment constraints from interest-rate effects.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1257/pol.20150337",
+      "title": "The Sensitivity of Housing Demand to Financing Conditions: Evidence from a Survey",
+      "author": [
+        {
+          "given": "Andreas",
+          "family": "Fuster",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Swiss National Bank, Börsenstrasse 15, 8022 Zurich, Switzerland (email: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Basit",
+          "family": "Zafar",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Economics, University of Michigan, Lorch Hall, 611 Tappan Ave, Ann Arbor, MI 48109-1220 and NBER (email: )"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2021,
+            2,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            2,
+            1
+          ]
+        ]
+      },
+      "published-online": null,
+      "container-title": "American Economic Journal: Economic Policy",
+      "volume": "13",
+      "issue": "1",
+      "page": "231-265",
+      "URL": "http://dx.doi.org/10.1257/pol.20150337",
+      "type": "journal-article",
+      "abstract": "<jats:p> Measuring the sensitivity of housing demand to mortgage rates and available leverage is challenging because there is generally no exogenous variation in these variables. This paper circumvents this issue by designing a strategic survey in which respondents report their willingness to pay (WTP) for a home under different financing scenarios. Relaxation of down payment constraints or an exogenous increase in nonhousing wealth has large effects on WTP, especially for poorer and more credit-constrained households. However, changing the mortgage rate has only moderate effects on WTP. These findings have implications for theoretical models of house price determination and for policy. (JEL G21, G51, R21, R38) </jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1257/pol.20150337",
+    "zotero_key": "LH6NEVZX",
+    "zotero_link": "zotero://select/library/items/LH6NEVZX"
+  },
+  {
+    "id": "mills2019",
+    "title": "Large‐Scale Buy‐to‐Rent Investors in the Single‐Family Housing Market: The Emergence of a New Asset Class",
+    "doi": "10.1111/1540-6229.12189",
+    "priority": "P1",
+    "theme": "Ownership",
+    "relevance": "Scale and strategy definitions for institutional buy-to-rent buyers.",
+    "status": "Abstract/metadata reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1111/1540-6229.12189",
+      "title": "Large‐Scale Buy‐to‐Rent Investors in the Single‐Family Housing Market: The Emergence of a New Asset Class",
+      "author": [
+        {
+          "given": "James",
+          "family": "Mills",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Amherst Holdings LLC  TX"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Raven",
+          "family": "Molloy",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Federal Reserve Board of Governors  Washington D.C."
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Rebecca",
+          "family": "Zarutskie",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Federal Reserve Board of Governors  Washington D.C."
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2017,
+            1,
+            31
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            6
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2017,
+            1,
+            31
+          ]
+        ]
+      },
+      "container-title": "Real Estate Economics",
+      "volume": "47",
+      "issue": "2",
+      "page": "399-430",
+      "URL": "http://dx.doi.org/10.1111/1540-6229.12189",
+      "type": "journal-article",
+      "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>In 2012, several large firms began purchasing single‐family homes, creating large portfolios of rental property, and securitizing these investments in capital markets. We present the first systematic evidence on this new investor activity in order to shed light on the factors that have supported its emergence. Three key factors were the ample supply of property for sale, tight mortgage financing and a decrease in acquisition and managerial costs brought about by technological advances. In addition, we show that buy‐to‐rent investors appear to have supported house prices in the neighborhoods where they concentrated.</jats:p>"
+    },
+    "verified_on": "2026-11-02",
+    "metadata_source": "https://doi.org/10.1111/1540-6229.12189",
+    "zotero_key": "5UYCVEVH",
+    "zotero_link": "zotero://select/library/items/5UYCVEVH"
+  },
+  {
+    "id": "buchak2026",
+    "doi": "10.1086/742710",
+    "priority": "P0",
+    "theme": "Intermediation",
+    "relevance": "Closest iBuyer intermediation benchmark; published 2026 version replaces the NBER working paper.",
+    "status": "Published metadata verified; older NBER 2022 revision selectively skimmed; final 2026 full text not read.",
+    "verified_metadata": {
+      "DOI": "10.1086/742710",
+      "title": "Why Is Intermediating Houses So Difficult? Evidence from iBuyers",
+      "author": [
+        {
+          "given": "Greg",
+          "family": "Buchak",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Stanford Graduate School of Business, Stanford Institute for Economic Policy Research, and National Bureau of Economic Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Gregor",
+          "family": "Matvos",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Northwestern University and National Bureau of Economic Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Tomasz",
+          "family": "Piskorski",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Columbia University and National Bureau of Economic Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Amit",
+          "family": "Seru",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Stanford Graduate School of Business, Hoover Institution, Stanford Institute for Economic Policy Research, and National Bureau of Economic Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            1
+          ]
+        ]
+      },
+      "container-title": "Journal of Political Economy",
+      "volume": "134",
+      "issue": "10",
+      "page": "3193-3251",
+      "URL": "http://dx.doi.org/10.1086/742710",
+      "type": "journal-article"
+    },
+    "title": "Why Is Intermediating Houses So Difficult? Evidence from iBuyers",
+    "metadata_source": "https://doi.org/10.1086/742710",
+    "verified_on": "2026-11-02",
+    "zotero_key": "AKJ755TJ",
+    "zotero_link": "zotero://select/library/items/AKJ755TJ",
+    "full_text_or_version_link": "https://www.nber.org/system/files/working_papers/w28252/w28252.pdf"
+  },
+  {
+    "id": "ambrose2025",
+    "doi": "10.2139/ssrn.4959029",
+    "priority": "P0",
+    "theme": "Cash financing",
+    "relevance": "Closest credit-access competitor; revised September 20, 2025, initially written August 2024.",
+    "status": "Abstract reviewed; full text not read",
+    "title": "Linking Asset Values to Financing: The Role of Small-Dollar Mortgages in Cash vs. Mortgage Property Price Disparities",
+    "metadata_source": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4959029",
+    "verified_metadata": {
+      "title": "Linking Asset Values to Financing: The Role of Small-Dollar Mortgages in Cash vs. Mortgage Property Price Disparities",
+      "author": [
+        {
+          "given": "Brent W.",
+          "family": "Ambrose"
+        },
+        {
+          "given": "Liu Ee",
+          "family": "Chia"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025
+          ]
+        ]
+      },
+      "container-title": "Working paper",
+      "URL": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4959029",
+      "type": "report",
+      "DOI": "10.2139/ssrn.4959029"
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "8IMVHHWK",
+    "zotero_link": "zotero://select/library/items/8IMVHHWK"
+  },
+  {
+    "id": "seo",
+    "doi": "10.1007/s11146-020-09807-z",
+    "priority": "P0",
+    "theme": "Cash financing",
+    "relevance": "Direct predecessor for cash heterogeneity by price, distress, investor and rental status; online 2021, print 2023.",
+    "status": "Full text skimmed via PMC; introduction, design, results and conclusion examined; no replication.",
+    "title": "Examining the Cash-Only Price Discount and the Driving Forces of Cash-Only Transactions in the Housing Market",
+    "metadata_source": "https://link.springer.com/article/10.1007/s11146-020-09807-z",
+    "verified_metadata": {
+      "title": "Examining the Cash-Only Price Discount and the Driving Forces of Cash-Only Transactions in the Housing Market",
+      "author": [
+        {
+          "given": "Youngme",
+          "family": "Seo"
+        },
+        {
+          "given": "Cynthia",
+          "family": "Holmes"
+        },
+        {
+          "given": "Mark (Seung Hwan)",
+          "family": "Lee"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2023
+          ]
+        ]
+      },
+      "container-title": "The Journal of Real Estate Finance and Economics",
+      "URL": "https://link.springer.com/article/10.1007/s11146-020-09807-z",
+      "type": "journal-article",
+      "DOI": "10.1007/s11146-020-09807-z",
+      "volume": "67",
+      "page": "480-516"
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "DPSXFJ5X",
+    "zotero_link": "zotero://select/library/items/DPSXFJ5X",
+    "full_text_or_version_link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8310700/"
+  },
+  {
+    "id": "gorback2025",
+    "doi": "10.2139/ssrn.5160602",
+    "priority": "P1",
+    "theme": "Institutional ownership",
+    "relevance": "Distinguishes recovery-period intermediation from institutional demand during the pandemic.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.2139/ssrn.5160602",
+      "title": "The Impact of Institutional Owners on Housing Markets",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6468-9554",
+          "authenticated-orcid": true,
+          "given": "Caitlin",
+          "family": "Gorback",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-4715-1984",
+          "authenticated-orcid": true,
+          "given": "Franklin",
+          "family": "Qian",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zipei",
+          "family": "Zhu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025
+          ]
+        ]
+      },
+      "container-title": [],
+      "URL": "http://dx.doi.org/10.2139/ssrn.5160602",
+      "type": "posted-content",
+      "abstract": "<jats:p>&lt;div&gt;\n Since the Great Recession, single-family rental and private-equity investors have transformed&amp;nbsp;&lt;span&gt;U.S. housing markets. Using housing deeds from 2010–2022, we show that these investors&amp;nbsp;&lt;/span&gt;&lt;span&gt;grew rapidly and clustered geographically. Exploiting variation from the pre-existing built&amp;nbsp;&lt;/span&gt;&lt;span&gt;environment and falling management costs, we instrument for their market share. A one-&lt;/span&gt;&lt;span&gt;standard-deviation (average) increase in local shares raises prices by 1.05 (0.21) p.p. and rents&amp;nbsp;&lt;/span&gt;&lt;span&gt;by 1.68 (0.43) p.p. These averages conceal temporal heterogeneity: prices and rents fell pre-&amp;nbsp;&lt;/span&gt;&lt;span&gt;pandemic but rose amid the scramble for space. As investor expansion displaced owners, rents&amp;nbsp;&lt;/span&gt;&lt;span&gt;and prices declined, suggesting lower homeowner amenities.&lt;/span&gt;\n&lt;/div&gt;</jats:p>"
+    },
+    "title": "The Impact of Institutional Owners on Housing Markets",
+    "metadata_source": "https://doi.org/10.2139/ssrn.5160602",
+    "verified_on": "2026-11-02",
+    "zotero_key": "WXGFISB9",
+    "zotero_link": "zotero://select/library/items/WXGFISB9",
+    "full_text_or_version_link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5160602"
+  },
+  {
+    "id": "mateen2026",
+    "doi": "10.2139/ssrn.3727150",
+    "priority": "P1",
+    "theme": "Search and bargaining",
+    "relevance": "Offer-level evidence helps distinguish nonprice terms from completed-transaction selection; revised July 2026.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.2139/ssrn.3727150",
+      "title": "How Housing Search and Bargaining Unfold: Evidence from Offer-Level Data",
+      "author": [
+        {
+          "given": "Haaris",
+          "family": "Mateen",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-4715-1984",
+          "authenticated-orcid": true,
+          "given": "Franklin",
+          "family": "Qian",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ye",
+          "family": "Zhang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Tianxiang",
+          "family": "Zheng",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026,
+            7,
+            22
+          ]
+        ]
+      },
+      "container-title": [],
+      "URL": "http://dx.doi.org/10.2139/ssrn.3727150",
+      "type": "posted-content",
+      "abstract": "<jats:p>We study housing search and bargaining using a novel large-scale offer-level dataset from the U.S. market. We document a rich taxonomy of bargaining patterns, outcomes, and the dynamic evolution of surplus sharing. We then examine two potential strategic bargaining instruments. First, seller-side listing-price revisions are associated with additional bidders when revised downward, and higher subsequent offer prices when revised upward. Second, buyer-side non-price bid terms complement price competition, are more prevalent in competitive markets, and signal buyer commitment. Overall, our findings provide new evidence on the microstructure of housing bargaining and the strategic interactions between buyers and sellers.</jats:p>"
+    },
+    "title": "How Housing Search and Bargaining Unfold: Evidence from Offer-Level Data",
+    "metadata_source": "https://doi.org/10.2139/ssrn.3727150",
+    "metadata_note": "Current SSRN revision July 22, 2026; DOI deposit year 2020 is original posting, not current version. Four authors verified.",
+    "verified_on": "2026-11-02",
+    "zotero_key": "NCRCRIBM",
+    "zotero_link": "zotero://select/library/items/NCRCRIBM"
+  },
+  {
+    "id": "bian2018",
+    "doi": "10.1080/10835547.2018.12091506",
+    "priority": "P1",
+    "theme": "Cash financing",
+    "relevance": "Earlier bargaining model and evidence connecting financing to house prices.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1080/10835547.2018.12091506",
+      "title": "Bargaining, Mortgage Financing, and Housing Prices",
+      "author": [
+        {
+          "given": "Xun",
+          "family": "Bian",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Zhenguo",
+          "family": "Lin",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Yingchun",
+          "family": "Liu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2018,
+            7,
+            1
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2018,
+            7,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2020,
+            6,
+            17
+          ]
+        ]
+      },
+      "container-title": "Journal of Real Estate Research",
+      "volume": "40",
+      "issue": "3",
+      "page": "419-452",
+      "URL": "http://dx.doi.org/10.1080/10835547.2018.12091506",
+      "type": "journal-article"
+    },
+    "title": "Bargaining, Mortgage Financing, and Housing Prices",
+    "metadata_source": "https://doi.org/10.1080/10835547.2018.12091506",
+    "verified_on": "2026-11-02",
+    "zotero_key": "FVJ9Q6F9",
+    "zotero_link": "zotero://select/library/items/FVJ9Q6F9"
+  },
+  {
+    "id": "jiang2024",
+    "doi": "10.2139/ssrn.3386353",
+    "priority": "P1",
+    "theme": "Search and bargaining",
+    "relevance": "Liquidity requires both time and price evidence; shorter holding alone is insufficient.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.2139/ssrn.3386353",
+      "title": "Liquidity in Residential Real Estate Markets",
+      "author": [
+        {
+          "given": "Erica Xuewei",
+          "family": "Jiang"
+        },
+        {
+          "given": "Nadia",
+          "family": "Kotova"
+        },
+        {
+          "given": "Anthony Lee",
+          "family": "Zhang"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024,
+            3
+          ]
+        ]
+      },
+      "container-title": "SSRN Electronic Journal",
+      "URL": "https://anthonyleezhang.github.io/pdfs/sfipd.pdf",
+      "type": "journal-article"
+    },
+    "title": "Liquidity in Residential Real Estate Markets",
+    "metadata_source": "https://doi.org/10.2139/ssrn.3386353",
+    "metadata_note": "SSRN DOI metadata is stale (2019 title and two authors); March 2024 author PDF establishes current title and three authors.",
+    "verified_on": "2026-11-02",
+    "zotero_key": "PJERE8XC",
+    "zotero_link": "zotero://select/library/items/PJERE8XC",
+    "full_text_or_version_link": "https://anthonyleezhang.github.io/pdfs/sfipd.pdf"
+  },
+  {
+    "id": "diaz2026",
+    "doi": "10.1007/s00199-026-01733-0",
+    "priority": "P1",
+    "theme": "Intermediation",
+    "relevance": "Recent theory already links credit, intermediary inventories, trading speed, and prices.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "DOI": "10.1007/s00199-026-01733-0",
+      "title": "Credit and inventories in illiquid housing markets",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0003-3604-0728",
+          "authenticated-orcid": false,
+          "given": "Antonia",
+          "family": "Díaz",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026,
+            6,
+            26
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2026,
+            6,
+            26
+          ]
+        ]
+      },
+      "container-title": "Economic Theory",
+      "URL": "http://dx.doi.org/10.1007/s00199-026-01733-0",
+      "type": "journal-article"
+    },
+    "title": "Credit and inventories in illiquid housing markets",
+    "metadata_source": "https://doi.org/10.1007/s00199-026-01733-0",
+    "verified_on": "2026-11-02",
+    "zotero_key": "HVM8K8YX",
+    "zotero_link": "zotero://select/library/items/HVM8K8YX"
+  },
+  {
+    "id": "zhu2026",
+    "title": "The Appraisal Mechanism: Spillover Effects of All-Cash Sales on Local Housing Markets",
+    "doi": "",
+    "priority": "P0",
+    "theme": "Appraisals and spillovers",
+    "relevance": "Emerging competitor on the effect of cash transactions on subsequent mortgage transactions through comparable sales.",
+    "status": "January 2026 full text selectively skimmed: introduction and design/results excerpts; appendix not audited.",
+    "metadata_source": "https://zipeizhu.github.io/papers/JMP_ZZ_Nov2025.pdf",
+    "verified_metadata": {
+      "title": "The Appraisal Mechanism: Spillover Effects of All-Cash Sales on Local Housing Markets",
+      "author": [
+        {
+          "given": "Zipei",
+          "family": "Zhu"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026
+          ]
+        ]
+      },
+      "container-title": "Working paper",
+      "URL": "https://zipeizhu.github.io/papers/JMP_ZZ_Nov2025.pdf",
+      "type": "report",
+      "DOI": ""
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "SA2YS77C",
+    "zotero_link": "zotero://select/library/items/SA2YS77C",
+    "full_text_or_version_link": "https://zipeizhu.github.io/papers/JMP_ZZ_Nov2025.pdf"
+  },
+  {
+    "id": "aldana2025",
+    "title": "Impact of All-Cash Home Purchases on Mortgage Lenders",
+    "doi": "",
+    "priority": "P2",
+    "theme": "Credit and lenders",
+    "relevance": "Reverse direction: cash activity affects lenders; relevant to general equilibrium and instrument exclusion restrictions.",
+    "status": "Abstract reviewed; full text not read",
+    "metadata_source": "https://zipeizhu.github.io/papers/AZ_2025.pdf",
+    "verified_metadata": {
+      "title": "Impact of All-Cash Home Purchases on Mortgage Lenders",
+      "author": [
+        {
+          "given": "Ernesto",
+          "family": "Aldana"
+        },
+        {
+          "given": "Zipei",
+          "family": "Zhu"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025
+          ]
+        ]
+      },
+      "container-title": "Working paper",
+      "URL": "https://zipeizhu.github.io/papers/AZ_2025.pdf",
+      "type": "report",
+      "DOI": ""
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "3IDQE7DU",
+    "zotero_link": "zotero://select/library/items/3IDQE7DU"
+  },
+  {
+    "id": "loschi2026",
+    "title": "Who Gets the House? Related-Party Transfers and the Cash–Mortgage Price Gap in New York City",
+    "doi": "10.5281/zenodo.23761289",
+    "priority": "P1",
+    "theme": "Measurement and selection",
+    "relevance": "Very recent self-archived working paper, version 3.12 October 29, 2026; related-party filtering is a direct measurement competitor.",
+    "status": "Version 3.12 full text selectively skimmed: introduction and measurement/validation excerpts; exploratory self-archived paper.",
+    "metadata_source": "https://nychousingdata.com/papers/who-gets-the-house/",
+    "verified_metadata": {
+      "title": "Who Gets the House? Related-Party Transfers and the Cash–Mortgage Price Gap in New York City",
+      "author": [
+        {
+          "given": "Pablo",
+          "family": "Loschi"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026
+          ]
+        ]
+      },
+      "container-title": "Working paper",
+      "URL": "https://nychousingdata.com/papers/who-gets-the-house/",
+      "type": "report",
+      "DOI": "10.5281/zenodo.23761289"
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "9PECQLDW",
+    "zotero_link": "zotero://select/library/items/9PECQLDW",
+    "full_text_or_version_link": "https://nychousingdata.com/papers/who-gets-the-house/who_gets_the_house_v3_12.pdf"
+  },
+  {
+    "id": "moktan2025",
+    "title": "The anatomy of a shock to residential real estate: the role of lending",
+    "doi": "",
+    "priority": "P1",
+    "theme": "Credit and property loanability",
+    "relevance": "Post-Grenfell lending contraction and cash responses; directly limits novelty of the disaster-to-cash idea.",
+    "status": "Official abstract and full-text excerpts on lending and cash substitution reviewed; full paper not read.",
+    "metadata_source": "https://www.bankofengland.co.uk/working-paper/2025/the-anatomy-of-a-shock-to-residential-real-estate-the-role-of-lending",
+    "verified_metadata": {
+      "title": "The anatomy of a shock to residential real estate: the role of lending",
+      "author": [
+        {
+          "given": "Sidharth",
+          "family": "Moktan"
+        },
+        {
+          "given": "Benjamin",
+          "family": "Guin"
+        },
+        {
+          "given": "Liam",
+          "family": "Clarke"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025
+          ]
+        ]
+      },
+      "container-title": "Bank of England Staff Working Paper 1111",
+      "URL": "https://www.bankofengland.co.uk/working-paper/2025/the-anatomy-of-a-shock-to-residential-real-estate-the-role-of-lending",
+      "type": "report",
+      "DOI": ""
+    },
+    "verified_on": "2026-11-02",
+    "zotero_key": "AYIGXLN6",
+    "zotero_link": "zotero://select/library/items/AYIGXLN6"
+  },
+  {
+    "id": "jauregui2017",
+    "doi": "10.1007/s11146-015-9529-9",
+    "priority": "P1",
+    "theme": "Measurement and selection",
+    "relevance": "Selection models and counterfactual cash pricing precede this project.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "title": "Sample Selection Approaches to Estimating House Price Cash Differentials",
+      "author": [
+        {
+          "given": "Andres",
+          "family": "Jauregui",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Alan",
+          "family": "Tidwell",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-1189-6300",
+          "authenticated-orcid": false,
+          "given": "Diane",
+          "family": "Hite",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2015,
+            9,
+            10
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2017,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            9,
+            10
+          ]
+        ]
+      },
+      "container-title": "The Journal of Real Estate Finance and Economics",
+      "volume": "54",
+      "issue": "1",
+      "page": "117-137",
+      "URL": "http://dx.doi.org/10.1007/s11146-015-9529-9",
+      "type": "journal-article",
+      "DOI": "10.1007/s11146-015-9529-9"
+    },
+    "metadata_source": "https://doi.org/10.1007/s11146-015-9529-9",
+    "title": "Sample Selection Approaches to Estimating House Price Cash Differentials",
+    "verified_on": "2026-11-02",
+    "zotero_key": "UNEPUGZC",
+    "zotero_link": "zotero://select/library/items/UNEPUGZC"
+  },
+  {
+    "id": "tidwell2018",
+    "doi": "10.1007/s11146-016-9591-y",
+    "priority": "P0",
+    "theme": "Measurement and selection",
+    "relevance": "Direct competitor jointly handling cash selection, distress selection, spatial dependence and cycles.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "title": "Cash and Distressed House Sales Price Discounts: Dual Sample Selection Spatial Interdependence Approaches",
+      "author": [
+        {
+          "given": "Alan",
+          "family": "Tidwell",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andres",
+          "family": "Jauregui",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Vivek",
+          "family": "Sah",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andrew",
+          "family": "Narwold",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2016,
+            12,
+            16
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2018,
+            1
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2016,
+            12,
+            16
+          ]
+        ]
+      },
+      "container-title": "The Journal of Real Estate Finance and Economics",
+      "volume": "56",
+      "issue": "1",
+      "page": "101-139",
+      "URL": "http://dx.doi.org/10.1007/s11146-016-9591-y",
+      "type": "journal-article",
+      "DOI": "10.1007/s11146-016-9591-y"
+    },
+    "metadata_source": "https://doi.org/10.1007/s11146-016-9591-y",
+    "title": "Cash and Distressed House Sales Price Discounts: Dual Sample Selection Spatial Interdependence Approaches",
+    "verified_on": "2026-11-02",
+    "zotero_key": "RLT7IKLC",
+    "zotero_link": "zotero://select/library/items/RLT7IKLC"
+  },
+  {
+    "id": "jauregui2019",
+    "doi": "10.1007/s11146-018-9661-4",
+    "priority": "P0",
+    "theme": "Measurement and selection",
+    "relevance": "Direct decomposition predecessor distinguishing cash, conventional, FHA and VA financing.",
+    "status": "Abstract reviewed; full text not read",
+    "verified_metadata": {
+      "title": "Sample Selection Approaches to Estimating and Allocating House Transaction Funding Price Differentials",
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6270-2284",
+          "authenticated-orcid": false,
+          "given": "Andres",
+          "family": "Jauregui",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Alan",
+          "family": "Tidwell",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Vivek",
+          "family": "Sah",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2018,
+            5,
+            23
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            4
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2018,
+            5,
+            23
+          ]
+        ]
+      },
+      "container-title": "The Journal of Real Estate Finance and Economics",
+      "volume": "58",
+      "issue": "3",
+      "page": "366-407",
+      "URL": "http://dx.doi.org/10.1007/s11146-018-9661-4",
+      "type": "journal-article",
+      "DOI": "10.1007/s11146-018-9661-4"
+    },
+    "metadata_source": "https://doi.org/10.1007/s11146-018-9661-4",
+    "title": "Sample Selection Approaches to Estimating and Allocating House Transaction Funding Price Differentials",
+    "verified_on": "2026-11-02",
+    "zotero_key": "HWHJWEVD",
+    "zotero_link": "zotero://select/library/items/HWHJWEVD"
+  }
+]

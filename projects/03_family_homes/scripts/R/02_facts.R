@@ -4,7 +4,7 @@
 # Purpose: National/California/state volumes by taxonomy class; family:market ratios;
 #          validation moments (zero-price, absentee); property correlates
 #          (structure age, value tier, senior exemption) via prop join.
-# Inputs:  data/derived/03_family_homes/events.parquet
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 #          data/corelogic_extracts/by_state/prop/ (correlates join only)
 # Outputs: _outputs/tables/fact_national_by_year_class.csv
 #          _outputs/tables/fact_california_by_year_class.csv
@@ -18,6 +18,7 @@
 #          10/07/2026: added full-period state counts by family subclass.
 # ============================================================
 
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 set.seed(20260609)
@@ -32,14 +33,33 @@ message("Starting 02_facts at ", Sys.time())
 # Importing event data ----
 # ============================================================
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 
-# Trust self-transfers are not counted as family transfers.
-fam_classes <- c("family_person", "family_other", "family_estate")
+# Family measure (author's decision 2026-11-12): the class-based proxy minus same-person
+# (owner_retained) and entity (unrelated_entity) deeds. read_events_df() relabels those rows
+# 'family_samep_entity', so `class %in% fam_classes` below IS the new measure and the old
+# measure ("including same-person and entity deeds") is that plus 'family_samep_entity'.
+# Trust deeds and exact same-person retitles (class family_retitle) remain separate.
+# See quality_reports/2026-11-12_same_person_retitles.md.
+fam_classes <- family_measure_classes   # the locked measure through `class` (00_setup.R)
 
-# Load all events into R; subsequent calculations use in-memory data frames.
-ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+# Trust-rule tallies by year come straight from the parquet (trust_rel is NULL
+# outside family_trust), so the string column never enters R memory.
+trust_by_year <- arrow::open_dataset(events_path) %>%
+  filter(class == "family_trust", sale_year >= window_start_year,
+         sale_year <= full_year_end) %>%
+  group_by(sale_year) %>%
+  summarize(
+    trust_clear = sum(as.integer(trust_rel == "clear"), na.rm = TRUE),
+    trust_ambig = sum(as.integer(trust_rel == "ambiguous"), na.rm = TRUE),
+    trust_self  = sum(as.integer(trust_rel %in% c("self", "none")), na.rm = TRUE)
+  ) %>%
+  collect()
+# Load all events into R (without the trust audit columns; see read_events_df)
+ev_data <- read_events_df(events_path, columns = c(
+  "clip", "state", "sale_year", "class", "amt", "dtype", "absentee_buyer", "corp_buyer"
+))
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # Keep complete calendar years for national facts and validation moments.
@@ -87,7 +107,7 @@ ca_plot <- ca %>%
       family_other = "Family transfer: other interfamily",
       family_estate = "Family transfer: estate/executor",
       family_retitle = "Same-person retitle",
-      family_trust = "Trust self-transfer",
+      family_trust = "Interfamily trust deed",
       other_nonarms = "Other non-arm's-length",
       estate_noninterfam = "Estate deed: non-interfamily",
       .default = class
@@ -124,17 +144,33 @@ headline <- ev_window %>%
   summarize(
     fam_conservative = sum(class == "family_person", na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    fam_narrow = sum(class %in% family_narrow_classes),
+    n_all = n(),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
+    # Retain the wide alias for downstream compatibility; main = wide.
+    fam_wide = sum(class %in% c(fam_classes, "family_other")),
+    # upper bound: the old class-based proxy, including same-person and entity deeds
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
     market = sum(class == "market_sale", na.rm = TRUE),
     .groups = "drop"
   ) %>%
+  left_join(trust_by_year, by = "sale_year") %>%
   mutate(
+    share_family_all = fam_broad / n_all,
+    share_family_incl_samep_all = fam_incl_samep / n_all,
+    ratio_incl_samep = fam_incl_samep / market,
+    share_narrow_all = fam_narrow / n_all,
     ratio_conservative = fam_conservative / market,
-    ratio_broad = fam_broad / market
+    ratio_broad = fam_broad / market,
+    ratio_wide = fam_wide / market,
+    ratio_trust_lower = trust_clear / market,
+    ratio_trust_upper = (trust_clear + trust_ambig) / market
   ) %>%
   arrange(sale_year)
 
 assert_rows(headline, 15, "fact_headline_ratios")
+stopifnot(all(headline$trust_clear + headline$trust_ambig + headline$trust_self ==
+                headline$trust))
 write_csv_strict(headline, path(tables_out_dir, "fact_headline_ratios.csv"))
 saveRDS(headline, path(out_dir, "fact_headline_ratios.rds"))
 
@@ -146,7 +182,8 @@ st <- ev_pooled %>%
   group_by(state) %>%
   summarize(
     fam_broad = sum(class %in% fam_classes),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),
     .groups = "drop"
@@ -164,8 +201,11 @@ st_full <- ev_window %>%
     family_person = sum(class == "family_person", na.rm = TRUE),
     family_other = sum(class == "family_other", na.rm = TRUE),
     family_estate = sum(class == "family_estate", na.rm = TRUE),
+    family_via_trust = sum(class == family_via_trust_label, na.rm = TRUE),
+    family_samep_entity = sum(class == family_samep_label, na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),
     .groups = "drop"
@@ -174,7 +214,8 @@ st_full <- ev_window %>%
 
 assert_rows(st_full, 45, "fact_state_class_2007_2023")
 stopifnot(all(st_full$fam_broad ==
-                st_full$family_person + st_full$family_other + st_full$family_estate))
+                st_full$family_person + st_full$family_estate + st_full$family_other +
+                st_full$family_via_trust))
 write_csv_strict(st_full, path(tables_out_dir, "fact_state_class_2007_2023.csv"))
 
 # |- 4. Validation moments by class ----
@@ -199,9 +240,25 @@ write_csv_strict(val, path(tables_out_dir, "fact_validation_moments.csv"))
 # Property correlates, 2017-2023 events ----
 # ============================================================
 
+# |- Freeing event memory before the property join ----
+# Only 2017-2023 family/trust/market events are needed from here on. Build that
+# slim table, then drop the full event copies (ev_data, ev_window, ev_pooled hold
+# ~150M rows each and exhausted R's memory once national property records loaded).
+rm(ev_window, ev_pooled)   # free two of the three full copies before filtering
+invisible(gc())
+ev_recent <- ev_data %>%
+  dplyr::select(clip, state, sale_year, class) %>%
+  filter(between(sale_year, 2017L, full_year_end),
+         class %in% c(fam_classes, "family_trust", "market_sale"))
+recent_clips <- ev_recent %>% distinct(clip)
+rm(ev_data)
+invisible(gc())
+
 # |- Importing and deduplicating property records ----
 # Read each state through the shared loader; harmonize types before binding
 # because property columns can be numeric in one partition and text in another.
+# Keep only parcels that appear in recent events: the dedupe below is per clip,
+# so restricting first leaves every matched parcel's chosen record unchanged.
 prop_columns <- c("clip", "year_built", "calculated_total_value",
                   "senior_exempt_indicator", "homestead_exempt_indicator")
 prop_states <- dir_ls(path(default_parquet_root(), "by_state", "prop"),
@@ -225,7 +282,8 @@ prop_data <- purrr::map_dfr(prop_states, function(st) {
       senior_exempt = as.integer(coalesce(senior_exempt_indicator == "Y", FALSE)),
       homestead_exempt = as.integer(coalesce(homestead_exempt_indicator == "Y", FALSE)),
       prop_state = state
-    )
+    ) %>%
+    semi_join(recent_clips, by = "clip", na_matches = "never")
 })
 
 # Keep one row per clip so repeated property records cannot multiply events.
@@ -236,10 +294,6 @@ prop_slim <- prop_data %>%
   distinct(clip, .keep_all = TRUE)
 
 # |- Matching recent events to property records ----
-ev_recent <- ev_pooled %>%
-  filter(class %in% c(fam_classes, "family_trust", "market_sale")) %>%
-  dplyr::select(clip, state, sale_year, class)
-
 n_ev_recent <- nrow(ev_recent)
 
 # SQL joins do not match missing keys; keep that behavior in the R join.

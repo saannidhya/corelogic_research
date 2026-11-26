@@ -9,10 +9,12 @@
 \usepackage[round, sort&compress, authoryear]{natbib}
 \bibliographystyle{aer}
 \usepackage{setspace}
+\usepackage{array}      % column formats of the appendix taxonomy table
+\usepackage{adjustbox}  % scales wide regression tables (T4) to text width
 \onehalfspacing
 \usepackage[margin=1.1in]{geometry}
 
-\title{Keeping the House in the Family:\\ Non-Market Transfers and Property-Tax Incentives
+\title{Keeping the House in the Family:\\ Intrafamily Transfers and Property-Tax Incentives
 \thanks{Saannidhya Rawat, Marquette University. Email: saannidhya.rawat@marquette.edu. CoreLogic deed and property records were obtained through the University of Cincinnati's academic license.
 % We thank \dots\ for helpful comments.
 All errors are our own.}}
@@ -23,8 +25,15 @@ All errors are our own.}}
 
 % \date{\today\\\vspace{4pt}\textit{Preliminary and incomplete --- please do not cite without permission}}
 
-\input{tables/welfare_numbers.tex}
+\input{tables/descriptive_numbers.tex}
+\input{tables/refresh_numbers.tex}
+\input{tables/welfare_v2_numbers.tex}
 \input{tables/hazard_numbers.tex}
+\input{tables/wedge_numbers.tex}
+\input{tables/s4_numbers.tex}
+\input{tables/s23_numbers.tex}
+\input{tables/r2_numbers.tex}
+\input{tables/prop19_route_numbers.tex}
 
 \begin{document}
 \maketitle
@@ -33,26 +42,11 @@ All errors are our own.}}
 \singlespacing
 \vspace{-2em}
 \begin{abstract}
-\noindent A large share of American homes change hands without a market. Using 144 million residential deed events from 2007 to 2023,
-this paper provides national micro-level evidence on the prevalence and size of intra-family housing transfers. We find 28 family transfers per 100 market sales, and this family channel increases with tax advantages and is associated with older housing stock.  
- California's Proposition~19 provides evidence
-on how inherited property-tax assessments shape this channel: transfers
-surged 31\% above counterfactual before the deadline and then declined.
-Synthetic-control specifications yield 2022--2023 gaps of 27--33\%; a
-market-adjusted DiD corresponds to roughly \WelfareFlow\ missing deeds
-annually. The missing deeds have
-not been shown to reappear as market sales. A simple framework shows that when heirs inherit a below-market property-tax assessment along with
-the house, as permitted by California’s Propositions 13, 58, and 193, families keep
-homes that the market values more.
-Our results suggest that family transfers are not outside the housing market but are one of its allocation mechanisms and property-tax rules can shift scarce homes from price-based matching to lineage-based retention.
-% distinguishes
-% efficient family retention from retention induced by tax advantages. 
-% We
-% calibrate potential allocation gains using explicit assumptions about
-% tax wedges, distinct-property responses, succession delays, and persistence.
-\\
-\textbf{JEL classification:} R21, R31, H22, D64 \\
-\textbf{Keywords:} housing supply, intergenerational transfers, bequests, property taxes, Proposition 19
+\noindent How many homes change hands without a sale, and what do families do when the tax code gives them a deadline? Using the CoreLogic extract of recorded residential deeds in the United States, 2007 to 2023, we find that deeds between two distinct people are \DeedNationalShare\ per 100 residential deed events nationally and \DeedCAShare\ in California. California's Proposition~19 ended the inherited property-tax assessment for most heirs who do not move in; to keep it, a deed had to be made by February 16, 2021. In the weeks before that date, California's family deeds ran \SIVMainJanFeb\ times a counterfactual, and deeds from a trust to an heir ran \SIVHeirJanFeb\ times. Spouse deeds, which the law does not touch, did not break at the deadline, although affidavits of death also dipped. Rushed deeds were resold less, but California's spouse deeds changed about as much, so that comparison does not isolate the reform. Afterwards, family deeds changed by $\SIVMainDDD$ log points relative to market sales, which is consistent with the reform but is shared by deeds the law does not touch and begins with the rise in mortgage rates in 2022. Attributing that fall to the reform puts the misallocation that the old exclusion created, and the reform removes, at about \$\WViLossCentral\ million a year, with a scenario range of \$\WViLossLow\ to \$\WViLossHigh\ million; without that attribution it is zero.
+
+\par\smallskip
+\textbf{JEL classification:} R21, R31, H24, H71, D64 \\
+\textbf{Keywords:} housing turnover, intergenerational transfers, inheritance, property taxes, Proposition 19
 \end{abstract}
 \endgroup
 

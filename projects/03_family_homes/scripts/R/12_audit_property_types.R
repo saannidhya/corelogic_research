@@ -11,11 +11,11 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 audit_dir <- path(tables_out_dir, "property_type_audit_2026-10-02")
 dir_create(audit_dir)
 con <- open_corelogic_duckdb(memory_limit = "8GB", threads = 4L)
-dbExecute(con, glue("SET temp_directory='{sql_quote_path(path(data_dir, 'duckdb_tmp'))}'"))
-events_path <- path(data_dir, "events.parquet")
+dbExecute(con, glue("SET temp_directory='{sql_quote_path(duckdb_temp_dir)}'"))
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
-dbExecute(con, glue("CREATE TEMP VIEW panel AS SELECT clip,state,sale_raw,sale_year,class
-  FROM read_parquet('{sql_quote_path(events_path)}')"))
+dbExecute(con, glue("CREATE TEMP VIEW panel AS SELECT clip,state,sale_raw,sale_year,
+  {family_class_main_sql} AS class FROM read_parquet('{sql_quote_path(events_path)}')"))
 states <- sort(sub("state=", "", path_file(dir_ls(
   path(default_parquet_root(), "by_state", "ot"), type = "directory"))))
 prop_states <- sub("state=", "", path_file(dir_ls(

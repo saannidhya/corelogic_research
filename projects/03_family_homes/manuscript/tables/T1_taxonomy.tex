@@ -1,21 +1,42 @@
 \begin{table}[!t]\centering
-\caption{Residential deed events by class, 2007--2023}
+\caption{The taxonomy of deed events: average annual deeds, 2017--2023}
 \label{tab:taxonomy}
 {\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lrrrrr}
+\begin{adjustbox}{max width=\textwidth}\begin{tabular}{lrrrr}
 \toprule
- & N & Zero/no & Median & Quitclaim & Absentee \\
-Event class & (2007--2023) & price (\%) & price$^{a}$ & share (\%) & recipient (\%)$^{b}$ \\
+ & \multicolumn{2}{c}{United States} & \multicolumn{2}{c}{California} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Category & Deeds per year & Per 100 deeds & Deeds per year & Per 100 deeds \\
 \midrule
-Market sale (arm's length) & 71,076,255 & 0.0 & \$224k & 2.0 & 26.8 \\
-Other non-arm's-length & 33,980,735 & 64.8 & \$57k & 17.8 & 55.9 \\
-Family transfer: same surname & 13,610,459 & 90.3 & \$97k & 39.6 & 17.8 \\
-Trust self-transfer & 12,074,757 & 96.1 & \$130k & 30.0 & 25.6 \\
-Same-person retitle (co-owner change) & 7,123,579 & 92.3 & \$63k & 40.3 & 16.9 \\
-Family transfer: other interfamily & 6,073,863 & 88.3 & \$155k & 26.4 & 34.8 \\
-Estate deed (non-interfamily) & 57,697 & 9.6 & \$167k & 2.2 & 89.8 \\
-Family transfer: estate/executor & 1,905 & 82.9 & \$596k & 8.6 & 35.6 \\
-\bottomrule
-\end{tabular}}
-\begin{minipage}{0.95\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} Authors' classification of CoreLogic Owner Transfer records, residential parcels, deduplicated to one event per parcel-date. $^{a}$Median of strictly positive recorded prices. $^{b}$Share of events whose buyer mailing ZIP differs from the property ZIP, among events where both are observed.}\end{minipage}
+\multicolumn{5}{l}{\emph{A. Family transfers: the measure}} \\
+\quad Direct deed, lifetime & 622,703 & 6.7 & 120,145 & 11.2 \\
+\quad Direct deed, at death: affidavit of death & 90,870 & 1.0 & 32,549 & 3.0 \\
+\quad At death: affidavit of death with a trust party & 37,385 & 0.4 & 33,434 & 3.1 \\
+\quad Direct deed, at death: probate or estate deed & 50,756 & 0.5 & 486 & 0.0 \\
+\quad Direct deed, other document & 14,119 & 0.2 & 1,247 & 0.1 \\
+\quad Through a trust: chain-verified heir & 11,103 & 0.1 & 4,613 & 0.4 \\
+\quad Through a trust: trust names one person, deeds to another & 15,011 & 0.2 & 3,213 & 0.3 \\
+\quad Through a trust: trust to a trust naming another person & 8,781 & 0.1 & 2,137 & 0.2 \\
+Total, family transfers & 850,729 & 9.2 & 197,824 & 18.5 \\
+\quad Memo, direct deeds: same surname & 618,209 & 6.7 & 90,859 & 8.5 \\
+\quad Memo, direct deeds: different surname & 160,240 & 1.7 & 63,569 & 5.9 \\
+\quad Memo: spouse deeds by document type$^{a}$ & 62,377 & 0.7 & 53,022 & 4.9 \\
+\addlinespace\multicolumn{5}{l}{\emph{B. Flagged, no trust, the seller stays on title or an entity is a party}} \\
+\quad Same owners on both sides & 393,569 & 4.2 & 61,553 & 5.7 \\
+\quad Same owners, and a new person joins title & 478,189 & 5.2 & 72,783 & 6.8 \\
+\quad Entity on either side & 142,484 & 1.5 & 28,139 & 2.6 \\
+\addlinespace\multicolumn{5}{l}{\emph{C. Flagged trust deeds that are not family transfers}} \\
+\quad Into the owner's own trust & 524,184 & 5.7 & 169,950 & 15.9 \\
+\quad Trust back to its settlor & 52,321 & 0.6 & 23,151 & 2.2 \\
+\quad Trust to a trust with the same names & 28,712 & 0.3 & 15,394 & 1.4 \\
+\quad Surname-only trust to a same-surname person$^{b}$ & 10,746 & 0.1 & 4,075 & 0.4 \\
+\quad Trust to a person with another surname, no price$^{b}$ & 16,227 & 0.2 & 8,933 & 0.8 \\
+\quad Other trust deeds$^{c}$ & 129,387 & 1.4 & 52,225 & 4.9 \\
+\addlinespace\multicolumn{5}{l}{\emph{D. Not flagged}} \\
+\quad Market sales & 5,410,533 & 58.3 & 409,112 & 38.2 \\
+\quad Other deeds, not arm's-length & 1,240,406 & 13.4 & 28,868 & 2.7 \\
+\midrule
+All deed events & 9,277,489 & 100.0 & 1,072,007 & 100.0 \\
+\bottomrule\end{tabular}\end{adjustbox}}
+\begin{minipage}{0.97\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} Residential deed events, one per parcel and signing date, average of 2017--2023. Every event is in exactly one row of Panels A to D; memo rows repeat deeds already counted. ``Flagged'' means the vendor's interfamily indicator is set; the indicator does not verify kinship. A family transfer is a recorded deed that moves a home, with no sale, from one person, or that person's trust, to a different person, during life or at death. Direct deeds have no trust and no entity on either side, and the names show two distinct people. A deed through a trust takes title out of a trust and gives it to someone other than the trust's settlor: an earlier deed moved the home from a person into the trust and the trust deeds it to a different person with the same surname (chain-verified, ten-year look-back); or the trust names one person and deeds to a different person with that surname; or two trusts share a name and each names a person the other does not. Lifetime gifts and distributions after a death are not separated for trust deeds. An affidavit of death counts whether or not a trust is a party, so a home whose trust later deeds it to an heir can be counted twice. $^{a}$Identified only in California and Arizona; spouse deeds elsewhere sit in the other rows. $^{b}$The names cannot say whether the recipient is an heir or the settlor, or whether the parties are related; these two rows are the upper bound of the trust route. $^{c}$Into a trust for others, into a trust with no surname link, trust to trust with unclear names, and priced or arm's-length deeds from a trust to a person with another surname.}\end{minipage}
 \end{table}

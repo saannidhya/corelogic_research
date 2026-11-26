@@ -1,0 +1,440 @@
+{
+  "date": "2026-11-02",
+  "collection": "KGFNUZBD",
+  "collection_path": "Projects / Many Meanings of Cash in Housing Markets",
+  "operations": [
+    {
+      "id": "reher2024",
+      "title": "The Mortgage‐Cash Premium Puzzle",
+      "key": "YBZ9CFFQ",
+      "action": "already-in-collection",
+      "verified": true
+    },
+    {
+      "id": "han2024",
+      "title": "Cash is king? Understanding financing risk in housing markets",
+      "key": "JXBPUAZS",
+      "action": "already-in-collection",
+      "verified": true
+    },
+    {
+      "id": "bayer2020",
+      "title": "Speculators and Middlemen: The Strategy and Performance of Investors in the Housing Market",
+      "key": "CUF4R7GN",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "campbell2011",
+      "title": "Forced Sales and House Prices",
+      "key": "DNE3TGDN",
+      "action": "already-in-collection",
+      "verified": true
+    },
+    {
+      "id": "lambie2022",
+      "title": "Real estate investors and the U.S. housing recovery",
+      "key": "Q2PVYHS2",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "adelino2025",
+      "title": "Credit supply and house prices: Evidence from mortgage market segmentation",
+      "key": "D435ENFD",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "defusco2017",
+      "title": "The Interest Rate Elasticity of Mortgage Demand: Evidence from Bunching at the Conforming Loan Limit",
+      "key": "5GFK862V",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "bhutta2021",
+      "title": "The effect of interest rates on home buying: Evidence from a shock to mortgage insurance premiums",
+      "key": "RMDGRNHA",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "fonseca2024",
+      "title": "Mortgage Lock‐In, Mobility, and Labor Reallocation",
+      "key": "Z2RM7QXY",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "anenberg2022",
+      "title": "The Propagation of Demand Shocks through Housing Markets",
+      "key": "2LBE7YRN",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "garriga2023",
+      "title": "The economic effects of real estate investors",
+      "key": "VQS5FNYA",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "lee2024",
+      "title": "Institutional Investors, Rents, and Neighborhood Change in the Single Family Residential Market",
+      "key": "2DWXEJVZ",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "leung2017",
+      "title": "Flipping in the housing market",
+      "key": "NHFN8ABF",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "hanstrange2015",
+      "title": "The Microstructure of Housing Markets",
+      "key": "GWGAHKSN",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "stein1995",
+      "title": "Prices and Trading Volume in the Housing Market: A Model with Down-Payment Effects",
+      "key": "J58MRJBN",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "genesove1997",
+      "title": "Equity and Time to Sale in the Real Estate Market",
+      "key": "WI3FYMYE",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "genesove2001",
+      "title": "Loss Aversion and Seller Behavior: Evidence from the Housing Market",
+      "key": "9IMXVRTL",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "wheaton1990",
+      "title": "Vacancy, Search, and Prices in a Housing Market Matching Model",
+      "key": "TLMYHRXM",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "krainer2001",
+      "title": "A Theory of Liquidity in Residential Real Estate Markets",
+      "key": "QR3BZXX6",
+      "action": "add-existing",
+      "previous_collections": [
+        "762EK5R2",
+        "J5LSEKC6"
+      ],
+      "verified": true
+    },
+    {
+      "id": "kurlat2015",
+      "title": "Testing for Information Asymmetries in Real Estate Markets",
+      "key": "NNRRGZIX",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "chinco2016",
+      "title": "Misinformed Speculators and Mispricing in the Housing Market",
+      "key": "ZEYWS9SM",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "giacoletti2021",
+      "title": "Idiosyncratic Risk in Housing Markets",
+      "key": "RTYXKQTP",
+      "action": "add-existing",
+      "previous_collections": [
+        "J5LSEKC6",
+        "JN56LC6F",
+        "KE5K6INL"
+      ],
+      "verified": true
+    },
+    {
+      "id": "harding2012",
+      "title": "The foreclosure discount: Myth or reality?",
+      "key": "LTBEHZIY",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "conklin2023",
+      "title": "An Alternative Approach to Estimating Foreclosure and Short Sale Discounts",
+      "key": "EU2EXA6F",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "ortega2018",
+      "title": "Rising sea levels and sinking property values: Hurricane Sandy and New York’s housing market",
+      "key": "KFMVR44S",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "hino2021",
+      "title": "The effect of information about climate risk on property values",
+      "key": "QAJEAA29",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "aroul2023",
+      "title": "The impact of cash financing on housing prices: a theoretical framework and empirical evidence from a volatile United States market cycle",
+      "key": "8L4FR6UH",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "lusht1994",
+      "title": "Some Further Evidence on the Price of Mortgage Contingency Clauses",
+      "key": "G22RZ5JQ",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "asabere1992",
+      "title": "The Price Effects of Cash versus Mortgage Transactions",
+      "key": "MYILS5B4",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "fuster2021",
+      "title": "The Sensitivity of Housing Demand to Financing Conditions: Evidence from a Survey",
+      "key": "LH6NEVZX",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "mills2019",
+      "title": "Large‐Scale Buy‐to‐Rent Investors in the Single‐Family Housing Market: The Emergence of a New Asset Class",
+      "key": "5UYCVEVH",
+      "action": "add-existing",
+      "previous_collections": [
+        "3E9BC8KR",
+        "IJ7DXCVD",
+        "T5C2RL4M",
+        "T9X27VZ3",
+        "TEGYG7MR",
+        "4IE2C6UG",
+        "AGE8YPLP",
+        "J5LSEKC6",
+        "VCMKDPBG"
+      ],
+      "verified": true
+    },
+    {
+      "id": "buchak2026",
+      "title": "Why Is Intermediating Houses So Difficult? Evidence from iBuyers",
+      "key": "AKJ755TJ",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "ambrose2025",
+      "title": "Linking Asset Values to Financing: The Role of Small-Dollar Mortgages in Cash vs. Mortgage Property Price Disparities",
+      "key": "8IMVHHWK",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "seo",
+      "title": "Examining the Cash-Only Price Discount and the Driving Forces of Cash-Only Transactions in the Housing Market",
+      "key": "DPSXFJ5X",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "gorback2025",
+      "title": "The Impact of Institutional Owners on Housing Markets",
+      "key": "WXGFISB9",
+      "action": "add-existing",
+      "previous_collections": [
+        "3E9BC8KR",
+        "5WI9MWZJ",
+        "T5C2RL4M",
+        "TEGYG7MR",
+        "AGE8YPLP",
+        "IJ7DXCVD",
+        "J5LSEKC6"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mateen2026",
+      "title": "How Housing Search and Bargaining Unfold: Evidence from Offer-Level Data",
+      "key": "NCRCRIBM",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "bian2018",
+      "title": "Bargaining, Mortgage Financing, and Housing Prices",
+      "key": "FVJ9Q6F9",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "jiang2024",
+      "title": "Liquidity in Residential Real Estate Markets",
+      "key": "PJERE8XC",
+      "action": "add-existing",
+      "previous_collections": [
+        "762EK5R2",
+        "J5LSEKC6"
+      ],
+      "verified": true
+    },
+    {
+      "id": "diaz2026",
+      "title": "Credit and inventories in illiquid housing markets",
+      "key": "HVM8K8YX",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "zhu2026",
+      "title": "The Appraisal Mechanism: Spillover Effects of All-Cash Sales on Local Housing Markets",
+      "key": "SA2YS77C",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "aldana2025",
+      "title": "Impact of All-Cash Home Purchases on Mortgage Lenders",
+      "key": "3IDQE7DU",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "loschi2026",
+      "title": "Who Gets the House? Related-Party Transfers and the Cash–Mortgage Price Gap in New York City",
+      "key": "9PECQLDW",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "moktan2025",
+      "title": "The anatomy of a shock to residential real estate: the role of lending",
+      "key": "AYIGXLN6",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "jauregui2017",
+      "title": "Sample Selection Approaches to Estimating House Price Cash Differentials",
+      "key": "UNEPUGZC",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "tidwell2018",
+      "title": "Cash and Distressed House Sales Price Discounts: Dual Sample Selection Spatial Interdependence Approaches",
+      "key": "RLT7IKLC",
+      "action": "create",
+      "verified": true
+    },
+    {
+      "id": "jauregui2019",
+      "title": "Sample Selection Approaches to Estimating and Allocating House Transaction Funding Price Differentials",
+      "key": "HWHJWEVD",
+      "action": "create",
+      "verified": true
+    }
+  ],
+  "verified_item_count": 46,
+  "linked_sources": [
+    {
+      "id": "seo",
+      "key": "SBCWLHP4",
+      "parent": "DPSXFJ5X",
+      "title": "Open full text (PMC; online 2021 version)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8310700/",
+      "verified": true
+    },
+    {
+      "id": "buchak2026",
+      "key": "PFP26GPE",
+      "parent": "AKJ755TJ",
+      "title": "Earlier working paper (NBER; not final JPE article)",
+      "url": "https://www.nber.org/system/files/working_papers/w28252/w28252.pdf",
+      "verified": true
+    },
+    {
+      "id": "zhu2026",
+      "key": "AD88JWEX",
+      "parent": "SA2YS77C",
+      "title": "Author PDF (January 2026)",
+      "url": "https://zipeizhu.github.io/papers/JMP_ZZ_Nov2025.pdf",
+      "verified": true
+    },
+    {
+      "id": "loschi2026",
+      "key": "J8H79ZV2",
+      "parent": "9PECQLDW",
+      "title": "Author PDF (v3.12; October 29, 2026)",
+      "url": "https://nychousingdata.com/papers/who-gets-the-house/who_gets_the_house_v3_12.pdf",
+      "verified": true
+    },
+    {
+      "id": "jiang2024",
+      "key": "6SJAAG9F",
+      "parent": "PJERE8XC",
+      "title": "Author PDF (March 2024; three-author revision)",
+      "url": "https://anthonyleezhang.github.io/pdfs/sfipd.pdf",
+      "verified": true
+    },
+    {
+      "id": "hanstrange2015",
+      "key": "AXY24VR6",
+      "parent": "GWGAHKSN",
+      "title": "Author chapter manuscript (August 2014)",
+      "url": "https://www-2.rotman.utoronto.ca/facbios/file/HS_Handbook_Microstructure_8-29-2014.pdf",
+      "verified": true
+    },
+    {
+      "id": "lee2024",
+      "key": "FQN3Q3YF",
+      "parent": "2DWXEJVZ",
+      "title": "Official working paper PDF (24-13)",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/working-papers/2024/wp24-13.pdf",
+      "verified": true
+    },
+    {
+      "id": "gorback2025",
+      "key": "X6WALLUW",
+      "parent": "WXGFISB9",
+      "title": "Current verified SSRN version (2025 revision)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5160602",
+      "verified": true
+    }
+  ],
+  "final_verification": {
+    "reference_count": 46,
+    "live_collection_top_level_count": 46,
+    "unique_selected_dois": 42,
+    "bibtex_entries": 46,
+    "reading_annotations": 46,
+    "existing_memberships_preserved": true,
+    "new_metadata_readback_matches": true,
+    "local_report_links_exist": true,
+    "markdown_rendered_to_html": true
+  }
+}

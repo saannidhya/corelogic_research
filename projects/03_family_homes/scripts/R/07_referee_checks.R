@@ -1,19 +1,19 @@
 # ============================================================
-# 07: Referee checks — inference + direct supply test + leads
+# 07: Referee checks — headline triple difference + leads
 # Author: Saani Rawat
-# Purpose: (a) Permutation (placebo-state) inference for the Prop 19 volume
-#              DiD and the sold24 DDD — CA is the single treated cluster, so
-#              CRVE SEs are not interpretable (Conley-Taber logic);
-#          (b) Direct supply-release test: market sales by estate/trust
-#              sellers, CA vs donors (referee C3);
-#          (c) Event-study leads/lags for the volume DiD (referee M3);
-#          (d) Reconciliation stats: existing-stock ratio, deeds-per-clip.
-# Inputs:  data/derived/03_family_homes/events.parquet
-# Outputs: _outputs/tables/ref_perm_volume.csv, ref_perm_ddd.csv,
-#          ref_estate_seller_did.csv, ref_event_study.csv,
-#          ref_reconciliation.csv (+ rds)
+# Purpose: Estimate the headline volume DDD, annual event study,
+#          and deed-count reconciliation.
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
+# Outputs: prop19_ddd_volume.csv/rds, ref_event_study.csv/rds,
+#          ref_reconciliation.csv,
+#          ref_state_year_panel.csv
+# Log:     10/22/2026: added the pooled family-vs-market triple difference
+#          for volumes, the paper's headline post-reform estimate.
+#          11/11/2026: removed the estate/trust-seller market-sale test.
 # ============================================================
 
+# 11/04/2026: removed state-reassignment inference; retained model specifications.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
 suppressPackageStartupMessages({
@@ -31,21 +31,21 @@ message("Starting 07_referee_checks at ", Sys.time())
 con <- open_corelogic_duckdb()
 on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
-ev <- glue("read_parquet('{sql_quote_path(events_path)}')")
-
-fam_classes <- "('family_person','family_other','family_estate')"
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
+ev <- events_s4_from(events_path)
+fam_classes <- "('family_main')"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # ---- shared state-year panel (2017-2023, all years for event study) -------
 sy_all <- dbGetQuery(con, glue("
   SELECT state, sale_year,
          SUM(CASE WHEN class IN {fam_classes} THEN 1 ELSE 0 END) AS n_fam,
-         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market,
-         SUM(CASE WHEN class = 'market_sale'
-                   AND (estate_kw OR trust_kw) THEN 1 ELSE 0 END) AS n_mkt_estate_trust,
-         SUM(CASE WHEN class = 'market_sale' AND estate_kw THEN 1 ELSE 0 END) AS n_mkt_estate
+         SUM(CASE WHEN class = 'market_sale' THEN 1 ELSE 0 END)  AS n_market
   FROM {ev}
   WHERE sale_year BETWEEN 2017 AND 2023
   GROUP BY state, sale_year
@@ -53,82 +53,47 @@ sy_all <- dbGetQuery(con, glue("
   filter(!state %in% territories)
 assert_rows(sy_all, 300, "ref_state_year_panel")
 
+write_csv_strict(sy_all, path(tables_out_dir, "ref_state_year_panel.csv"))
+
 sy_did <- sy_all |>
-  filter(sale_year %in% c(2017:2019, 2022:2023)) |>
-  mutate(post = as.integer(sale_year >= 2022))
+  filter(sale_year %in% prop19_did_years) |>
+  mutate(post = as.integer(sale_year %in% prop19_post_years))
 stopifnot(all(sy_did$n_fam > 0), all(sy_did$n_market > 0))
 
 states <- sort(unique(sy_did$state))
 stopifnot("CA" %in% states, length(states) >= 45)
 
-# ---- (a) Permutation inference: volume DiD --------------------------------
-perm_coef <- function(panel, treated_state, yvar) {
-  d <- panel |> mutate(tr = as.integer(state == treated_state))
-  m <- feols(as.formula(paste0("log(", yvar, ") ~ tr:post | state + sale_year")),
-             data = d)
-  unname(coef(m)["tr:post"])
-}
+# ---- Headline triple difference: family vs market deeds ----
+# Group-specific state and year effects make the DDD equal the difference
+# between the separate family and market DiD coefficients.
+sy_stacked <- sy_did |>
+  select(state, sale_year, post, n_fam, n_market) |>
+  pivot_longer(c(n_fam, n_market), names_to = "grp", values_to = "n") |>
+  mutate(fam = as.integer(grp == "n_fam"),
+         ca = as.integer(state == "CA"))
 
-perm_vol <- map_dfr(states, function(s) {
-  tibble(
-    state = s,
-    coef_fam = perm_coef(sy_did, s, "n_fam"),
-    coef_mkt = perm_coef(sy_did, s, "n_market")
-  )
-}) |>
-  mutate(coef_net = coef_fam - coef_mkt)
+m_ddd_vol <- feols(log(n) ~ ca:post:fam + ca:post | state^grp + sale_year^grp,
+                   data = sy_stacked, cluster = ~state)
+print(summary(m_ddd_vol))
 
-p_rank <- function(df, col) {
-  ca_val <- abs(df[[col]][df$state == "CA"])
-  mean(abs(df[[col]]) >= ca_val)
-}
-perm_summary <- tibble(
-  outcome = c("fam", "market", "net"),
-  ca_coef = c(perm_vol$coef_fam[perm_vol$state == "CA"],
-              perm_vol$coef_mkt[perm_vol$state == "CA"],
-              perm_vol$coef_net[perm_vol$state == "CA"]),
-  perm_p = c(p_rank(perm_vol, "coef_fam"),
-             p_rank(perm_vol, "coef_mkt"),
-             p_rank(perm_vol, "coef_net")),
-  n_states = length(states)
+ddd_vol_coef <- unname(coef(m_ddd_vol)["ca:post:fam"])
+volume_models <- readRDS(path(out_dir, "prop19_did_volume.rds"))
+net_ca <- unname(coef(volume_models$fam)["ca:post"] -
+                 coef(volume_models$market_placebo)["ca:post"])
+stopifnot(abs(ddd_vol_coef - net_ca) < 1e-8)
+
+ddd_vol_summary <- tibble(
+  estimate = ddd_vol_coef,
+  pct_effect = 100 * (exp(ddd_vol_coef) - 1),
+  crve_se_state = unname(se(m_ddd_vol)["ca:post:fam"]),
+  n_states = length(states),
+  nobs = nobs(m_ddd_vol)
 )
-message("Volume DiD permutation:")
-print(perm_summary)
-write_csv_strict(perm_vol, path(tables_out_dir, "ref_perm_volume_all.csv"))
-write_csv_strict(perm_summary, path(tables_out_dir, "ref_perm_volume.csv"))
-saveRDS(list(all = perm_vol, summary = perm_summary),
-        path(out_dir, "ref_perm_volume.rds"))
-
-# ---- (b) Direct supply test: estate/trust-seller market sales -------------
-m_est <- feols(log(n_mkt_estate_trust) ~ tr:post | state + sale_year,
-               data = sy_did |> mutate(tr = as.integer(state == "CA")),
-               cluster = ~state)
-perm_est <- map_dfr(states, function(s) {
-  tibble(state = s, coef = perm_coef(sy_did, s, "n_mkt_estate_trust"))
-})
-est_net <- perm_est |>
-  left_join(perm_vol |> select(state, coef_mkt), by = "state") |>
-  mutate(coef_share = coef - coef_mkt)
-est_summary <- tibble(
-  ca_coef = unname(coef(m_est)["tr:post"]),
-  ca_se_clustered = unname(se(m_est)["tr:post"]),
-  perm_p = mean(abs(perm_est$coef) >= abs(perm_est$coef[perm_est$state == "CA"])),
-  ca_coef_share = est_net$coef_share[est_net$state == "CA"],
-  perm_p_share = mean(abs(est_net$coef_share) >= abs(est_net$coef_share[est_net$state == "CA"])),
-  n_states = length(states)
-)
-message("Estate/trust-seller market-sale DiD (CA x Post; levels and net-of-market):")
-print(as.data.frame(est_summary))
-
-ca_est_counts <- sy_all |>
-  filter(state == "CA") |>
-  select(sale_year, n_mkt_estate_trust, n_mkt_estate, n_market)
-print(ca_est_counts)
-write_csv_strict(perm_est, path(tables_out_dir, "ref_perm_estate_seller.csv"))
-write_csv_strict(est_summary, path(tables_out_dir, "ref_estate_seller_did.csv"))
-write_csv_strict(ca_est_counts, path(tables_out_dir, "ref_ca_estate_seller_counts.csv"))
-saveRDS(list(model = m_est, perm = perm_est, summary = est_summary),
-        path(out_dir, "ref_estate_seller.rds"))
+message("Volume triple difference (family vs market, CA x Post):")
+print(ddd_vol_summary, width = Inf)
+write_csv_strict(ddd_vol_summary, path(tables_out_dir, "prop19_ddd_volume.csv"))
+saveRDS(list(model = m_ddd_vol, summary = ddd_vol_summary),
+        path(out_dir, "prop19_ddd_volume.rds"))
 
 # ---- (c) Event-study leads/lags (volume) ----------------------------------
 es_dat <- sy_all |> mutate(ca = as.integer(state == "CA"))
@@ -140,45 +105,10 @@ es_tab <- ct |>
   filter(grepl("sale_year::", term)) |>
   mutate(year = as.integer(gsub("sale_year::(\\d+):ca", "\\1", term))) |>
   select(year, estimate = Estimate, std.error = `Std. Error`)
-message("Event study (CA x year, ref 2019; SEs are CRVE — see permutation for inference):")
+message("Event study (CA x year, ref 2019; conventional state-clustered SEs; one treated state):")
 print(es_tab)
 write_csv_strict(es_tab, path(tables_out_dir, "ref_event_study.csv"))
 saveRDS(m_es, path(out_dir, "ref_event_study.rds"))
-
-# ---- (d) Pre-fit-adjusted placebo inference for monthly counterfactual -----
-cf_placebo_summary <- read_csv(path(tables_out_dir, "prop19_cf_placebo_summary.csv"),
-                               show_col_types = FALSE)
-assert_rows(cf_placebo_summary, 100, "prop19_cf_placebo_summary")
-
-rank_cols <- c("antic", "feb", "post2223")
-for (prefix in rank_cols) {
-  rank_col <- paste0(prefix, "_rank_ratio")
-  p_col <- paste0(prefix, "_p_ratio")
-  if (any(abs(cf_placebo_summary[[p_col]] -
-              cf_placebo_summary[[rank_col]] / cf_placebo_summary$n_states) > 1e-12)) {
-    stop("Rank/p-value mismatch in ", p_col)
-  }
-}
-
-prefit_ca <- cf_placebo_summary |>
-  filter(treated_state == "CA") |>
-  select(
-    base_window, treated_state, n_states, donor_count,
-    pre_rmspe, pre_mae,
-    antic_gap, antic_rank_raw, antic_p_raw, antic_ratio,
-    antic_rank_ratio, antic_p_ratio,
-    feb_gap, feb_rank_raw, feb_p_raw, feb_ratio,
-    feb_rank_ratio, feb_p_ratio,
-    post2223_gap, post2223_rank_raw, post2223_p_raw, post2223_ratio,
-    post2223_rank_ratio, post2223_p_ratio
-  )
-
-message("Pre-fit-adjusted placebo inference (CA rows):")
-print(as.data.frame(prefit_ca))
-write_csv_strict(cf_placebo_summary,
-                 path(tables_out_dir, "ref_prop19_prefit_placebo_all.csv"))
-write_csv_strict(prefit_ca,
-                 path(tables_out_dir, "ref_prop19_prefit_placebo.csv"))
 
 # ---- (e) Reconciliation stats ---------------------------------------------
 recon <- dbGetQuery(con, glue("
@@ -202,28 +132,78 @@ message("Reconciliation:")
 print(as.data.frame(recon))
 write_csv_strict(recon, path(tables_out_dir, "ref_reconciliation.csv"))
 
-# ---- (f) Permutation inference: sold24 DDD --------------------------------
-cells <- read_csv(path(tables_out_dir, "prop19_cohort_cells.csv"),
-                  show_col_types = FALSE) |>
-  filter(!state %in% territories) |>
-  mutate(fam = as.integer(grp == "fam"))
-assert_rows(cells, 2000, "ref_ddd_cells")
-
-perm_ddd_coef <- function(treated_state) {
-  d <- cells |> mutate(tr = as.integer(state == treated_state))
-  m <- feols(sold24 ~ tr:post:fam + tr:post | state^grp + ym^grp,
-             data = d, weights = ~n)
-  unname(coef(m)["tr:post:fam"])
-}
-perm_ddd <- map_dfr(states, function(s) tibble(state = s, coef = perm_ddd_coef(s)))
-ddd_summary <- tibble(
-  ca_coef = perm_ddd$coef[perm_ddd$state == "CA"],
-  perm_p = mean(abs(perm_ddd$coef) >= abs(perm_ddd$coef[perm_ddd$state == "CA"])),
-  n_states = length(states)
+# ---- (f) The triple difference by route of family transfer (11/16/2026) ------
+# Same design as the headline (state-year log counts, prop19_pre_years against
+# prop19_post_years, market
+# sales as the comparison deed group), run on each route of the family measure. Affidavits
+# of death are the comparison: a death cannot be timed, and a home passing at death kept the
+# old rule whenever the death came before the deadline. Table 4, Panel B (05_tables.R).
+route_defs <- tribble(
+  ~route,                 ~label,                                   ~filter_sql,
+  "all",                  "All family transfers",                   "deed_cat = 'family_transfer'",
+  "lifetime",             "Lifetime deeds",                         "fam_route IN ('lifetime','unknown')",
+  "lifetime_surname",     "\\quad of which same surname",           "fam_route IN ('lifetime','unknown') AND deed_subcat = 'same_surname'",
+  "trust",                "Through a trust",                        "fam_route = 'trust'",
+  "affidavit",            "Affidavits of death",                    "fam_route = 'death_affidavit'",
+  "no_affidavit",         "All except affidavits of death",         "deed_cat = 'family_transfer' AND fam_route <> 'death_affidavit'",
+  # deeds outside the measure that the reform does not touch but refinancing does
+  "same_owner",           "Not family: same owner on both sides",   "deed_cat = 'same_owner'",
+  "own_trust",            "Not family: into or out of own trust",   "deed_subcat IN ('into_own_trust','trust_to_settlor')"
 )
-message("DDD (sold24) permutation:")
-print(as.data.frame(ddd_summary))
-write_csv_strict(perm_ddd, path(tables_out_dir, "ref_perm_ddd_all.csv"))
-write_csv_strict(ddd_summary, path(tables_out_dir, "ref_perm_ddd.csv"))
+route_cols <- paste(glue("SUM(coalesce({route_defs$filter_sql}, FALSE)::INT) AS {route_defs$route}"),
+                    collapse = ",\n         ")
+sy_route <- dbGetQuery(con, glue("
+  SELECT state, sale_year, SUM((deed_cat = 'market_sale')::INT) AS market,
+         {route_cols}
+  FROM read_parquet('{sql_quote_path(events_path)}')
+  WHERE sale_year IN ({paste(prop19_did_years, collapse = ', ')})
+    AND state NOT IN ('GU','PR','VI','AS','MP','AE','AP','AA','FM','MH','PW')
+  GROUP BY 1, 2")) |>
+  as_tibble() |>
+  mutate(across(-state, as.numeric),
+         ca = as.integer(state == "CA"), post = as.integer(sale_year %in% prop19_post_years))
+stopifnot(n_distinct(sy_route$state) == 51, sum(sy_route$ca) == length(prop19_did_years))
+
+ddd_route <- map_dfr(seq_len(nrow(route_defs)), function(i) {
+  # states with the route recorded in every year compared (affidavits are absent in a few states)
+  d <- sy_route |>
+    transmute(state, sale_year, ca, post, fam = .data[[route_defs$route[i]]], market) |>
+    filter(fam > 0, market > 0) |>
+    group_by(state) |> filter(n() == length(prop19_did_years)) |> ungroup()
+  m_did <- feols(log(fam) ~ ca:post | state + sale_year, d, cluster = ~state)
+  long <- bind_rows(transmute(d, state, sale_year, ca, post, grp = "F", n = fam),
+                    transmute(d, state, sale_year, ca, post, grp = "M", n = market)) |>
+    mutate(f = as.integer(grp == "F"))
+  m_ddd <- feols(log(n) ~ ca:post + ca:post:f | state^grp + sale_year^grp, long, cluster = ~state)
+  ca_d <- filter(d, ca == 1)
+  tibble(route = route_defs$route[i], label = route_defs$label[i], n_states = n_distinct(d$state),
+         ca_per_year_pre  = mean(ca_d$fam[ca_d$post == 0]),
+         ca_per_year_post = mean(ca_d$fam[ca_d$post == 1]),
+         did = coeftable(m_did)["ca:post", 1],   did_se = coeftable(m_did)["ca:post", 2],
+         ddd = coeftable(m_ddd)["ca:post:f", 1], ddd_se = coeftable(m_ddd)["ca:post:f", 2])
+})
+# the pooled row is the headline triple difference
+stopifnot(abs(ddd_route$ddd[ddd_route$route == "all"] - ddd_vol_coef) < 1e-6)
+write_csv_strict(ddd_route, path(tables_out_dir, "prop19_ddd_by_route.csv"))
+print(as.data.frame(ddd_route |> mutate(across(where(is.numeric), ~ round(.x, 3)))))
+
+# macros for the text (\PRoute<Route><Stat>)
+route_tag <- c(all = "All", lifetime = "Life", lifetime_surname = "LifeSur", trust = "Trust",
+               affidavit = "Aff", no_affidavit = "NoAff", same_owner = "SameOwner",
+               own_trust = "OwnTrust")
+f3 <- function(x) sub("-", "$-$", sprintf("%.3f", x), fixed = TRUE)
+route_macros <- ddd_route |>
+  mutate(tag = route_tag[route]) |>
+  reframe(macro = paste0("PRoute", tag, c("DiD", "DDD", "DDDSE", "Pct", "Pre", "Post")),
+          value = c(f3(did), f3(ddd), sprintf("%.3f", ddd_se),
+                    sub("-", "", sprintf("%.0f", 100 * (exp(ddd) - 1)), fixed = TRUE),
+                    format(round(ca_per_year_pre), big.mark = ","),
+                    format(round(ca_per_year_post), big.mark = ",")), .by = route)
+writeLines(c("% Generated by 07_referee_checks.R. Do not edit.",
+             paste0("\\newcommand{\\", route_macros$macro, "}{", route_macros$value, "}"),
+             paste0("\\newcommand{\\PRouteAffShare}{",
+                    sprintf("%.0f", 100 * ddd_route$ca_per_year_pre[ddd_route$route == "affidavit"] /
+                              ddd_route$ca_per_year_pre[ddd_route$route == "all"]), "}")),
+           path(tables_dir, "prop19_route_numbers.tex"))
 
 message("Finished 07_referee_checks at ", Sys.time())

@@ -11,61 +11,60 @@ mother quitclaiming her house to her son for nothing. Market-based datasets
 (MLS listings, repeat-sales indices, mortgage originations) discard these
 zero-price events by construction. Here they are the object of study.
 
-The extract covers all fifty states and the District of Columbia. Coverage
+The extract covers all fifty states and the District of Columbia. National
+totals also include a small residual of territory and military codes
+(Appendix~\ref{app:data}). Coverage
 is dense from 2007 through mid-2024; we use 2007--2023 for annual statistics
 and treat 2024 as a partial year. Restricting to residential parcels and
-deduplicating to one event per parcel per derived sale date yields 148.7 million
-deed events (144.0 million in 2007--2023), linked through a permanent parcel
+deduplicating to one event per parcel per derived sale date yields \SIIIEventsAllM\ million
+deed events (\SIIIEventsSampleM\ million in 2007--2023), linked through a permanent parcel
 identifier that follows each house across successive owners.
 
 \subsection{Classifying transfers}
 
-CoreLogic flags each record with a primary category---arm's length or
-not---and an interfamily indicator constructed from the recorder's
-consideration, deed type, and name fields. We sharpen these flags into a
-taxonomy using the buyer and seller names on the deed:
+CoreLogic supplies an arm's-length category and an indicator of a potential relationship between the parties. We combine these fields with party names to construct mutually exclusive operational classes. The indicator does not independently verify kinship, and the available extract-specific documentation does not establish its generation algorithm. Flagged deeds can involve companies, trusts, retained owners, or incomplete names. A family transfer, in this paper, is a deed between two distinct people. Our main family measure combines the same-surname, estate/executor, and other interfamily classes below, after removing the deeds in which the same person or an entity is on both sides; trusts and same-person retitles remain separate.
 
 \begin{enumerate}
-  \item \textbf{Market sale}: arm's-length category, recorded price of at
-        least \$10,000, not flagged interfamily (71.1 million events,
-        2007--2023).
-  \item \textbf{Same-person retitle}: the named principal is the same person
-        on both sides of the deed---an owner adding or removing a co-owner,
-        potentially at marriage, divorce, or refinancing (7.1 million). The
-        matched name remains, but ownership shares can change. These deeds
-        are tracked separately from the operational family aggregate.
+  \item \textbf{Market sale}: arm's-length category, not flagged
+        interfamily, with no price floor because non-disclosure states
+        withhold recorded prices on many genuine sales (\SIIIClassMarketM\ million events,
+        2007--2023, of which \SIIIMarketZeroPrice\ percent record a zero or missing price).
+  \item \textbf{Same-person retitle}: the same person on both sides of the deed,
+        as when an owner adds or removes a co-owner (\SIIIClassRetitleM\ million). Excluded from the family definition.
   \item \textbf{Family transfer, same surname}: flagged interfamily, buyer
         and seller sharing a surname but not the same person, no trust
-        detected (13.6 million). This is a narrower proxy for inter-person
-        family transfers: it misses unmatched surnames but can also retain
-        same-person events with inconsistent full names. It is not a formal
-        lower bound on true family transfers.
-  \item \textbf{Family transfer, other}: flagged interfamily without a
-        detected surname match after the earlier exclusions, plus the
-        separately coded estate/executor residual (6.1 million). Missing
-        surname fields and transfers involving entities can enter this group;
-        the code does not verify the relationship between the parties.
-  \item \textbf{Trust self-transfer (operational label)}: the interfamily
-        flag is set and a primary party name contains a trust keyword
-        (12.1 million). This can include estate-planning retitling and
-        distributions to different beneficiaries. Unchanged control is not
-        verified; the class is excluded from the family aggregate.
+        detected (\SIIIClassPersonMainM\ million once the same-person and entity deeds of
+        Section~\ref{subsec:samep} are removed). This class and a separately coded estate/executor residual
+        (\SIIIClassEstateMain\ deeds after the same removal) form the narrower component of our main family measure.
+  \item \textbf{Interfamily, no surname match}: flagged interfamily
+        without a detected surname match after the earlier exclusions
+        (\SIIIClassOtherMainM\ million after the same removal). Missing surnames, and entities the name rule does not detect, can enter this group. It enters the main family measure because it captures family conveyances a surname match misses, though a flag need not be kinship.
+  \item \textbf{Interfamily trust deed}: the interfamily flag is set and a
+        primary party name contains a trust keyword (\SIIIClassTrustM\ million). We split
+        these by name. A trust that shares a surname with the other party
+        but names a different individual marks a trust-mediated family
+        candidate (\SIIITrustLowerM\ million under the stricter name rule; \SIIITrustUpperM\ million with ambiguous trust-to-person deeds added). The rest are a person
+        moving property into or out of the person's own trust, or trust deeds
+        with no surname link. None enters the main family measure of Section~\ref{sec:facts}.
+        Chain-verified trust-to-heir deeds enter the narrower measure of
+        Section~\ref{sec:prop19} (Section~\ref{subsec:taxonomy}).
   \item \textbf{Other non-arm's-length}: the remainder---divorce divisions
         across surnames, title corrections, nominal-price conveyances, and
-        foreclosure-related instruments (34.0 million).
+        foreclosure-related instruments (\SIIIClassNonarmsM\ million).
 \end{enumerate}
 
-Table~\ref{tab:taxonomy} reports observable differences across the classes.
-Same-surname family deeds differ sharply from the defined market-sales class: 90 percent of same-surname transfers record a zero or missing
-price, against 0 percent of market sales (which require a price by
-construction) and 65 percent of the residual non-arm's-length class; 40
-percent travel by quitclaim deed---the instrument of gift---against 2 percent
-of market sales. Where a price is recorded at all in a same-surname transfer,
-the median is \$97,000, well under half the \$224,000 median market price:
-the comparison is descriptive because the houses and transferred interests can differ. Corporate buyers, who take 10
-percent of market purchases, are essentially absent from same-surname
-transfers. These patterns are consistent with gifts and succession, but do not verify their prevalence or exclude other transactions. One
-note on probate: formal estate keywords (``estate of,'' executor,
-administrator) rarely appear in the recorded name fields, and the earlier trust, same-person, and surname rules also take precedence over the estate rule. The small residual estate class therefore cannot measure all successions.
+Appendix Table~\ref{tab:classmoments} reports observable moments by class. Same-surname family deeds differ sharply from market sales in the share recorded with a zero or missing price and in the share recorded by quitclaim deed, an instrument often used for gifts. These patterns are consistent with gifts and succession but do not verify them. Estate keywords rarely appear in recorded names, so the small estate class cannot measure all successions.
+
+\subsection{Removing same-person and entity deeds}\label{subsec:samep}
+
+The vendor flag fires on refinance retitles and on bank and company deeds as well as on gifts between relatives. Our first rule removed only the exact case: a deed whose whole buyer name equals the whole seller name is a same-person retitle and sits outside the family measure. That rule was too narrow. It missed the same person written two ways: a middle initial added or dropped, the order of names reversed, a spouse added to or removed from title, a nickname or a spelling variant, and a changed surname. It also missed company and lender deeds, which carry a vendor flag and no test for an entity. We now remove from the family measure every deed in which the names show the same person or household on both sides, and every deed with an entity on either side. The method and the counts are documented in the replication materials. The removed deeds are \SIIISamePEntityShareOfOldNat\ percent of the earlier proxy nationally and \SIIISamePEntityShareOfOldCA\ percent in California, and a seeded read of the deeds the rule moved confirms that all \SIIIReadMovedSamePersonN\ are the same person. One part of the rule can remove relatives. About \SIIIInitialOnlyShareOfOld\ percent of the earlier proxy matched only through a single initial, so that two people with the same surname and different first names can be taken for one. We remove them, so the measure leans conservative, and the upper bound that adds back all same-person and entity deeds covers them.
+
+\subsection{Relation, trigger and vehicle}\label{subsec:taxonomy}
+
+A class says that the vendor flags a relationship. It does not say who gave the house to whom, why, or by what route. We therefore add three dimensions to every family-type deed, built from document types and names. \emph{Relation} is spouse, parent-child candidate (same surname, different given name), cross-surname, or unknown in the main family measure, and owner retained (the same person on both sides) or entity or unrelated in the deeds we remove. \emph{Trigger} is death (a death document or an estate keyword), death likely (a trust deeding to a surname-linked person, which may follow the settlor's death; Section~\ref{subsec:bytype} shows that many such deeds were lifetime transfers), or lifetime. \emph{Vehicle} is direct or one of the trust routes. Table~\ref{tab:taxonomy} reports the cells for the nation and for California.
 
 \input{tables/T1_taxonomy.tex}
+
+The table shows what the main family measure is. Parent-child candidates are \SIIIParentChildShareNat\ percent of the national main family measure and cross-surname deeds \SIIICrossSurnameShareNat\ percent. California differs: parent-child candidates are \SIIIParentChildShareCA\ percent of its measure, spouse deeds \SIIISpouseShareCA\ percent, and cross-surname deeds \SIIICrossSurnameShareCA\ percent. The deeds the measure removes would otherwise be \SIIISamePEntityAvgNat\ a year nationally, against \SIIIMainAvgNat\ that it keeps.\footnote{Spouse deeds are \SIIISpouseShareNat\ percent of the national main family measure and \SIIISpouseShareCA\ percent of California's. They are identified only in California and Arizona, by document type. They stay in the measure because they are transfers within the family, although they are not intergenerational. Section~\ref{sec:prop19} reports them separately as a comparison series.} In a seeded hand read of the deeds, the cross-surname cell that remains scores \SIIIReadCrossSurname\ percent (\SIIIReadCrossSurnameCorrect\ of \SIIIReadCrossSurnameN\ deeds are two natural persons with genuinely different surnames), up from \SIIIReadCrossBefore\ percent before the same-person rule. The deeds into a trust for others score \SIIIReadIntoTrustOthers\ percent. Most of them go into the transferor's own or a joint trust, so they carry no headline. Appendix Table~\ref{tab:readprec} reports every cell and what each read scored. The measure is better read as a count of conveyances between distinct people than as a count of parent-to-child transfers.
+
+Two measures follow from this. The national facts in Section~\ref{sec:facts} use the main family measure, because it is defined the same way in every year from 2007 to 2023. Section~\ref{sec:prop19} uses a narrower measure, which we call the Section~\ref{sec:prop19} measure: the main family measure without affidavits of death, plus chain-verified trust-to-heir deeds. It does so for two reasons. In 2018 a vendor change began to record a trust party on affidavits of death, which moved them from the main family measure into the trust class: in California they rise from \SIIIAfTrustCATwentySeventeen\ deeds in 2017 to \SIIIAfTrustCATwentyEighteen\ in 2018. That is a break in any series that crosses it, and Table~\ref{tab:volumes} flags it. And the chain link, in which an earlier deed moved the home from a person into a trust and the trust later deeded it to a different person with the same surname, needs a ten-year look-back that is complete only from 2017. The chain-verified heir deed reads correctly in \SIIIReadHeir\ percent of reads, against \SIIIReadToOther\ percent for the name rule alone. Appendix Table~\ref{tab:glossary} gives one name for each measure and one meaning for each symbol.

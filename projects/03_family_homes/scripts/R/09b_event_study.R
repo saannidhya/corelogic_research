@@ -2,24 +2,27 @@
 # 09b: RQ3 — Monthly event study of CA family transfers (Prop 19)
 # Author: Saani Rawat
 # Purpose: The annual event study hides the reform-year effect because the
-#          pre-deadline rush (June 2020-Feb 2021) and post-deadline collapse
-#          offset starting 2021. A monthly event study relative to the pooled
-#          2018-2019 baseline separates them: a sharp
-#          positive spike in the four anticipation months, then a persistent
-#          negative level through 2022-2023.
+#          anticipation (June 2020 ballot placement - Feb 2021 deadline) and the
+#          post-deadline collapse offset starting 2021. A monthly event study
+#          relative to the pooled 2018-2019 baseline separates them: a rise
+#          through the anticipation window peaking in the deadline month, then
+#          a persistent negative level through 2022-2023.
 #
 #          Spec: log(family transfers) ~ i(ym, CA, ref = 2018-2019) | state + ym,
 #          with log1p used if any state-month count is zero.
 #          California treated, the other 49 states + DC as controls. Clustered
-#          (state) CIs for the plot; because California is a single treated
-#          unit, we also compute a placebo band (each donor assigned treatment
-#          in turn) as the honest single-unit inference.
-# Inputs:  data/derived/03_family_homes/events.parquet
+#          (state) CIs for scale; reliability is limited with one treated state.
+# Inputs:  data/derived/03_family_homes/events.parquet (via events_panel_file in 00_setup.R)
 # Outputs: _outputs/tables/prop19_event_study_monthly.csv
+#          _outputs/tables/prop19_event_study_phases.csv
 #          _outputs/prop19_event_study.rds
 # Log:     10/04/2026: moved monthly aggregation into R memory.
+#          10/22/2026: anticipation phase starts June 2020 (00_setup.R);
+#          phase-average table added; event-date labels fixed.
 # ============================================================
 
+# 11/04/2026: removed donor-state placebo bands and reassignment fits.
+# 11/04/2026: restored other interfamily to the main family proxy.
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 suppressPackageStartupMessages({
   library(fixest)
@@ -35,15 +38,20 @@ message("Starting 09b_event_study at ", Sys.time())
 # Importing event data ----
 # ============================================================
 
-events_path <- path(data_dir, "events.parquet")
+events_path <- events_panel_path
 stopifnot(file_exists(events_path))
 
-# Trust self-transfers are not counted as family transfers.
-fam_classes <- c("family_person", "family_other", "family_estate")
+# Section 4 measure (author's decision 2026-11-12): this legacy Prop 19 script uses the same
+# family measure as Section 4 (bygroup_main in 00_groups.R, via family_s4_sql() in 00_setup.R),
+# so the appendix synthetic control / event study match the main text. read_events_df(measure =
+# "s4") labels those deeds 'family_main'.
+fam_classes <- "family_main"
 territories <- c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")
 
 # Load events into R; aggregation and estimation use in-memory data frames.
-ev_data <- arrow::read_parquet(events_path, as_data_frame = TRUE)
+ev_data <- read_events_df(events_path, columns = c(
+  "state", "ym", "sale_year", "sale_month", "class"
+), measure = "s4")
 message("Loaded ", format(nrow(ev_data), big.mark = ","), " events into R memory")
 
 # ============================================================
@@ -99,41 +107,19 @@ es_ca <- parse_es(m_ca, "CA") %>%
   mutate(date = as.Date(sprintf("%d-%02d-01", ym %/% 100, ym %% 100)))
 
 # ============================================================
-# Estimating donor placebo bands ----
+# Exporting California estimates ----
 # ============================================================
-es_one <- function(st) {
-  message("Estimating placebo: ", st)
-  d <- panel %>% mutate(trt = as.integer(state == st))
-  m <- feols(f_es("trt"), data = d)
-  broom::tidy(m) %>%
-    filter(str_detect(term, "^ym::")) %>%
-    transmute(state = st,
-              ym = as.integer(str_extract(term, "(?<=ym::)[0-9]+")),
-              estimate)
-}
-placebo <- map_dfr(states[states != "CA"], es_one)
-placebo_band <- placebo %>%
-  group_by(ym) %>%
-  summarise(pl_lo = quantile(estimate, 0.025),
-            pl_hi = quantile(estimate, 0.975),
-            pl_sd = sd(estimate), .groups = "drop")
-
-# ============================================================
-# Exporting results ----
-# ============================================================
-
-# Combining the California event study results with the placebo band ----
-es <- es_ca %>% left_join(placebo_band, by = "ym")
-
+es <- es_ca
 
 # Plotting the event study results ----
-legislature_date <- as.Date("2020-06-24")  # Approved by the California State Legislature
-eff_date         <- as.Date("2021-02-16")  # parent-child provisions take effect
+# Shading starts at ballot placement (June 2020), the first anticipation month.
+antic_start_date <- prop19_event_dates[["ballot"]]
+eff_date         <- prop19_event_dates[["effective"]]
 xend        <- max(es$date) + 20
 phase_rects <- tibble(
   phase = factor(c("Anticipation & Rush", "Post-reform"),
                  levels = c("Anticipation & Rush", "Post-reform")),
-  xmin = c(legislature_date, eff_date),
+  xmin = c(antic_start_date, eff_date),
   xmax = c(eff_date, xend))
 
 fev <- ggplot(es, aes(date, estimate)) +
@@ -143,22 +129,15 @@ fev <- ggplot(es, aes(date, estimate)) +
   scale_fill_manual(values = c(`Anticipation & Rush` = "#fbeccb",
                                `Post-reform` = "#f4ece9"), guide = "none") +
   geom_hline(yintercept = 0, color = "grey45", linewidth = 0.35) +
-  geom_vline(xintercept = c(legislature_date, eff_date), linetype = "dashed",
-             color = "grey35", linewidth = 0.45) +
+  prop19_event_layers(label_y = -0.50, label_step = 0.12) +
   geom_pointrange(aes(ymin = conf.low, ymax = conf.high),
                   color = palette_paper()[2], linewidth = 0.45, size = 0.22) +
   # phase labels along the top
-  annotate("text", x = legislature_date + (eff_date - legislature_date) / 2, y = 0.46,
+  annotate("text", x = antic_start_date + (eff_date - antic_start_date) / 2, y = 0.46,
            label = "Anticipation & Rush", size = 3.0, color = "#9a6700",
            fontface = "bold.italic") +
   annotate("text", x = as.Date("2022-05-01"), y = 0.46,
            label = "Post-reform decline", size = 2.9, color = "grey40", fontface = "italic") +
-  # event-date callouts near the dashed lines
-  annotate("text", x = legislature_date - 14, y = -0.66,
-           label = "Prop 19 pass date\nJune 2020",
-           hjust = 1, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
-  annotate("text", x = eff_date + 14, y = -0.66, label = "Prop 19 Effective date\nFeb 2021",
-           hjust = 0, vjust = 0, size = 2.6, color = "grey25", lineheight = 0.9) +
   scale_y_continuous(labels = scales::label_number(style_positive = "plus")) +
   scale_x_date(date_breaks = "6 months", date_labels = "%b %Y",
                expand = expansion(mult = c(0.01, 0.02))) +
@@ -172,11 +151,30 @@ write_csv_strict(es, path(tables_out_dir, "prop19_event_study_monthly.csv"))
 saveRDS(list(model = m_ca, es = es, ref_set = ref_set),
         path(out_dir, "prop19_event_study.rds"))
 
-# Sanity: anticipation months positive, 2022-2023 negative & outside placebo band
-antic <- es %>% filter(ym >= 202011, ym <= 202102)
+# Summarizing coefficients by policy phase ----
+# Anticipation runs from ballot placement to the deadline; the passage-to-
+# deadline rush and the deadline month are reported as sub-windows.
+phase_windows <- tribble(
+  ~phase,                        ~start_ym,             ~end_ym,
+  "anticipation_202006_202102",  prop19_antic_start_ym, prop19_antic_end_ym,
+  "rush_202011_202102",          202011L,               prop19_antic_end_ym,
+  "deadline_202102",             prop19_antic_end_ym,   prop19_antic_end_ym,
+  "transition_202103_202112",    202103L,               202112L,
+  "steady_202201_202312",        202201L,               202312L
+)
+es_phases <- phase_windows %>%
+  rowwise() %>%
+  mutate(n_months = sum(es$ym >= start_ym & es$ym <= end_ym),
+         mean_log_points = mean(es$estimate[es$ym >= start_ym & es$ym <= end_ym]),
+         pct_change = 100 * (exp(mean_log_points) - 1)) %>%
+  ungroup()
+print(es_phases, width = Inf)
+write_csv_strict(es_phases, path(tables_out_dir, "prop19_event_study_phases.csv"))
+
+# Summarize the estimated timing without sign restrictions.
+antic <- es %>% filter(ym >= prop19_antic_start_ym, ym <= prop19_antic_end_ym)
 post  <- es %>% filter(ym >= 202201)
 message(sprintf("Anticipation mean coef: %+.3f (max %+.3f at %d)",
                 mean(antic$estimate), max(antic$estimate), antic$ym[which.max(antic$estimate)]))
-message(sprintf("2022-2023 mean coef: %+.3f; %d of %d months below placebo 2.5%%",
-                mean(post$estimate), sum(post$estimate < post$pl_lo), nrow(post)))
+message(sprintf("2022-2023 mean coef: %+.3f", mean(post$estimate)))
 message("Finished 09b_event_study at ", Sys.time())

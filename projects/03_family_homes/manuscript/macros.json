@@ -1,0 +1,4959 @@
+{
+"DeedFamilyMillion": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+1,
+"11.5"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\03_facts.tex",
+4
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"DeedNationalShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+2,
+"8.0"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\03_facts.tex",
+3
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"DeedNarrowShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+3,
+"5.6"
+]
+],
+"uses": []
+},
+"DeedShareMin": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+4,
+"7.4"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+4
+]
+]
+},
+"DeedShareMax": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+5,
+"8.6"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+4
+]
+]
+},
+"DeedCAShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+6,
+"13.9"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\03_facts.tex",
+14
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"DeedUTShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+7,
+"5.9"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+14
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"DeedCARelative": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+8,
+"1.7"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+14
+]
+]
+},
+"DeedInclNationalShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+9,
+"13.7"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+9
+],
+[
+"sections\\03_facts.tex",
+4
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"DeedInclCAShare": {
+"defs": [
+[
+"tables\\descriptive_numbers.tex",
+10,
+"21.8"
+]
+],
+"uses": []
+},
+"FamilySoldTwo": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+1,
+"14.4"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"MarketSoldTwo": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+2,
+"10.9"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"FamilySoldFive": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+3,
+"26.6"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"MarketSoldFive": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+4,
+"26.1"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"FamilyRetainedTen": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+5,
+"59"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+],
+[
+"sections\\06_conclusion.tex",
+3
+]
+]
+},
+"FamilySoldTen": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+6,
+"41"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"MarketSoldTen": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+7,
+"45"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"FamilyConditionalSold": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+8,
+"31"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"MarketConditionalSold": {
+"defs": [
+[
+"tables\\hazard_numbers.tex",
+9,
+"38"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"PolicyAnticPercent": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+1,
+"22.5"
+]
+],
+"uses": []
+},
+"PolicyAnticDeeds": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+2,
+"23,367"
+]
+],
+"uses": []
+},
+"PolicyPostMissing": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+3,
+"38,119"
+]
+],
+"uses": []
+},
+"PolicyRetimingPercent": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+4,
+"61.3"
+]
+],
+"uses": []
+},
+"PolicyCFMAE": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+5,
+"4.5"
+]
+],
+"uses": []
+},
+"PolicyCFRMSPE": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+6,
+"6.7"
+]
+],
+"uses": []
+},
+"PolicyEarlyExcess": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+7,
+"8.6"
+]
+],
+"uses": []
+},
+"PolicyFamilyLog": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+8,
+"-0.446"
+]
+],
+"uses": []
+},
+"PolicyMarketLog": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+9,
+"-0.175"
+]
+],
+"uses": []
+},
+"PolicyNetLog": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+10,
+"-0.271"
+]
+],
+"uses": []
+},
+"PolicySCMDecline": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+11,
+"33.9"
+]
+],
+"uses": [
+[
+"scm_appendix.tex",
+14
+]
+]
+},
+"PolicySCMFit": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+12,
+"4.5"
+]
+],
+"uses": [
+[
+"scm_appendix.tex",
+13
+]
+]
+},
+"PolicySCMPCDecline": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+13,
+"32.6"
+]
+],
+"uses": [
+[
+"scm_appendix.tex",
+28
+]
+]
+},
+"PolicySCMPCFit": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+14,
+"4.6"
+]
+],
+"uses": [
+[
+"scm_appendix.tex",
+27
+]
+]
+},
+"PolicyESEarly": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+15,
+"0.002"
+]
+],
+"uses": []
+},
+"PolicyESDeadline": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+16,
+"0.438"
+]
+],
+"uses": []
+},
+"PolicyESPost": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+17,
+"-0.406"
+]
+],
+"uses": []
+},
+"SelectionFamilyPP": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+18,
+"-2.1"
+]
+],
+"uses": []
+},
+"SelectionMarketPP": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+19,
+"-1.1"
+]
+],
+"uses": []
+},
+"SelectionAbsenteePP": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+20,
+"0.7"
+]
+],
+"uses": []
+},
+"TrustDistributionLog": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+21,
+"-0.250"
+]
+],
+"uses": []
+},
+"TrustAllLog": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+22,
+"-0.027"
+]
+],
+"uses": []
+},
+"AgeShareYoung": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+23,
+"10.7"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+28
+]
+]
+},
+"AgeShareMiddle": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+24,
+"13.2"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+28
+]
+]
+},
+"AgeShareOlder": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+25,
+"16.1"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+28
+]
+]
+},
+"SeniorShareNo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+26,
+"13.2"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+28
+]
+]
+},
+"SeniorShareYes": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+27,
+"15.1"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+28
+]
+]
+},
+"TypeShareSF": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+28,
+"13.7"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+30
+]
+]
+},
+"TypeShareDuplex": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+29,
+"14.3"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+30
+]
+]
+},
+"TypeShareCondo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+30,
+"8.3"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+30
+]
+]
+},
+"TypeShareTownhouse": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+31,
+"6.9"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+30
+]
+]
+},
+"TypeResaleFamilySF": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+32,
+"26.7"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleMarketSF": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+33,
+"25.8"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleFamilyDuplex": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+34,
+"23.1"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleMarketDuplex": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+35,
+"25.4"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleFamilyCondo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+36,
+"34.3"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleMarketCondo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+37,
+"27.6"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleFamilyTownhouse": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+38,
+"29.8"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeResaleMarketTownhouse": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+39,
+"27.4"
+]
+],
+"uses": [
+[
+"appendix.tex",
+74
+]
+]
+},
+"TypeAnticSF": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+40,
+"33.5"
+]
+],
+"uses": [
+[
+"appendix.tex",
+81
+]
+]
+},
+"TypeAnticDuplex": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+41,
+"84.0"
+]
+],
+"uses": [
+[
+"appendix.tex",
+81
+]
+]
+},
+"TypeAnticCondo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+42,
+"32.9"
+]
+],
+"uses": [
+[
+"appendix.tex",
+81
+]
+]
+},
+"MainCohortMillion": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+43,
+"7.2"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+33
+]
+]
+},
+"MainSoldOne": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+44,
+"9.8"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"MainSoldTwo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+45,
+"14.4"
+]
+],
+"uses": []
+},
+"SurnameCohortMillion": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+46,
+"5.2"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+33
+]
+]
+},
+"SurnameSoldOne": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+47,
+"9.3"
+]
+],
+"uses": []
+},
+"SurnameSoldTwo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+48,
+"13.9"
+]
+],
+"uses": []
+},
+"OtherFamilyCohortMillion": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+49,
+"2.0"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+33
+]
+]
+},
+"OtherFamilySoldOne": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+50,
+"11.0"
+]
+],
+"uses": []
+},
+"OtherFamilySoldTwo": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+51,
+"15.8"
+]
+],
+"uses": []
+},
+"MarketCohortMillion": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+52,
+"46.5"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+33
+]
+]
+},
+"MarketSoldOne": {
+"defs": [
+[
+"tables\\refresh_numbers.tex",
+53,
+"6.7"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"SIIIReadCrossSurname": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+1,
+"73"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIIReadCrossSurnameN": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+2,
+"41"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+],
+[
+"tables/T1_taxonomy_v2.tex",
+35
+]
+]
+},
+"SIIIReadCrossSurnameCorrect": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+3,
+"30"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+],
+[
+"tables/T1_taxonomy_v2.tex",
+35
+]
+]
+},
+"SIIIReadCrossBefore": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+4,
+"33"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIIReadMovedSamePerson": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+5,
+"100"
+]
+],
+"uses": []
+},
+"SIIIReadMovedSamePersonN": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+6,
+"43"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+55
+]
+]
+},
+"SIIIReadIntoTrustOthers": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+7,
+"39"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIIReadHeir": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+8,
+"89"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+65
+]
+]
+},
+"SIIIReadSpouse": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+9,
+"94"
+]
+],
+"uses": []
+},
+"SIIIReadParentChild": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+10,
+"94"
+]
+],
+"uses": []
+},
+"SIIIReadOwnerRetained": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+11,
+"86"
+]
+],
+"uses": []
+},
+"SIIIReadToOther": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+12,
+"84"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+65
+]
+]
+},
+"SIIIPoolMainNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+13,
+"8.0"
+]
+],
+"uses": []
+},
+"SIIIPoolOldNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+14,
+"13.7"
+]
+],
+"uses": []
+},
+"SIIIPoolMainCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+15,
+"13.9"
+]
+],
+"uses": []
+},
+"SIIIPoolOldCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+16,
+"21.8"
+]
+],
+"uses": []
+},
+"SIIIParentChildShareNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+17,
+"73.5"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIIParentChildShareCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+18,
+"38.1"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIICrossSurnameShareNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+19,
+"18.0"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIICrossSurnameShareCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+20,
+"26.6"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIISpouseShareNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+21,
+"8.4"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIISpouseShareCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+22,
+"35.3"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+],
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIISamePEntityAvgNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+23,
+"580,028"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIISamePEntityAvgCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+24,
+"102,302"
+]
+],
+"uses": []
+},
+"SIIISamePEntityShareOfOldNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+25,
+"44"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+55
+]
+]
+},
+"SIIISamePEntityShareOfOldCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+26,
+"41"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+55
+]
+]
+},
+"SIIIOldAvgNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+27,
+"1,310,018"
+]
+],
+"uses": []
+},
+"SIIIDeathShareNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+28,
+"18.4"
+]
+],
+"uses": []
+},
+"SIIILifetimeShareNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+29,
+"79.8"
+]
+],
+"uses": []
+},
+"SIIIMainAvgNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+30,
+"729,989"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+63
+]
+]
+},
+"SIIIMainAvgCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+31,
+"146,646"
+]
+],
+"uses": []
+},
+"SIIIHeirAvgNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+32,
+"11,124"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+4
+]
+]
+},
+"SIIITrustToOtherAvgNat": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+33,
+"37,893"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+4
+]
+]
+},
+"SIIIAfTrustCATwentySeventeen": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+34,
+"3,687"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+65
+],
+[
+"sections\\04_prop19.tex",
+52
+]
+]
+},
+"SIIIAfTrustCATwentyEighteen": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+35,
+"29,297"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+65
+],
+[
+"sections\\04_prop19.tex",
+52
+]
+]
+},
+"SIIIAfTrustNatTwentySeventeen": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+36,
+"4,097"
+]
+],
+"uses": []
+},
+"SIIIAfTrustNatTwentyEighteen": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+37,
+"32,825"
+]
+],
+"uses": []
+},
+"SIIICAPerHundred": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+38,
+"13.9"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIRestPerHundred": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+39,
+"7.1"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+],
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIGapPerHundred": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+40,
+"6.8"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIGapShareParentChild": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+41,
+"42"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIGapShareCrossSurname": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+42,
+"58"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIGapShareUnknown": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+43,
+"-0"
+]
+],
+"uses": []
+},
+"SIIIGapSamePEntity": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+44,
+"2.6"
+]
+],
+"uses": []
+},
+"SIIIGapOld": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+45,
+"9.4"
+]
+],
+"uses": []
+},
+"SIIIOldCAPerHundred": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+46,
+"21.8"
+]
+],
+"uses": []
+},
+"SIIIOldRestPerHundred": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+47,
+"12.4"
+]
+],
+"uses": []
+},
+"SIIIGapShareLifetime": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+48,
+"68"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIGapShareDeath": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+49,
+"32"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIISpousePerHundredCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+50,
+"5.1"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIISpouseGapShare": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+51,
+"75"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIFamPerMarketCA": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+52,
+"38"
+]
+],
+"uses": []
+},
+"SIIIFamPerMarketRest": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+53,
+"12"
+]
+],
+"uses": []
+},
+"SIIICAPerHundredNoSpouse": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+54,
+"8.8"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+21
+]
+]
+},
+"SIIIStateN": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+55,
+"51"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIICorrOld": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+56,
+"-0.18"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIICorrHPI": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+57,
+"0.13"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIIStateRsq": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+58,
+"0.03"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIICAShareNoSpouse": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+59,
+"8.5"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIICAPredShare": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+60,
+"7.3"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+25
+]
+]
+},
+"SIIIStateMeanShare": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+61,
+"7.0"
+]
+],
+"uses": []
+},
+"SIIIMktRewSoldOne": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+62,
+"6.4"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+37
+]
+]
+},
+"SIIIMktRewSoldTwo": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+63,
+"10.4"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+37
+]
+]
+},
+"SIIIMktRewSoldThree": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+64,
+"15.2"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+37
+]
+]
+},
+"SIIIMktRewSoldFive": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+65,
+"25.3"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+37
+]
+]
+},
+"SIIIFamSoldTwoCheck": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+66,
+"14.4"
+]
+],
+"uses": []
+},
+"SIIIMarketUnsoldTen": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+67,
+"55"
+]
+],
+"uses": [
+[
+"sections\\03_facts.tex",
+35
+]
+]
+},
+"SIIIEventsAllM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+68,
+"148.7"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+17
+]
+]
+},
+"SIIIEventsSampleM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+69,
+"144.0"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+18
+]
+]
+},
+"SIIIClassMarketM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+70,
+"78.5"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+28
+]
+]
+},
+"SIIIMarketZeroPrice": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+71,
+"8.7"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+29
+]
+]
+},
+"SIIIClassRetitleM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+72,
+"7.1"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+31
+]
+]
+},
+"SIIIClassPersonM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+73,
+"13.6"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+34
+]
+]
+},
+"SIIIClassEstate": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+74,
+"1,905"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+35
+]
+]
+},
+"SIIIClassOtherM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+75,
+"6.1"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+38
+]
+]
+},
+"SIIIClassTrustM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+76,
+"12.1"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+40
+]
+]
+},
+"SIIIClassNonarmsM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+77,
+"26.6"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+48
+]
+]
+},
+"SIIITrustLowerM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+78,
+"1.19"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+43
+]
+]
+},
+"SIIITrustUpperM": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+79,
+"1.61"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+43
+]
+]
+},
+"SIIIInitialOnlyShareOfOld": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+80,
+"2.8"
+]
+],
+"uses": [
+[
+"sections\\02_data.tex",
+55
+]
+]
+},
+"SIIIAfRawTotalGrowth": {
+"defs": [
+[
+"tables\\s23_numbers.tex",
+81,
+"18"
+]
+],
+"uses": [
+[
+"appendix.tex",
+45
+]
+]
+},
+"SIVMainJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+1,
+"1.67"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\04_prop19.tex",
+88
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVMainMarApr": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+2,
+"1.06"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+88
+]
+]
+},
+"SIVMainNine": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+3,
+"1.23"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+88
+]
+]
+},
+"SIVMainDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+4,
+"0.60"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\04_prop19.tex",
+88
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVMainDeadlineSignPrimary": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+5,
+"0.60"
+]
+],
+"uses": []
+},
+"SIVMainDeadlineRec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+6,
+"0.73"
+]
+],
+"uses": []
+},
+"SIVMainDeadlineSignPrior": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+7,
+"1.09"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+88
+]
+]
+},
+"SIVMainDeadlineSignOther": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+8,
+"1.04"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+88
+]
+]
+},
+"SIVHeirJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+9,
+"3.33"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\04_prop19.tex",
+94
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVHeirMarApr": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+10,
+"1.06"
+]
+],
+"uses": []
+},
+"SIVHeirNine": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+11,
+"1.65"
+]
+],
+"uses": []
+},
+"SIVHeirDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+12,
+"0.23"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+3
+],
+[
+"sections\\04_prop19.tex",
+94
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVHeirDeadlineSignPrimary": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+13,
+"0.21"
+]
+],
+"uses": []
+},
+"SIVHeirDeadlineRec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+14,
+"0.41"
+]
+],
+"uses": []
+},
+"SIVHeirDeadlineSignPrior": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+15,
+"1.03"
+]
+],
+"uses": []
+},
+"SIVHeirDeadlineSignOther": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+16,
+"1.37"
+]
+],
+"uses": []
+},
+"SIVPcJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+17,
+"1.58"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+94
+]
+]
+},
+"SIVPcMarApr": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+18,
+"0.99"
+]
+],
+"uses": []
+},
+"SIVPcNine": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+19,
+"1.19"
+]
+],
+"uses": []
+},
+"SIVPcDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+20,
+"0.57"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+94
+]
+]
+},
+"SIVPcDeadlineSignPrimary": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+21,
+"0.58"
+]
+],
+"uses": []
+},
+"SIVPcDeadlineRec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+22,
+"0.70"
+]
+],
+"uses": []
+},
+"SIVPcDeadlineSignPrior": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+23,
+"1.09"
+]
+],
+"uses": []
+},
+"SIVPcDeadlineSignOther": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+24,
+"1.02"
+]
+],
+"uses": []
+},
+"SIVUpperJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+25,
+"1.80"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+94
+]
+]
+},
+"SIVUpperMarApr": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+26,
+"1.07"
+]
+],
+"uses": []
+},
+"SIVUpperNine": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+27,
+"1.27"
+]
+],
+"uses": []
+},
+"SIVUpperDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+28,
+"0.54"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+94
+]
+]
+},
+"SIVUpperDeadlineSignPrimary": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+29,
+"0.55"
+]
+],
+"uses": []
+},
+"SIVUpperDeadlineRec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+30,
+"0.68"
+]
+],
+"uses": []
+},
+"SIVUpperDeadlineSignPrior": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+31,
+"1.09"
+]
+],
+"uses": []
+},
+"SIVUpperDeadlineSignOther": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+32,
+"1.04"
+]
+],
+"uses": []
+},
+"SIVSpouseJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+33,
+"1.45"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+96
+]
+]
+},
+"SIVSpouseDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+34,
+"0.97"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+96
+]
+]
+},
+"SIVSpouseDeadlineRec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+35,
+"1.14"
+]
+],
+"uses": []
+},
+"SIVSettlorJanFeb": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+36,
+"2.21"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+98
+]
+]
+},
+"SIVSettlorDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+37,
+"0.81"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+98
+]
+]
+},
+"SIVAffidavitDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+38,
+"0.70"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+98
+]
+]
+},
+"SIVRetitleDeadlineSign": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+39,
+"0.85"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+98
+]
+]
+},
+"SIVMainDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+40,
+"-0.446"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+141
+]
+]
+},
+"SIVMainDDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+41,
+"-0.271"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\04_prop19.tex",
+110
+],
+[
+"sections\\04_prop19.tex",
+141
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVMainDDDSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+42,
+"0.035"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\04_prop19.tex",
+110
+],
+[
+"sections\\06_conclusion.tex",
+5
+]
+]
+},
+"SIVMainDDDPct": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+43,
+"-23.7"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+110
+]
+]
+},
+"SIVMainObs": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+44,
+"510"
+]
+],
+"uses": []
+},
+"SIVHeirDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+45,
+"-0.154"
+]
+],
+"uses": []
+},
+"SIVHeirDDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+46,
+"0.023"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+125
+]
+]
+},
+"SIVHeirDDDSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+47,
+"0.058"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+125
+]
+]
+},
+"SIVHeirDDDPct": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+48,
+"2.4"
+]
+],
+"uses": []
+},
+"SIVHeirObs": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+49,
+"460"
+]
+],
+"uses": []
+},
+"SIVPcDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+50,
+"-0.548"
+]
+],
+"uses": []
+},
+"SIVPcDDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+51,
+"-0.373"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVPcDDDSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+52,
+"0.032"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVPcDDDPct": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+53,
+"-31.2"
+]
+],
+"uses": []
+},
+"SIVPcObs": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+54,
+"510"
+]
+],
+"uses": []
+},
+"SIVRetitleDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+55,
+"-0.628"
+]
+],
+"uses": []
+},
+"SIVRetitleDDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+56,
+"-0.453"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVRetitleDDDSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+57,
+"0.034"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVRetitleDDDPct": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+58,
+"-36.4"
+]
+],
+"uses": []
+},
+"SIVRetitleObs": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+59,
+"510"
+]
+],
+"uses": []
+},
+"SIVSettlorDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+60,
+"-0.579"
+]
+],
+"uses": []
+},
+"SIVSettlorDDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+61,
+"-0.399"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVSettlorDDDSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+62,
+"0.124"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+117
+]
+]
+},
+"SIVSettlorDDDPct": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+63,
+"-32.9"
+]
+],
+"uses": []
+},
+"SIVSettlorObs": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+64,
+"490"
+]
+],
+"uses": []
+},
+"SIVMarketDiD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+65,
+"-0.175"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+137
+]
+]
+},
+"SIVMainESTwentyTwo": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+66,
+"-0.339"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+119
+]
+]
+},
+"SIVMainESTwentyThree": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+67,
+"-0.473"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+119
+]
+]
+},
+"SIVMainESTwentyOne": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+68,
+"-0.054"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+119
+]
+]
+},
+"SIVHeirESTwentyTwo": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+69,
+"-0.075"
+]
+],
+"uses": []
+},
+"SIVHeirESTwentyThree": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+70,
+"-0.149"
+]
+],
+"uses": []
+},
+"SIVHeirESTwentyOne": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+71,
+"0.039"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+125
+]
+]
+},
+"SIVPcESTwentyTwo": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+72,
+"-0.408"
+]
+],
+"uses": []
+},
+"SIVPcESTwentyThree": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+73,
+"-0.576"
+]
+],
+"uses": []
+},
+"SIVPcESTwentyOne": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+74,
+"-0.101"
+]
+],
+"uses": []
+},
+"SIVRetitleESTwentyTwo": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+75,
+"-0.498"
+]
+],
+"uses": []
+},
+"SIVRetitleESTwentyThree": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+76,
+"-0.730"
+]
+],
+"uses": []
+},
+"SIVRetitleESTwentyOne": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+77,
+"-0.034"
+]
+],
+"uses": []
+},
+"SIVMainRush": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+78,
+"23,367"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+123
+]
+]
+},
+"SIVMainShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+79,
+"93,298"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+123
+],
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"SIVMainShortfallDec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+80,
+"77,474"
+]
+],
+"uses": []
+},
+"SIVMainRushShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+81,
+"0.25"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+123
+]
+]
+},
+"SIVHeirRush": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+82,
+"2,541"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+125
+]
+]
+},
+"SIVHeirShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+83,
+"1,773"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+125
+]
+]
+},
+"SIVHeirShortfallDec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+84,
+"1,508"
+]
+],
+"uses": []
+},
+"SIVHeirRushShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+85,
+"1.43"
+]
+],
+"uses": []
+},
+"SIVPcRush": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+86,
+"9,786"
+]
+],
+"uses": []
+},
+"SIVPcShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+87,
+"57,806"
+]
+],
+"uses": []
+},
+"SIVPcShortfallDec": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+88,
+"47,971"
+]
+],
+"uses": []
+},
+"SIVPcRushShortfall": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+89,
+"0.17"
+]
+],
+"uses": []
+},
+"SIVMainLessSpouse": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+90,
+"-0.009"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+121
+]
+]
+},
+"SIVMainLessMarket": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+91,
+"-0.197"
+]
+],
+"uses": []
+},
+"SIVMainLogChange": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+92,
+"-0.415"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+121
+]
+]
+},
+"SIVSpouseLogChange": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+93,
+"-0.406"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+121
+]
+]
+},
+"SIVMarketLogChange": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+94,
+"-0.218"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+121
+]
+]
+},
+"SIVHeirSignFridayTwelve": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+95,
+"69"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVHeirSignTuesdaySixteen": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+96,
+"10"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVHeirRecSixteen": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+97,
+"95"
+]
+],
+"uses": []
+},
+"SIVMainRecSixteen": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+98,
+"1,052"
+]
+],
+"uses": []
+},
+"SIVHeirRecBeforeMean": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+99,
+"155"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVHeirRecAfterMean": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+100,
+"59"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVMainRecBeforeMean": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+101,
+"1,235"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVMainRecAfterMean": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+102,
+"815"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+86
+]
+]
+},
+"SIVSpouseShareMainPre": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+103,
+"44.1"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+52
+]
+]
+},
+"SIVSpouseShareMainPost": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+104,
+"44.3"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+52
+]
+]
+},
+"SIVAffTrustBuyerTwentySeventeen": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+105,
+"4,477"
+]
+],
+"uses": [
+[
+"appendix.tex",
+45
+]
+]
+},
+"SIVAffTrustBuyerTwentyEighteen": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+106,
+"36,189"
+]
+],
+"uses": [
+[
+"appendix.tex",
+45
+]
+]
+},
+"SIVDeedsPerParcelNational": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+107,
+"1.1940"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+54
+]
+]
+},
+"SIVDeedsPerParcelCASpan": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+108,
+"1.355"
+]
+],
+"uses": []
+},
+"SIVDeedsPerParcelYearMin": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+109,
+"1.044"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+54
+]
+]
+},
+"SIVDeedsPerParcelYearMax": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+110,
+"1.053"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+54
+]
+]
+},
+"SIVDeedsPerParcelRush": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+111,
+"1.041"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+54
+]
+]
+},
+"SIVMainResaleDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+112,
+"-3.57"
+]
+],
+"uses": [
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\04_prop19.tex",
+102
+]
+]
+},
+"SIVMainResaleJanFebDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+113,
+"-5.40"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+102
+]
+]
+},
+"SIVHeirResaleDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+114,
+"-2.85"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+102
+]
+]
+},
+"SIVHeirResaleJanFebDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+115,
+"-4.22"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+102
+]
+]
+},
+"SIVSettlorResaleDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+116,
+"-0.21"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+106
+]
+]
+},
+"SIVSettlorResaleJanFebDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+117,
+"-0.18"
+]
+],
+"uses": []
+},
+"SIVMarketResaleDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+118,
+"-0.82"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+106
+]
+]
+},
+"SIVMarketResaleJanFebDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+119,
+"-1.33"
+]
+],
+"uses": []
+},
+"SIVSpouseResaleChange": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+120,
+"-3.78"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+106
+]
+]
+},
+"SIVMainOccupDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+121,
+"-2.49"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+127
+]
+]
+},
+"SIVMarketOccupDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+122,
+"-2.35"
+]
+],
+"uses": []
+},
+"SIVMainOccupNet": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+123,
+"-0.15"
+]
+],
+"uses": [
+[
+"sections\\04_prop19.tex",
+127
+]
+]
+},
+"SIVPcOccupDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+124,
+"-2.90"
+]
+],
+"uses": []
+},
+"SIVPcOccupNet": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+125,
+"-0.55"
+]
+],
+"uses": []
+},
+"SIVHeirOccupDD": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+126,
+"1.39"
+]
+],
+"uses": []
+},
+"SIVHeirOccupTwentyOne": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+127,
+"-3.11"
+]
+],
+"uses": []
+},
+"SIVSpouseOccupChange": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+128,
+"-3.98"
+]
+],
+"uses": []
+},
+"SIVOccupFillCA": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+129,
+"99.8"
+]
+],
+"uses": []
+},
+"SIVOldColSixValue": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+130,
+"-0.0017"
+]
+],
+"uses": [
+[
+"appendix.tex",
+103
+]
+]
+},
+"SIVOldColSixSE": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+131,
+"0.0032"
+]
+],
+"uses": [
+[
+"appendix.tex",
+103
+]
+]
+},
+"SIVOldColSixSaved": {
+"defs": [
+[
+"tables\\s4_numbers.tex",
+132,
+"-0.0016"
+]
+],
+"uses": []
+},
+"WedgeParcels": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+2,
+"7,852,730"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+14
+],
+[
+"sections\\05_framework_welfare.tex",
+137
+]
+]
+},
+"WedgePositiveParcels": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+3,
+"6,861,374"
+]
+],
+"uses": []
+},
+"WedgeShareZero": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+4,
+"12.6"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+90
+]
+]
+},
+"WedgeMedianPos": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+5,
+"2,548"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+93
+]
+]
+},
+"WedgeMeanPos": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+6,
+"4,337"
+]
+],
+"uses": []
+},
+"WedgeMedianAll": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+7,
+"2,118"
+]
+],
+"uses": []
+},
+"WedgeMeanAll": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+8,
+"3,790"
+]
+],
+"uses": []
+},
+"WedgeMedianRate": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+9,
+"1.19"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+27
+],
+[
+"sections\\05_framework_welfare.tex",
+63
+]
+]
+},
+"WedgeMedianAssessed": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+10,
+"292,535"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+63
+]
+]
+},
+"WedgeMedianMarket": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+11,
+"524,614"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+64
+]
+]
+},
+"WedgeMedianGapPos": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+12,
+"207,044"
+]
+],
+"uses": []
+},
+"WedgeRateLowerShare": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+13,
+"0.9"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+25
+]
+]
+},
+"WedgeRateUpperShare": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+14,
+"3.4"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+26
+]
+]
+},
+"WedgeShareRollBase": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+15,
+"64.5"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+42
+]
+]
+},
+"WedgeShareSaleReset": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+16,
+"35.5"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+43
+]
+]
+},
+"WedgeAVMHoldout": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+17,
+"133,231"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+55
+]
+]
+},
+"WedgeAVMRsq": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+18,
+"0.82"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+56
+]
+]
+},
+"WedgeAVMMedianAPE": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+19,
+"11.1"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+57
+]
+]
+},
+"WedgeAVMWithinTwenty": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+20,
+"72"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+57
+]
+]
+},
+"WedgeAVMShareFull": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+21,
+"91.9"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+54
+]
+]
+},
+"WedgeRSParcels": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+22,
+"2,784,911"
+]
+],
+"uses": []
+},
+"WedgeRSCorValue": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+23,
+"0.89"
+]
+],
+"uses": []
+},
+"WedgeRSCorWedge": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+24,
+"0.32"
+]
+],
+"uses": []
+},
+"WedgeLAOMedian": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+25,
+"4,026"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+118
+]
+]
+},
+"WedgeLAOMean": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+26,
+"5,640"
+]
+],
+"uses": []
+},
+"WedgeLAOParcels": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+27,
+"1,078,453"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+116
+]
+]
+},
+"WedgeFamLinkage": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+28,
+"80.0"
+]
+],
+"uses": []
+},
+"WedgeLongHeldHOXMedian": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+29,
+"3,700"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+94
+]
+]
+},
+"WedgeLongHeldHOXOverCap": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+30,
+"13.8"
+]
+],
+"uses": []
+},
+"WedgeRecentHOXMedian": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+31,
+"1,005"
+]
+],
+"uses": []
+},
+"WedgeRecentHOXZero": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+32,
+"32.7"
+]
+],
+"uses": []
+},
+"WedgeInheritedN": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+33,
+"148,756"
+]
+],
+"uses": []
+},
+"WedgeInheritedPerYear": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+34,
+"74,378"
+]
+],
+"uses": []
+},
+"WedgeInheritedMedianNominal": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+35,
+"1,753"
+]
+],
+"uses": []
+},
+"WedgeInheritedMeanNominal": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+36,
+"3,130"
+]
+],
+"uses": []
+},
+"WedgeInheritedMedian": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+37,
+"2,179"
+]
+],
+"uses": []
+},
+"WedgeInheritedMean": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+38,
+"3,891"
+]
+],
+"uses": []
+},
+"WedgeInheritedFlowM": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+39,
+"289"
+]
+],
+"uses": []
+},
+"WedgeInheritedShareZero": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+40,
+"11.5"
+]
+],
+"uses": []
+},
+"WedgeInheritedShareLongHeld": {
+"defs": [
+[
+"tables\\wedge_numbers.tex",
+41,
+"65.7"
+]
+],
+"uses": []
+},
+"WelfareFlow": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+1,
+"34,516"
+]
+],
+"uses": []
+},
+"WelfareBaseline": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+2,
+"145,505"
+]
+],
+"uses": []
+},
+"WelfareNetPercent": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+3,
+"23.7"
+]
+],
+"uses": []
+},
+"WelfareWedge": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+4,
+"3,891"
+]
+],
+"uses": []
+},
+"WelfareWedgeMedian": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+5,
+"2,179"
+]
+],
+"uses": []
+},
+"WelfareWedgeLow": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+6,
+"3,729"
+]
+],
+"uses": []
+},
+"WelfareDWLCohort": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+7,
+"67.2"
+]
+],
+"uses": []
+},
+"WelfareDWLCohortMedian": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+8,
+"37.6"
+]
+],
+"uses": []
+},
+"WelfareWedgeHigh": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+9,
+"4,972"
+]
+],
+"uses": []
+},
+"WelfareInflator": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+10,
+"1.2431"
+]
+],
+"uses": []
+},
+"WelfareExampleStock": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+11,
+"72,809"
+]
+],
+"uses": []
+},
+"WelfareExampleAnnual": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+12,
+"141.7"
+]
+],
+"uses": []
+},
+"WelfareExamplePV": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+13,
+"345.2"
+]
+],
+"uses": []
+},
+"WelfareCABroadSurvival": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+14,
+"57.9"
+]
+],
+"uses": []
+},
+"WelfareCASameSurvival": {
+"defs": [
+[
+"tables\\welfare_numbers.tex",
+15,
+"57.3"
+]
+],
+"uses": []
+},
+"WViLossCentral": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+2,
+"9.9"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+],
+[
+"sections\\05_framework_welfare.tex",
+137
+],
+[
+"sections\\06_conclusion.tex",
+7
+]
+]
+},
+"WViLossLow": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+3,
+"1.5"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+],
+[
+"sections\\06_conclusion.tex",
+7
+]
+]
+},
+"WViLossHigh": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+4,
+"19.7"
+]
+],
+"uses": [
+[
+"paper.tex",
+42
+],
+[
+"sections\\01_introduction.tex",
+5
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+],
+[
+"sections\\06_conclusion.tex",
+7
+]
+]
+},
+"WViLossZero": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+5,
+"0"
+]
+],
+"uses": []
+},
+"WViQuantityZero": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+6,
+"0"
+]
+],
+"uses": []
+},
+"WViWedgeMean": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+7,
+"3,677"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViWedgeMedian": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+8,
+"2,048"
+]
+],
+"uses": []
+},
+"WViWedgeMedianPos": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+9,
+"2,436"
+]
+],
+"uses": []
+},
+"WViSharePositive": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+10,
+"87.5"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViShareAboveCap": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+11,
+"12.7"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+133
+]
+]
+},
+"WViLossPerParcel": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+12,
+"1,482"
+]
+],
+"uses": []
+},
+"WViParcels": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+13,
+"120,345"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViParcelsPerYear": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+14,
+"60,173"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViShortfallDeeds": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+15,
+"93,298"
+]
+],
+"uses": []
+},
+"WViShortfallDeedsYear": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+16,
+"27,989"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViShortfallParcelsYear": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+17,
+"26,630"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViBeyondSpouseParcelsYear": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+18,
+"4,109"
+]
+],
+"uses": []
+},
+"WViNetRushParcelsYear": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+19,
+"19,960"
+]
+],
+"uses": []
+},
+"WViRushDeeds": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+20,
+"23,367"
+]
+],
+"uses": []
+},
+"WViHoleMonths": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+21,
+"40"
+]
+],
+"uses": []
+},
+"WViDeedsPerParcel": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+22,
+"1.051"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+]
+]
+},
+"WViOccupancyShare": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+23,
+"70.6"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+133
+]
+]
+},
+"WViAlpha": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+24,
+"0.5"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+131
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+],
+[
+"sections\\06_conclusion.tex",
+7
+],
+[
+"appendix.tex",
+109
+]
+]
+},
+"WViAlphaLow": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+25,
+"0.25"
+]
+],
+"uses": []
+},
+"WViAlphaHigh": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+26,
+"1"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+135
+]
+]
+},
+"WViHarberger": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+27,
+"0.5"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+129
+],
+[
+"sections\\05_framework_welfare.tex",
+135
+]
+]
+},
+"WViValueCap": {
+"defs": [
+[
+"tables\\welfare_v2_numbers.tex",
+28,
+"1,000,000"
+]
+],
+"uses": [
+[
+"sections\\05_framework_welfare.tex",
+133
+]
+]
+},
+"muted": {
+"defs": [
+[
+"../../../Preambles/header.tex",
+126,
+"\\textcolor{neutral}{#1}"
+]
+],
+"uses": []
+},
+"key": {
+"defs": [
+[
+"../../../Preambles/header.tex",
+127,
+"\\textcolor{primary-gold}{\\textbf{#1}}"
+]
+],
+"uses": []
+},
+"good": {
+"defs": [
+[
+"../../../Preambles/header.tex",
+128,
+"\\textcolor{positive}{#1}"
+]
+],
+"uses": []
+},
+"bad": {
+"defs": [
+[
+"../../../Preambles/header.tex",
+129,
+"\\textcolor{negative}{#1}"
+]
+],
+"uses": []
+}
+}

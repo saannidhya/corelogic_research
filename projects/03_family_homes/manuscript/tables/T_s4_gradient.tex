@@ -1,0 +1,34 @@
+\begin{table}[!ht]\centering
+\caption{The deadline rush by the parcel's tax wedge, California}
+\label{tab:s4gradient}
+{\small
+\begin{adjustbox}{max width = \textwidth}
+\begin{tabular}{llrrrrrrr}
+\toprule
+ & Annual & Parcels & \multicolumn{2}{c}{Section 4 measure} & \multicolumn{2}{c}{Spouse deeds} & \multicolumn{2}{c}{Affidavits of death} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Wedge bin & wedge (\$) & at risk & Rush & Deadline & Rush & Deadline & Rush & Deadline \\
+\midrule
+Zero wedge & 0 & 891,477 & 1.64 & 0.83 & 1.25 & 1.09 & 1.28 & 0.86 \\
+Decile 1 & 0--576 & 614,188 & 1.51 & 0.93 & 1.28 & 0.97 & 1.30 & 0.86 \\
+Decile 2 & 576--1,050 & 620,719 & 1.42 & 0.83 & 1.27 & 1.03 & 1.15 & 0.81 \\
+Decile 3 & 1,050--1,495 & 626,895 & 1.47 & 0.70 & 1.32 & 0.87 & 1.37 & 0.99 \\
+Decile 4 & 1,495--1,971 & 632,201 & 1.52 & 0.76 & 1.26 & 0.85 & 1.24 & 0.86 \\
+Decile 5 & 1,971--2,548 & 636,539 & 1.61 & 0.78 & 1.29 & 0.95 & 1.27 & 0.65 \\
+Decile 6 & 2,548--3,313 & 640,072 & 1.76 & 0.68 & 1.32 & 1.18 & 1.33 & 0.78 \\
+Decile 7 & 3,313--4,394 & 643,849 & 1.74 & 0.57 & 1.21 & 0.83 & 1.31 & 0.67 \\
+Decile 8 & 4,394--6,146 & 646,601 & 2.15 & 0.44 & 1.42 & 0.94 & 1.27 & 0.63 \\
+Decile 9 & 6,146--9,653 & 645,732 & 2.55 & 0.33 & 1.30 & 0.81 & 1.27 & 0.66 \\
+Decile 10 & above 9,653 & 647,464 & 4.13 & 0.15 & 1.16 & 0.84 & 1.26 & 0.57 \\
+\addlinespace
+All parcels &  & 7,245,737 & 1.84 & 0.58 & 1.27 & 0.96 & 1.28 & 0.71 \\
+\midrule
+\multicolumn{9}{l}{\emph{Slope per decile (log points)}} \\
+Slope &  &  & 0.064 & $-$0.143 & $-$0.025 & $-$0.007 & $-$0.002 & $-$0.065 \\
+ &  &  & (0.005) & (0.015) & (0.006) & (0.015) & (0.007) & (0.013) \\
+County clusters &  &  & 56 & 55 & 55 & 51 & 57 & 56 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}}
+\begin{minipage}{0.95\textwidth}\vspace{2pt}{\scriptsize \textit{Notes:} California single-family and condominium parcels on the 2008--2009 roll, with the annual tax wedge $\hat w=\hat t\max(\hat p-\hat A,0)$ of Section~\ref{subsec:wedge} measured at the January 1, 2019 lien date, before Proposition~19 reached the ballot. Zero-wedge parcels form their own bin; deciles split the positive wedges, and the second column gives each decile's range in dollars a year. Parcels at risk in 2021 (third column) are those with no arm's-length sale between January 1, 2019 and January 1, 2021; in 2019 every parcel is at risk. Rush: parcels with at least one deed of the series signed in January--February 2021 per 1,000 parcels at risk, over the same rate for January--February 2019. Deadline ratio: deeds per signing day on 17--28 February 2021 over 1--16 February 2021 (all calendar days). Slope: Poisson regression of county $\times$ bin $\times$ period counts with the log of parcels at risk as offset and county-by-period and county-by-bin fixed effects. The rush slope is the coefficient on the January--February 2021 indicator times the decile number (1--10); the deadline slope is the coefficient on the after-deadline indicator times the decile number in February 2021, net of the same coefficient in February 2019. In both the zero-wedge bin has its own indicator and does not enter the slope. Log points per decile; standard errors in parentheses are clustered by county. Spouse deeds are identified by document type; affidavits of death include those with a trust party.}\end{minipage}
+\end{table}

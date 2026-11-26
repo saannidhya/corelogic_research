@@ -3,13 +3,14 @@
 # Name    : Saani Rawat
 # Created : 10/07/2026
 # Log     : 10/07/2026: positive-wedge reference lines and appendix diagnostics.
+#           10/28/2026: emphasize the positive-wedge median; allow distribution-only redraws.
 # Inputs  : data/derived/03_family_homes/ca_parcel_wedge.parquet
-# Outputs : manuscript/figures/wedge_*.{png,pdf}; _outputs/tables/wedge_figure_*.csv
+# Outputs : manuscript/figures/wedge_*.png; _outputs/tables/wedge_figure_*.csv
 #======================================================================#
 
 source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 
-build_wedge_figures <- function(parcel_panel = NULL) {
+build_wedge_figures <- function(parcel_panel = NULL, include_diagnostics = TRUE) {
   # Settings ----
   figure_cohort <- "d2019"
   display_max <- 50000
@@ -38,24 +39,23 @@ build_wedge_figures <- function(parcel_panel = NULL) {
           plot.title.position = "plot", plot.caption.position = "plot",
           plot.margin = margin(12, 18, 12, 12), legend.position = "bottom")
   save_wedge_figure <- function(plot, name, width = 9, height = 5.6) {
-    for (extension in c("png", "pdf")) {
-      ggsave(path(figures_dir, paste0(name, ".", extension)), plot,
-             width = width, height = height, dpi = 300, bg = "white")
-    }
+    ggsave(path(figures_dir, paste0(name, ".png")), plot,
+           width = width, height = height, dpi = 300, bg = "white")
     message("Saved: ", name)
   }
 
-  # Main distribution: all parcels, positive-wedge reference statistics ----
+  # Main distribution: all parcels, positive-wedge median reference ----
   wedge_summary <- wedge_data %>%
     summarise(cohort = figure_cohort, n = n(), n_positive = sum(wedge > 0),
               share_zero = mean(wedge == 0),
+              mean_all = mean(wedge), median_all = median(wedge),
               mean_positive = mean(wedge[wedge > 0]),
               median_positive = median(wedge[wedge > 0]),
               share_above_display = mean(wedge > display_max))
   write_csv_strict(wedge_summary, path(tables_out_dir, "wedge_figure_summary_2019.csv"))
   print(wedge_summary, width = Inf)
 
-  # Aggregate once; both exports use the same full-population bin counts.
+  # Aggregate the full population into bins before plotting.
   # These are equal-width bins in asinh(wedge / 500), matching the axis transform.
   histogram <- hist(asinh(wedge_data$wedge[wedge_data$wedge <= display_max] / 500),
                     breaks = seq(0, asinh(display_max / 500), length.out = 61),
@@ -65,11 +65,11 @@ build_wedge_figures <- function(parcel_panel = NULL) {
                             n = histogram$counts)
   stopifnot(sum(wedge_histogram$n) == sum(wedge_data$wedge <= display_max))
   reference_lines <- tibble(
-    statistic = c("Median (positive wedges)", "Mean (positive wedges)"),
-    value = c(wedge_summary$median_positive, wedge_summary$mean_positive)
+    statistic = "Median (positive wedges)",
+    value = wedge_summary$median_positive
   ) %>%
     mutate(label = paste0(statistic, ": ", scales::dollar(value, accuracy = 1)))
-  reference_colors <- setNames(c("#1565A0", "#C45D28"), reference_lines$label)
+  reference_colors <- setNames("#1565A0", reference_lines$label)
 
   wedge_plot <- ggplot(wedge_histogram) +
     geom_rect(aes(xmin = xmin, xmax = xmax, ymin = 0, ymax = n),
@@ -77,7 +77,7 @@ build_wedge_figures <- function(parcel_panel = NULL) {
     geom_vline(data = reference_lines, aes(xintercept = value, color = label,
                                          linetype = label), linewidth = 0.9) +
     scale_color_manual(values = reference_colors) +
-    scale_linetype_manual(values = setNames(c("solid", "dashed"), reference_lines$label)) +
+    scale_linetype_manual(values = setNames("solid", reference_lines$label)) +
     scale_x_continuous(trans = scales::pseudo_log_trans(sigma = 250),
                        breaks = c(0, 500, 1000, 3000, 10000, 30000, 50000),
                        labels = scales::label_dollar(scale = 0.001, suffix = "k", accuracy = 0.1),
@@ -90,12 +90,15 @@ build_wedge_figures <- function(parcel_panel = NULL) {
                            " have a zero wedge"),
          x = "Estimated annual tax wedge (2019 dollars; pseudo-log scale)",
          y = "Parcels (thousands)", color = NULL, linetype = NULL,
-         caption = paste0("Mean and median exclude zero wedges. Equal-width bins on the transformed scale.\n",
+         caption = paste0("The median excludes zero wedges. Equal-width bins on the transformed scale.\n",
                           "Display ends at $50,000; ",
                           scales::percent(wedge_summary$share_above_display, accuracy = 0.01),
-                          " lie above it. Reference statistics use the full positive-wedge population.")) +
+                          " lie above it. The median uses the full positive-wedge population.")) +
     figure_theme + theme(panel.grid.major.x = element_blank())
   save_wedge_figure(wedge_plot, "wedge_distribution")
+  if (!include_diagnostics) {
+    return(invisible(list(summary = wedge_summary, distribution = wedge_plot)))
+  }
 
   # Appendix: tenure and historical homestead status ----
   tenure_labels <- c(long_held = "No observed market sale since 2007",

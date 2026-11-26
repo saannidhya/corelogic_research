@@ -10,7 +10,7 @@
 
 ## Core Principles
 
-- **Plan first** — enter plan mode before non-trivial tasks; save plans to `quality_reports/plans/`
+- **Plan first** — enter plan mode before non-trivial tasks; save project plans to `projects/NN_<slug>/quality_reports/plans/`; use root `quality_reports/plans/` only for work that is not specific to a project
 - **Verify after** — compile/render and confirm output at the end of every task
 - **Read-only raw data** — `C:\CoreLogic\` is never written, deleted, or modified
 - **Single loader entry point** — all CoreLogic reads go through `shared_utils/R/corelogic_loader.R`
@@ -18,7 +18,7 @@
 - **Quality gates** — nothing ships below 85/100 (advisory; halt-and-ask in `/commit`)
 - **[LEARN] tags** — when corrected, save `[LEARN:category] wrong → right` to [MEMORY.md](MEMORY.md)
 
-Cross-session context lives in [MEMORY.md](MEMORY.md); past plans, specs, and session logs are in [quality_reports/](quality_reports/).
+Cross-session context lives in [MEMORY.md](MEMORY.md); project-specific plans, specs, reviews, checkpoints, and session logs belong in `projects/NN_<slug>/quality_reports/`. The root [quality_reports/](quality_reports/) is reserved for shared infrastructure and work that is not specific to any project.
 
 ---
 
@@ -41,7 +41,7 @@ corelogic_research/
 ├── Bibliography_base.bib                    # MASTER bibliography (root)
 ├── .Codex/                                 # Skills, rules, agents, hooks
 ├── templates/                               # Project + spec + session templates
-├── quality_reports/                         # Plans, specs, session logs (root-level)
+├── quality_reports/                         # Shared/repo-wide plans and reports only
 ├── Preambles/header.tex                     # SHARED LaTeX header
 ├── shared_utils/{R,python,julia}/           # Cross-project libraries
 ├── data/                                    # GITIGNORED — see data/README.md

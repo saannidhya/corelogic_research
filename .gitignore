@@ -21,6 +21,10 @@ master_supporting_docs/
 scripts/quality_score.py
 projects/*/LEARNING_GUIDE.md
 
+# Family Homes materials kept local until they pass the commit checks.
+/projects/03_family_homes/slides/ares2026/
+/projects/03_family_homes/scripts/R/01f_ca_assessor_rolls.R
+
 # IDE and OS files
 .vscode/
 .idea/
@@ -114,6 +118,8 @@ __pycache__/
 !/data/derived/.gitkeep
 
 # Large or regenerable data products
+/la_parcels_2006_2021.csv
+/la_parcels_2021_2025.csv
 *.parquet
 *.arrow
 *.feather

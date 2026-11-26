@@ -1,32 +1,53 @@
 
 \begin{table}[htbp]
-   \caption{\label{tab:prop19} Proposition 19: volume, selection, and composition}
+   \caption{\label{tab:prop19} Proposition 19: the triple difference in deed volume}
    \centering
    \scriptsize
-   \begin{tabular}{lccccc}
+   \begin{tabular}{lccc}
       \tabularnewline \midrule \midrule
-       & \multicolumn{2}{c}{Log volume} & \multicolumn{2}{c}{Sold within 24 months} & Absentee recipient \\ 
-                        & Family transfers & Market sales & Family transfers & Market purchases & Family transfers \\   
-      Model:            & (1)              & (2)          & (3)              & (4)              & (5)\\  
+         \multicolumn{4}{l}{\emph{Panel A. Log volume}} \\
+                                         & Family transfers & Market sales & Family vs. market \\
+      Model:                             & (1)              & (2)          & (3)\\
       \midrule
       \emph{Variables}\\
-      CA $\times$ Post  & -0.4253          & -0.1626      & -0.0178          & -0.0104          & -0.0017\\   
-                        & (0.0352)         & (0.0293)     & (0.0032)         & (0.0019)         & (0.0032)\\   
+      CA $\times$ Post $\times$ Family   &                  &              & -0.0831\\
+                                         &                  &              & (0.0291)\\
+      CA $\times$ Post                   & -0.2189          & -0.1358      & -0.1358\\
+                                         & (0.0295)         & (0.0257)     & (0.0257)\\
       \midrule
       \emph{Fixed-effects}\\
-      State             & Yes              & Yes          & Yes              & Yes              & Yes\\  
-      Year              & Yes              & Yes          &                  &                  & \\  
-      Cohort month      &                  &              & Yes              & Yes              & Yes\\  
+      State                              & Yes              & Yes          & \\
+      Year                               & Yes              & Yes          & \\
+      State-deed group                   &                  &              & Yes\\
+      Year-deed group                    &                  &              & Yes\\
       \midrule
       \emph{Fit statistics}\\
-      Observations      & 255              & 255          & 1,836            & 1,836            & 1,836\\  
-      R$^2$             & 0.98575          & 0.98961      & 0.84935          & 0.85148          & 0.90779\\  
+      Observations                       & 204              & 204          & 408\\
+      R$^2$                              & 0.99022          & 0.99092      & 0.99462\\
       \midrule \midrule
-      \multicolumn{6}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
+      \multicolumn{4}{l}{\emph{Clustered (State) standard-errors in parentheses}}\\
    \end{tabular}
-   
-   \par \raggedright 
-   Columns (1)-(2): state-year counts, 2017-2019 versus 2022-2023. Columns (3)-(5): transfer-cohort cells, January 2017-December 2018 versus July 2021-June 2022, weighted by cell size. Standard errors are clustered by state and shown for scale; inference with one treated state uses state placebos.
+   \par\vspace{8pt}
+   {\scriptsize\begin{tabular}{lrrccc}
+      \multicolumn{6}{l}{\emph{Panel B. Log volume by route of family transfer}} \\
+      \midrule
+       & \multicolumn{2}{c}{California deeds per year} & CA $\times$ Post & CA $\times$ Post $\times$ Family & \\
+      \cmidrule(lr){2-3}
+      Route & 2018--2019 & 2022--2023 & (family only) & (net of market sales) & States \\
+      \midrule
+      All family transfers & 195,572 & 161,218 & $-$0.219 (0.030) & $-$0.083 (0.029) & 51 \\
+      Lifetime deeds & 125,922 & 81,478 & $-$0.407 (0.032) & $-$0.272 (0.030) & 51 \\
+      \quad of which same surname & 68,932 & 40,920 & $-$0.502 (0.030) & $-$0.366 (0.028) & 51 \\
+      Through a trust & 8,850 & 8,479 & $-$0.272 (0.071) & $-$0.132 (0.071) & 47 \\
+      Affidavits of death & 60,337 & 70,672 & $-$0.078 (0.118) & 0.067 (0.117) & 44 \\
+      All except affidavits of death & 135,234 & 90,546 & $-$0.402 (0.030) & $-$0.266 (0.029) & 51 \\
+      Not family: same owner on both sides & 130,020 & 72,603 & $-$0.602 (0.041) & $-$0.466 (0.035) & 51 \\
+      Not family: into or out of own trust & 165,450 & 180,696 & $-$0.198 (0.124) & $-$0.062 (0.125) & 51 \\
+      \midrule \midrule
+   \end{tabular}}
+   \par\vspace{2pt}\begin{minipage}{0.95\textwidth}\scriptsize
+   \textit{Notes:} Panel A. State-year counts, 2018--2019 versus 2022--2023. Column (3) stacks family and market counts with state and year effects that vary by deed group; its CA $\times$ Post $\times$ Family coefficient is the triple difference, equal to column (1) minus column (2). Standard errors are clustered by state and shown for scale; their reliability is limited with one treated state. Panel B repeats columns (1) and (3) for each route of the family measure (Table~\ref{tab:taxonomy}); its first row is the family measure of Panel A. A route enters with the states that record it in every year compared. Affidavits of death include those with a trust party.
+   \end{minipage}
 \end{table}
 
 
