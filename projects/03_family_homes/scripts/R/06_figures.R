@@ -24,6 +24,8 @@
 #          10/22/2026: use the shared setup path for state-ratio figure output.
 #          10/22/2026: F4/F6 event lines relabelled (ballot placement Jun 24,
 #          passage Nov 3, effective Feb 16) via prop19_event_layers().
+#          11/18/2026: F1_size is one family bar (locked definition, no
+#          breakdown, whole-number label); the split moved to F1_size_decomposed.
 # ============================================================
 
 # 11/04/2026: restored other interfamily to the main family proxy.
@@ -71,7 +73,33 @@ f1_components <- tibble(
 ) %>% mutate(label = number(xmax - xmin, accuracy = 0.1),
              midpoint = (xmin + xmax) / 2)
 
-f1_size <- ggplot(f1_components) +
+# simple size panel: one bar for the locked family-transfer definition, no breakdown
+f1_size <- ggplot() +
+  annotate("rect", xmin = 0, xmax = 100, ymin = 1.77, ymax = 2.23,
+           fill = "#9E9E9E") +
+  annotate("rect", xmin = 0, xmax = family_per_100, ymin = 0.77, ymax = 1.23,
+           fill = family_color) +
+  annotate("text", x = 103, y = 2, label = "100",
+           hjust = 0, size = 4.3, fontface = "bold") +
+  annotate("text", x = family_per_100 + 2, y = 1,
+           label = number(family_per_100, accuracy = 1),
+           hjust = 0, size = 4.3, fontface = "bold") +
+  scale_x_continuous(limits = c(0, 112), breaks = seq(0, 100, 25),
+                     expand = expansion(mult = 0)) +
+  scale_y_continuous(limits = c(0.45, 2.55), breaks = c(1, 2),
+                     labels = c("Family-transfer\ndeeds", "All deed\ntransfers")) +
+  labs(title = "A. Size of the family channel",
+       subtitle = paste0("Pooled residential deed events, ", f1_period),
+       x = "Deeds per 100 total deed transfers", y = NULL,
+       caption = paste0(number(f1_totals$family / 1e6, accuracy = 0.1),
+                         " million family-transfer deeds, ", f1_period)) +
+  theme(panel.grid.major.y = element_blank(),
+        panel.border = element_blank(),
+        plot.margin = margin(10, 14, 10, 10))
+save_fig(f1_size, "F1_size", width = 7, height = 4.5)
+
+# decomposed size panel: same surname + estate vs. other interfamily
+f1_size_decomposed <- ggplot(f1_components) +
   annotate("rect", xmin = 0, xmax = 100, ymin = 1.77, ymax = 2.23,
            fill = "#9E9E9E") +
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = 0.77, ymax = 1.23,
@@ -101,8 +129,7 @@ f1_size <- ggplot(f1_components) +
   theme(panel.grid.major.y = element_blank(),
         panel.border = element_blank(), legend.position = "bottom",
         plot.margin = margin(10, 14, 10, 10))
-save_fig(f1_size, "F1_size", width = 7, height = 4.5)
-save_fig(f1_size, "F1_size_decomposed", width = 7, height = 4.5)
+save_fig(f1_size_decomposed, "F1_size_decomposed", width = 7, height = 4.5)
 
 f1_annual_ratio <- ggplot(headline, aes(sale_year, 100 * share_family_all)) +
   geom_hline(yintercept = family_per_100, linetype = "dashed",
@@ -135,7 +162,7 @@ st_full <- read_csv(path(tables_out_dir, "fact_state_class_2007_2023.csv"),
   arrange(desc(ratio))
 stopifnot(nrow(st_full) == 51L, !anyDuplicated(st_full$state),
           all(st_full$fam_broad == st_full$family_person +
-                st_full$family_estate + st_full$family_other),
+                st_full$family_estate + st_full$family_other + st_full$family_via_trust),
           all(st_full$ratio >= 0 & st_full$ratio <= 1))
 national_share <- sum(st_full$fam_broad) / sum(st_full$n_all)
 st_full <- st_full %>% mutate(state = factor(state, levels = rev(state)))
@@ -169,7 +196,7 @@ save_fig(f2, "F2_state_ratio", width = 7, height = 8)
 
 st_components <- st_full %>%
   transmute(state, narrow = family_person + family_estate,
-            other = family_other, n_all) %>%
+            other = family_other + family_via_trust, n_all) %>%
   pivot_longer(c(narrow, other), names_to = "component", values_to = "n") %>%
   mutate(component = factor(component, levels = c("narrow", "other")))
 f2c <- ggplot(st_components, aes(state, 100 * n / n_all, fill = component)) +
@@ -188,34 +215,60 @@ f2d <- st_full %>%
 save_fig(f2d, "F2d_state_trust_ratio_2007_2023", width = 7, height = 8)
 
 
-# ---- F3: KM survival curves ----------------------------------------------
+# ---- F3: KM survival curves and the hazard ratio ---------------------------
+# Panel A: share of homes not yet sold on the market, every cohort 2007-2023 (03_hazard.R).
+# Panel B: the monthly hazard of the next market sale for family transfers over that for
+# market sales, by year since the event. Above one = family-transferred homes sell faster.
 km <- readRDS(path(out_dir, "hazard_km_curves.rds"))
-label_map <- c(
-  family_all = "Family transfers (main family measure)",   # 11/12/2026: approved proofreading CO-1
-  family_person = "Family transfer (same surname)",
-  family_trust  = "Interfamily trust deeds",
-  market_sale   = "Market purchase"
-)
+label_map <- c(family_all = "Family transfers", market_sale = "Market sales")
+f3_cols <- setNames(palette_paper()[1:2], unname(label_map))
 f3_dat <- km |>
-  filter(class %in% names(label_map)) |>
-  mutate(lab = factor(label_map[class], levels = unname(label_map[
-    c("family_all", "family_person", "market_sale", "family_trust")
-  ])))
+  filter(class %in% names(label_map), t <= 192) |>
+  mutate(lab = factor(label_map[class], levels = unname(label_map)))
+cross_t <- f3_dat |>
+  filter(class %in% c("family_all", "market_sale")) |>
+  select(class, t, surv) |>
+  pivot_wider(names_from = class, values_from = surv) |>
+  filter(family_all > market_sale) |>
+  slice_min(t, n = 1) |>
+  pull(t)
 
-f3 <- ggplot(f3_dat, aes(t / 12, surv, color = lab)) +
-  geom_line(linewidth = 0.9) +
-  scale_color_manual(values = c(
-    `Family transfers (main family measure)` = palette_paper()[1],
-    `Family transfer (same surname)` = "#6986A7",
-    `Market purchase` = palette_paper()[2],
-    `Interfamily trust deeds` = palette_paper()[3]
-  )) +
-  scale_y_continuous(limits = c(0.4, 1), labels = percent_format()) +
-  scale_x_continuous(breaks = 0:10) +
-  guides(color = guide_legend(nrow = 2)) +
-  labs(x = "Years since transfer event (2008–2018 cohorts)",
-       y = "Share not yet sold on the open market", color = NULL)
-save_fig(f3, "F3_km_curves")
+f3a <- ggplot(f3_dat, aes(t / 12, surv, color = lab)) +
+  geom_vline(xintercept = cross_t / 12, color = "grey60", linetype = "dotted") +
+  geom_line(linewidth = 1.1) +
+  annotate("text", x = cross_t / 12 + 0.15, y = 0.97, hjust = 0, size = 3, color = "grey35",
+           label = paste0("Curves cross at ", round(cross_t / 12, 1), " years")) +
+  scale_color_manual(values = f3_cols) +
+  scale_y_continuous(limits = c(0.35, 1), labels = percent_format()) +
+  scale_x_continuous(breaks = seq(0, 16, 2)) +
+  labs(title = "A. Not yet sold on the open market",
+       x = "Years since the transfer or sale", y = "Share of homes", color = NULL)
+
+hr <- read_csv(path(tables_out_dir, "hazard_ratio_by_year.csv"), show_col_types = FALSE) |>
+  filter(class == "family_all")
+f3b <- ggplot(hr, aes(year_since, ratio)) +
+  geom_hline(yintercept = 1, color = "grey40") +
+  geom_errorbar(aes(ymin = ratio_lo, ymax = ratio_hi), width = 0.15, color = palette_paper()[1]) +
+  geom_line(color = palette_paper()[1], linewidth = 0.6) +
+  geom_point(color = palette_paper()[1], size = 2) +
+  annotate("text", x = 16.3, y = 1.03, hjust = 1, vjust = 0, size = 3, color = "grey35",
+           label = "Family-transferred homes sell faster") +
+  annotate("text", x = 16.3, y = 0.97, hjust = 1, vjust = 1, size = 3, color = "grey35",
+           label = "Family-transferred homes sell slower") +
+  scale_x_continuous(breaks = seq(1, 16, 1)) +
+  scale_y_continuous(limits = c(0.6, 1.55), breaks = seq(0.6, 1.5, 0.1)) +
+  labs(title = "B. Hazard of the next market sale, family transfers over market sales",
+       x = "Year since the transfer or sale", y = "Hazard ratio")
+
+# two panels stacked with base grid (no layout package in the project library)
+png(file.path(figures_dir, "F3_km_curves.png"), width = 9, height = 9, units = "in", res = 300,
+    bg = "transparent")
+grid::grid.newpage()
+grid::pushViewport(grid::viewport(layout = grid::grid.layout(2, 1, heights = grid::unit(c(1.15, 1), "null"))))
+print(f3a, vp = grid::viewport(layout.pos.row = 1))
+print(f3b, vp = grid::viewport(layout.pos.row = 2))
+dev.off()
+message("Saved figure: F3_km_curves")
 
 # ---- F4: Prop 19 bunching ------------------------------------------------
 cf <- read_csv(path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"),
@@ -229,13 +282,19 @@ cf <- read_csv(path(tables_out_dir, "prop19_ca_counterfactual_monthly.csv"),
 # Voted on by Public: November 3, 2020 (Approved by voters)
 # Effective Date: February 16, 2021 (for intergenerational transfers) and April 1, 2021
 
+# 11/20/2026: event labels moved into a band above the series peak (the passage
+# label used to sit on top of both lines around 2020)
+f4_peak <- max(cf$ca_actual, cf$ca_cf) / 1000
+f4_label_top <- f4_peak * 1.20   # top label row, above every data point
+f4_label_drop <- f4_peak * 0.085 # passage label one row lower, still above the peak
+
 f4 <- ggplot(cf, aes(date)) +
   geom_line(aes(y = ca_actual / 1000, color = "California, actual"), linewidth = 0.9) +
   geom_line(aes(y = ca_cf / 1000, color = "Counterfactual (2019 CA x donor growth)"),
             linewidth = 0.9, linetype = "22") +
   # ballot placement, voter passage, and parent-child effective date
-  prop19_event_layers(label_y = max(cf$ca_actual) / 1000 * 0.99,
-                      label_step = 0.7 * (max(cf$ca_actual) - min(cf$ca_actual)) / 1000) +
+  prop19_event_layers(label_y = f4_label_top, label_step = f4_label_drop) +
+  expand_limits(y = f4_label_top) +
   scale_color_manual(values = palette_paper()[c(2, 1)]) +
   labs(x = NULL, y = "CA family transfers (thousands/month)", color = NULL)
 save_fig(f4, "F4_prop19_bunching")
@@ -336,8 +395,10 @@ scm_event_plot <- ggplot(scm_event_study, aes(date, estimate)) +
   prop19_event_layers(label_y = -0.50, label_step = 0.12) +
   geom_pointrange(aes(ymin = conf.low, ymax = conf.high),
                   color = palette_paper()[2], linewidth = 0.45, size = 0.22) +
-  annotate("text", x = antic_start_date + (eff_date - antic_start_date) / 2, y = 0.46,
-           label = "Anticipation & Rush", size = 3.0, color = "#9a6700",
+  # 11/20/2026: left-anchored just right of the ballot line so the label
+  # clears the Feb 2021 deadline-month estimate (it used to run into it)
+  annotate("text", x = antic_start_date + 6, y = 0.46, hjust = 0,
+           label = "Anticipation & Rush", size = 2.85, color = "#9a6700",
            fontface = "bold.italic") +
   annotate("text", x = as.Date("2022-05-01"), y = 0.46,
            label = "Post-reform decline", size = 2.9, color = "grey40",

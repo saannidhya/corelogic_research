@@ -22,7 +22,7 @@ state_counts <- read_csv(
 ) %>%
   filter(state %in% c(state.abb, "DC")) %>%
   mutate(
-    family_old = family_person + family_estate + family_other,
+    family_old = family_person + family_estate + family_other + family_via_trust,
     family_per_100_deeds = 100 * family_old / n_all,
     family_per_100_market_sales = 100 * family_old / market,
     # upper bound: the earlier class-based proxy, including same-person and entity deeds
@@ -40,7 +40,8 @@ stopifnot(
   all(state_counts$family_old + state_counts$market + state_counts$trust <=
         state_counts$n_all),
   all(state_counts$fam_broad ==
-        state_counts$family_person + state_counts$family_estate + state_counts$family_other)
+        state_counts$family_person + state_counts$family_estate + state_counts$family_other +
+        state_counts$family_via_trust)
 )
 
 # Pool counts before dividing; each residential parcel-date event counts once.

@@ -332,10 +332,11 @@ write_csv_strict(prop19_retiming_summary, path(tables_out_dir, "prop19_retiming_
 # ============================================================
 # 3a. Appendix: steady-state volume DiD ----
 # ============================================================
-# ln(family transfers) state x year; pre = 2017-2019, post = 2022-2023;
+# ln(family transfers) state x year; pre and post years are prop19_pre_years and
+# prop19_post_years (00_setup.R; 2018-2019 against 2022-2023 since 11/18/2026);
 # transition years 2020-2021 excluded (anticipation + deadline retiming).
 sy <- ev_data %>%
-  filter(sale_year %in% c(2017L, 2018L, 2019L, 2022L, 2023L)) %>%
+  filter(sale_year %in% prop19_did_years) %>%
   group_by(state, sale_year) %>%
   summarize(
     n_fam = sum(class %in% fam_classes),
@@ -347,7 +348,7 @@ sy <- sy %>%
   filter(!state %in% c("GU", "PR", "VI", "AS", "MP", "AE", "AP", "AA", "FM", "MH", "PW")) %>%
   mutate(post = as.integer(sale_year >= 2022),
          ca = as.integer(state == "CA"))
-stopifnot(nrow(sy) > 200, sum(sy$ca) == 5)
+stopifnot(nrow(sy) > 150, sum(sy$ca) == length(prop19_did_years))
 # log() of a zero cell would drop the observation silently (r-review M6)
 stopifnot(all(sy$n_fam > 0), all(sy$n_market > 0), all(sy$n_fam_wtrust > 0))
 

@@ -56,8 +56,8 @@ assert_rows(sy_all, 300, "ref_state_year_panel")
 write_csv_strict(sy_all, path(tables_out_dir, "ref_state_year_panel.csv"))
 
 sy_did <- sy_all |>
-  filter(sale_year %in% c(2017:2019, 2022:2023)) |>
-  mutate(post = as.integer(sale_year >= 2022))
+  filter(sale_year %in% prop19_did_years) |>
+  mutate(post = as.integer(sale_year %in% prop19_post_years))
 stopifnot(all(sy_did$n_fam > 0), all(sy_did$n_market > 0))
 
 states <- sort(unique(sy_did$state))
@@ -131,5 +131,79 @@ recon <- recon |>
 message("Reconciliation:")
 print(as.data.frame(recon))
 write_csv_strict(recon, path(tables_out_dir, "ref_reconciliation.csv"))
+
+# ---- (f) The triple difference by route of family transfer (11/16/2026) ------
+# Same design as the headline (state-year log counts, prop19_pre_years against
+# prop19_post_years, market
+# sales as the comparison deed group), run on each route of the family measure. Affidavits
+# of death are the comparison: a death cannot be timed, and a home passing at death kept the
+# old rule whenever the death came before the deadline. Table 4, Panel B (05_tables.R).
+route_defs <- tribble(
+  ~route,                 ~label,                                   ~filter_sql,
+  "all",                  "All family transfers",                   "deed_cat = 'family_transfer'",
+  "lifetime",             "Lifetime deeds",                         "fam_route IN ('lifetime','unknown')",
+  "lifetime_surname",     "\\quad of which same surname",           "fam_route IN ('lifetime','unknown') AND deed_subcat = 'same_surname'",
+  "trust",                "Through a trust",                        "fam_route = 'trust'",
+  "affidavit",            "Affidavits of death",                    "fam_route = 'death_affidavit'",
+  "no_affidavit",         "All except affidavits of death",         "deed_cat = 'family_transfer' AND fam_route <> 'death_affidavit'",
+  # deeds outside the measure that the reform does not touch but refinancing does
+  "same_owner",           "Not family: same owner on both sides",   "deed_cat = 'same_owner'",
+  "own_trust",            "Not family: into or out of own trust",   "deed_subcat IN ('into_own_trust','trust_to_settlor')"
+)
+route_cols <- paste(glue("SUM(coalesce({route_defs$filter_sql}, FALSE)::INT) AS {route_defs$route}"),
+                    collapse = ",\n         ")
+sy_route <- dbGetQuery(con, glue("
+  SELECT state, sale_year, SUM((deed_cat = 'market_sale')::INT) AS market,
+         {route_cols}
+  FROM read_parquet('{sql_quote_path(events_path)}')
+  WHERE sale_year IN ({paste(prop19_did_years, collapse = ', ')})
+    AND state NOT IN ('GU','PR','VI','AS','MP','AE','AP','AA','FM','MH','PW')
+  GROUP BY 1, 2")) |>
+  as_tibble() |>
+  mutate(across(-state, as.numeric),
+         ca = as.integer(state == "CA"), post = as.integer(sale_year %in% prop19_post_years))
+stopifnot(n_distinct(sy_route$state) == 51, sum(sy_route$ca) == length(prop19_did_years))
+
+ddd_route <- map_dfr(seq_len(nrow(route_defs)), function(i) {
+  # states with the route recorded in every year compared (affidavits are absent in a few states)
+  d <- sy_route |>
+    transmute(state, sale_year, ca, post, fam = .data[[route_defs$route[i]]], market) |>
+    filter(fam > 0, market > 0) |>
+    group_by(state) |> filter(n() == length(prop19_did_years)) |> ungroup()
+  m_did <- feols(log(fam) ~ ca:post | state + sale_year, d, cluster = ~state)
+  long <- bind_rows(transmute(d, state, sale_year, ca, post, grp = "F", n = fam),
+                    transmute(d, state, sale_year, ca, post, grp = "M", n = market)) |>
+    mutate(f = as.integer(grp == "F"))
+  m_ddd <- feols(log(n) ~ ca:post + ca:post:f | state^grp + sale_year^grp, long, cluster = ~state)
+  ca_d <- filter(d, ca == 1)
+  tibble(route = route_defs$route[i], label = route_defs$label[i], n_states = n_distinct(d$state),
+         ca_per_year_pre  = mean(ca_d$fam[ca_d$post == 0]),
+         ca_per_year_post = mean(ca_d$fam[ca_d$post == 1]),
+         did = coeftable(m_did)["ca:post", 1],   did_se = coeftable(m_did)["ca:post", 2],
+         ddd = coeftable(m_ddd)["ca:post:f", 1], ddd_se = coeftable(m_ddd)["ca:post:f", 2])
+})
+# the pooled row is the headline triple difference
+stopifnot(abs(ddd_route$ddd[ddd_route$route == "all"] - ddd_vol_coef) < 1e-6)
+write_csv_strict(ddd_route, path(tables_out_dir, "prop19_ddd_by_route.csv"))
+print(as.data.frame(ddd_route |> mutate(across(where(is.numeric), ~ round(.x, 3)))))
+
+# macros for the text (\PRoute<Route><Stat>)
+route_tag <- c(all = "All", lifetime = "Life", lifetime_surname = "LifeSur", trust = "Trust",
+               affidavit = "Aff", no_affidavit = "NoAff", same_owner = "SameOwner",
+               own_trust = "OwnTrust")
+f3 <- function(x) sub("-", "$-$", sprintf("%.3f", x), fixed = TRUE)
+route_macros <- ddd_route |>
+  mutate(tag = route_tag[route]) |>
+  reframe(macro = paste0("PRoute", tag, c("DiD", "DDD", "DDDSE", "Pct", "Pre", "Post")),
+          value = c(f3(did), f3(ddd), sprintf("%.3f", ddd_se),
+                    sub("-", "", sprintf("%.0f", 100 * (exp(ddd) - 1)), fixed = TRUE),
+                    format(round(ca_per_year_pre), big.mark = ","),
+                    format(round(ca_per_year_post), big.mark = ",")), .by = route)
+writeLines(c("% Generated by 07_referee_checks.R. Do not edit.",
+             paste0("\\newcommand{\\", route_macros$macro, "}{", route_macros$value, "}"),
+             paste0("\\newcommand{\\PRouteAffShare}{",
+                    sprintf("%.0f", 100 * ddd_route$ca_per_year_pre[ddd_route$route == "affidavit"] /
+                              ddd_route$ca_per_year_pre[ddd_route$route == "all"]), "}")),
+           path(tables_dir, "prop19_route_numbers.tex"))
 
 message("Finished 07_referee_checks at ", Sys.time())

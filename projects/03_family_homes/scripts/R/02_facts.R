@@ -42,7 +42,7 @@ stopifnot(file_exists(events_path))
 # measure ("including same-person and entity deeds") is that plus 'family_samep_entity'.
 # Trust deeds and exact same-person retitles (class family_retitle) remain separate.
 # See quality_reports/2026-11-12_same_person_retitles.md.
-fam_classes <- family_classes
+fam_classes <- family_measure_classes   # the locked measure through `class` (00_setup.R)
 
 # Trust-rule tallies by year come straight from the parquet (trust_rel is NULL
 # outside family_trust), so the string column never enters R memory.
@@ -146,7 +146,7 @@ headline <- ev_window %>%
     fam_broad = sum(class %in% fam_classes),
     fam_narrow = sum(class %in% family_narrow_classes),
     n_all = n(),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
     # Retain the wide alias for downstream compatibility; main = wide.
     fam_wide = sum(class %in% c(fam_classes, "family_other")),
     # upper bound: the old class-based proxy, including same-person and entity deeds
@@ -183,7 +183,7 @@ st <- ev_pooled %>%
   summarize(
     fam_broad = sum(class %in% fam_classes),
     fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),
     .groups = "drop"
@@ -201,10 +201,11 @@ st_full <- ev_window %>%
     family_person = sum(class == "family_person", na.rm = TRUE),
     family_other = sum(class == "family_other", na.rm = TRUE),
     family_estate = sum(class == "family_estate", na.rm = TRUE),
+    family_via_trust = sum(class == family_via_trust_label, na.rm = TRUE),
     family_samep_entity = sum(class == family_samep_label, na.rm = TRUE),
     fam_broad = sum(class %in% fam_classes),
     fam_incl_samep = sum(class %in% c(fam_classes, family_samep_label)),
-    trust = sum(class == "family_trust", na.rm = TRUE),
+    trust = sum(class %in% c("family_trust", family_via_trust_label)),   # every flagged trust deed
     market = sum(class == "market_sale", na.rm = TRUE),
     n_all = n(),
     .groups = "drop"
@@ -213,7 +214,8 @@ st_full <- ev_window %>%
 
 assert_rows(st_full, 45, "fact_state_class_2007_2023")
 stopifnot(all(st_full$fam_broad ==
-                st_full$family_person + st_full$family_estate + st_full$family_other))
+                st_full$family_person + st_full$family_estate + st_full$family_other +
+                st_full$family_via_trust))
 write_csv_strict(st_full, path(tables_out_dir, "fact_state_class_2007_2023.csv"))
 
 # |- 4. Validation moments by class ----

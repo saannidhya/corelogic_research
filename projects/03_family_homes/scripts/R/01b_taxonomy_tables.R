@@ -10,8 +10,10 @@
 # Inputs  : data/derived/03_family_homes/events[_dev].parquet
 # Outputs : _outputs/tables/deed_cells_year.csv        counts by cell and year
 #           _outputs/tables/deed_categories.csv        the breakdown, pooled
-#           _outputs/taxonomy/T1_taxonomy.tex          Table 1 (staged)
-#           _outputs/taxonomy/T2_volumes.tex           Table 2 (staged)
+#           _outputs/tables/deed_taxonomy_detail.csv   every cell with its rule
+#           manuscript/tables/T1_taxonomy.tex          Table 1
+#           manuscript/tables/T2_volumes.tex           Table 2
+#           manuscript/tables/TA_taxonomy_detail.tex   appendix: every cell
 # Settings: FAM_DEV=1  read the dev panel (VT, RI, CA); outputs get a _dev suffix
 #======================================================================#
 
@@ -24,7 +26,8 @@ source(here::here("projects/03_family_homes/scripts/R/00_setup.R"))
 dev_mode   <- Sys.getenv("FAM_DEV", "0") == "1"
 sfx        <- ifelse(dev_mode, "_dev", "")
 panel_path <- if (dev_mode) path(data_dir, "events_dev.parquet") else events_panel_path
-tax_dir    <- path(out_dir, "taxonomy")
+# the three tables go straight into the manuscript; a dev run writes to _outputs/taxonomy
+tax_dir    <- if (dev_mode) path(out_dir, "taxonomy") else tables_dir
 dir_create(tax_dir)
 
 first_year   <- window_start_year        # 2007

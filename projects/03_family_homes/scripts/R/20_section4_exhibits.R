@@ -229,7 +229,7 @@ if (have_wpb) {
     num(sp_rs_pp, 2), " percentage points in the share resold within 24 months between the same cohorts.")
 }
 write_table(path(s4_tab, "T_s4_prop19.tex"),
-  "Proposition 19: volume and resale by deed group", "tab:s4prop19}\\label{tab:prop19", "lrrrrrr",
+  "Proposition 19: volume and resale by deed group", "tab:s4prop19", "lrrrrrr",
   c("Group & DiD & (SE) & Triple difference & (SE) & Observations & States \\\\"), body4,
   paste0("Panel A: log annual deeds by state and year, 2017--2019 against 2022--2023. ",
          "DiD is California $\\times$ post; the triple difference is the same coefficient net of market sales, which equals the DiD minus the market-sale DiD (",

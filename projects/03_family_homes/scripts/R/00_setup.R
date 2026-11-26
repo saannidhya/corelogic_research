@@ -206,20 +206,27 @@ family_trust_upper_subcats <- c("trust_surname_only", "trust_to_unlinked_unprice
 family_trust_upper_sql <- paste0("(deed_subcat IN ('",
                                  paste(family_trust_upper_subcats, collapse = "','"), "'))")
 
-# |- direct component through `class` (analysis scripts written before deed_cat) ----
-# These helpers give the DIRECT component only: the class-based measure without the deeds
-# whose names show the same owner (fam_relation_nm = 'owner_retained') or an entity
-# ('unrelated_entity'). They equal family_direct_sql (asserted in the build's audit) and
-# do not include trust deeds; scripts move to deed_cat as each is revisited.
+# |- the measure through `class`, for scripts that count classes ----
+# read_events_df(measure = "main") and events_main_from() relabel `class` so that
+# `class %in% family_measure_classes` IS the family measure:
+#   family_person / family_estate / family_other   direct deeds in the measure
+#   family_via_trust       family transfers whose class is family_trust: the three trust
+#                          tiers and the affidavits of death with a trust party
+#   family_samep_entity    same-owner and entity deeds of the class-based measure (out)
+#   family_trust           the trust deeds that are not family transfers (out)
+family_via_trust_label <- "family_via_trust"
+family_samep_label     <- "family_samep_entity"
+family_measure_classes <- c(family_classes, family_via_trust_label)
+family_measure_classes_sql <- paste0("('", paste(family_measure_classes, collapse = "','"), "')")
+family_class_main_sql <- paste0(
+  "CASE WHEN deed_cat = 'family_transfer' AND class = 'family_trust' THEN '", family_via_trust_label, "'",
+  " WHEN class IN ", family_classes_sql, " AND deed_cat <> 'family_transfer' THEN '", family_samep_label, "'",
+  " ELSE class END")
+
+# In-memory version for a data frame that carries `class` and `fam_relation_nm` but not
+# deed_cat: it relabels the direct deeds only (04a_build_wedge.R).
 family_excluded_relations <- c("owner_retained", "unrelated_entity")
 family_excluded_sql <- paste0("('", paste(family_excluded_relations, collapse = "','"), "')")
-
-# Relabel for scripts that count `class %in% family_classes`: rows of the class-based
-# measure outside the direct component become 'family_samep_entity'; other classes are untouched.
-family_samep_label <- "family_samep_entity"
-family_class_main_sql <- paste0("CASE WHEN class IN ", family_classes_sql,
-  " AND COALESCE(fam_relation_nm, '') IN ", family_excluded_sql,
-  " THEN '", family_samep_label, "' ELSE class END")
 
 #' Same relabel on an in-memory data frame that carries `class` and `fam_relation_nm`.
 recode_family_main <- function(df) {
@@ -238,10 +245,20 @@ events_main_from <- function(events_path = events_panel_path) {
 # |- Section 4 measure (bygroup_main, defined in 00_groups.R) ----
 # The legacy Prop 19 scripts use it so the appendix synthetic control and event study
 # match Section 4.
-family_s4_sql <- function() {
-  if (!exists("bygroup_filter", mode = "function")) source(path(r_dir, "00_group_helpers.R"))
-  bygroup_filter(bygroup_main, bygroup_defs)
-}
+# 11/16/2026: the Proposition 19 designs (04, 07, 09, 09b, 10, 14) use the locked family
+# measure itself. With every affidavit of death counted the series is continuous across the
+# 2018 vendor change, so no narrower Section 4 measure is needed. The by-group scripts
+# (16-28) still take their groups from 00_groups.R.
+family_s4_sql <- function() family_main_sql
+
+# |- Proposition 19 triple difference: years compared ----
+# 11/18/2026: baseline moved from 2017-2019 to 2018-2019, the baseline of the monthly event
+# study. 2020 and 2021 (anticipation and the deadline) stay out.
+prop19_pre_years  <- 2018:2019
+prop19_post_years <- 2022:2023
+prop19_did_years  <- c(prop19_pre_years, prop19_post_years)
+prop19_pre_label  <- paste0(min(prop19_pre_years), "--", max(prop19_pre_years))
+prop19_post_label <- paste0(min(prop19_post_years), "--", max(prop19_post_years))
 
 family_class_s4_sql <- function() {
   paste0("CASE WHEN coalesce(", family_s4_sql(), ", FALSE) THEN 'family_main' WHEN class IN ",

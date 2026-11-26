@@ -3,7 +3,7 @@
 \paragraph{Fact 1: Family deeds account for \DeedNationalShare\ percent of all deed events.}
 Table~\ref{tab:volumes} reports annual counts and Figure~\ref{fig:volumes} shows the pooled scale and annual path. In 2007--2023 the main family measure includes \DeedFamilyMillion\ million events. The numerator combines same-surname interfamily, estate/executor, and other interfamily deeds between two distinct people. The denominator includes all residential deed events in the sample: market sales, family deeds, trusts, retitles, and other conveyances. Annual shares range from \DeedShareMin\ to \DeedShareMax\ per 100 deed events. Adding back the deeds in which the same person or an entity is on both sides gives the upper bound of \DeedInclNationalShare\ per 100. These are shares of recorded events, not shares of distinct houses, households, or inheritances. Other counts are of the same order but measure something else. An industry tabulation puts inherited homes at about 7 percent of all US property transfers in the year to August 2025 and at 18 percent of California's in 2025 \citep{delventhal2026inherited}, and the Legislative Analyst's Office counts 60,000 to 80,000 inherited California properties a year that escape reassessment \citep{lao2017inheritance}. Those figures count inherited homes, or transfers that qualified for an exclusion, while ours count deeds between distinct people per deed event, including lifetime and spouse deeds and leaving out trust deeds, so the rates need not agree. The table also shows the trust-mediated candidates under the name rule and, from 2017, the chain-verified trust-to-heir deeds: about \SIIIHeirAvgNat\ a year, against about \SIIITrustToOtherAvgNat\ trust-to-person deeds under the name rule. The last column flags the 2018 break in affidavits of death with a trust party, which moves them out of the main family measure, mostly in California.
 
-\input{tables/T2_volumes_v2.tex}
+\input{tables/T2_volumes.tex}
 
 \begin{figure}[!t]\centering
 \includegraphics[width=0.98\linewidth]{figures/F1_volumes.png}
@@ -39,5 +39,5 @@ Composition does not explain the early lead. Giving each market purchase the wei
 \input{tables/T3_hazard_v2.tex}
 \begin{figure}[!t]\centering
 \includegraphics[width=0.92\linewidth]{figures/F3_km_curves.png}
-\caption{Kaplan--Meier survival to the next market sale for 2008--2018 event cohorts, censored June 2024. The main family curve pools same-surname, estate/executor, and other interfamily deeds; the same-surname component and interfamily trust deeds are shown separately. Market purchases carry no price floor.}\label{fig:km}
+\caption{Time to the next market sale after a family transfer and after a market sale, 2007--2023 cohorts, censored June 2024. Panel A is the Kaplan--Meier share of homes not yet sold on the open market. Panel B is the monthly hazard of the next market sale for family transfers divided by that for market sales, by year since the event, with 95 percent intervals; a ratio above one means family-transferred homes are selling faster. Market sales carry no price floor.}\label{fig:km}
 \end{figure}
